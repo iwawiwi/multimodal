@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pertemuan 02: Representasi Modalitas I — Teks | ITERA</title>
+  
+  <!-- Reveal.js Base Styles from CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  
+  <!-- Catppuccin Latte Custom Theme -->
+  <link rel="stylesheet" href="css/catppuccin-latte.css">
+</head>
+<body>
+
+  <!-- Persistent Edge-to-Edge Deck Header -->
+  <header class="deck-header">
+    <div class="deck-header-left">
+      <a href="index.html" class="deck-brand-link" title="Kembali ke Portal Kuliah">
+        <img src="assets/img/logo_2.png" alt="Logo ITERA" class="deck-logo">
+        <img src="assets/img/dikti-saintek-berdampak-color.svg" alt="Logo Dikti Saintek Berdampak" class="deck-logo">
+      </a>
+    </div>
+
+    <div class="deck-header-right">
+      <!-- Aspect Ratio / Projector Switcher -->
+      <div class="nav-dropdown">
+        <button type="button" class="deck-ctrl-btn" id="aspect-btn" onclick="toggleAspectDropdown(event)" title="Sesuaikan Rasio Layar & Proyektor">
+          <span class="material-symbols-outlined">aspect_ratio</span>
+          <span id="aspect-label" class="deck-btn-label">Auto</span>
+          <span class="material-symbols-outlined" style="font-size: 14px;">arrow_drop_down</span>
+        </button>
+        <div class="nav-dropdown-menu" id="aspect-menu">
+          <button type="button" class="dropdown-item active" data-aspect="auto" onclick="setAspectMode('auto')">
+            <span class="item-title">Auto</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-9" onclick="setAspectMode('16-9')">
+            <span class="item-title">16:9</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-10" onclick="setAspectMode('16-10')">
+            <span class="item-title">16:10</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="4-3" onclick="setAspectMode('4-3')">
+            <span class="item-title">4:3</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="mobile" onclick="setAspectMode('mobile')">
+            <span class="item-title">Mobile</span>
+          </button>
+        </div>
+      </div>
+
+      <button type="button" class="deck-ctrl-btn" onclick="Reveal.toggleOverview()" title="Lihat Matriks Seluruh Slide (Esc/O)">
+        <span class="material-symbols-outlined">grid_view</span>
+        <span class="deck-btn-label">Overview</span>
+      </button>
+      <button type="button" class="deck-ctrl-btn" onclick="openShortcutsModal()" title="Panduan Pintasan Keyboard (?)">
+        <span class="material-symbols-outlined">keyboard</span>
+        <span class="deck-btn-label">Pintasan</span>
+      </button>
+      <a href="index.html" class="deck-ctrl-btn" title="Kembali ke Portal Kuliah">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span class="deck-btn-label">Portal</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Hairline Dynamic Progress Bar -->
+  <div class="deck-progress-track">
+    <div class="deck-progress-bar" id="deck-progress-bar"></div>
+  </div>
+
+  <!-- Shortcuts Modal -->
+  <div id="shortcuts-modal" onclick="closeShortcutsModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h4 style="margin: 0; font-weight: 800;">
+          <span class="material-symbols-outlined" style="color: var(--ctp-blue); vertical-align: -2px; margin-right: 6px;">keyboard</span>
+          Pintasan Navigasi Presentasi
+        </h4>
+        <button class="modal-close" onclick="closeShortcutsModal()">&times;</button>
+      </div>
+      <div class="shortcut-row">
+        <span>Slide Berikutnya</span>
+        <div><span class="kbd-key">Space</span> / <span class="kbd-key">→</span></div>
+      </div>
+      <div class="shortcut-row">
+        <span>Slide Sebelumnya</span>
+        <div><span class="kbd-key">←</span></div>
+      </div>
+      <div class="shortcut-row">
+        <span>Mode Layar Penuh (Fullscreen)</span>
+        <div><span class="kbd-key">F</span></div>
+      </div>
+      <div class="shortcut-row">
+        <span>Speaker Notes View (Catatan Dosen)</span>
+        <div><span class="kbd-key">S</span></div>
+      </div>
+      <div class="shortcut-row">
+        <span>Slide Overview (Matriks)</span>
+        <div><span class="kbd-key">O</span> / <span class="kbd-key">Esc</span></div>
+      </div>
+      <div class="shortcut-row">
+        <span>Blackout / Layar Hitam (Fokus Diskusi)</span>
+        <div><span class="kbd-key">B</span> / <span class="kbd-key">.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ============================================================
+           ACT 1: COVER & PEMBUKA
+           ============================================================ -->
+
+      <!-- SLIDE 1: COVER -->
+      <section>
+        <div style="margin: auto 0; text-align: left;">
+          
+          <h1 style="font-size: 2.3em; line-height: 1.15; font-weight: 800; color: var(--ctp-text); margin-bottom: 12px; letter-spacing: -0.025em;">
+            Pembelajaran Mesin Multimodal
+          </h1>
+
+          <div style="font-size: 1.15em; font-weight: 600; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.4;">
+            Pertemuan 02 &bull; Representasi Modalitas I: Teks
+          </div>
+
+          <div style="max-width: 620px; background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-left: 3.5px solid var(--ctp-blue); border-radius: 12px; padding: 18px 24px;">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">
+              Dosen Pengampu
+            </div>
+            <div style="font-size: 1.1em; font-weight: 800; color: var(--ctp-text); margin-bottom: 6px;">
+              I Wayan Wiprayoga Wisesa
+            </div>
+            <div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;">
+              Program Studi Teknik Informatika<br>
+              Jurusan Teknologi Produksi dan Industri<br>
+              Institut Teknologi Sumatera (ITERA)<br>
+              <span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span>
+            </div>
+          </div>
+
+        </div>
+
+        <aside class="notes">
+          Buka sesi Pertemuan 2. Perkenalkan topik utama: bagaimana merepresentasikan data teks dalam format numerik untuk deep learning. Tunjukkan roadmap dari metode sederhana (one-hot) hingga arsitektur modern (Transformer).
+        </aside>
+      </section>
+
+      <!-- SLIDE 2: CAPAIAN PEMBELAJARAN -->
+      <section>
+        <h2>Tujuan Pembelajaran Sesi Ini</h2>
+        <p style="margin-bottom: 24px;">Di akhir sesi kuliah ini, mahasiswa diharapkan mampu menguasai kompetensi dasar berikut:</p>
+
+        <div class="grid-3">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-blue">01</span>
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Representasi Teks</h4>
+            </div>
+            <p>Menjelaskan metode representasi teks untuk deep learning, dari one-hot encoding hingga contextual embeddings.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-mauve">02</span>
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Model Sekuensial</h4>
+            </div>
+            <p>Memahami arsitektur dasar RNN, LSTM, dan GRU untuk pemrosesan data sekuensial.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-teal">03</span>
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Transformer Encoder</h4>
+            </div>
+            <p>Memahami prinsip kerja Transformer Encoder dan perannya dalam representasi teks modern.</p>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Jelaskan tiga kompetensi utama yang akan dicapai mahasiswa setelah sesi ini. Tekankan bahwa sesi ini membangun fondasi untuk semua tugas NLP di kelas multimodal.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SECTION 1: TEKS SEBAGAI DATA
+           ============================================================ -->
+
+      <!-- SLIDE 3: SECTION DIVIDER -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(30,102,245,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-blue">Bagian 1</span>
+          <h1>Teks sebagai Data</h1>
+          <p class="subtitle">
+            Memahami karakteristik unik data teks dan tantangan dalam mengubahnya menjadi representasi numerik.
+          </p>
+        </div>
+        <aside class="notes">Transisi ke bagian pertama. Fokus pada mengapa teks berbeda dari data numerik biasa.</aside>
+      </section>
+
+      <!-- SLIDE 4: KARAKTERISTIK DATA TEKS -->
+      <section>
+        <h2>Karakteristik Data Teks</h2>
+        <p>Data teks memiliki empat sifat fundamental yang membedakannya dari data numerik tabular.</p>
+        <div class="grid-2">
+          <div class="c-card">
+            <div class="c-card-header">
+              <h4>Sekuensial</h4>
+            </div>
+            <p>Kata-kata memiliki urutan dan ketergantungan temporal. Urutan kata mengubah makna kalimat secara keseluruhan.</p>
+          </div>
+          <div class="c-card">
+            <div class="c-card-header">
+              <h4>Diskrit</h4>
+            </div>
+            <p>Kata-kata adalah unit diskrit dari kosakata (<em>vocabulary</em>). Tidak ada hubungan aritmatika langsung antar kata.</p>
+          </div>
+          <div class="c-card">
+            <div class="c-card-header">
+              <h4>Variabel Panjang</h4>
+            </div>
+            <p>Kalimat dan dokumen memiliki panjang yang berbeda-beda, memerlukan strategi <em>padding</em> atau <em>truncation</em>.</p>
+          </div>
+          <div class="c-card">
+            <div class="c-card-header">
+              <h4>Semantik & Sintaksis</h4>
+            </div>
+            <p>Memiliki makna dan struktur tata bahasa yang kompleks, termasuk polisemi dan idiom.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          Empat karakteristik ini menjelaskan mengapa kita tidak bisa langsung memasukkan teks ke model ML. Diskusikan contoh konkret: "Pembelajaran Mesin Multimodal" vs "Mesin Multimodal Pembelajaran" — urutan mengubah makna.
+        </aside>
+      </section>
+
+      <!-- SLIDE 5: TANTANGAN PEMROSESAN TEKS -->
+      <section>
+        <h2>Tantangan dalam Pemrosesan Teks</h2>
+        <p>Tiga tantangan utama yang harus diatasi oleh setiap metode representasi teks.</p>
+        <div class="grid-3">
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-mauve">01</span>
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Representasi</h4>
+            </div>
+            <p>Bagaimana mengubah kata menjadi format numerik yang dapat diproses oleh model <em>machine learning</em>?</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-blue">02</span>
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Konteks</h4>
+            </div>
+            <p>Bagaimana menangkap makna kata berdasarkan konteksnya dalam kalimat yang berbeda?</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-teal">03</span>
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Panjang Sekuens</h4>
+            </div>
+            <p>Bagaimana menangani ketergantungan jarak jauh (<em>long-range dependencies</em>) dalam teks panjang?</p>
+          </div>
+        </div>
+        <aside class="notes">
+          Tiga tantangan ini akan menjadi benang merah sepanjang sesi. Setiap metode representasi yang dibahas mencoba menjawab satu atau lebih dari tantangan ini.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SECTION 2: REPRESENTASI DASAR
+           ============================================================ -->
+
+      <!-- SLIDE 6: SECTION DIVIDER -->
+      <section class="section-slide" style="background: radial-gradient(circle at 90% 80%, rgba(136,57,239,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-mauve">Bagian 2</span>
+          <h1>Representasi Teks Dasar</h1>
+          <p class="subtitle">
+            Dari tokenisasi hingga one-hot encoding: fondasi konseptual representasi numerik teks.
+          </p>
+        </div>
+        <aside class="notes">Masuk ke metode representasi paling dasar. Fokus pada konsep tokenisasi dan encoding.</aside>
+      </section>
+
+      <!-- SLIDE 7: TOKENIZATION -->
+      <section>
+        <h2>Tokenization</h2>
+        <p>Proses membagi teks menjadi unit-unit yang lebih kecil, disebut <strong>token</strong>.</p>
+        
+        <div class="c-callout c-callout-info" style="margin: 20px 0;">
+          <span class="material-symbols-outlined icon-blue">terminal</span>
+          <div style="font-size: 0.82em; line-height: 1.7;">
+            <strong style="color: var(--ctp-blue);">Contoh Tokenisasi Kata:</strong><br>
+            <span style="font-family: var(--font-mono); font-size: 0.95em;">"Pembelajaran Mesin Multimodal"</span>
+            <span style="color: var(--ctp-subtext0);"> &rarr; </span>
+            <span style="font-family: var(--font-mono); font-size: 0.95em;">["Pembelajaran", "Mesin", "Multimodal"]</span>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top: 16px;">
+          <div class="c-card">
+            <div class="c-card-header">
+              <h4>Token per Kata</h4>
+            </div>
+            <p>Setiap kata menjadi satu token. Sederhana, tetapi menghasilkan kosakata sangat besar dan masalah OOV.</p>
+          </div>
+          <div class="c-card">
+            <div class="c-card-header">
+              <h4>Token per Karakter</h4>
+            </div>
+            <p>Setiap karakter menjadi token. Kosakata kecil, tetapi sekuens menjadi sangat panjang dan kehilangan makna kata.</p>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Jelaskan bahwa tokenisasi adalah langkah pertama sebelum representasi numerik. Tunjukkan perbedaan antara tokenisasi per kata vs per karakter. Bahas implikasi masing-masing terhadap ukuran kosakata dan panjang sekuens.
+        </aside>
+      </section>
+
+      <!-- SLIDE 8: ONE-HOT ENCODING -->
+      <section>
+        <h2>One-Hot Encoding</h2>
+        <p>Setiap token direpresentasikan sebagai vektor biner berdimensi = ukuran kosakata.</p>
+        
+        <div class="c-callout c-callout-info" style="margin: 20px 0;">
+          <span class="material-symbols-outlined icon-blue">terminal</span>
+          <div style="font-size: 0.82em; line-height: 1.8;">
+            <strong style="color: var(--ctp-blue);">Contoh (Kosakata = [apel, pisang, jeruk]):</strong><br>
+            <span style="font-family: var(--font-mono); font-size: 0.95em;">"apel"</span> &rarr; <span style="font-family: var(--font-mono);">[1, 0, 0]</span> &nbsp;|&nbsp;
+            <span style="font-family: var(--font-mono); font-size: 0.95em;">"pisang"</span> &rarr; <span style="font-family: var(--font-mono);">[0, 1, 0]</span> &nbsp;|&nbsp;
+            <span style="font-family: var(--font-mono); font-size: 0.95em;">"jeruk"</span> &rarr; <span style="font-family: var(--font-mono);">[0, 0, 1]</span>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="c-card">
+            <div class="c-card-header">
+              <h4>Biner</h4>
+            </div>
+            <p>Hanya satu elemen bernilai 1 (sesuai ID token), sisanya 0.</p>
+          </div>
+          <div class="c-card">
+            <div class="c-card-header">
+              <h4>Sparse</h4>
+            </div>
+            <p>Sebagian besar elemen bernilai nol, boros memori untuk kosakata besar.</p>
+          </div>
+          <div class="c-card">
+            <div class="c-card-header">
+              <h4>Ortogonal</h4>
+            </div>
+            <p>Tidak ada hubungan makna antar kata — setiap vektor saling tegak lurus.</p>
+          </div>
+        </div>
+
+        <aside class="notes">
+          One-hot encoding adalah metode paling sederhana. Tunjukkan bahwa untuk kosakata 50.000 kata, setiap kata menjadi vektor 50.000 dimensi dengan 49.999 nol. Ini sangat boros dan tidak menangkap semantik.
+        </aside>
+      </section>
+
+      <!-- SLIDE 9: KETERBATASAN ONE-HOT ENCODING -->
+      <section>
+        <h2>Keterbatasan One-Hot Encoding</h2>
+        <p>Empat kelemahan fundamental yang mendorong pengembangan metode yang lebih baik.</p>
+        <div class="grid-2">
+          <div class="c-card">
+            <div class="c-card-header">
+              <h4>Dimensi Tinggi</h4>
+            </div>
+            <p>Vektor sangat panjang untuk kosakata besar (50K+ kata = 50K dimensi per token).</p>
+          </div>
+          <div class="c-card">
+            <div class="c-card-header">
+              <h4>Sparse & Boros</h4>
+            </div>
+            <p>Sebagian besar elemen bernilai nol — inefisien secara komputasi dan memori.</p>
+          </div>
+          <div class="c-card">
+            <div class="c-card-header">
+              <h4>Tidak Semantik</h4>
+            </div>
+            <p>"Raja" dan "ratu" memiliki vektor yang ortogonal — tidak ada hubungan makna.</p>
+          </div>
+          <div class="c-card">
+            <div class="c-card-header">
+              <h4>Out-of-Vocabulary</h4>
+            </div>
+            <p>Tidak bisa menangani kata baru yang tidak ada di kosakata pelatihan.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          Kelemahan utama: tidak ada representasi semantik. "Raja" dan "ratu" sama jauhnya dengan "raja" dan "mobil". Ini mendorong pengembangan word embeddings.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SECTION 3: WORD EMBEDDINGS
+           ============================================================ -->
+
+      <!-- SLIDE 10: SECTION DIVIDER -->
+      <section class="section-slide" style="background: radial-gradient(circle at 50% 50%, rgba(23,146,153,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-teal">Bagian 3</span>
+          <h1>Word Embeddings</h1>
+          <p class="subtitle">
+            Representasi kata sebagai vektor densitas berdimensi rendah yang menangkap makna semantik.
+          </p>
+        </div>
+        <aside class="notes">Masuk ke word embeddings — terobosan besar dalam representasi teks. Fokus pada konsep dense vector dan hubungan semantik.</aside>
+      </section>
+
+      <!-- SLIDE 11: KONSEP WORD EMBEDDINGS -->
+      <section>
+        <h2>Konsep Word Embeddings</h2>
+        <p>Setiap kata direpresentasikan sebagai vektor densitas berdimensi rendah (mis. 100-300 dimensi).</p>
+        
+        <div class="grid-2" style="margin-top: 16px;">
+          <div class="diagram-canvas" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px;">
+            <svg viewBox="0 0 360 220" style="width: 100%; height: auto;">
+              <!-- Axes -->
+              <line x1="50" y1="180" x2="340" y2="180" stroke="#9ca0b0" stroke-width="1"/>
+              <line x1="50" y1="180" x2="50" y2="20" stroke="#9ca0b0" stroke-width="1"/>
+              <text x="195" y="210" text-anchor="middle" fill="#7c7f93" font-size="11" font-family="sans-serif">Dimensi 1</text>
+              <text x="20" y="100" text-anchor="middle" fill="#7c7f93" font-size="11" font-family="sans-serif" transform="rotate(-90,20,100)">Dimensi 2</text>
+              
+              <!-- Points: similar words cluster -->
+              <circle cx="120" cy="60" r="8" fill="#1e66f5" opacity="0.8"/>
+              <text x="120" y="50" text-anchor="middle" fill="#1e66f5" font-size="11" font-family="sans-serif" font-weight="700">raja</text>
+              
+              <circle cx="145" cy="80" r="8" fill="#1e66f5" opacity="0.8"/>
+              <text x="145" y="70" text-anchor="middle" fill="#1e66f5" font-size="11" font-family="sans-serif" font-weight="700">ratu</text>
+              
+              <circle cx="130" cy="100" r="8" fill="#8839ef" opacity="0.8"/>
+              <text x="130" y="115" text-anchor="middle" fill="#8839ef" font-size="11" font-family="sans-serif" font-weight="700">pria</text>
+              
+              <circle cx="160" cy="95" r="8" fill="#8839ef" opacity="0.8"/>
+              <text x="160" y="110" text-anchor="middle" fill="#8839ef" font-size="11" font-family="sans-serif" font-weight="700">wanita</text>
+              
+              <!-- Points: distant words -->
+              <circle cx="280" cy="150" r="8" fill="#d20f39" opacity="0.8"/>
+              <text x="280" y="165" text-anchor="middle" fill="#d20f39" font-size="11" font-family="sans-serif" font-weight="700">mobil</text>
+              
+              <circle cx="260" cy="130" r="8" fill="#d20f39" opacity="0.8"/>
+              <text x="260" y="145" text-anchor="middle" fill="#d20f39" font-size="11" font-family="sans-serif" font-weight="700">kucing</text>
+              
+              <!-- Arrows for analogy -->
+              <line x1="120" y1="60" x2="130" y2="100" stroke="#1e66f5" stroke-width="1.5" stroke-dasharray="4,3"/>
+              <line x1="145" y1="80" x2="160" y2="95" stroke="#1e66f5" stroke-width="1.5" stroke-dasharray="4,3"/>
+            </svg>
+          </div>
+
+          <div class="narrative-pane">
+            <div class="narrative-step">
+              <strong>01. Vektor Densitas</strong>
+              Dimensi rendah (100-300) dibandingkan one-hot (50K+), jauh lebih efisien.
+            </div>
+            <div class="narrative-step">
+              <strong>02. Semantik Tertangkap</strong>
+              Kata dengan makna serupa memiliki vektor yang "dekat" dalam ruang vektor.
+            </div>
+            <div class="narrative-step">
+              <strong>03. Analogi Vektor</strong>
+              Operasi aritmetika vektor menangkap relasi semantik — lihat formula di bawah.
+            </div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Word embeddings adalah terobosan besar. Tunjukkan visualisasi ruang vektor: kata-kata yang bermakna mirip berdekatan. Analogi vektor "raja - pria + wanita = ratu" dibahas di slide berikutnya.
+        </aside>
+      </section>
+
+      <!-- SLIDE 12: ANALOGI VEKTOR WORD EMBEDDINGS -->
+      <section>
+        <h2>Analogi Vektor Word Embeddings</h2>
+        <p>Operasi aritmetika vektor menangkap relasi semantik antar kata secara terukur.</p>
+
+        <div class="formula-hero" style="margin-top: 20px;">
+          <div class="formula-label">Analogi Vektor Word Embeddings</div>
+          <div class="formula-math">
+            $$\vec{\text{raja}} - \vec{\text{pria}} + \vec{\text{wanita}} \approx \vec{\text{ratu}}$$
+          </div>
+        </div>
+        <div class="formula-breakdown">
+          <div class="formula-term-box">
+            <strong>$\vec{\text{raja}} - \vec{\text{pria}}$</strong>
+            Menghilangkan komponen semantik "kelaki-lakian kerajaan" dari vektor raja.
+          </div>
+          <div class="formula-term-box">
+            <strong>$+ \vec{\text{wanita}}$</strong>
+            Menambahkan komponen semantik "perempuan" ke hasil pengurangan.
+          </div>
+          <div class="formula-term-box">
+            <strong>$\approx \vec{\text{ratu}}$</strong>
+            Vektor hasil paling dekat dengan "ratu" — membuktikan embeddings menangkap relasi gender &amp; peran.
+          </div>
+        </div>
+
+        <aside class="notes">
+          Contoh analogi vektor "raja - pria + wanita = ratu" menunjukkan bahwa embeddings menangkap hubungan semantik.
+        </aside>
+      </section>
+
+      <!-- SLIDE 13: WORD2VEC & GLOVE -->
+      <section>
+        <h2>Model Word Embeddings: Word2Vec & GloVe</h2>
+        <p>Dua pendekatan utama untuk mempelajari word embeddings dari korpus teks besar.</p>
+        <table class="c-table">
+          <thead>
+            <tr>
+              <th>Aspek</th>
+              <th>Word2Vec (Google)</th>
+              <th>GloVe (Stanford)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Pendekatan</td>
+              <td>Prediktif — memprediksi kata konteks</td>
+              <td>Kount-based — memanfaatkan statistik frekuensi global</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Arsitektur</td>
+              <td>Skip-gram atau CBOW (neural network)</td>
+              <td>Faktorisasi matriks ko-kejadian</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Kelebihan</td>
+              <td>Cepat dilatih, menangkap analogi</td>
+              <td>Menangkap statistik global, stabil</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Kekurangan</td>
+              <td>Hanya konteks lokal (window)</td>
+              <td>Memori besar untuk matriks ko-kejadian</td>
+            </tr>
+          </tbody>
+        </table>
+        <aside class="notes">
+          Jelaskan perbedaan pendekatan: Word2Vec menggunakan neural network untuk memprediksi konteks, GloVe menggunakan statistik frekuensi global. Keduanya menghasilkan embeddings berkualitas tinggi.
+        </aside>
+      </section>
+
+      <!-- SLIDE 14: KELEBIHAN & LIMITASI WORD EMBEDDINGS -->
+      <section>
+        <h2>Kelebihan & Limitasi Word Embeddings</h2>
+        <div class="grid-2">
+          <div class="c-card" style="border-top: 3px solid var(--ctp-green);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-green);">Kelebihan</h4>
+            </div>
+            <ul style="font-size: 0.82em; margin: 0; padding-left: 16px;">
+              <li>Menangkap makna semantik antar kata</li>
+              <li>Dimensi rendah (100-300 vs 50K+)</li>
+              <li><em>Transfer learning</em> — bisa gunakan <em>pre-trained</em></li>
+              <li>Menangkap hubungan analogi (raja-ratu)</li>
+            </ul>
+          </div>
+          <div class="c-card" style="border-top: 3px solid var(--ctp-peach);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach);">Limitasi</h4>
+            </div>
+            <ul style="font-size: 0.82em; margin: 0; padding-left: 16px;">
+              <li>Satu vektor per kata — tidak kontekstual</li>
+              <li>Tidak bisa bedakan polisemi (&ldquo;apel&rdquo; buah vs upacara)</li>
+              <li>Tidak menangkap struktur kalimat</li>
+              <li>Tidak ada representasi sub-kata</li>
+            </ul>
+          </div>
+        </div>
+        <aside class="notes">
+          Kelebihan utama: semantik dan efisiensi. Limitasi kritis: satu kata = satu vektor, terlepas dari konteks. Ini yang akan diatasi oleh contextual embeddings.
+        </aside>
+      </section>
+
+      <!-- SLIDE 15: BIG IDEA — POLISEMI -->
+      <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Big Idea: Polisemi">
+        <div class="big-idea-canvas">
+          <h2 class="big-idea-question">
+            Bagaimana jika satu kata memiliki banyak makna tergantung konteksnya?
+          </h2>
+          <p class="big-idea-takeaway">
+            <strong>Masalah Polisemi:</strong> Kata &ldquo;apel&rdquo; dalam kalimat tentang buah berbeda maknanya dengan &ldquo;apel&rdquo; dalam kalimat tentang upacara &mdash; tetapi Word2Vec memberikan vektor yang <em>sama persis</em>. Keterbatasan fundamental ini mendorong lahirnya <em>contextual embeddings</em>.
+          </p>
+        </div>
+        <aside class="notes">
+          Ini adalah titik balik kritis dalam sesi. Ajak mahasiswa berpikir: mengapa satu vektor per kata tidak cukup? Contoh: "apel" (buah) vs "apel" (upacara pagi). Transisi ke contextual embeddings.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SECTION 4: CONTEXTUAL EMBEDDINGS & MODEL SEKUENSIAL
+           ============================================================ -->
+
+      <!-- SLIDE 16: SECTION DIVIDER -->
+      <section class="section-slide" style="background: radial-gradient(circle at 80% 30%, rgba(210,15,57,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-peach">Bagian 4</span>
+          <h1>Contextual Embeddings &amp; Model Sekuensial</h1>
+          <p class="subtitle">
+            Bagaimana merepresentasikan kata yang maknanya berubah berdasarkan konteks kalimat.
+          </p>
+        </div>
+        <aside class="notes">Masuk ke inti sesi: contextual embeddings. Ini adalah terobosan yang memungkinkan model membedakan makna kata berdasarkan konteks.</aside>
+      </section>
+
+      <!-- SLIDE 17: KEBUTUHAN CONTEXTUAL EMBEDDINGS -->
+      <section>
+        <h2>Kebutuhan Contextual Embeddings</h2>
+        <p>Representasi vektor kata harus <strong>berubah</strong> berdasarkan konteks kalimatnya.</p>
+        
+        <div class="grid-2" style="margin-top: 20px;">
+          <div class="c-card" style="border-left: 3px solid var(--ctp-blue);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue);">Konteks A: Buah</h4>
+            </div>
+            <p style="font-size: 0.82em; font-style: italic; color: var(--ctp-subtext0);">&ldquo;Ibu membeli <strong>apel</strong> merah di pasar.&rdquo;</p>
+            <p style="font-size: 0.82em;">Vektor &ldquo;apel&rdquo; &rarr; terkait <strong>makanan, buah, pasar</strong></p>
+          </div>
+          <div class="c-card" style="border-left: 3px solid var(--ctp-mauve);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve);">Konteks B: Upacara</h4>
+            </div>
+            <p style="font-size: 0.82em; font-style: italic; color: var(--ctp-subtext0);">&ldquo;Para siswa mengikuti <strong>apel</strong> pagi di lapangan.&rdquo;</p>
+            <p style="font-size: 0.82em;">Vektor &ldquo;apel&rdquo; &rarr; terkait <strong>upacara, sekolah, kegiatan</strong></p>
+          </div>
+        </div>
+
+        <div class="c-callout" style="margin-top: 20px;">
+          <p style="font-size: 0.82em; margin: 0;">
+            <strong>Kunci:</strong> Model harus memproses <em>seluruh kalimat</em> untuk menghasilkan vektor yang kontekstual — bukan hanya kata individual.
+          </p>
+        </div>
+
+        <aside class="notes">
+          Tunjukkan perbedaan vektor &ldquo;apel&rdquo; di dua kalimat. Word2Vec memberikan vektor yang sama, tetapi contextual embeddings menghasilkan vektor berbeda. Ini fondasi BERT dan model modern.
+        </aside>
+      </section>
+
+      <!-- SLIDE 18: RNN — KONSEP DASAR -->
+      <section>
+        <h2>Recurrent Neural Networks (RNN)</h2>
+        <p>Arsitektur pertama yang dirancang khusus untuk memproses data sekuensial.</p>
+        
+        <div class="grid-2-1" style="align-items: center;">
+          <div class="diagram-canvas" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px;">
+            <svg viewBox="0 0 400 200" style="width: 100%; height: auto;">
+              <!-- Input nodes -->
+              <rect x="10" y="150" width="60" height="36" rx="6" fill="#e6e9ef" stroke="#1e66f5" stroke-width="2"/>
+              <text x="40" y="173" text-anchor="middle" fill="#1e66f5" font-size="11" font-family="sans-serif" font-weight="700">x<tspan dy="-5" font-size="8">1</tspan></text>
+              
+              <rect x="120" y="150" width="60" height="36" rx="6" fill="#e6e9ef" stroke="#1e66f5" stroke-width="2"/>
+              <text x="150" y="173" text-anchor="middle" fill="#1e66f5" font-size="11" font-family="sans-serif" font-weight="700">x<tspan dy="-5" font-size="8">2</tspan></text>
+              
+              <rect x="230" y="150" width="60" height="36" rx="6" fill="#e6e9ef" stroke="#1e66f5" stroke-width="2"/>
+              <text x="260" y="173" text-anchor="middle" fill="#1e66f5" font-size="11" font-family="sans-serif" font-weight="700">x<tspan dy="-5" font-size="8">3</tspan></text>
+              
+              <!-- Hidden state nodes -->
+              <circle cx="40" cy="80" r="28" fill="#e6e9ef" stroke="#8839ef" stroke-width="2"/>
+              <text x="40" y="84" text-anchor="middle" fill="#8839ef" font-size="10" font-family="sans-serif" font-weight="700">h<tspan dy="-5" font-size="8">1</tspan></text>
+              
+              <circle cx="150" cy="80" r="28" fill="#e6e9ef" stroke="#8839ef" stroke-width="2"/>
+              <text x="150" y="84" text-anchor="middle" fill="#8839ef" font-size="10" font-family="sans-serif" font-weight="700">h<tspan dy="-5" font-size="8">2</tspan></text>
+              
+              <circle cx="260" cy="80" r="28" fill="#e6e9ef" stroke="#8839ef" stroke-width="2"/>
+              <text x="260" y="84" text-anchor="middle" fill="#8839ef" font-size="10" font-family="sans-serif" font-weight="700">h<tspan dy="-5" font-size="8">3</tspan></text>
+              
+              <!-- Arrows: input to hidden -->
+              <line x1="40" y1="150" x2="40" y2="108" stroke="#9ca0b0" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+              <line x1="150" y1="150" x2="150" y2="108" stroke="#9ca0b0" stroke-width="1.5"/>
+              <line x1="260" y1="150" x2="260" y2="108" stroke="#9ca0b0" stroke-width="1.5"/>
+              
+              <!-- Arrows: hidden to hidden (recurrent) -->
+              <line x1="68" y1="80" x2="122" y2="80" stroke="#d20f39" stroke-width="2" marker-end="url(#arrowhead)"/>
+              <line x1="178" y1="80" x2="232" y2="80" stroke="#d20f39" stroke-width="2"/>
+              
+              <!-- Labels -->
+              <text x="95" y="72" text-anchor="middle" fill="#d20f39" font-size="9" font-family="sans-serif" font-weight="600">memori</text>
+              <text x="320" y="84" text-anchor="start" fill="#7c7f93" font-size="10" font-family="sans-serif">Hidden State</text>
+              <text x="320" y="168" text-anchor="start" fill="#7c7f93" font-size="10" font-family="sans-serif">Input Token</text>
+              
+              <defs>
+                <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                  <polygon points="0 0, 8 3, 0 6" fill="#9ca0b0"/>
+                </marker>
+              </defs>
+            </svg>
+          </div>
+
+          <div class="narrative-pane">
+            <div class="narrative-step">
+              <strong>Hidden State</strong>
+              Memori internal membawa informasi dari langkah waktu sebelumnya.
+            </div>
+            <div class="narrative-step">
+              <strong>Rekurensi</strong>
+              Output pada waktu T bergantung pada input T dan hidden state T&minus;1.
+            </div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          RNN memproses teks secara sekuensial: kata per kata. Hidden state berfungsi sebagai "memori" yang membawa konteks dari kata sebelumnya. Kelemahan: tidak bisa paralel dan masalah gradient.
+        </aside>
+      </section>
+
+      <!-- SLIDE 19: KETERBATASAN RNN -->
+      <section>
+        <h2>Keterbatasan RNN Sederhana</h2>
+        <p>Dua masalah fundamental yang menghambat RNN dalam memproses teks panjang.</p>
+        <div class="grid-2">
+          <div class="c-card" style="border-top: 3px solid var(--ctp-peach);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach);">Vanishing / Exploding Gradients</h4>
+            </div>
+            <p style="font-size: 0.82em;">Sulit mempelajari ketergantungan jarak jauh dalam sekuens panjang. Gradien mengecil (vanishing) atau membesar (exploding) saat propagasi mundur melalui banyak langkah waktu.</p>
+          </div>
+          <div class="c-card" style="border-top: 3px solid var(--ctp-peach);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach);">Short-Term Memory</h4>
+            </div>
+            <p style="font-size: 0.82em;">Hidden state cenderung "melupakan" informasi penting dari awal sekuens. Informasi lama ter-overwrite oleh informasi baru.</p>
+          </div>
+        </div>
+        <div class="c-callout" style="margin-top: 20px;">
+          <p style="font-size: 0.82em; margin: 0;">
+            <strong>Implikasi:</strong> RNN kesulitan memahami hubungan antara kata di awal dan akhir paragraf panjang — tepatnya di mana konteks paling dibutuhkan.
+          </p>
+        </div>
+        <aside class="notes">
+          Jelaskan mengapa vanishing gradient menjadi masalah kritis: saat teks panjang, informasi dari kata pertama hilang sebelum mencapai kata terakhir. Ini mendorong pengembangan LSTM dan GRU.
+        </aside>
+      </section>
+
+      <!-- SLIDE 20: LSTM & GRU -->
+      <section>
+        <h2>LSTM & GRU: Solusi untuk RNN</h2>
+        <p>Varian RNN yang mengatasi masalah gradient dan short-term memory melalui mekanisme <em>gates</em>.</p>
+        <table class="c-table">
+          <thead>
+            <tr>
+              <th>Aspek</th>
+              <th>LSTM</th>
+              <th>GRU</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Jumlah Gerbang</td>
+              <td>3: Forget, Input, Output</td>
+              <td>2: Update, Reset</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Cell State</td>
+              <td>Ya — saluran memori terpisah</td>
+              <td>Tidak — digabung dengan hidden state</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Parameter</td>
+              <td>Lebih banyak</td>
+              <td>Lebih sedikit (~25% lebih ringan)</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Kecepatan Training</td>
+              <td>Lebih lambat</td>
+              <td>Lebih cepat</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Performa</td>
+              <td>Sangat baik untuk sekuens panjang</td>
+              <td>Seringkali sebanding dengan LSTM</td>
+            </tr>
+          </tbody>
+        </table>
+        <aside class="notes">
+          LSTM menggunakan cell state terpisah sebagai "conveyor belt" untuk membawa informasi jarak jauh. GRU adalah versi lebih sederhana dengan performa seringkali sebanding. Pilihan tergantung kompleksitas tugas.
+        </aside>
+      </section>
+
+      <!-- SLIDE 21: BIG IDEA — SEKUENSIAL VS PARALEL -->
+      <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Big Idea: Sekuensial vs Paralel">
+        <div class="big-idea-canvas">
+          <h2 class="big-idea-question">
+            Bisakah kita memproses seluruh kalimat sekaligus, tanpa harus kata per kata?
+          </h2>
+          <p class="big-idea-takeaway">
+            <strong>Limitasi Fundamental:</strong> RNN, LSTM, dan GRU memproses teks secara sekuensial — kata per kata. Ini membuat training lambat dan sulit menangkap hubungan jarak jauh. Transformer (2017) mengubah paradigma ini dengan <em>self-attention</em>.
+          </p>
+        </div>
+        <aside class="notes">
+          Ini adalah transisi kritis ke Transformer. Ajak mahasiswa berpikir: mengapa harus sekuensial? Bagaimana jika semua kata bisa "saling melihat" sekaligus?
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           SECTION 5: TRANSFORMER ENCODER
+           ============================================================ -->
+
+      <!-- SLIDE 22: SECTION DIVIDER -->
+      <section class="section-slide" style="background: radial-gradient(circle at 20% 70%, rgba(64,160,43,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-green">Bagian 5</span>
+          <h1>Transformer Encoder</h1>
+          <p class="subtitle">
+            Arsitektur dominan untuk representasi teks modern — dari BERT hingga GPT.
+          </p>
+        </div>
+        <aside class="notes">Masuk ke Transformer — arsitektur yang merevolusi NLP. Fokus pada self-attention dan mengapa ini lebih baik dari RNN.</aside>
+      </section>
+
+      <!-- SLIDE 23: ARSITEKTUR TRANSFORMER ENCODER -->
+      <section>
+        <h2>Arsitektur Transformer Encoder</h2>
+        <p>Diperkenalkan tahun 2017 ("Attention Is All You Need") — memproses seluruh sekuens secara paralel.</p>
+        
+        <div class="grid-2-1" style="align-items: center;">
+          <div class="diagram-canvas" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px;">
+            <svg viewBox="0 0 380 220" style="width: 100%; height: auto;">
+              <!-- Input -->
+              <rect x="120" y="180" width="140" height="30" rx="6" fill="#e6e9ef" stroke="#1e66f5" stroke-width="2"/>
+              <text x="190" y="200" text-anchor="middle" fill="#1e66f5" font-size="11" font-family="sans-serif" font-weight="700">Input Embeddings</text>
+              
+              <!-- Positional Encoding -->
+              <rect x="120" y="140" width="140" height="28" rx="6" fill="#e6e9ef" stroke="#8839ef" stroke-width="1.5"/>
+              <text x="190" y="158" text-anchor="middle" fill="#8839ef" font-size="10" font-family="sans-serif" font-weight="600">+ Positional Encoding</text>
+              
+              <!-- Self-Attention -->
+              <rect x="100" y="95" width="180" height="32" rx="6" fill="#e6e9ef" stroke="#d20f39" stroke-width="2"/>
+              <text x="190" y="115" text-anchor="middle" fill="#d20f39" font-size="11" font-family="sans-serif" font-weight="700">Multi-Head Self-Attention</text>
+              
+              <!-- FFN -->
+              <rect x="100" y="52" width="180" height="32" rx="6" fill="#e6e9ef" stroke="#179299" stroke-width="2"/>
+              <text x="190" y="72" text-anchor="middle" fill="#179299" font-size="11" font-family="sans-serif" font-weight="700">Feed-Forward Network</text>
+              
+              <!-- Output -->
+              <rect x="120" y="10" width="140" height="30" rx="6" fill="#e6e9ef" stroke="#40a02b" stroke-width="2"/>
+              <text x="190" y="30" text-anchor="middle" fill="#40a02b" font-size="11" font-family="sans-serif" font-weight="700">Contextual Embeddings</text>
+              
+              <!-- Arrows -->
+              <line x1="190" y1="180" x2="190" y2="168" stroke="#9ca0b0" stroke-width="1.5"/>
+              <line x1="190" y1="140" x2="190" y2="127" stroke="#9ca0b0" stroke-width="1.5"/>
+              <line x1="190" y1="95" x2="190" y2="84" stroke="#9ca0b0" stroke-width="1.5"/>
+              <line x1="190" y1="52" x2="190" y2="40" stroke="#9ca0b0" stroke-width="1.5"/>
+              
+              <!-- Stacked layers indicator -->
+              <rect x="295" y="52" width="8" height="75" rx="3" fill="#ccc" opacity="0.5"/>
+              <text x="320" y="95" text-anchor="start" fill="#7c7f93" font-size="9" font-family="sans-serif">N lapisan</text>
+            </svg>
+          </div>
+
+          <div class="narrative-pane">
+            <div class="narrative-step">
+              <strong>Self-Attention</strong>
+              Setiap kata "melihat" semua kata lain dalam sekuens sekaligus — menangkap hubungan jarak jauh.
+            </div>
+            <div class="narrative-step">
+              <strong>Paralelisme</strong>
+              Tidak sekuensial seperti RNN — semua kata diproses sekaligus, training jauh lebih cepat.
+            </div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Transformer memproses seluruh kalimat sekaligus. Self-attention memungkinkan setiap kata "bertanya" ke semua kata lain: "kata mana yang paling relevan denganku?" Ini mengatasi masalah long-range dependency.
+        </aside>
+      </section>
+
+      <!-- SLIDE 24: SELF-ATTENTION INTUISI -->
+      <section>
+        <h2>Self-Attention: Intuisi</h2>
+        <p>Setiap kata menghitung "bobot perhatian" terhadap semua kata lain dalam sekuens.</p>
+        
+        <div class="c-callout c-callout-info" style="margin: 20px 0;">
+          <span class="material-symbols-outlined icon-blue">help</span>
+          <div style="font-size: 0.82em; line-height: 1.8;">
+            <strong style="color: var(--ctp-blue);">Contoh Kalimat:</strong><br>
+            <span style="font-family: var(--font-mono); font-size: 0.95em;">"Kucing itu duduk di atas <strong>karpet</strong> karena <strong>ia</strong> lelah."</span><br>
+            <span style="color: var(--ctp-subtext0); font-size: 0.9em;">Kata "ia" memberikan bobot perhatian tinggi ke "Kucing" (bukan "karpet") &rarr; model memahami "ia" = "Kucing".</span>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="c-card">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue);">Query</h4>
+            </div>
+            <p style="font-size: 0.82em;">"Apa yang sedang saya cari?" — pertanyaan dari kata saat ini.</p>
+          </div>
+          <div class="c-card">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve);">Key</h4>
+            </div>
+            <p style="font-size: 0.82em;">"Apa yang saya tawarkan?" — label dari setiap kata lain.</p>
+          </div>
+          <div class="c-card">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal);">Value</h4>
+            </div>
+            <p style="font-size: 0.82em;">"Informasi apa yang saya berikan?" — konten aktual yang diambil.</p>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Jelaskan mekanisme Q-K-V secara intuitif: setiap kata membuat "pertanyaan" (Query), semua kata lain menawarkan "kunci" (Key), dan kata yang kuncinya cocok memberikan "nilai" (Value). Ini memungkinkan model menangkap hubungan semantik jarak jauh.
+        </aside>
+      </section>
+
+      <!-- SLIDE 25: BERT & SUBWORD TOKENIZATION -->
+      <section>
+        <h2>Model Pre-trained & Subword Tokenization</h2>
+        <p>Transformer memungkinkan <em>pre-training</em> pada korpus besar, menghasilkan <em>contextual embeddings</em> yang kuat.</p>
+        
+        <div class="grid-2">
+          <div class="c-card" style="border-top: 3px solid var(--ctp-blue);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue);">Model Pre-trained</h4>
+            </div>
+            <ul style="font-size: 0.82em; margin: 0; padding-left: 16px;">
+              <li><strong>BERT</strong> (Google) — representasi dua arah, <em>masked language model</em></li>
+              <li><strong>RoBERTa</strong> (Facebook) — optimasi dari BERT, lebih robust</li>
+              <li><strong>IndoBERT</strong> — BERT yang di-fine-tune untuk bahasa Indonesia</li>
+            </ul>
+          </div>
+          <div class="c-card" style="border-top: 3px solid var(--ctp-mauve);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve);">Subword Tokenization</h4>
+            </div>
+            <ul style="font-size: 0.82em; margin: 0; padding-left: 16px;">
+              <li><strong>BPE</strong> — menggabungkan pasangan karakter yang sering muncul</li>
+              <li><strong>WordPiece</strong> — digunakan oleh BERT</li>
+              <li><strong>SentencePiece</strong> — mendukung semua bahasa</li>
+              <li>Mengatasi masalah OOV dan kosakata besar</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout" style="margin-top: 16px;">
+          <p style="font-size: 0.82em; margin: 0;">
+            <strong>Subword Tokenization:</strong> Kata "berlari-lari" &rarr; <span style="font-family: var(--font-mono);">["ber", "lari", "-", "lari"]</span> — menangkap akar kata dan imbuhan tanpa OOV.
+          </p>
+        </div>
+
+        <aside class="notes">
+          BERT dan RoBERTa adalah model pre-trained yang bisa di-fine-tune untuk berbagai tugas NLP. Subword tokenization menyelesaikan masalah OOV: kata baru dipecah menjadi subword yang sudah dikenal.
+        </aside>
+      </section>
+
+      <!-- ============================================================
+           INVARIANT ANCHOR: CLOSING
+           ============================================================ -->
+
+      <!-- SLIDE 26: RANGKUMAN -->
+      <section>
+        <h2>Rangkuman & Poin Kunci</h2>
+        <p>Benang merah evolusi representasi teks dari one-hot encoding hingga Transformer.</p>
+        
+        <div class="grid-2" style="margin-top: 16px;">
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue);">Evolusi Representasi</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.7;">
+              <li><strong>One-Hot</strong> &rarr; sparse, tidak semantik</li>
+              <li><strong>Word Embeddings</strong> &rarr; dense, semantik, tetapi statis</li>
+              <li><strong>Contextual Embeddings</strong> &rarr; dinamis, kontekstual</li>
+            </ul>
+          </div>
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve);">Evolusi Arsitektur</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.7;">
+              <li><strong>RNN</strong> &rarr; sekuensial, masalah gradient</li>
+              <li><strong>LSTM/GRU</strong> &rarr; gates, atasi gradient</li>
+              <li><strong>Transformer</strong> &rarr; paralel, self-attention</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout" style="margin-top: 16px;">
+          <p style="font-size: 0.82em; margin: 0;">
+            <strong>Kunci untuk Multimodal:</strong> Representasi teks yang baik adalah fondasi untuk semua sistem multimodal — dari <em>image captioning</em> hingga <em>visual question answering</em>.
+          </p>
+        </div>
+
+        <aside class="notes">
+          Rangkum evolusi dari one-hot ke Transformer. Tekankan bahwa pemahaman representasi teks ini akan digunakan di semua modul multimodal selanjutnya.
+        </aside>
+      </section>
+
+      <!-- SLIDE 27: DISKUSI & REFLEKSI -->
+      <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Diskusi Kelas">
+        <h2 style="text-align: center; margin-bottom: 24px;">Diskusi Kelas</h2>
+        <div style="display: flex; flex-direction: column; gap: 14px; max-width: 860px; margin: 0 auto;">
+          <div class="c-callout c-callout-info">
+            <span class="material-symbols-outlined icon-blue">help</span>
+            <div>
+              <p style="margin: 0; font-size: 0.85em; line-height: 1.6;">
+                <strong style="color: var(--ctp-blue);">Pertanyaan 1:</strong> Mengapa <em>contextual embeddings</em> (misal BERT) dianggap sebagai terobosan besar dibandingkan <em>word embeddings</em> tradisional (misal Word2Vec)?
+              </p>
+            </div>
+          </div>
+          <div class="c-callout c-callout-warning">
+            <span class="material-symbols-outlined icon-mauve">help</span>
+            <div>
+              <p style="margin: 0; font-size: 0.85em; line-height: 1.6;">
+                <strong style="color: var(--ctp-mauve);">Pertanyaan 2:</strong> Bagaimana Anda memilih antara LSTM/GRU atau Transformer Encoder untuk tugas pemrosesan teks tertentu? Pertimbangkan <em>trade-off</em>-nya.
+              </p>
+            </div>
+          </div>
+          <div class="c-callout c-callout-success">
+            <span class="material-symbols-outlined icon-teal">help</span>
+            <div>
+              <p style="margin: 0; font-size: 0.85em; line-height: 1.6;">
+                <strong style="color: var(--ctp-teal);">Pertanyaan 3:</strong> Apa saja tantangan dalam membangun kosakata dan <em>tokenizer</em> untuk bahasa yang kaya morfologi seperti bahasa Indonesia?
+              </p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Tiga pertanyaan diskusi untuk merangsang pemikiran kritis. Beri waktu 10-15 menit untuk diskusi kelompok, lalu presentasi.
+        </aside>
+      </section>
+
+      <!-- SLIDE 28: REFERENSI -->
+      <section>
+        <h2>Referensi Utama & Bacaan Lanjutan</h2>
+        <p style="margin-bottom: 20px;">Rekomendasi literatur akademik wajib dan bacaan lanjutan:</p>
+
+        <ol style="list-style: none; padding: 0; margin: 0; counter-reset: ref-counter;">
+          <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;">
+            <span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[1]</span>
+            <div>
+              <p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Goodfellow, I., Bengio, Y., & Courville, A. (2016).</p>
+              <p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Deep Learning</em>. MIT Press. — Bab 10: Sequence Modeling, Bab 12: Applications.</p>
+            </div>
+          </li>
+          <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;">
+            <span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[2]</span>
+            <div>
+              <p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Liang, P. P., Zadeh, A., & Morency, L. P. (2023).</p>
+              <p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Tutorial on Multimodal Machine Learning</em>. ICML 2023. — Bagian terkait representasi teks.</p>
+            </div>
+          </li>
+          <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;">
+            <span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[3]</span>
+            <div>
+              <p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Mikolov, T., Chen, K., Corrado, G., & Dean, J. (2013).</p>
+              <p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Efficient Estimation of Word Representations in Vector Space</em>. — Word2Vec paper.</p>
+            </div>
+          </li>
+          <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;">
+            <span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[4]</span>
+            <div>
+              <p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Vaswani, A., et al. (2017).</p>
+              <p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Attention Is All You Need</em>. — Transformer paper.</p>
+            </div>
+          </li>
+          <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;">
+            <span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[5]</span>
+            <div>
+              <p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Devlin, J., Chang, M.-W., Lee, K., & Toutanova, K. (2019).</p>
+              <p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</em>. — BERT paper.</p>
+            </div>
+          </li>
+          <li style="counter-increment: ref-counter; padding: 14px 0; display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;">
+            <span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[6]</span>
+            <div>
+              <p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Jurafsky, D., & Martin, J. H. (latest edition).</p>
+              <p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Speech and Language Processing</em>. — Bab Word Embeddings, RNN, Transformers.</p>
+            </div>
+          </li>
+        </ol>
+
+        <aside class="notes">
+          Enam referensi utama. Dorong mahasiswa untuk membaca paper asli Transformer dan BERT untuk pemahaman lebih dalam.
+        </aside>
+      </section>
+
+      <!-- SLIDE 29: PENUTUP -->
+      <section>
+        <div style="margin: auto 0; text-align: center;">
+          
+          <h2 style="font-size: 1.8em; font-weight: 800; color: var(--ctp-text); margin-bottom: 16px;">
+            Terima Kasih
+          </h2>
+          
+          <p style="font-size: 1.05em; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.6;">
+            Pertemuan selanjutnya:<br>
+            <strong style="color: var(--ctp-blue);">Representasi Modalitas II: Gambar</strong>
+          </p>
+
+          <div style="background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-radius: 12px; padding: 18px 24px; display: inline-block; max-width: 480px;">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">
+              Pertanyaan &amp; Diskusi
+            </div>
+            <div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;">
+              <span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span>
+            </div>
+          </div>
+
+        </div>
+
+        <aside class="notes">
+          Tutup sesi. Ingatkan mahasiswa untuk membaca referensi dan menyiapkan pertanyaan untuk pertemuan selanjutnya tentang representasi gambar.
+        </aside>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Persistent Edge-to-Edge Deck Footer -->
+  <footer class="deck-footer">
+    <div class="deck-footer-left">
+      <span class="deck-footer-code">IF25-40304</span>
+      <span class="deck-footer-sep">&bull;</span>
+      <span class="deck-footer-dept">Teknik Informatika ITERA</span>
+    </div>
+
+    <div class="deck-footer-center">
+      <button type="button" id="deck-footer-topic" class="deck-footer-topic" onclick="toggleTopicPopover(event)" title="Daftar Isi & Navigasi Cepat Slide (Klik)">
+        <span id="deck-footer-topic-text" class="deck-footer-topic-text">Pertemuan 02 &bull; Representasi Modalitas I: Teks</span>
+        <span class="material-symbols-outlined deck-footer-topic-icon">expand_less</span>
+      </button>
+    </div>
+
+    <div class="deck-footer-right">
+      <button type="button" class="deck-footer-btn" onclick="Reveal.prev()" title="Slide Sebelumnya (← / P)" aria-label="Slide Sebelumnya">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <button type="button" class="deck-counter-btn" onclick="Reveal.toggleOverview()" title="Klik untuk Matriks Seluruh Slide (Esc/O)">
+        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">29</span>
+      </button>
+      <button type="button" class="deck-footer-btn" onclick="Reveal.next()" title="Slide Berikutnya (→ / Space / N)" aria-label="Slide Berikutnya">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </footer>
+
+  <!-- Floating Slide Topic Navigation Popover (Compact) -->
+  <div class="deck-topic-popover" id="deck-topic-popover">
+    <div class="deck-popover-search-wrap">
+      <input type="text" id="deck-topic-search" class="deck-popover-search" placeholder="Cari slide..." oninput="filterTopicList(this.value)">
+    </div>
+    <div class="deck-topic-list" id="deck-topic-list">
+      <!-- Generated dynamically by buildTopicIndex() -->
+    </div>
+  </div>
+
+  <!-- Reveal.js Scripts and Plugins from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+
+  <script>
+    let currentAspectMode = localStorage.getItem('reveal_aspect_mode') || 'auto';
+
+    function calculateResponsiveDimensions(mode) {
+      const winW = window.innerWidth;
+      const winH = window.innerHeight - 86.5;
+      const ratio = winW / winH;
+
+      if (mode === '16-9') return { width: 1280, height: 720, label: '16:9' };
+      if (mode === '16-10') return { width: 1280, height: 800, label: '16:10' };
+      if (mode === '4-3') return { width: 1024, height: 768, label: '4:3' };
+      if (mode === 'mobile') return { width: 750, height: 1000, label: 'Mobile' };
+
+      // Auto mode
+      if (winW <= 768 || ratio < 1.15) {
+        return { width: 750, height: Math.max(900, Math.round(750 / Math.max(0.5, ratio))), label: 'Auto' };
+      } else if (ratio >= 1.65) {
+        return { width: 1280, height: 720, label: 'Auto' };
+      } else if (ratio >= 1.45) {
+        return { width: 1280, height: 800, label: 'Auto' };
+      } else {
+        return { width: 1024, height: 768, label: 'Auto' };
+      }
+    }
+
+    const initialDim = calculateResponsiveDimensions(currentAspectMode);
+
+    Reveal.initialize({
+      width: initialDim.width,
+      height: initialDim.height,
+      margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2.0,
+      hash: true,
+      slideNumber: false,
+      controls: false,
+      progress: false,
+      center: true,
+      touch: true,
+      transition: 'slide',
+      backgroundTransition: 'none',
+      plugins: [ RevealNotes, RevealHighlight, RevealMath.KaTeX ]
+    });
+
+    function updateDeckState(event) {
+      const indices = event ? { h: event.indexh, v: event.indexv } : Reveal.getIndices();
+      const totalSlides = Reveal.getTotalSlides();
+      const currentIdx = indices ? indices.h : 0;
+
+      const progressBar = document.getElementById('deck-progress-bar');
+      if (progressBar) {
+        const progressPercent = totalSlides > 1 ? (currentIdx / (totalSlides - 1)) * 100 : 0;
+        progressBar.style.width = progressPercent + '%';
+      }
+
+      const currentEl = document.getElementById('deck-slide-current');
+      const totalEl = document.getElementById('deck-slide-total');
+      if (currentEl) currentEl.textContent = String(currentIdx + 1).padStart(2, '0');
+      if (totalEl) totalEl.textContent = String(totalSlides).padStart(2, '0');
+
+      const topicEl = document.getElementById('deck-footer-topic-text') || document.getElementById('deck-footer-topic');
+      if (topicEl) {
+        if (currentIdx === 0) {
+          topicEl.textContent = 'Pertemuan 02 \u2022 Representasi Modalitas I: Teks';
+        } else {
+          const currentSlide = Reveal.getCurrentSlide();
+          if (currentSlide) {
+            const topicAttr = currentSlide.getAttribute('data-topic');
+            if (topicAttr) {
+              topicEl.textContent = topicAttr;
+            } else {
+              const heading = currentSlide.querySelector('h2') || currentSlide.querySelector('h1');
+              if (heading) {
+                topicEl.textContent = heading.textContent.trim();
+              } else {
+                topicEl.textContent = 'Pertemuan 02 \u2022 Representasi Modalitas I: Teks';
+              }
+            }
+          }
+        }
+      }
+
+      updateActiveTopicItem(currentIdx);
+    }
+
+    Reveal.on('ready', event => {
+      document.body.classList.add('reveal-ready');
+      updateDeckState(event);
+      buildTopicIndex();
+    });
+    Reveal.on('slidechanged', updateDeckState);
+
+    // =========================================================
+    // Floating Slide Topic Navigation Popover (Daftar Isi)
+    // =========================================================
+    function buildTopicIndex() {
+      const listEl = document.getElementById('deck-topic-list');
+      if (!listEl) return;
+
+      const slides = document.querySelectorAll('.reveal .slides > section');
+      let html = '';
+
+      slides.forEach((slide, idx) => {
+        const topicAttr = slide.getAttribute('data-topic');
+        const h1 = slide.querySelector('h1');
+        const h2 = slide.querySelector('h2');
+        const partEl = slide.querySelector('.section-part-label');
+        const isSectionSlide = slide.classList.contains('section-slide') || !!slide.querySelector('.section-slide-content');
+        const partText = partEl ? partEl.textContent.trim().replace(/\s+/g, ' ') : '';
+
+        const h1Text = h1 ? h1.textContent.trim().replace(/\s+/g, ' ') : '';
+        const h2Text = h2 ? h2.textContent.trim().replace(/\s+/g, ' ') : '';
+        let title = '';
+
+        if (idx === 0) {
+          title = h1Text || 'Representasi Modalitas I: Teks';
+          html += '<div class="deck-topic-section">Pendahuluan & Identitas</div>';
+        } else if (isSectionSlide || partText.startsWith('Bagian')) {
+          const secTitle = h1Text || h2Text || 'Bagian ' + idx;
+          const sectionLabel = partText ? partText + ': ' + secTitle : secTitle;
+          title = secTitle;
+          html += '<div class="deck-topic-section">' + sectionLabel + '</div>';
+        } else if (topicAttr) {
+          title = topicAttr;
+        } else {
+          title = h2Text || h1Text || 'Slide ' + (idx + 1);
+        }
+
+        const numStr = String(idx + 1).padStart(2, '0');
+        html += '<div class="deck-topic-item" data-slide-index="' + idx + '" onclick="jumpToSlide(' + idx + ')"><span class="deck-topic-num">' + numStr + '</span><span class="deck-topic-name" title="' + title + '">' + title + '</span></div>';
+      });
+
+      listEl.innerHTML = html;
+      const currentIdx = Reveal.getIndices ? Reveal.getIndices().h : 0;
+      updateActiveTopicItem(currentIdx);
+    }
+
+    function updateActiveTopicItem(currentIdx) {
+      document.querySelectorAll('.deck-topic-item').forEach(item => {
+        const idx = parseInt(item.getAttribute('data-slide-index'), 10);
+        item.classList.toggle('active', idx === currentIdx);
+      });
+    }
+
+    function toggleTopicPopover(e) {
+      if (e) e.stopPropagation();
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (!popover) return;
+
+      const isActive = popover.classList.toggle('active');
+      if (btn) btn.classList.toggle('active', isActive);
+
+      if (isActive) {
+        const activeItem = popover.querySelector('.deck-topic-item.active');
+        if (activeItem) {
+          activeItem.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }
+        const searchInput = document.getElementById('deck-topic-search');
+        if (searchInput) {
+          searchInput.value = '';
+          filterTopicList('');
+          setTimeout(() => searchInput.focus(), 80);
+        }
+      }
+    }
+
+    function closeTopicPopover() {
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (popover) popover.classList.remove('active');
+      if (btn) btn.classList.remove('active');
+    }
+
+    function jumpToSlide(index) {
+      Reveal.slide(index);
+      closeTopicPopover();
+    }
+
+    function filterTopicList(query) {
+      const q = (query || '').toLowerCase().trim();
+      const items = document.querySelectorAll('.deck-topic-item');
+      const sections = document.querySelectorAll('.deck-topic-section');
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const num = (item.querySelector('.deck-topic-num') || {}).textContent || '';
+        const name = (item.querySelector('.deck-topic-name') || {}).textContent || '';
+        const matches = !q || num.toLowerCase().includes(q) || name.toLowerCase().includes(q);
+        item.style.display = matches ? 'grid' : 'none';
+        if (matches) visibleCount++;
+      });
+
+      sections.forEach(sec => {
+        let nextEl = sec.nextElementSibling;
+        let hasVisibleChild = false;
+        while (nextEl && !nextEl.classList.contains('deck-topic-section')) {
+          if (nextEl.classList.contains('deck-topic-item') && nextEl.style.display !== 'none') {
+            hasVisibleChild = true;
+            break;
+          }
+          nextEl = nextEl.nextElementSibling;
+        }
+        sec.style.display = hasVisibleChild ? 'block' : 'none';
+      });
+
+      const listEl = document.getElementById('deck-topic-list');
+      let emptyMsg = document.getElementById('deck-topic-empty-msg');
+      if (visibleCount === 0) {
+        if (!emptyMsg) {
+          emptyMsg = document.createElement('div');
+          emptyMsg.id = 'deck-topic-empty-msg';
+          emptyMsg.className = 'deck-topic-empty';
+          emptyMsg.textContent = 'Tidak ada slide yang cocok dengan pencarian.';
+          listEl.appendChild(emptyMsg);
+        }
+        emptyMsg.style.display = 'block';
+      } else if (emptyMsg) {
+        emptyMsg.style.display = 'none';
+      }
+    }
+
+    function setAspectMode(mode) {
+      currentAspectMode = mode;
+      localStorage.setItem('reveal_aspect_mode', mode);
+      const dim = calculateResponsiveDimensions(mode);
+
+      Reveal.configure({
+        width: dim.width,
+        height: dim.height,
+        margin: 0.04,
+        minScale: 0.2,
+        maxScale: 2.0
+      });
+
+      document.body.classList.remove('aspect-16-9', 'aspect-16-10', 'aspect-4-3', 'aspect-mobile');
+      if (mode === 'auto') {
+        if (window.innerWidth <= 768) document.body.classList.add('aspect-mobile');
+      } else {
+        document.body.classList.add('aspect-' + mode);
+      }
+
+      const labelEl = document.getElementById('aspect-label');
+      if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+
+      document.querySelectorAll('.dropdown-item').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-aspect') === mode);
+      });
+
+      closeAspectDropdown();
+      setTimeout(() => Reveal.layout(), 50);
+    }
+
+    function toggleAspectDropdown(e) {
+      if (e) e.stopPropagation();
+      document.getElementById('aspect-menu').classList.toggle('active');
+    }
+
+    function closeAspectDropdown() {
+      const menu = document.getElementById('aspect-menu');
+      if (menu) menu.classList.remove('active');
+    }
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-dropdown')) closeAspectDropdown();
+      if (!e.target.closest('#deck-topic-popover') && !e.target.closest('#deck-footer-topic')) closeTopicPopover();
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (currentAspectMode === 'auto') {
+          const dim = calculateResponsiveDimensions('auto');
+          const cfg = Reveal.getConfig();
+          if (cfg.width !== dim.width || cfg.height !== dim.height) {
+            Reveal.configure({ width: dim.width, height: dim.height });
+            const labelEl = document.getElementById('aspect-label');
+            if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+            Reveal.layout();
+          }
+        }
+      }, 200);
+    });
+
+    window.addEventListener('DOMContentLoaded', () => setAspectMode(currentAspectMode));
+
+    function openShortcutsModal() {
+      document.getElementById('shortcuts-modal').classList.add('active');
+    }
+
+    function closeShortcutsModal(event) {
+      if (!event || event.target.id === 'shortcuts-modal' || event.target.classList.contains('modal-close')) {
+        document.getElementById('shortcuts-modal').classList.remove('active');
+      }
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const popover = document.getElementById('deck-topic-popover');
+        if (popover && popover.classList.contains('active')) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeTopicPopover();
+          return;
+        }
+      }
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        document.getElementById('shortcuts-modal').classList.toggle('active');
+      }
+    });
+  </script>
+
+</body>
+</html>

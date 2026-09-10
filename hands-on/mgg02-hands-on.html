@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lembar Kerja 02: Eksplorasi Word Embeddings — Representasi Modalitas I: Teks</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+
+  <style>
+    :root {
+      --ctp-base: #eff1f5;
+      --ctp-mantle: #e6e9ef;
+      --ctp-crust: #dce0e8;
+      --ctp-surface0: #ccd0da;
+      --ctp-surface1: #bcc0cc;
+      --ctp-overlay0: #9ca0b0;
+      --ctp-overlay1: #8c8fa1;
+      --ctp-overlay2: #7c7f93;
+      --ctp-text: #4c4f69;
+      --ctp-subtext1: #5c5f77;
+      --ctp-subtext0: #6c6f85;
+      --ctp-blue: #1e66f5;
+      --ctp-sapphire: #209fb5;
+      --ctp-mauve: #8839ef;
+      --ctp-teal: #179299;
+      --ctp-green: #40a02b;
+      --ctp-peach: #fe640b;
+      --ctp-maroon: #e64553;
+      --ctp-lavender: #7287fd;
+      --ctp-yellow: #df8e1d;
+      --ctp-sky: #04a5e5;
+
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { -webkit-text-size-adjust: 100%; text-rendering: optimizeLegibility; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--ctp-base);
+      color: var(--ctp-text);
+      font-family: var(--font-sans);
+      line-height: 1.7;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* =========================================================
+       Header dokumen akademik (kompak, bukan hero 100vh)
+       ========================================================= */
+    .doc-header-block {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 44px 40px 0 40px;
+    }
+    .doc-logos {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .doc-logos img { height: 34px; width: auto; }
+    .doc-course {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ctp-subtext0);
+      letter-spacing: 0.02em;
+      margin-bottom: 6px;
+    }
+    .doc-kicker {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ctp-blue);
+      margin-bottom: 10px;
+    }
+    .doc-header-block h1 {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.25;
+      color: var(--ctp-text);
+      margin: 0 0 8px 0;
+    }
+    .doc-subtitle {
+      font-size: 16px;
+      color: var(--ctp-subtext0);
+      margin: 0;
+    }
+    .doc-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 20px;
+      font-size: 12.5px;
+      color: var(--ctp-subtext0);
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--ctp-surface0);
+    }
+
+    /* =========================================================
+       Floating Navigation Pill + TOC Drawer
+       ========================================================= */
+    .floating-nav {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .fn-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid var(--ctp-surface1);
+      background: var(--ctp-base);
+      color: var(--ctp-subtext0);
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(76, 79, 105, 0.12);
+      transition: all 0.15s ease;
+    }
+    .fn-btn:hover {
+      border-color: var(--ctp-blue);
+      color: var(--ctp-blue);
+      background: #ffffff;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(30, 102, 245, 0.18);
+    }
+    .fn-btn .material-symbols-outlined {
+      font-size: 21px;
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .fn-btn.fn-toc {
+      background: var(--ctp-blue);
+      border-color: var(--ctp-blue);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(30, 102, 245, 0.28);
+    }
+    .fn-btn.fn-toc:hover { background: #1455d9; border-color: #1455d9; color: #fff; }
+    .fn-btn.fn-pdf { color: var(--ctp-blue); }
+
+    /* --- Drawer --- */
+    .toc-drawer {
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      width: 340px;
+      max-width: 88vw;
+      z-index: 110;
+      background: var(--ctp-base);
+      border-left: 1px solid var(--ctp-surface1);
+      box-shadow: -8px 0 24px rgba(76, 79, 105, 0.18);
+      transform: translateX(100%);
+      transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    .toc-drawer.open { transform: translateX(0); }
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--ctp-surface1);
+      position: sticky;
+      top: 0;
+      background: var(--ctp-base);
+      z-index: 1;
+    }
+    .drawer-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ctp-blue);
+    }
+    .drawer-title .material-symbols-outlined { font-size: 18px; }
+    .drawer-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: var(--ctp-subtext0);
+      cursor: pointer;
+    }
+    .drawer-close:hover { background: var(--ctp-surface0); color: var(--ctp-text); }
+    .drawer-close .material-symbols-outlined { font-size: 20px; }
+    .toc-drawer .toc-list { list-style: none; margin: 8px 0; padding: 0 12px; }
+    .toc-drawer .toc-list li { margin: 0; border-bottom: 1px solid var(--ctp-surface0); }
+    .toc-drawer .toc-list li:last-child { border-bottom: none; }
+    .toc-drawer .toc-list a {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 11px 8px;
+      text-decoration: none;
+      color: var(--ctp-text);
+      font-size: 14px;
+      border-radius: 6px;
+    }
+    .toc-drawer .toc-list a:hover { color: var(--ctp-blue); background: var(--ctp-mantle); }
+    .toc-drawer .toc-num {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--ctp-blue);
+      min-width: 22px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .toc-drawer .toc-label { flex-grow: 1; }
+
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 105;
+      background: rgba(76, 79, 105, 0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.28s ease;
+    }
+    .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+
+    /* =========================================================
+       Isi dokumen
+       ========================================================= */
+    .page {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 28px 40px 90px 40px;
+    }
+
+    h2 {
+      font-size: 21px;
+      font-weight: 800;
+      color: var(--ctp-text);
+      letter-spacing: -0.015em;
+      margin: 44px 0 10px 0;
+      padding-top: 8px;
+    }
+    h2 .sec-num {
+      font-family: var(--font-mono);
+      color: var(--ctp-blue);
+      font-size: 17px;
+      margin-right: 8px;
+      font-weight: 700;
+    }
+    h3 {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--ctp-subtext0);
+      margin: 24px 0 8px 0;
+    }
+    p { margin: 0 0 14px 0; color: var(--ctp-text); }
+    ul, ol { margin: 0 0 16px 0; padding-left: 24px; }
+    li { margin-bottom: 6px; }
+    strong { color: var(--ctp-text); }
+    em { color: var(--ctp-subtext0); }
+    a { color: var(--ctp-blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Inline code */
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.9em;
+      background: var(--ctp-mantle);
+      border: 1px solid var(--ctp-surface0);
+      border-radius: 5px;
+      padding: 1px 6px;
+      color: var(--ctp-mauve);
+    }
+
+    /* =========================================================
+       Notes (thin left border — bukan kartu)
+       ========================================================= */
+    .note {
+      border-left: 3px solid;
+      padding: 2px 0 2px 14px;
+      margin: 18px 0;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+    .note .note-title { font-weight: 800; display: block; margin-bottom: 2px; }
+    .note-blue   { border-left-color: var(--ctp-blue); }
+    .note-blue   .note-title { color: var(--ctp-blue); }
+    .note-peach  { border-left-color: var(--ctp-peach); }
+    .note-peach  .note-title { color: var(--ctp-peach); }
+    .note-green  { border-left-color: var(--ctp-green); }
+    .note-green  .note-title { color: var(--ctp-green); }
+    .note-mauve  { border-left-color: var(--ctp-mauve); }
+    .note-mauve  .note-title { color: var(--ctp-mauve); }
+
+    /* =========================================================
+       Code Window (IDE framing — light)
+       ========================================================= */
+    .code-window {
+      border: 1px solid var(--ctp-surface0);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 18px 0;
+      background: var(--ctp-base);
+      box-shadow: 0 1px 2px rgba(76, 79, 105, 0.06);
+    }
+    .code-window-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--ctp-mantle);
+      border-bottom: 1px solid var(--ctp-surface0);
+      padding: 9px 14px;
+    }
+    .window-dots { display: flex; gap: 6px; flex-shrink: 0; }
+    .window-dots .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+    .dot-red    { background: var(--ctp-maroon); }
+    .dot-yellow { background: var(--ctp-yellow); }
+    .dot-green  { background: var(--ctp-green); }
+    .code-filename {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ctp-subtext0);
+      flex-grow: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--ctp-surface1);
+      background: var(--ctp-base);
+      color: var(--ctp-subtext0);
+      font-size: 11.5px;
+      font-weight: 600;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+    .copy-btn:hover { border-color: var(--ctp-blue); color: var(--ctp-blue); background: #fff; }
+    .copy-btn .material-symbols-outlined { font-size: 15px; }
+    .copy-btn.copied { border-color: var(--ctp-green); color: var(--ctp-green); background: #fff; }
+
+    /* --- Prism token colors (Catppuccin Latte) --- */
+    .code-window pre {
+      margin: 0;
+      padding: 0;
+      background: var(--ctp-base);
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--ctp-surface1) transparent;
+    }
+    .code-window pre::-webkit-scrollbar { height: 8px; }
+    .code-window pre::-webkit-scrollbar-thumb { background: var(--ctp-surface1); border-radius: 4px; }
+    .code-window pre::-webkit-scrollbar-track { background: transparent; }
+
+    .code-window pre[class*="language-"],
+    .code-window code[class*="language-"] {
+      color: var(--ctp-text);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.6;
+      direction: ltr;
+      text-align: left;
+      white-space: pre;
+      word-spacing: normal;
+      word-break: normal;
+      tab-size: 4;
+      hyphens: none;
+    }
+    .code-window pre[class*="language-"] > code[class*="language-"] {
+      display: block;
+      padding: 12px 0;
+    }
+
+    /* --- Baked line numbers (statis, bukan CSS counter) ---
+       Setiap baris = .code-line (table-row) berisi .ln (gutter) + .lc (kode).
+       Render identik di browser & PDF tanpa JavaScript. */
+    .code-window pre.code-baked > code {
+      display: table;
+      width: 100%;
+      padding: 0;
+      border-collapse: collapse;
+    }
+    .code-window .code-line {
+      display: table-row;
+    }
+    .code-window .ln {
+      display: table-cell;
+      text-align: right;
+      padding: 3px 14px 3px 16px;
+      color: var(--ctp-overlay1);
+      background: var(--ctp-mantle);
+      border-right: 1px solid var(--ctp-surface0);
+      user-select: none;
+      -webkit-user-select: none;
+      white-space: nowrap;
+      font-size: 12px;
+      min-width: 3em;
+      vertical-align: top;
+    }
+    .code-window .lc {
+      display: table-cell;
+      padding: 3px 18px;
+      white-space: pre;
+      color: var(--ctp-text);
+      font-size: 13px;
+      vertical-align: top;
+    }
+    /* Napas atas-bawah pada blok kode (pre sudah padding:0) */
+    .code-window .code-line:first-child .ln,
+    .code-window .code-line:first-child .lc { padding-top: 12px; }
+    .code-window .code-line:last-child .ln,
+    .code-window .code-line:last-child .lc { padding-bottom: 12px; }
+
+    /* Prism token colors (Catppuccin Latte) */
+    .token.comment, .token.prolog, .token.doctype, .token.cdata { color: var(--ctp-overlay2); font-style: italic; }
+    .token.punctuation { color: var(--ctp-subtext1); }
+    .token.keyword { color: var(--ctp-mauve); }
+    .token.string, .token.char { color: var(--ctp-green); }
+    .token.number, .token.boolean { color: var(--ctp-peach); }
+    .token.function { color: var(--ctp-blue); }
+    .token.builtin { color: var(--ctp-maroon); }
+    .token.class-name { color: var(--ctp-yellow); }
+    .token.operator { color: var(--ctp-sky); }
+    .token.property { color: var(--ctp-teal); }
+    .token.decorator { color: var(--ctp-mauve); }
+    .token.interpolation { color: var(--ctp-peach); }
+    .token.comment { font-style: italic; }
+
+    /* =========================================================
+       Terminal (output)
+       ========================================================= */
+    .terminal {
+      border: 1px solid var(--ctp-surface0);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 18px 0;
+    }
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--ctp-mantle);
+      border-bottom: 1px solid var(--ctp-surface0);
+      padding: 8px 14px;
+    }
+    .terminal-header .material-symbols-outlined { font-size: 15px; color: var(--ctp-teal); }
+    .terminal-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ctp-overlay1);
+    }
+    .terminal-body {
+      background: var(--ctp-base);
+      padding: 14px 18px;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      color: var(--ctp-subtext1);
+      white-space: pre-wrap;
+      line-height: 1.5;
+      overflow-x: auto;
+    }
+
+    /* Formula */
+    .formula {
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--ctp-blue);
+      background: var(--ctp-mantle);
+      border: 1px solid var(--ctp-surface0);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 16px 0;
+      letter-spacing: 0.01em;
+    }
+
+    hr { border: none; border-top: 1px solid var(--ctp-surface0); margin: 36px 0; }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+    th {
+      background: var(--ctp-mantle);
+      text-align: left;
+      font-weight: 700;
+      padding: 10px 14px;
+      border: 1px solid var(--ctp-surface0);
+      color: var(--ctp-text);
+    }
+    td { padding: 10px 14px; border: 1px solid var(--ctp-surface0); color: var(--ctp-subtext1); }
+    tr:nth-child(even) td { background: var(--ctp-mantle); }
+
+    .reference-list {
+      font-size: 13px;
+      color: var(--ctp-subtext0);
+      list-style: none;
+      padding: 0;
+    }
+    .reference-list li {
+      padding: 9px 0;
+      border-bottom: 1px solid var(--ctp-surface0);
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 12px;
+    }
+    .reference-list .ref-num {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--ctp-blue);
+      text-align: right;
+    }
+
+    @media (max-width: 640px) {
+      .floating-nav { bottom: 16px; right: 16px; }
+      .fn-btn { width: 42px; height: 42px; }
+      .doc-header-block { padding: 28px 16px 0 16px; }
+      .page { padding: 20px 16px 80px 16px; }
+      .doc-header-block h1 { font-size: 24px; }
+    }
+
+    /* Print */
+    @media print {
+      body { background: #fff; }
+      .floating-nav { display: none; }
+      .drawer-backdrop { display: none; }
+      .copy-btn { display: none; }
+      .page { max-width: 100%; padding: 0; }
+
+      .toc-drawer {
+        position: static;
+        width: 100%;
+        max-width: 100%;
+        transform: none;
+        border-left: none;
+        box-shadow: none;
+        background: transparent;
+        display: block;
+        overflow: visible;
+        break-after: page;
+        page-break-after: always;
+      }
+      .toc-drawer .drawer-header { position: static; background: transparent; }
+      .toc-drawer .drawer-close { display: none; }
+
+      /* Header dokumen jadi halaman cover di PDF */
+      .doc-header-block { break-after: page; page-break-after: always; }
+
+      p, li { orphans: 3; widows: 3; }
+      h2, h3 { break-after: avoid; page-break-after: avoid; }
+
+      .code-window { break-inside: auto; page-break-inside: auto; }
+      .code-window-header { break-after: avoid; page-break-after: avoid; }
+      pre { break-inside: auto; page-break-inside: auto; }
+      .terminal, .note, table, .formula { break-inside: avoid; page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================
+       Header dokumen akademik
+       ========================================================= -->
+  <header class="doc-header-block">
+    <div class="doc-logos">
+      <img src="../assets/img/logo_2.png" alt="Logo ITERA">
+      <img src="../assets/img/dikti-saintek-berdampak-color.svg" alt="Logo Kemdiktisaintek">
+    </div>
+    <div class="doc-course">IF25-40304 &middot; Pembelajaran Mesin Multimodal</div>
+    <div class="doc-kicker">Lembar Kerja 02</div>
+    <h1>Eksplorasi Word Embeddings: Memahami Ruang Vektor Kata</h1>
+    <p class="doc-subtitle">Representasi Modalitas I: Teks</p>
+    <div class="doc-meta">
+      <span>Program Studi Teknik Informatika</span>
+      <span>Institut Teknologi Sumatera (ITERA)</span>
+    </div>
+  </header>
+
+  <div class="page">
+
+    <!-- Daftar Isi (layar: drawer; print: blok statis) -->
+    <aside class="toc-drawer" id="tocDrawer" aria-label="Daftar isi">
+      <div class="drawer-header">
+        <span class="drawer-title">
+          <span class="material-symbols-outlined">list</span>
+          Daftar Isi
+        </span>
+        <button class="drawer-close" type="button" onclick="toggleToc(false)" title="Tutup">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <ul class="toc-list">
+        <li><a href="#sec-tokenization" onclick="gotoSection(this)"><span class="toc-num">01</span><span class="toc-label">Tokenization: Dari Teks Menjadi Token</span></a></li>
+        <li><a href="#sec-one-hot" onclick="gotoSection(this)"><span class="toc-num">02</span><span class="toc-label">One-Hot Encoding &amp; Ortogonalitas</span></a></li>
+        <li><a href="#sec-embeddings" onclick="gotoSection(this)"><span class="toc-num">03</span><span class="toc-label">Word Embeddings: Vektor Dense yang Semantik</span></a></li>
+        <li><a href="#sec-analogi" onclick="gotoSection(this)"><span class="toc-num">04</span><span class="toc-label">Analogi Vektor: raja &minus; pria + wanita &asymp; ratu</span></a></li>
+        <li><a href="#sec-pretrained" onclick="gotoSection(this)"><span class="toc-num">05</span><span class="toc-label">Model Pra-Latih (Opsional)</span></a></li>
+        <li><a href="#sec-visualisasi" onclick="gotoSection(this)"><span class="toc-num">06</span><span class="toc-label">Visualisasi: Kedekatan di Ruang Vektor</span></a></li>
+        <li><a href="#sec-limitasi" onclick="gotoSection(this)"><span class="toc-num">07</span><span class="toc-label">Limitasi: Polisemi &amp; Konteks</span></a></li>
+        <li><a href="#sec-referensi" onclick="gotoSection(this)"><span class="toc-num">&#9873;</span><span class="toc-label">Referensi</span></a></li>
+      </ul>
+    </aside>
+
+    <!-- Pendahuluan -->
+    <p>
+      Lembar kerja ini melengkapi materi Pertemuan 02 (Representasi Modalitas I: Teks).
+      Eksperimen komputasi berikut bertujuan memverifikasi tiga sifat representasi teks
+      yang dibahas pada slide:
+    </p>
+    <ol>
+      <li>One-hot encoding bersifat <strong>ortogonal</strong>, sehingga tidak menangkap kemiripan makna antarkata.</li>
+      <li>Word embeddings bersifat <strong>dense dan semantik</strong>: kata yang bermakna mirip berdekatan dalam ruang vektor.</li>
+      <li>Operasi aritmetika vektor merepresentasikan <strong>analogi semantik</strong> (raja &minus; pria + wanita &asymp; ratu).</li>
+    </ol>
+
+    <div class="note note-peach">
+      <span class="note-title">Batasan cakupan komputasi</span>
+      Seluruh percobaan menggunakan operasi aljabar linear (NumPy) dan model
+      <em>pra-latih</em> yang dimuat langsung. Tidak ada proses pelatihan
+      (<code>fit()</code>/<code>train()</code>); tujuan lembar kerja ini adalah
+      memperjelas konsep, bukan melatih model.
+    </div>
+
+    <p>
+      Lingkungan yang diperlukan: Python 3.8+ dengan paket <code>numpy</code> dan
+      <code>matplotlib</code> (<code>gensim</code> bersifat opsional untuk bagian model pra-latih).
+    </p>
+
+    <div class="code-window">
+      <div class="code-window-header">
+        <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+        <span class="code-filename">setup.sh</span>
+        <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode">
+          <span class="material-symbols-outlined">content_copy</span>
+          <span>Salin</span>
+        </button>
+      </div>
+      <pre class="code-baked language-bash"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc">pip <span class="token function">install</span> numpy matplotlib gensim</span></span></code></pre>
+    </div>
+
+    <hr>
+
+    <!-- SECTION 1 -->
+    <h2 id="sec-tokenization"><span class="sec-num">01</span> Tokenization: Dari Teks Menjadi Token</h2>
+    <p>
+      Representasi numerik teks diawali dengan pemecahan teks menjadi unit-unit kecil yang
+      disebut <strong>token</strong> (slide 7). Terdapat dua strategi dasar: tokenisasi per kata
+      dan tokenisasi per karakter.
+    </p>
+
+    <div class="code-window">
+      <div class="code-window-header">
+        <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+        <span class="code-filename">tokenisasi.py</span>
+        <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode">
+          <span class="material-symbols-outlined">content_copy</span>
+          <span>Salin</span>
+        </button>
+      </div>
+      <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc">teks <span class="token operator">=</span> <span class="token string">"Pembelajaran Mesin Multimodal"</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc"><span class="token comment"># (a) Tokenisasi per kata — memecah berdasarkan spasi</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc">tokens_kata <span class="token operator">=</span> teks<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Token per kata :"</span><span class="token punctuation">,</span> tokens_kata<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc"><span class="token comment"># (b) Tokenisasi per karakter — setiap huruf jadi token</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc">tokens_karakter <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span>teks<span class="token punctuation">.</span>replace<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">9</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Token per karakter:"</span><span class="token punctuation">,</span> tokens_karakter<span class="token punctuation">)</span></span></span></code></pre>
+    </div>
+
+    <div class="terminal">
+      <div class="terminal-header">
+        <span class="material-symbols-outlined">terminal</span>
+        <span class="terminal-title">Output</span>
+      </div>
+      <div class="terminal-body">Token per kata : ['Pembelajaran', 'Mesin', 'Multimodal']
+Token per karakter: ['P', 'e', 'm', 'b', 'e', 'l', 'a', 'j', 'a', 'r', 'a', 'n',
+                     'M', 'e', 's', 'i', 'n', 'M', 'u', 'l', 't', 'i', 'm', 'o',
+                     'd', 'a', 'l']</div>
+    </div>
+
+    <div class="note note-mauve">
+      <span class="note-title">Konsep kunci (slide 7)</span>
+      Tokenisasi per kata menghasilkan <strong>kosakata besar</strong> (setiap kata unik menjadi
+      satu token), sedangkan tokenisasi per karakter menghasilkan <strong>kosakata kecil</strong>
+      tetapi sekuens menjadi lebih panjang dan kehilangan makna kata.
+    </div>
+
+    <hr>
+
+    <!-- SECTION 2 -->
+    <h2 id="sec-one-hot"><span class="sec-num">02</span> One-Hot Encoding &amp; Ortogonalitas</h2>
+    <p>
+      One-hot encoding merepresentasikan setiap token sebagai vektor biner sepanjang ukuran
+      kosakata (slide 8). Implementasi berikut membangun vektor one-hot dan mengukur kemiripan
+      antartoken.
+    </p>
+
+    <div class="code-window">
+      <div class="code-window-header">
+        <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+        <span class="code-filename">one_hot.py</span>
+        <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode">
+          <span class="material-symbols-outlined">content_copy</span>
+          <span>Salin</span>
+        </button>
+      </div>
+      <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc"><span class="token comment"># Kosakata kecil berisi 3 kata</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc">vocab <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"apel"</span><span class="token punctuation">,</span> <span class="token string">"pisang"</span><span class="token punctuation">,</span> <span class="token string">"jeruk"</span><span class="token punctuation">]</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc">word_to_id <span class="token operator">=</span> <span class="token punctuation">{</span>kata<span class="token punctuation">:</span> i <span class="token keyword">for</span> i<span class="token punctuation">,</span> kata <span class="token keyword">in</span> <span class="token builtin">enumerate</span><span class="token punctuation">(</span>vocab<span class="token punctuation">)</span><span class="token punctuation">}</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc"><span class="token keyword">def</span> <span class="token function">one_hot</span><span class="token punctuation">(</span>kata<span class="token punctuation">,</span> vocab<span class="token punctuation">,</span> word_to_id<span class="token punctuation">)</span><span class="token punctuation">:</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc">    <span class="token triple-quoted-string string">"""Mengembalikan vektor one-hot untuk sebuah kata."""</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">9</span><span class="lc">    vektor <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>vocab<span class="token punctuation">)</span><span class="token punctuation">)</span>          <span class="token comment"># semua nol</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">10</span><span class="lc">    vektor<span class="token punctuation">[</span>word_to_id<span class="token punctuation">[</span>kata<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span>           <span class="token comment"># satu elemen bernilai 1</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">11</span><span class="lc">    <span class="token keyword">return</span> vektor</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">12</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">13</span><span class="lc">v_apel   <span class="token operator">=</span> one_hot<span class="token punctuation">(</span><span class="token string">"apel"</span><span class="token punctuation">,</span>   vocab<span class="token punctuation">,</span> word_to_id<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">14</span><span class="lc">v_pisang <span class="token operator">=</span> one_hot<span class="token punctuation">(</span><span class="token string">"pisang"</span><span class="token punctuation">,</span> vocab<span class="token punctuation">,</span> word_to_id<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">15</span><span class="lc">v_jeruk  <span class="token operator">=</span> one_hot<span class="token punctuation">(</span><span class="token string">"jeruk"</span><span class="token punctuation">,</span>  vocab<span class="token punctuation">,</span> word_to_id<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">16</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">17</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"apel  :"</span><span class="token punctuation">,</span> v_apel<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">18</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"pisang:"</span><span class="token punctuation">,</span> v_pisang<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">19</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"jeruk :"</span><span class="token punctuation">,</span> v_jeruk<span class="token punctuation">)</span></span></span></code></pre>
+    </div>
+
+    <div class="terminal">
+      <div class="terminal-header">
+        <span class="material-symbols-outlined">terminal</span>
+        <span class="terminal-title">Output</span>
+      </div>
+      <div class="terminal-body">apel  : [1. 0. 0.]
+pisang: [0. 1. 0.]
+jeruk : [0. 0. 1.]</div>
+    </div>
+
+    <p>Kemiripan kosinus antarvektor one-hot dihitung sebagai berikut:</p>
+
+    <div class="code-window">
+      <div class="code-window-header">
+        <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+        <span class="code-filename">similarity.py</span>
+        <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode">
+          <span class="material-symbols-outlined">content_copy</span>
+          <span>Salin</span>
+        </button>
+      </div>
+      <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc"><span class="token keyword">def</span> <span class="token function">cosine_similarity</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc">    <span class="token triple-quoted-string string">"""Kemiripan kosinus antara dua vektor: (a·b) / (||a|| ||b||)."""</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc">    <span class="token keyword">return</span> np<span class="token punctuation">.</span>dot<span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token punctuation">(</span>np<span class="token punctuation">.</span>linalg<span class="token punctuation">.</span>norm<span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token operator">*</span> np<span class="token punctuation">.</span>linalg<span class="token punctuation">.</span>norm<span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"sim(apel, pisang) ="</span><span class="token punctuation">,</span> cosine_similarity<span class="token punctuation">(</span>v_apel<span class="token punctuation">,</span> v_pisang<span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"sim(apel, jeruk)  ="</span><span class="token punctuation">,</span> cosine_similarity<span class="token punctuation">(</span>v_apel<span class="token punctuation">,</span> v_jeruk<span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"sim(apel, apel)   ="</span><span class="token punctuation">,</span> cosine_similarity<span class="token punctuation">(</span>v_apel<span class="token punctuation">,</span> v_apel<span class="token punctuation">)</span><span class="token punctuation">)</span></span></span></code></pre>
+    </div>
+
+    <div class="terminal">
+      <div class="terminal-header">
+        <span class="material-symbols-outlined">terminal</span>
+        <span class="terminal-title">Output</span>
+      </div>
+      <div class="terminal-body">sim(apel, pisang) = 0.0
+sim(apel, jeruk)  = 0.0
+sim(apel, apel)   = 1.0</div>
+    </div>
+
+    <div class="note note-peach">
+      <span class="note-title">Keterbatasan one-hot (slide 9)</span>
+      Setiap pasang kata <strong>berbeda</strong> menghasilkan kemiripan <strong>0.0</strong>:
+      &ldquo;apel&rdquo; berjarak sama terhadap &ldquo;pisang&rdquo; maupun &ldquo;jeruk&rdquo;,
+      meskipun ketiganya buah. Inilah yang dimaksud slide dengan <em>ortogonal</em>: tidak ada
+      relasi makna antarkata yang terwakili.
+    </div>
+
+    <hr>
+
+    <!-- SECTION 3 -->
+    <h2 id="sec-embeddings"><span class="sec-num">03</span> Word Embeddings: Vektor Dense yang Semantik</h2>
+    <p>
+      Word embeddings menggantikan vektor one-hot yang panjang dan <em>sparse</em> dengan vektor
+      <strong>dense</strong> berdimensi rendah (mis. 100&ndash;300) yang merepresentasikan makna
+      (slide 10&ndash;11). Kata yang bermakna mirip akan saling <strong>berdekatan</strong> dalam
+      ruang vektor.
+    </p>
+
+    <p>Vektor ilustratif tiga dimensi berikut merepresentasikan hasil proyeksi dari ruang berdimensi lebih tinggi:</p>
+
+    <div class="code-window">
+      <div class="code-window-header">
+        <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+        <span class="code-filename">embeddings_dense.py</span>
+        <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode">
+          <span class="material-symbols-outlined">content_copy</span>
+          <span>Salin</span>
+        </button>
+      </div>
+      <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc"><span class="token comment"># Vektor ilustratif (dense, 3 dimensi) untuk kata-kata terkait</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc">raja   <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0.90</span><span class="token punctuation">,</span> <span class="token number">0.50</span><span class="token punctuation">,</span> <span class="token number">0.10</span><span class="token punctuation">]</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc">ratu   <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0.85</span><span class="token punctuation">,</span> <span class="token number">0.55</span><span class="token punctuation">,</span> <span class="token number">0.15</span><span class="token punctuation">]</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc">pria   <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0.80</span><span class="token punctuation">,</span> <span class="token number">0.20</span><span class="token punctuation">,</span> <span class="token number">0.05</span><span class="token punctuation">]</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc">wanita <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0.70</span><span class="token punctuation">,</span> <span class="token number">0.25</span><span class="token punctuation">,</span> <span class="token number">0.10</span><span class="token punctuation">]</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc">mobil  <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0.10</span><span class="token punctuation">,</span> <span class="token number">0.90</span><span class="token punctuation">,</span> <span class="token number">0.80</span><span class="token punctuation">]</span><span class="token punctuation">)</span>   <span class="token comment"># makna jauh</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"sim(raja, ratu)  ="</span><span class="token punctuation">,</span> <span class="token builtin">round</span><span class="token punctuation">(</span>cosine_similarity<span class="token punctuation">(</span>raja<span class="token punctuation">,</span> ratu<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">9</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"sim(raja, mobil) ="</span><span class="token punctuation">,</span> <span class="token builtin">round</span><span class="token punctuation">(</span>cosine_similarity<span class="token punctuation">(</span>raja<span class="token punctuation">,</span> mobil<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span></code></pre>
+    </div>
+
+    <div class="terminal">
+      <div class="terminal-header">
+        <span class="material-symbols-outlined">terminal</span>
+        <span class="terminal-title">Output</span>
+      </div>
+      <div class="terminal-body">sim(raja, ratu)  = 0.9951
+sim(raja, mobil) = 0.3682</div>
+    </div>
+
+    <div class="note note-green">
+      <span class="note-title">Perbandingan dengan one-hot</span>
+      Pada embeddings, <code>sim(raja, ratu)</code> mendekati <strong>1.0</strong> (sangat mirip),
+      sedangkan <code>sim(raja, mobil)</code> jauh lebih kecil. Di sinilah keunggulan embeddings:
+      <strong>jarak vektor mencerminkan kemiripan makna</strong>.
+    </div>
+
+    <hr>
+
+    <!-- SECTION 4 -->
+    <h2 id="sec-analogi"><span class="sec-num">04</span> Analogi Vektor: raja &minus; pria + wanita &asymp; ratu</h2>
+    <p>
+      Sifat penting word embeddings adalah kemampuannya merepresentasikan <strong>relasi semantik</strong>
+      melalui operasi aritmetika vektor (slide 12).
+    </p>
+
+    <div class="formula">raja &minus; pria + wanita &asymp; ratu</div>
+
+    <div class="code-window">
+      <div class="code-window-header">
+        <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+        <span class="code-filename">analogi.py</span>
+        <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode">
+          <span class="material-symbols-outlined">content_copy</span>
+          <span>Salin</span>
+        </button>
+      </div>
+      <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc"><span class="token comment"># Kurangi "pria" (menghilangkan atribut kelaki-lakian),</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc"><span class="token comment"># tambah "wanita" (menambah atribut perempuan) — hasilnya dekat "ratu"</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc">hasil_analogi <span class="token operator">=</span> raja <span class="token operator">-</span> pria <span class="token operator">+</span> wanita</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Vektor hasil analogi:"</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span><span class="token builtin">round</span><span class="token punctuation">(</span>hasil_analogi<span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc">sim_ratu  <span class="token operator">=</span> cosine_similarity<span class="token punctuation">(</span>hasil_analogi<span class="token punctuation">,</span> ratu<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc">sim_raja  <span class="token operator">=</span> cosine_similarity<span class="token punctuation">(</span>hasil_analogi<span class="token punctuation">,</span> raja<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">9</span><span class="lc">sim_mobil <span class="token operator">=</span> cosine_similarity<span class="token punctuation">(</span>hasil_analogi<span class="token punctuation">,</span> mobil<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">10</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"sim(hasil, ratu)  ="</span><span class="token punctuation">,</span> <span class="token builtin">round</span><span class="token punctuation">(</span>sim_ratu<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">11</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"sim(hasil, raja)  ="</span><span class="token punctuation">,</span> <span class="token builtin">round</span><span class="token punctuation">(</span>sim_raja<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">12</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"sim(hasil, mobil) ="</span><span class="token punctuation">,</span> <span class="token builtin">round</span><span class="token punctuation">(</span>sim_mobil<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span></code></pre>
+    </div>
+
+    <div class="terminal">
+      <div class="terminal-header">
+        <span class="material-symbols-outlined">terminal</span>
+        <span class="terminal-title">Output</span>
+      </div>
+      <div class="terminal-body">Vektor hasil analogi: [0.8   0.55  0.15]
+
+sim(hasil, ratu)  = 0.9922
+sim(hasil, raja)  = 0.9305
+sim(hasil, mobil) = 0.3952</div>
+    </div>
+
+    <div class="note note-green">
+      <span class="note-title">Analogi semantik (slide 12)</span>
+      Vektor hasil operasi <code>raja - pria + wanita</code> paling dekat dengan <strong>ratu</strong>
+      (0.99), bukan raja maupun mobil. Hal ini menunjukkan embeddings merepresentasikan relasi
+      gender dan peran secara geometris.
+    </div>
+
+    <hr>
+
+    <!-- SECTION 5 -->
+    <h2 id="sec-pretrained"><span class="sec-num">05</span> Model Pra-Latih (Opsional)</h2>
+    <p>
+      Dalam praktik, embeddings tidak dilatih dari awal, melainkan dimuat dari model
+      <strong>pra-latih</strong> yang telah dilatih pada korpus besar (slide 13: Word2Vec, GloVe,
+      fastText). Gensim menyediakan akses terhadap sejumlah model pra-latih.
+    </p>
+
+    <div class="code-window">
+      <div class="code-window-header">
+        <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+        <span class="code-filename">gensim_demo.py</span>
+        <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode">
+          <span class="material-symbols-outlined">content_copy</span>
+          <span>Salin</span>
+        </button>
+      </div>
+      <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc"><span class="token keyword">import</span> gensim<span class="token punctuation">.</span>downloader <span class="token keyword">as</span> api</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc"><span class="token comment"># Unduh model pra-latih (sekali saja, ~66 MB)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc">model <span class="token operator">=</span> api<span class="token punctuation">.</span>load<span class="token punctuation">(</span><span class="token string">"glove-wiki-gigaword-50"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc"><span class="token comment"># Kata yang paling mirip dengan "king"</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Paling mirip 'king':"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc"><span class="token keyword">for</span> kata<span class="token punctuation">,</span> skor <span class="token keyword">in</span> model<span class="token punctuation">.</span>most_similar<span class="token punctuation">(</span><span class="token string">"king"</span><span class="token punctuation">,</span> topn<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">:</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">9</span><span class="lc">    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"  </span><span class="token interpolation"><span class="token punctuation">{</span>kata<span class="token punctuation">:</span><span class="token format-spec">&lt;12</span><span class="token punctuation">}</span></span><span class="token string"> </span><span class="token interpolation"><span class="token punctuation">{</span>skor<span class="token punctuation">:</span><span class="token format-spec">.3f</span><span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">10</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">11</span><span class="lc"><span class="token comment"># Analogi klasik: king - man + woman = ?</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">12</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"\nAnalogi king - man + woman:"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">13</span><span class="lc"><span class="token keyword">for</span> kata<span class="token punctuation">,</span> skor <span class="token keyword">in</span> model<span class="token punctuation">.</span>most_similar<span class="token punctuation">(</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">14</span><span class="lc">    positive<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"woman"</span><span class="token punctuation">,</span> <span class="token string">"king"</span><span class="token punctuation">]</span><span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">15</span><span class="lc">    negative<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"man"</span><span class="token punctuation">]</span><span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">16</span><span class="lc">    topn<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">17</span><span class="lc"><span class="token punctuation">)</span><span class="token punctuation">:</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">18</span><span class="lc">    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"  </span><span class="token interpolation"><span class="token punctuation">{</span>kata<span class="token punctuation">:</span><span class="token format-spec">&lt;12</span><span class="token punctuation">}</span></span><span class="token string"> </span><span class="token interpolation"><span class="token punctuation">{</span>skor<span class="token punctuation">:</span><span class="token format-spec">.3f</span><span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span></span></span></code></pre>
+    </div>
+
+    <div class="terminal">
+      <div class="terminal-header">
+        <span class="material-symbols-outlined">terminal</span>
+        <span class="terminal-title">Output (contoh)</span>
+      </div>
+      <div class="terminal-body">Paling mirip 'king':
+  queen          0.852
+  kings          0.823
+  prince         0.807
+
+Analogi king - man + woman:
+  queen          0.772
+  princess       0.711
+  duchess        0.705</div>
+    </div>
+
+    <p>
+      Untuk bahasa Indonesia, fastText menyediakan vektor pra-latih (<code>cc.id.300.vec.gz</code>)
+      dari korpus Common Crawl. Unduh dari
+      <a href="https://fasttext.cc/docs/en/crawl-vectors.html">fasttext.cc/docs/en/crawl-vectors.html</a>,
+      lalu muat dengan:
+    </p>
+
+    <div class="code-window">
+      <div class="code-window-header">
+        <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+        <span class="code-filename">fasttext_id.py</span>
+        <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode">
+          <span class="material-symbols-outlined">content_copy</span>
+          <span>Salin</span>
+        </button>
+      </div>
+      <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc"><span class="token keyword">from</span> gensim<span class="token punctuation">.</span>models <span class="token keyword">import</span> KeyedVectors</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc"><span class="token comment"># Muat vektor fastText Indonesia (.vec dimuat sebagai word vectors)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc">model_id <span class="token operator">=</span> KeyedVectors<span class="token punctuation">.</span>load_word2vec_format<span class="token punctuation">(</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc">    <span class="token string">"cc.id.300.vec.gz"</span><span class="token punctuation">,</span> binary<span class="token operator">=</span><span class="token boolean">False</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc"><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Paling mirip 'raja':"</span><span class="token punctuation">,</span> model_id<span class="token punctuation">.</span>most_similar<span class="token punctuation">(</span><span class="token string">"raja"</span><span class="token punctuation">,</span> topn<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span></code></pre>
+    </div>
+
+    <div class="note note-peach">
+      <span class="note-title">Catatan ukuran berkas</span>
+      <code>cc.id.300.vec.gz</code> berukuran &plusmn;1 GB. Untuk eksplorasi cepat, gunakan
+      <code>glove-wiki-gigaword-50</code> (66 MB), atau alternatif berukuran lebih kecil dari
+      <a href="https://github.com/piskvorky/gensim-data">gensim-data</a>.
+    </div>
+
+    <hr>
+
+    <!-- SECTION 6 -->
+    <h2 id="sec-visualisasi"><span class="sec-num">06</span> Visualisasi: Kedekatan di Ruang Vektor</h2>
+    <p>
+      Untuk mengamati klaim slide 11 (kata bermakna mirip berdekatan), vektor ilustratif
+      diproyeksikan ke dua dimensi.
+    </p>
+
+    <div class="code-window">
+      <div class="code-window-header">
+        <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+        <span class="code-filename">visualisasi.py</span>
+        <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode">
+          <span class="material-symbols-outlined">content_copy</span>
+          <span>Salin</span>
+        </button>
+      </div>
+      <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc"><span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc"><span class="token comment"># Kumpulan kata beserta vektornya (ambil 2 dimensi pertama untuk plot)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc">kata_vektor <span class="token operator">=</span> <span class="token punctuation">{</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc">    <span class="token string">"raja"</span><span class="token punctuation">:</span>   raja<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc">    <span class="token string">"ratu"</span><span class="token punctuation">:</span>   ratu<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc">    <span class="token string">"pria"</span><span class="token punctuation">:</span>   pria<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc">    <span class="token string">"wanita"</span><span class="token punctuation">:</span> wanita<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">9</span><span class="lc">    <span class="token string">"mobil"</span><span class="token punctuation">:</span>  mobil<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">10</span><span class="lc"><span class="token punctuation">}</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">11</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">12</span><span class="lc">plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">13</span><span class="lc"><span class="token keyword">for</span> kata<span class="token punctuation">,</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token keyword">in</span> kata_vektor<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">14</span><span class="lc">    plt<span class="token punctuation">.</span>scatter<span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> s<span class="token operator">=</span><span class="token number">120</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">15</span><span class="lc">    plt<span class="token punctuation">.</span>annotate<span class="token punctuation">(</span>kata<span class="token punctuation">,</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">,</span> textcoords<span class="token operator">=</span><span class="token string">"offset points"</span><span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">16</span><span class="lc">                 xytext<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">,</span> fontweight<span class="token operator">=</span><span class="token string">"bold"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">17</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">18</span><span class="lc">plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">"Proyeksi 2D Vektor Kata (Ilustratif)"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">19</span><span class="lc">plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span><span class="token string">"Dimensi 1"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">20</span><span class="lc">plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">"Dimensi 2"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">21</span><span class="lc">plt<span class="token punctuation">.</span>grid<span class="token punctuation">(</span>alpha<span class="token operator">=</span><span class="token number">0.3</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">22</span><span class="lc">plt<span class="token punctuation">.</span>tight_layout<span class="token punctuation">(</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">23</span><span class="lc">plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span></span></span></code></pre>
+    </div>
+
+    <p>
+      Yang perlu diamati: <code>raja</code>, <code>ratu</code>, <code>pria</code>, dan
+      <code>wanita</code> mengelompok (kluster manusia/kerajaan), sedangkan <code>mobil</code>
+      terpencil. Hal ini merupakan visualisasi langsung dari konsep &ldquo;kata bermakna mirip
+      berdekatan&rdquo;.
+    </p>
+
+    <hr>
+
+    <!-- SECTION 7 -->
+    <h2 id="sec-limitasi"><span class="sec-num">07</span> Limitasi: Polisemi &amp; Konteks</h2>
+    <p>
+      Word embeddings klasik memberikan <strong>satu vektor tetap per kata</strong>, sehingga tidak
+      dapat membedakan makna kata yang bergantung konteks (slide 14&ndash;17). Contoh polisemi pada
+      slide adalah kata <strong>&ldquo;apel&rdquo;</strong>. Untuk membuktikan bahwa model kontekstual
+      sungguhan dapat membedakannya, kita memuat <strong>IndoBERT pra-latih</strong> dan membandingkan
+      vektor kata yang sama dalam dua kalimat berbeda.
+    </p>
+
+    <div class="note note-blue">
+      <span class="note-title">Persyaratan</span>
+      Bagian ini memerlukan paket <code>transformers</code> dan <code>torch</code>, serta unduhan
+      model <code>indobenchmark/indobert-base-p1</code> (~400&nbsp;MB, sekali saja).
+      Model digunakan hanya untuk <em>inferensi</em> (tanpa pelatihan).
+    </div>
+
+    <div class="code-window">
+      <div class="code-window-header">
+        <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+        <span class="code-filename">polisemi.py</span>
+        <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode">
+          <span class="material-symbols-outlined">content_copy</span>
+          <span>Salin</span>
+        </button>
+      </div>
+      <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc"><span class="token keyword">from</span> transformers <span class="token keyword">import</span> AutoTokenizer<span class="token punctuation">,</span> AutoModel</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc"><span class="token keyword">import</span> torch</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc"><span class="token comment"># Muat IndoBERT pra-latih (inferensi, tanpa pelatihan)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc">name <span class="token operator">=</span> <span class="token string">"indobenchmark/indobert-base-p1"</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc">tokenizer <span class="token operator">=</span> AutoTokenizer<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>name<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc">model <span class="token operator">=</span> AutoModel<span class="token punctuation">.</span>from_pretrained<span class="token punctuation">(</span>name<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc">model<span class="token punctuation">.</span><span class="token builtin">eval</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">9</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">10</span><span class="lc"><span class="token keyword">def</span> <span class="token function">vektor_kata</span><span class="token punctuation">(</span>kalimat<span class="token punctuation">,</span> kata<span class="token punctuation">)</span><span class="token punctuation">:</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">11</span><span class="lc">    <span class="token triple-quoted-string string">"""Vektor kontekstual sebuah kata (hidden state BERT)."""</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">12</span><span class="lc">    enc <span class="token operator">=</span> tokenizer<span class="token punctuation">(</span>kalimat<span class="token punctuation">,</span> return_tensors<span class="token operator">=</span><span class="token string">"pt"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">13</span><span class="lc">    <span class="token keyword">with</span> torch<span class="token punctuation">.</span>no_grad<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">14</span><span class="lc">        out <span class="token operator">=</span> model<span class="token punctuation">(</span><span class="token operator">**</span>enc<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">15</span><span class="lc">    hidden <span class="token operator">=</span> out<span class="token punctuation">.</span>last_hidden_state<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>        <span class="token comment"># [seq_len, 768]</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">16</span><span class="lc">    ids <span class="token operator">=</span> tokenizer<span class="token punctuation">.</span>encode<span class="token punctuation">(</span>kata<span class="token punctuation">,</span> add_special_tokens<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">17</span><span class="lc">    pos <span class="token operator">=</span> <span class="token punctuation">(</span>enc<span class="token punctuation">[</span><span class="token string">"input_ids"</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> ids<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span>nonzero<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>item<span class="token punctuation">(</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">18</span><span class="lc">    <span class="token keyword">return</span> hidden<span class="token punctuation">[</span>pos<span class="token punctuation">]</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">19</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">20</span><span class="lc"><span class="token comment"># Kata yang sama, dua konteks berbeda</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">21</span><span class="lc">s1 <span class="token operator">=</span> <span class="token string">"Ibu membeli apel merah di pasar."</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">22</span><span class="lc">s2 <span class="token operator">=</span> <span class="token string">"Para siswa mengikuti apel pagi di lapangan."</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">23</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">24</span><span class="lc">v1 <span class="token operator">=</span> vektor_kata<span class="token punctuation">(</span>s1<span class="token punctuation">,</span> <span class="token string">"apel"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">25</span><span class="lc">v2 <span class="token operator">=</span> vektor_kata<span class="token punctuation">(</span>s2<span class="token punctuation">,</span> <span class="token string">"apel"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">26</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">27</span><span class="lc">cos <span class="token operator">=</span> torch<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>functional<span class="token punctuation">.</span>cosine_similarity<span class="token punctuation">(</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">28</span><span class="lc">    v1<span class="token punctuation">.</span>unsqueeze<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> v2<span class="token punctuation">.</span>unsqueeze<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">29</span><span class="lc"><span class="token punctuation">)</span><span class="token punctuation">.</span>item<span class="token punctuation">(</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">30</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">31</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Kemiripan vektor 'apel' antar dua konteks:"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">32</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"  </span><span class="token interpolation"><span class="token punctuation">{</span>cos<span class="token punctuation">:</span><span class="token format-spec">.4f</span><span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">33</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Nilai &lt; 1 menunjukkan vektor kontekstual berbeda."</span><span class="token punctuation">)</span></span></span></code></pre>
+    </div>
+
+    <div class="terminal">
+      <div class="terminal-header">
+        <span class="material-symbols-outlined">terminal</span>
+        <span class="terminal-title">Output</span>
+      </div>
+      <div class="terminal-body">Kemiripan vektor 'apel' antar dua konteks:
+  0.2148
+Nilai < 1 menunjukkan vektor kontekstual berbeda.</div>
+    </div>
+
+    <div class="note note-blue">
+      <span class="note-title">Bukti kontekstual (slide 14&ndash;17)</span>
+      Kata <strong>&ldquo;apel&rdquo;</strong> yang sama menghasilkan dua vektor <em>berbeda</em>
+      bergantung kalimatnya (buah vs. upacara), dengan kemiripan kosinus jauh di bawah
+      <strong>1.0</strong> (contoh di atas &asymp; 0.21). Inilah perbedaan fundamental dari word
+      embeddings statis yang selalu memberikan <strong>satu vektor tetap</strong> per kata.
+    </div>
+
+    <hr>
+
+    <!-- References -->
+    <h2 id="sec-referensi"><span class="sec-num">&#9873;</span> Referensi</h2>
+    <ul class="reference-list">
+      <li>
+        <span class="ref-num">[1]</span>
+        <span><strong>gensim</strong> — <em>Topic modelling for humans</em> (library Python untuk word vectors). <a href="https://github.com/piskvorky/gensim">github.com/piskvorky/gensim</a></span>
+      </li>
+      <li>
+        <span class="ref-num">[2]</span>
+        <span><strong>gensim-data</strong> — <em>Pre-trained models &amp; corpora</em> (termasuk <code>glove-wiki-gigaword-50</code>). <a href="https://github.com/piskvorky/gensim-data">github.com/piskvorky/gensim-data</a></span>
+      </li>
+      <li>
+        <span class="ref-num">[3]</span>
+        <span><strong>fastText</strong> — <em>Pre-trained word vectors for 157 languages</em> (termasuk Indonesia). <a href="https://fasttext.cc/docs/en/crawl-vectors.html">fasttext.cc/docs/en/crawl-vectors.html</a></span>
+      </li>
+      <li>
+        <span class="ref-num">[4]</span>
+        <span><strong>facebookresearch/fastText</strong> — implementasi resmi fastText. <a href="https://github.com/facebookresearch/fastText">github.com/facebookresearch/fastText</a></span>
+      </li>
+      <li>
+        <span class="ref-num">[5]</span>
+        <span><strong>IndoBERT</strong> — model bahasa Indonesia pra-latih (BERT base). <a href="https://huggingface.co/indobenchmark/indobert-base-p1">huggingface.co/indobenchmark/indobert-base-p1</a></span>
+      </li>
+      <li>
+        <span class="ref-num">[6]</span>
+        <span><strong>Prism.js</strong> — library penyorotan sintaks dengan dukungan penomoran baris. <a href="https://prismjs.com/">prismjs.com</a></span>
+      </li>
+    </ul>
+
+  </div>
+
+  <!-- =========================================================
+       Floating Navigation Pill (bottom-right, layar)
+       ========================================================= -->
+  <nav class="floating-nav" aria-label="Navigasi dokumen">
+    <button class="fn-btn fn-toc" type="button" onclick="toggleToc(true)" title="Daftar isi">
+      <span class="material-symbols-outlined">toc</span>
+    </button>
+    <a href="#" class="fn-btn fn-top" title="Kembali ke atas" onclick="scrollTop();return false;">
+      <span class="material-symbols-outlined">arrow_upward</span>
+    </a>
+    <a href="../index.html" class="fn-btn fn-portal" title="Kembali ke Portal Kuliah">
+      <span class="material-symbols-outlined">arrow_back</span>
+    </a>
+    <a href="../pdf/mgg02-hands-on.pdf" class="fn-btn fn-pdf" download title="Unduh versi PDF">
+      <span class="material-symbols-outlined">picture_as_pdf</span>
+    </a>
+  </nav>
+
+  <div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleToc(false)"></div>
+
+  <!-- Prism.js -->
+  <script>
+    // =========================================================
+    // Copy code — ambil hanya isi .lc (bukan nomor baris .ln)
+    // =========================================================
+    function copyCode(btn) {
+      var codeEl = btn.closest('.code-window').querySelector('pre code');
+      // Gabungkan teks tiap baris dari .lc (tanpa nomor baris)
+      var lines = codeEl.querySelectorAll('.lc');
+      var text;
+      if (lines.length > 0) {
+        var parts = [];
+        for (var i = 0; i < lines.length; i++) {
+          parts.push(lines[i].textContent);
+        }
+        text = parts.join('\n');
+      } else {
+        text = codeEl.textContent;
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          flashCopied(btn);
+        }).catch(function () {
+          fallbackCopy(text, btn);
+        });
+      } else {
+        fallbackCopy(text, btn);
+      }
+    }
+
+    function fallbackCopy(text, btn) {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        flashCopied(btn);
+      } catch (e) {}
+      document.body.removeChild(ta);
+    }
+
+    function flashCopied(btn) {
+      var icon = btn.querySelector('.material-symbols-outlined');
+      var label = btn.querySelector('span:last-child');
+      btn.classList.add('copied');
+      icon.textContent = 'check';
+      label.textContent = 'Tersalin';
+      setTimeout(function () {
+        btn.classList.remove('copied');
+        icon.textContent = 'content_copy';
+        label.textContent = 'Salin';
+      }, 2000);
+    }
+
+    // =========================================================
+    // Floating nav + TOC drawer
+    // =========================================================
+    function toggleToc(open) {
+      var drawer = document.getElementById('tocDrawer');
+      var backdrop = document.getElementById('drawerBackdrop');
+      var willOpen = (open === undefined) ? !drawer.classList.contains('open') : open;
+      if (willOpen) {
+        drawer.classList.add('open');
+        backdrop.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      } else {
+        drawer.classList.remove('open');
+        backdrop.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function gotoSection(link) {
+      var href = link.getAttribute('href');
+      toggleToc(false);
+      if (href && href !== '#') {
+        var target = document.querySelector(href);
+        if (target) {
+          setTimeout(function () {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 180);
+        }
+      }
+      return false;
+    }
+
+    function scrollTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') toggleToc(false);
+    });
+  </script>
+</body>
+</html>

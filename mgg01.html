@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pertemuan 01: Pengantar Pembelajaran Mesin Multimodal | ITERA</title>
+
+  <!-- Reveal.js Base Styles from CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+  <!-- Catppuccin Latte Custom Theme -->
+  <link rel="stylesheet" href="css/catppuccin-latte.css">
+</head>
+<body>
+
+  <!-- Persistent Edge-to-Edge Deck Header -->
+  <header class="deck-header">
+    <div class="deck-header-left">
+      <a href="index.html" class="deck-brand-link" title="Kembali ke Portal Kuliah">
+        <img src="assets/img/logo_2.png" alt="Logo ITERA" class="deck-logo">
+        <img src="assets/img/dikti-saintek-berdampak-color.svg" alt="Logo Dikti Saintek Berdampak" class="deck-logo">
+      </a>
+    </div>
+
+    <div class="deck-header-right">
+      <!-- Aspect Ratio / Projector Switcher -->
+      <div class="nav-dropdown">
+        <button type="button" class="deck-ctrl-btn" id="aspect-btn" onclick="toggleAspectDropdown(event)" title="Sesuaikan Rasio Layar & Proyektor">
+          <span class="material-symbols-outlined">aspect_ratio</span>
+          <span id="aspect-label" class="deck-btn-label">Auto</span>
+          <span class="material-symbols-outlined" style="font-size: 14px;">arrow_drop_down</span>
+        </button>
+        <div class="nav-dropdown-menu" id="aspect-menu">
+          <button type="button" class="dropdown-item active" data-aspect="auto" onclick="setAspectMode('auto')">
+            <span class="item-title">Auto</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-9" onclick="setAspectMode('16-9')">
+            <span class="item-title">16:9</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-10" onclick="setAspectMode('16-10')">
+            <span class="item-title">16:10</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="4-3" onclick="setAspectMode('4-3')">
+            <span class="item-title">4:3</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="mobile" onclick="setAspectMode('mobile')">
+            <span class="item-title">Mobile</span>
+          </button>
+        </div>
+      </div>
+
+      <button type="button" class="deck-ctrl-btn" onclick="Reveal.toggleOverview()" title="Lihat Matriks Seluruh Slide (Esc/O)">
+        <span class="material-symbols-outlined">grid_view</span>
+        <span class="deck-btn-label">Overview</span>
+      </button>
+      <button type="button" class="deck-ctrl-btn" onclick="openShortcutsModal()" title="Panduan Pintasan Keyboard (?)">
+        <span class="material-symbols-outlined">keyboard</span>
+        <span class="deck-btn-label">Pintasan</span>
+      </button>
+      <a href="index.html" class="deck-ctrl-btn" title="Kembali ke Portal Kuliah">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span class="deck-btn-label">Portal</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Hairline Dynamic Progress Bar -->
+  <div class="deck-progress-track">
+    <div class="deck-progress-bar" id="deck-progress-bar"></div>
+  </div>
+
+  <!-- Shortcuts Modal -->
+  <div id="shortcuts-modal" onclick="closeShortcutsModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h4 style="margin: 0; font-weight: 800; line-height: 1.3;">
+          <span class="material-symbols-outlined" style="color: var(--ctp-blue); vertical-align: -3px; margin-right: 6px;">keyboard</span>
+          Pintasan Navigasi Presentasi
+        </h4>
+        <button class="modal-close" onclick="closeShortcutsModal()">&times;</button>
+      </div>
+      <div class="shortcut-row">
+        <span>Slide Berikutnya</span>
+        <div><span class="kbd-key">Space</span> / <span class="kbd-key">→</span></div>
+      </div>
+      <div class="shortcut-row">
+        <span>Slide Sebelumnya</span>
+        <div><span class="kbd-key">←</span></div>
+      </div>
+      <div class="shortcut-row">
+        <span>Mode Layar Penuh (Fullscreen)</span>
+        <div><span class="kbd-key">F</span></div>
+      </div>
+      <div class="shortcut-row">
+        <span>Speaker Notes View (Catatan Dosen)</span>
+        <div><span class="kbd-key">S</span></div>
+      </div>
+      <div class="shortcut-row">
+        <span>Slide Overview (Matriks)</span>
+        <div><span class="kbd-key">O</span> / <span class="kbd-key">Esc</span></div>
+      </div>
+      <div class="shortcut-row">
+        <span>Blackout / Layar Hitam (Fokus Diskusi)</span>
+        <div><span class="kbd-key">B</span> / <span class="kbd-key">.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- =========================================================
+           SLIDE 1: COVER
+           ========================================================= -->
+      <section>
+        <div style="max-width: 900px; margin: auto 0; text-align: left;">
+
+          <!-- Course Title (Unified Phrase) -->
+          <h1 style="font-size: 2.3em; line-height: 1.15; font-weight: 800; color: var(--ctp-text); margin-bottom: 12px; letter-spacing: -0.025em;">
+            Pembelajaran Mesin Multimodal
+          </h1>
+
+          <!-- Meeting Subtitle -->
+          <div style="font-size: 1.15em; font-weight: 600; color: var(--ctp-subtext0); margin-bottom: 28px; line-height: 1.4;">
+            Pertemuan 01 • Pengantar Pembelajaran Mesin Multimodal
+          </div>
+
+          <!-- Lecturer Identity Card (Clean, Minimalist, Typographic Layout) -->
+          <div style="max-width: 580px; background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-left: 3.5px solid var(--ctp-blue); border-radius: 12px; padding: 16px 22px;">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">
+              Dosen Pengampu
+            </div>
+            <div style="font-size: 1.05em; font-weight: 800; color: var(--ctp-text); margin-bottom: 6px;">
+              I Wayan Wiprayoga Wisesa
+            </div>
+            <div style="font-size: 0.82em; color: var(--ctp-subtext0); line-height: 1.55;">
+              Program Studi Teknik Informatika<br>
+              Jurusan Teknologi Produksi dan Industri<br>
+              Institut Teknologi Sumatera (ITERA)<br>
+              <span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span>
+            </div>
+          </div>
+
+        </div>
+
+        <aside class="notes">
+          Selamat datang rekan-rekan mahasiswa pada kuliah perdana Pembelajaran Mesin Multimodal.
+          Pada pertemuan 1 ini, kita akan membahas gambaran besar: mengapa AI perlu memahami multi-modalitas, tiga pilar tantangannya, dan aplikasinya di dunia nyata.
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 2: CAPAIAN PEMBELAJARAN
+           ========================================================= -->
+      <section>
+
+        <h2>Tujuan Pembelajaran Sesi Ini</h2>
+        <p style="margin-bottom: 24px;">Di akhir sesi kuliah ini, mahasiswa diharapkan mampu menguasai kompetensi dasar berikut:</p>
+
+        <div class="grid-3">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-blue">01</span>
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Definisi & Motivasi</h4>
+            </div>
+            <p>
+              Menjelaskan pengertian mendasar dari <strong>modalitas</strong> dan alasan fundamental mengapa pembelajaran mesin harus beralih dari model unimodal ke multimodal.
+            </p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-mauve">02</span>
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Tiga Pilar Tantangan</h4>
+            </div>
+            <p>
+              Mengidentifikasi dan membedakan tiga pilar tantangan utama: <strong>Representasi</strong> heterogen, <strong>Penyejajaran (Alignment)</strong>, dan strategi <strong>Penggabungan (Fusion)</strong>.
+            </p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-teal">03</span>
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Ragam Aplikasi & Arsitektur</h4>
+            </div>
+            <p>
+              Mengenali kasus nyata seperti Image Captioning, Visual Question Answering (VQA), Sentimen Multimodal, serta arsitektur alur pemrosesannya.
+            </p>
+          </div>
+        </div>
+
+
+
+        <aside class="notes">
+          Tekankan kepada mahasiswa bahwa 3 pilar tantangan (Representasi, Alignment, Fusion) adalah peta jalan mata kuliah ini sepanjang 1 semester ke depan.
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 3: SECTION DIVIDER 1
+           ========================================================= -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(30,102,245,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-blue">Bagian 1</span>
+          <h1>Apa Itu Multimodal?</h1>
+          <p class="subtitle">
+            Mengenal hakikat modalitas data dan cara kecerdasan buatan meniru kemampuan persepsi manusia dalam memahami realitas dunia.
+          </p>
+        </div>
+
+        <aside class="notes">
+          Transisi ke babak pertama. Ajak mahasiswa memikirkan apa arti kata "modus" atau "modalitas" dalam konteks data sehari-hari.
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 4: DEFINISI & KONSEP DASAR
+           ========================================================= -->
+      <section>
+
+        <h2>Definisi Pembelajaran Mesin Multimodal</h2>
+
+        <div class="grid-3" style="margin-top: 20px;">
+          <div class="c-card c-card-blue c-card-accent-top">
+            <div class="c-card-header">
+              <h3 style="color: var(--ctp-blue); margin: 0;">Konsep Dasar</h3>
+            </div>
+            <p>
+              Cabang dalam kecerdasan buatan yang berfokus pada <strong>pemrosesan, interpretasi, dan integrasi</strong> informasi dari beragam jenis data yang berbeda secara simultan.
+            </p>
+          </div>
+
+          <div class="c-card c-card-mauve c-card-accent-top">
+            <div class="c-card-header">
+              <h3 style="color: var(--ctp-mauve); margin: 0;">Arti Modalitas</h3>
+            </div>
+            <p>
+              <strong>Modalitas</strong> mengacu pada bentuk saluran data dengan karakteristik sinyal tertentu: teks, citra diam, video, sinyal suara, sensor spasial (LiDAR/IMU), hingga data tabular.
+            </p>
+          </div>
+
+          <div class="c-card c-card-teal c-card-accent-top">
+            <div class="c-card-header">
+              <h3 style="color: var(--ctp-teal); margin: 0;">Tujuan Utama</h3>
+            </div>
+            <p>
+              Membangun model komputasi yang mampu <strong>memahami realitas secara holistik</strong>, mengatasi celah ketidaklengkapan informasi yang sering terjadi pada model modalitas tunggal (<em>unimodal</em>).
+            </p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 24px;">
+          <span class="material-symbols-outlined icon-blue" style="font-size: 22px;">lightbulb</span>
+          <div>
+            <strong>Inti Konseptual:</strong> Dunia nyata pada hakikatnya tidak pernah hadir dalam format teks saja atau gambar saja. Manusia memproses dunia secara terpadu melalui penglihatan, pendengaran, dan pemahaman bahasa sekaligus.
+          </div>
+        </div>
+
+        <aside class="notes">
+          Jelaskan bahwa jika sistem hanya membaca teks, sistem buta terhadap nada dan ekspresi. Jika hanya melihat gambar, sistem tidak mengerti konteks cerita di baliknya.
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 5: INTERAKSI MULTIMODAL MANUSIA
+           ========================================================= -->
+      <section>
+
+        <h2>Contoh Interaksi Multimodal Manusia</h2>
+        <p style="margin-bottom: 22px;">Otak manusia merupakan arsitektur multimodal paling sempurna yang mengintegrasikan berbagai panca indra:</p>
+
+        <div class="grid-3">
+          <div class="c-card">
+            <div class="c-card-header">
+              <h4 style="margin: 0; color: var(--ctp-text);">Melihat & Mendengar</h4>
+            </div>
+            <p style="margin-bottom: 12px;">
+              Saat menonton video perkuliahan, mata Anda menangkap slide presentasi (visual) sementara telinga Anda mengolah narasi dosen (akustik).
+            </p>
+            <div style="font-size: 0.76em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.04em; text-transform: uppercase;">
+              Citra + Suara
+            </div>
+          </div>
+
+          <div class="c-card">
+            <div class="c-card-header">
+              <h4 style="margin: 0; color: var(--ctp-text);">Membaca & Membayangkan</h4>
+            </div>
+            <p style="margin-bottom: 12px;">
+              Ketika membaca deskripsi sebuah novel ("pantai saat senja"), otak Anda secara otomatis merekonstruksi visualisasi mental objek pantai dan matahari.
+            </p>
+            <div style="font-size: 0.76em; font-weight: 700; color: var(--ctp-mauve); letter-spacing: 0.04em; text-transform: uppercase;">
+              Teks → Representasi Visual
+            </div>
+          </div>
+
+          <div class="c-card">
+            <div class="c-card-header">
+              <h4 style="margin: 0; color: var(--ctp-text);">Berbicara & Berekspresi</h4>
+            </div>
+            <p style="margin-bottom: 12px;">
+              Memahami apakah perkataan seseorang tulus atau bernada sarkastik membutuhkan integrasi antara intonasi vokal, pilihan kata, dan mikro-ekspresi wajah.
+            </p>
+            <div style="font-size: 0.76em; font-weight: 700; color: var(--ctp-teal); letter-spacing: 0.04em; text-transform: uppercase;">
+              Teks + Audio + Visual
+            </div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Berikan contoh sarkasme: bila seseorang berkata "Hebat sekali kamu ya!" dengan muka cemberut dan intonasi datar. Model teks NLP murni akan memprediksinya sebagai pujian positif (salah!).
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 6: MOTIVASI 1: INFORMASI LEBIH LENGKAP & ROBUST
+           ========================================================= -->
+      <section>
+
+        <h2>Motivasi 1: Informasi Lebih Lengkap & Robust</h2>
+
+        <div class="grid-1-2" style="margin-top: 20px;">
+          <div class="c-card c-card-peach c-card-accent-top">
+            <h3 style="color: var(--ctp-peach); margin-bottom: 8px;">Prinsip Kekokohan</h3>
+            <p style="font-size: 0.9em; line-height: 1.5;">
+              Model multimodal jauh lebih tahan terhadap derau (<em>noise</em>) atau hilangnya data parsial dibandingkan model modalitas tunggal.
+            </p>
+            <div style="margin-top: 16px; padding: 10px; background: var(--ctp-base); border-radius: 8px; border: 1px dashed var(--ctp-overlay0);">
+              <span style="font-size: 0.78em; color: var(--ctp-subtext0); font-weight: 700;">Konsep Komplementer:</span>
+              <p style="font-size: 0.8em; margin: 4px 0 0 0;">Jika sinyal audio terganggu suara bising, sinyal visual gerakan bibir dapat menggantikannya.</p>
+            </div>
+          </div>
+
+          <div>
+            <div class="c-card" style="margin-bottom: 14px;">
+              <h4 style="color: var(--ctp-text); margin-bottom: 6px;">1. Realitas Dunia Inheren Bersifat Multimodal</h4>
+              <p>
+                Mengabaikan salah satu modalitas sama dengan membuang informasi semantik berharga. Analisis sentimen dari video terbukti melonjak akurasinya jika transkrip teks digabungkan dengan pitch suara dan ekspresi wajah.
+              </p>
+            </div>
+
+            <div class="c-card">
+              <h4 style="color: var(--ctp-text); margin-bottom: 6px;">2. Robustness Terhadap Kerusakan Sinyal (Missing Modality)</h4>
+              <p>
+                Dalam sistem kemudi otonom (<em>autonomous vehicles</em>), kamera visual bisa silau akibat matahari terik, tetapi sensor LiDAR dan Radar tetap mampu mendeteksi pejalan kaki secara akurat.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Pertanyaan pemantik untuk kelas: bagaimana jika mobil otonom hanya mengandalkan kamera biasa saat badai hujan lebat? Di sinilah sensor fusi mutlak dibutuhkan.
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 7: MOTIVASI 2: LIMITASI UNIMODAL (ARCHETYPE 3: C-TABLE)
+           ========================================================= -->
+      <section>
+
+        <h2>Motivasi 2: Mengatasi Keterbatasan Unimodal</h2>
+        <p style="margin-bottom: 16px;">Setiap modalitas memiliki titik buta (<em>blind spots</em>) intrinsik bila berdiri sendiri:</p>
+
+        <table class="c-table">
+          <thead>
+            <tr>
+              <th style="width: 20%;">Modalitas</th>
+              <th style="width: 26%;">Informasi Ditangkap</th>
+              <th style="width: 27%;">Titik Buta Intrinsik (<em>Blind Spot</em>)</th>
+              <th style="width: 27%;">Sinergi Multimodal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">
+                <span class="material-symbols-outlined icon-blue" style="font-size: 15px; vertical-align: -2px; margin-right: 4px;">description</span>
+                Teks
+              </td>
+              <td>Semantik simbolik diskrit, relasi sintaksis, logika penalaran formal.</td>
+              <td>Kehilangan intonasi suara, mikro-ekspresi emosi, dan kedalaman spasial.</td>
+              <td>Transkrip teks dipadukan dengan modulasi nada audio & ekspresi wajah.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">
+                <span class="material-symbols-outlined icon-mauve" style="font-size: 15px; vertical-align: -2px; margin-right: 4px;">image</span>
+                Citra / Visual
+              </td>
+              <td>Wujud visual 2D/3D, tekstur, relasi spasial objek, koordinat geometri.</td>
+              <td>Tidak mampu memaparkan alur naratif temporal dan motif logis di balik adegan.</td>
+              <td>Citra dilengkapi teks deskripsi latar belakang atau kueri penalaran (VQA).</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">
+                <span class="material-symbols-outlined icon-teal" style="font-size: 15px; vertical-align: -2px; margin-right: 4px;">graphic_eq</span>
+                Audio / Akustik
+              </td>
+              <td>Gelombang sinyal temporal, intonasi vokal, dinamika frekuensi suara.</td>
+              <td>Rentan derau latar, sulit memisahkan pembicara (<em>cocktail party problem</em>).</td>
+              <td>Sinyal suara disinkronkan dengan visual gerak bibir (<em>visual speech</em>).</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <aside class="notes">
+          Tekankan istilah blind spots. Gabungan modalitas menutupi titik buta ini secara sinergis.
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 8: MOTIVASI 3: APLIKASI KAYA & KOMPLEKS
+           ========================================================= -->
+      <section>
+
+        <h2>Motivasi 3: Membuka Aplikasi Canggih Baru</h2>
+
+        <div class="grid-2" style="margin-top: 20px;">
+          <div class="c-card c-card-blue c-card-accent-top">
+            <h3 style="color: var(--ctp-blue); margin-bottom: 10px;">
+              Aplikasi Lintas Modalitas
+            </h3>
+            <p style="margin-bottom: 12px;">
+              Menghadirkan kapabilitas yang <strong>mustahil dicapai</strong> dengan model modalitas tunggal:
+            </p>
+            <ul style="font-size: 0.85em; margin-left: 20px;">
+              <li><strong>Image Captioning:</strong> Mengubah pemahaman citra menjadi kalimat deskriptif.</li>
+              <li><strong>Visual Question Answering (VQA):</strong> Menjawab pertanyaan tekstual berbasis penalaran citra.</li>
+              <li><strong>Text-to-Image / Video Generation:</strong> Menciptakan media dari instruksi bahasa alami.</li>
+            </ul>
+          </div>
+
+          <div class="c-card c-card-mauve c-card-accent-top">
+            <h3 style="color: var(--ctp-mauve); margin-bottom: 10px;">
+              Interaksi Manusia-Komputer Alami
+            </h3>
+            <p style="margin-bottom: 12px;">
+              Mewujudkan agen cerdas generasi baru yang dapat diajak berinteraksi sebagaimana manusia berkomunikasi:
+            </p>
+            <ul style="font-size: 0.85em; margin-left: 20px;">
+              <li><strong>Asisten Virtual Multimodal:</strong> Mengerti ucapan suara, membaca dokumen, serta melihat lingkungan pengguna lewat kamera secara live.</li>
+              <li><strong>Teknologi Asistif:</strong> Membantu penyandang tunanetra menavigasi dunia melalui deskripsi audio lingkungan real-time.</li>
+            </ul>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Kaitkan dengan fenomena AI modern seperti GPT-4o, Gemini 1.5/2.0, yang mampu diajak berbicara secara real-time sambil mengarahkan kamera ponsel ke papan tulis atau buku.
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 9: SECTION DIVIDER 2
+           ========================================================= -->
+      <section class="section-slide" style="background: radial-gradient(circle at 80% 20%, rgba(136,57,239,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-mauve">Bagian 2</span>
+          <h1>Tantangan Fundamental</h1>
+          <p class="subtitle">
+            Membangun model multimodal bukanlah sekadar menggabungkan dua dataset. Diperlukan penanganan arsitektural terhadap heterogenitas, penyejajaran, dan fusi data.
+          </p>
+        </div>
+
+        <aside class="notes">
+          Ini adalah inti konseptual terpenting perkuliahan. Sampaikan bahwa banyak praktisi pemula berpikir multimodal hanyalah operasi concatenate tensor. Itu salah besar!
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 10: TIGA PILAR UTAMA TANTANGAN
+           ========================================================= -->
+      <section>
+
+        <h2>Tiga Pilar Utama Tantangan Multimodal</h2>
+        <div class="c-callout c-callout-warning" style="margin-bottom: 20px;">
+          <span class="material-symbols-outlined icon-peach">warning</span>
+          <div>
+            <strong>Peringatan Esensial:</strong> Mengintegrasikan informasi dari berbagai sumber bukanlah sekadar penggabungan (<em>concatenation</em>) vektor data secara naif!
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-blue">1</span>
+              <h3 style="color: var(--ctp-blue); margin: 0;">Representasi</h3>
+            </div>
+            <p>
+              Bagaimana memetakan data dengan <strong>karakteristik, dimensi, dan semantik yang sangat berbeda</strong> ke dalam format vektor yang saling kompatibel?
+            </p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-mauve">2</span>
+              <h3 style="color: var(--ctp-mauve); margin: 0;">Penyejajaran (Alignment)</h3>
+            </div>
+            <p>
+              Bagaimana <strong>menghubungkan dan menyelaraskan sub-komponen</strong> yang saling berkorespondensi antar modalitas (baik secara temporal maupun spasial)?
+            </p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-teal">3</span>
+              <h3 style="color: var(--ctp-teal); margin: 0;">Fusi (Fusion)</h3>
+            </div>
+            <p>
+              Bagaimana <strong>menggabungkan informasi</strong> dari representasi yang telah disejajarkan untuk menghasilkan keputusan prediksi akhir yang optimal?
+            </p>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Review kembali: 1. Representasi (Ubah data ke bentuk angka yang setara). 2. Alignment (Cari tahu bagian mana di gambar yang nyambung ke kata mana di teks). 3. Fusi (Gimana caranya mereka berdua ngobrol bareng buat bikin keputusan).
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 11: TANTANGAN 1: HETEROGENITAS (ARCHETYPE 3: C-TABLE)
+           ========================================================= -->
+      <section>
+
+        <h2>Tantangan 1: Heterogenitas Data</h2>
+        <p style="margin-bottom: 16px;">Setiap modalitas memiliki karakteristik sinyal dan representasi matematis yang sangat kontras:</p>
+
+        <table class="c-table">
+          <thead>
+            <tr>
+              <th style="width: 18%;">Karakteristik</th>
+              <th style="width: 27%;">Modalitas Teks</th>
+              <th style="width: 27%;">Modalitas Citra & Video</th>
+              <th style="width: 28%;">Modalitas Audio / Suara</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Tipe Sinyal</td>
+              <td>Diskrit & simbolik terkuantisasi</td>
+              <td>Kontinu spasial 2D / spasio-temporal 3D</td>
+              <td>Kontinu 1D gelombang waktu / spektrogram</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Format Matematis</td>
+              <td>Sekuens token ($T \times D_{\text{embed}}$)</td>
+              <td>Tensor matriks piksel ($C \times H \times W$)</td>
+              <td>Amplitudo sinyal ($T$) atau matriks ($F \times T$)</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Struktur Semantik</td>
+              <td>Hierarkis sekuensial (sintaksis & tata bahasa)</td>
+              <td>Korelasi spasial lokal (<em>spatial locality</em>)</td>
+              <td>Pola harmonik temporal & variasi dinamika nada</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Kepadatan Informasi</td>
+              <td>Sangat padat makna pada tiap kata/token</td>
+              <td>Tinggi redundansi spasial pada piksel tetangga</td>
+              <td>Sampling sangat rapat (16.000–44.100 titik/detik)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;">
+          <span class="material-symbols-outlined icon-blue">help</span>
+          <div>
+            <strong>Pertanyaan Penelitian:</strong> Bagaimana cara memetakan representasi sinyal yang strukturnya kontras ini ke dalam ruang laten yang memungkinkan interaksi matematis yang setara?
+          </div>
+        </div>
+
+        <aside class="notes">
+          Bahas perbedaan dimensi: Teks 1 baris mungkin 10 token. Gambar mungkin 1024x1024x3 piksel. Audio 5 detik mungkin 80.000 titik sampel!
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 12: PENDEKATAN REPRESENTASI (ARCHETYPE 2: FORMULA HERO)
+           ========================================================= -->
+      <section>
+
+        <h2>Pendekatan Representasi: Ruang Laten Bersama</h2>
+        <p style="margin-bottom: 14px;">Memproyeksikan fitur heterogen dari berbagai encoder spesifik ke dalam <em>Joint Embedding Space</em>:</p>
+
+        <div class="formula-hero">
+          <div class="formula-label">Proyeksi Laten & Normalisasi Kesamaan Kosinus</div>
+          <div class="formula-math">
+            $$\mathbf{z}_t = \frac{\mathbf{W}_t \mathbf{e}_t}{\|\mathbf{W}_t \mathbf{e}_t\|_2}, \quad \mathbf{z}_v = \frac{\mathbf{W}_v \mathbf{e}_v}{\|\mathbf{W}_v \mathbf{e}_v\|_2} \quad \Longrightarrow \quad \text{sim}(\mathbf{z}_t, \mathbf{z}_v) = \mathbf{z}_t^\top \mathbf{z}_v$$
+          </div>
+        </div>
+
+        <div class="formula-breakdown">
+          <div class="formula-term-box">
+            <strong>01. Enkoder Unimodal</strong>
+            Mengekstrak fitur domain spesialis: $\mathbf{e}_t \in \mathbb{R}^{D_t}$ via Transformer teks dan $\mathbf{e}_v \in \mathbb{R}^{D_v}$ via Vision Transformer (ViT).
+          </div>
+          <div class="formula-term-box">
+            <strong>02. Matriks Proyeksi Linear</strong>
+            Matriks bobot $\mathbf{W}_t$ dan $\mathbf{W}_v$ memetakan dimensi masing-masing fitur ke dimensi bersama seragam $d$ (contoh 512-dim).
+          </div>
+          <div class="formula-term-box">
+            <strong>03. Metrik Keselarasan Kosinus</strong>
+            Normalisasi $L_2$ menjaga kestabilan panjang vektor; perkalian dot $\mathbf{z}_t^\top \mathbf{z}_v$ mengukur kedekatan semantik antar modalitas.
+          </div>
+        </div>
+
+        <aside class="notes">
+          Kaitkan dengan model CLIP dari OpenAI: Teks dienkode ke vektor 512-d, gambar dienkode ke vektor 512-d, lalu dihitung dot product / cosine similarity.
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 13: TANTANGAN 2: ALIGNMENT
+           ========================================================= -->
+      <section>
+
+        <h2>Tantangan 2: Keterkaitan Antar Modalitas</h2>
+
+        <div class="c-card c-card-mauve c-card-accent-top" style="margin-top: 18px; margin-bottom: 20px;">
+          <h3 style="color: var(--ctp-mauve); margin-bottom: 6px;">Definisi Masalah Alignment</h3>
+          <p style="font-size: 0.95em;">
+            Bagaimana model dapat menentukan secara tepat: <strong>bagian mana dari modalitas A yang berkorespondensi dengan bagian mana dari modalitas B?</strong>
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <div class="c-card">
+            <div class="c-card-header">
+              <span class="material-symbols-outlined icon-blue">schedule</span>
+              <h4 style="margin: 0; color: var(--ctp-text);">Tantangan Temporal (Waktu)</h4>
+            </div>
+            <p style="font-size: 0.85em;">
+              Data sekuensial yang memiliki durasi, kecepatan pelafalan, atau keterlambatan waktu (<em>latency</em>) berbeda.
+            </p>
+            <div style="margin-top: 8px; padding: 8px 12px; background: var(--ctp-base); border-radius: 8px; font-size: 0.8em;">
+              <em>Contoh: Menyelaraskan suku kata yang diucapkan dengan bentuk bibir pembicara pada video wawancara.</em>
+            </div>
+          </div>
+
+          <div class="c-card">
+            <div class="c-card-header">
+              <span class="material-symbols-outlined icon-teal">crop_free</span>
+              <h4 style="margin: 0; color: var(--ctp-text);">Tantangan Struktural (Spasial)</h4>
+            </div>
+            <p style="font-size: 0.85em;">
+              Menghubungkan entitas non-temporal, seperti relasi antara frasa teks dengan koordinat region pada citra.
+            </p>
+            <div style="margin-top: 8px; padding: 8px 12px; background: var(--ctp-base); border-radius: 8px; font-size: 0.8em;">
+              <em>Contoh: Menemukan bounding box lokasi "anjing berbulu putih" dalam gambar pemandangan taman yang luas.</em>
+            </div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Alignment adalah kunci grounding. Tanpa alignment, model hanya menebak secara kebetulan tanpa benar-benar tahu objek mana yang sedang dibicarakan.
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 14: JENIS-JENIS ALIGNMENT (ARCHETYPE 3: C-TABLE)
+           ========================================================= -->
+      <section>
+
+        <h2>Jenis-jenis & Teknik Alignment</h2>
+        <p style="margin-bottom: 16px;">Klasifikasi teknik penyejajaran berdasarkan dimensi relasi antar modalitas data:</p>
+
+        <table class="c-table">
+          <thead>
+            <tr>
+              <th style="width: 22%;">Kriteria Komparasi</th>
+              <th style="width: 39%;">Temporal Alignment (Dimensi Waktu)</th>
+              <th style="width: 39%;">Structural Alignment (Dimensi Spasial / Relasional)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Fokus Penyelarasan</td>
+              <td>Menyelaraskan urutan sekuens data yang bergerak pada skala kecepatan waktu berbeda.</td>
+              <td>Menghubungkan entitas non-temporal, seperti frasa linguistik dengan area koordinat citra.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Karakteristik Data</td>
+              <td>Aliran data sekuensial (misal bingkai video per detik disinkronkan dengan gelombang audio).</td>
+              <td>Pasangan diskrit-spasial (citra diam resolusi tinggi dipasangkan dengan teks kueri).</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Metode Populer</td>
+              <td>Dynamic Time Warping (DTW), Hidden Markov Models (HMM), Cross-Attention Temporal.</td>
+              <td>Co-Attention (Q-K-V silang), Scene Graph Matching, Optimal Transport.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Contoh Skenario</td>
+              <td>Sinkronisasi audio narasi dengan gerakan bibir aktor pembicara dalam video wawancara.</td>
+              <td>Menemukan <em>bounding box</em> objek "kucing tidur di sofa" berdasarkan kalimat deskripsi.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <aside class="notes">
+          Keduanya sering hadir bersamaan dalam video, di mana ada dimensi waktu (suara + frame per detik) sekaligus dimensi struktural (objek di tiap frame).
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 15: TANTANGAN 3: FUSION
+           ========================================================= -->
+      <section>
+
+        <h2>Paradoks Fusi Multimodal</h2>
+        <p style="margin-bottom: 14px;">Apakah menggabungkan lebih banyak modalitas selalu menghasilkan model yang lebih akurat?</p>
+
+        <div class="c-callout c-callout-warning" style="margin-bottom: 18px;">
+          <span class="material-symbols-outlined icon-peach">warning</span>
+          <div>
+            <strong>Modality Collapse:</strong> Tanpa strategi penyeimbangan gradien yang tepat, model rentan mengalami <em>Language Prior Bias</em>, di mana jaringan hanya bersandar pada satu modalitas yang “mudah” dan mengabaikan modalitas visual yang lebih kaya.
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="c-card c-card-peach c-card-accent-top">
+            <h4 style="color: var(--ctp-peach); margin-bottom: 6px;">1. Redundansi Informasi</h4>
+            <p style="font-size: 0.8em; line-height: 1.45; margin: 0;">
+              Kedua modalitas memuat informasi identik; model harus menyaring redundansi tanpa pemborosan komputasi.
+            </p>
+          </div>
+
+          <div class="c-card c-card-maroon c-card-accent-top">
+            <h4 style="color: var(--ctp-maroon); margin-bottom: 6px;">2. Konflik Data</h4>
+            <p style="font-size: 0.8em; line-height: 1.45; margin: 0;">
+              Sinyal bertolak belakang (misal sarkasme: transkrip bernada memuji, tetapi ekspresi wajah tampak marah).
+            </p>
+          </div>
+
+          <div class="c-card c-card-mauve c-card-accent-top">
+            <h4 style="color: var(--ctp-mauve); margin-bottom: 6px;">3. Dominansi Modalitas</h4>
+            <p style="font-size: 0.8em; line-height: 1.45; margin: 0;">
+              Satu modalitas mendominasi laju gradien, menekan modalitas lain yang lebih rumit dipelajari.
+            </p>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Modality collapse adalah topik riset yang sangat hangat di dunia ML multimodal. Model sering kali “curang” dengan hanya mengandalkan bias bahasa (language priors).
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 16: REFLEKSI TRANSISI (BIG IDEA CANVAS)
+           ========================================================= -->
+      <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Big Idea 1">
+        <div class="big-idea-canvas">
+          <h2 class="big-idea-question">
+            Jika Ketiga Tantangan Ini Begitu Fundamental, Bagaimana Para Peneliti Berhasil Membangun Sistem Multimodal yang Berfungsi?
+          </h2>
+          <p class="big-idea-takeaway">
+            <strong>Jawabannya terletak pada arsitektur fusi.</strong> Selama dekade terakhir, para peneliti telah mengembangkan berbagai strategi fusi — mulai dari penggabungan sederhana hingga mekanisme atensi lintas-modal yang canggih — untuk mengatasi setiap tantangan secara sistematis.
+          </p>
+        </div>
+
+        <aside class="notes">
+          Jeda sejenak. Biarkan mahasiswa merenungkan pertanyaan ini selama10-15 detik sebelum melanjutkan ke slide berikutnya yang membahas strategi fusi konkret.
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 17: STRATEGI FUSI (ARCHETYPE 3: C-TABLE)
+           ========================================================= -->
+      <section>
+
+        <h2>Tiga Strategi Fusi Multimodal</h2>
+        <p style="margin-bottom: 16px;">Perbandingan analitis titik integrasi representasi pada arsitektur pembelajaran mesin:</p>
+
+        <table class="c-table">
+          <thead>
+            <tr>
+              <th style="width: 22%;">Kriteria Evaluasi</th>
+              <th style="width: 26%;">Early Fusion (Input)</th>
+              <th style="width: 26%;">Late Fusion (Keputusan)</th>
+              <th style="width: 26%;">Intermediate Fusion (Laten)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Titik Integrasi</td>
+              <td>Fitur mentah atau representasi awal</td>
+              <td>Prediksi skor / logit akhir model</td>
+              <td>Lapisan tersembunyi (<em>hidden layers</em>)</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Interaksi Lintas Modalitas</td>
+              <td>Tercapai sejak awal, namun rentan bias skala</td>
+              <td>Terisolasi; tidak ada sinergi fitur tingkat rendah</td>
+              <td><strong>Sangat Luwes</strong> (Cross-Attention fleksibel)</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Ketahanan Missing Modality</td>
+              <td>Rentan kegagalan jika 1 sensor hilang</td>
+              <td><strong>Tinggi</strong> (jalur unimodal independen)</td>
+              <td>Adaptif dengan masked cross-attention</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Kompleksitas Desain</td>
+              <td>Sederhana ($O(D_{\text{concat}})$)</td>
+              <td>Sederhana (arsitektur modular terpisah)</td>
+              <td>Tinggi (perlu tuning interaksi multi-layer)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <aside class="notes">
+          Kita akan membedah strategi fusi ini secara mendalam di Pertemuan 5 dan Pertemuan 6 nanti.
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 18: SECTION DIVIDER 3
+           ========================================================= -->
+      <section class="section-slide" style="background: radial-gradient(circle at 50% 50%, rgba(23,146,153,0.07) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-teal">Bagian 3</span>
+          <h1>Penerapan Model Multimodal</h1>
+          <p class="subtitle">
+            Dari Image Captioning hingga Visual Question Answering: bagaimana prinsip representasi, penyejajaran, dan fusi diimplementasikan pada tugas-tugas dunia nyata.
+          </p>
+        </div>
+
+        <aside class="notes">
+          Bagian 3 memperlihatkan kepada mahasiswa kasus-kasus praktis yang sering mereka temui di aplikasi teknologi konsumen.
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 19: APLIKASI 1 & 2 (ARCHETYPE 4: CASE SHOWCASE)
+           ========================================================= -->
+      <section>
+
+        <h2>Penerapan Model: Image Captioning & VQA</h2>
+        <p style="margin-bottom: 14px;">Studi kasus konkret bagaimana representasi visual dan bahasa terintegrasi dalam tugas industri:</p>
+
+        <div class="case-showcase">
+          <!-- Image Captioning -->
+          <div class="case-input-pane">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-mauve); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
+              Kasus 1: Image Captioning
+            </div>
+            <p style="font-size: 0.85em; margin-bottom: 10px;">
+              <strong>Tugas:</strong> Menghasilkan deskripsi tekstual yang natural dan bermakna dari konten gambar visual.
+            </p>
+            <div style="background: var(--ctp-base); padding: 10px 12px; border-radius: 8px; font-size: 0.8em; margin-bottom: 10px; border: 1px solid var(--ctp-surface1);">
+              <strong>Kebutuhan Model:</strong> Ekstraksi fitur spasial (ViT/CNN) dipadukan dengan pemodelan bahasa sekuensial (Transformer autoregressif).
+            </div>
+            <div class="c-callout c-callout-info" style="margin: 0; padding: 6px 10px; font-size: 0.78em;">
+              <em>Foto anjing di pantai → "Seekor golden retriever melompat mengejar bola di pasir pantai."</em>
+            </div>
+          </div>
+
+          <!-- VQA -->
+          <div class="case-model-pane">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-teal); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
+              Kasus 2: Visual Question Answering (VQA)
+            </div>
+            <p style="font-size: 0.85em; margin-bottom: 10px;">
+              <strong>Tugas:</strong> Menjawab pertanyaan terbuka berbasis teks yang memerlukan penalaran citra mendalam.
+            </p>
+            <div style="background: var(--ctp-base); padding: 10px 12px; border-radius: 8px; font-size: 0.8em; margin-bottom: 10px; border: 1px solid var(--ctp-surface1);">
+              <strong>Kebutuhan Model:</strong> Cross-attention kueri teks ke patch visual, penghitungan objek (<em>counting</em>), dan logika spasial relasional.
+            </div>
+            <div class="c-callout c-callout-info" style="margin: 0; padding: 6px 10px; font-size: 0.78em;">
+              <em>Pertanyaan: "Berapa mobil merah yang parkir di bawah pohon?" → Jawaban: "3 mobil".</em>
+            </div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          VQA jauh lebih sulit daripada image captioning karena model harus mencari region yang relevan dengan kata tanya spesifik.
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 20: APLIKASI 3 & 4
+           ========================================================= -->
+      <section>
+
+        <h2>Penerapan Model Multimodal (3 & 4)</h2>
+
+        <div class="grid-2" style="margin-top: 20px;">
+          <!-- Sentimen Multimodal -->
+          <div class="c-card c-card-teal c-card-accent-top">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-teal">3</span>
+              <h3 style="color: var(--ctp-teal); margin: 0;">Analisis Sentimen Multimodal</h3>
+            </div>
+            <p style="margin-bottom: 10px;">
+              Menentukan sentimen opini manusia (positif, netral, negatif) secara komprehensif dari video interaksi.
+            </p>
+            <div style="background: var(--ctp-base); padding: 12px; border-radius: 10px; font-size: 0.82em; margin-bottom: 10px;">
+              <strong>Modalitas Terlibat:</strong> Transkrip ucapan (teks), intonasi nada dan frekuensi (audio), serta mikro-ekspresi dan gestur wajah (visual).
+            </div>
+            <div class="c-callout c-callout-info" style="margin: 0; padding: 8px 12px; font-size: 0.8em;">
+              <em>Contoh: Menganalisis kepuasan pelanggan dari rekaman video customer service atau ulasan produk di media sosial.</em>
+            </div>
+          </div>
+
+          <!-- Retrieval Multimodal -->
+          <div class="c-card c-card-peach c-card-accent-top">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-peach">4</span>
+              <h3 style="color: var(--ctp-peach); margin: 0;">Multimodal Retrieval</h3>
+            </div>
+            <p style="margin-bottom: 10px;">
+              Mencari data dari satu modalitas menggunakan kueri dari modalitas lain secara lintas domain (<em>cross-modal</em>).
+            </p>
+            <div style="background: var(--ctp-base); padding: 12px; border-radius: 10px; font-size: 0.82em; margin-bottom: 10px;">
+              <strong>Kebutuhan Model:</strong> Ruang laten bersama (<em>joint embedding space</em>) dengan jarak semantik kosinus terkalibrasi.
+            </div>
+            <div class="c-callout c-callout-info" style="margin: 0; padding: 8px 12px; font-size: 0.8em;">
+              <em>Contoh: Mencari foto album galeri menggunakan kalimat deskripsi teks ("kucing tidur di sofa cokelat").</em>
+            </div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Kuis singkat untuk mahasiswa: Google Lens termasuk kategori nomor berapa? (Multimodal Retrieval & VQA).
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 21: OVERVIEW ARSITEKTUR UMUM (ARCHETYPE 5: PIPELINE)
+           ========================================================= -->
+      <section>
+
+        <h2>Alur Umum Pemrosesan Multimodal</h2>
+        <p style="margin-bottom: 14px;">Arsitektur sistem pembelajaran mesin multimodal pada umumnya melalui 4 tahapan utama:</p>
+
+        <div class="pipeline-flow">
+          <div class="pipeline-step">
+            <div class="c-num-circle c-num-blue" style="margin: 0 auto 8px auto;">01</div>
+            <h4 style="font-size: 0.85em; color: var(--ctp-blue); margin-bottom: 4px;">Ekstraksi Fitur</h4>
+            <span style="font-size: 0.72em; color: var(--ctp-subtext0); font-weight: 700; display: block; margin-bottom: 6px;">Unimodal Encoders</span>
+            <p style="font-size: 0.75em; color: var(--ctp-subtext1); line-height: 1.35;">
+              Tiap input diproses encoder spesialis: BERT (teks), ViT/CNN (gambar), AST (audio).
+            </p>
+          </div>
+
+          <div class="pipeline-step">
+            <div class="c-num-circle c-num-mauve" style="margin: 0 auto 8px auto;">02</div>
+            <h4 style="font-size: 0.85em; color: var(--ctp-mauve); margin-bottom: 4px;">Fusi Fitur</h4>
+            <span style="font-size: 0.72em; color: var(--ctp-subtext0); font-weight: 700; display: block; margin-bottom: 6px;">Fusion Engine</span>
+            <p style="font-size: 0.75em; color: var(--ctp-subtext1); line-height: 1.35;">
+              Mengintegrasikan representasi melalui early, intermediate, atau cross-attention layers.
+            </p>
+          </div>
+
+          <div class="pipeline-step">
+            <div class="c-num-circle c-num-teal" style="margin: 0 auto 8px auto;">03</div>
+            <h4 style="font-size: 0.85em; color: var(--ctp-teal); margin-bottom: 4px;">Model Bersama</h4>
+            <span style="font-size: 0.72em; color: var(--ctp-subtext0); font-weight: 700; display: block; margin-bottom: 6px;">Joint Task Model</span>
+            <p style="font-size: 0.75em; color: var(--ctp-subtext1); line-height: 1.35;">
+              Lapisan pemodelan deep learning terpadu yang mempelajari korelasi komparatif akhir.
+            </p>
+          </div>
+
+          <div class="pipeline-step">
+            <div class="c-num-circle c-num-green" style="margin: 0 auto 8px auto;">04</div>
+            <h4 style="font-size: 0.85em; color: var(--ctp-green); margin-bottom: 4px;">Prediksi / Output</h4>
+            <span style="font-size: 0.72em; color: var(--ctp-subtext0); font-weight: 700; display: block; margin-bottom: 6px;">Final Decision</span>
+            <p style="font-size: 0.75em; color: var(--ctp-subtext1); line-height: 1.35;">
+              Hasil akhir tugas: teks caption, jawaban tanya-jawab visual, skor probabilitas emosi.
+            </p>
+          </div>
+        </div>
+
+        <div class="c-card" style="margin-top: 14px; padding: 12px 18px;">
+          <div style="display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; font-size: 0.82em;">
+            <span style="color: var(--ctp-text); font-weight: 700; white-space: nowrap;">Alur Data Matematis:</span>
+            <span style="font-size: 0.9em; text-align: right;">$(\mathbf{x}_{\text{teks}},\, \mathbf{x}_{\text{img}}) \rightarrow [\mathbf{E}_t,\, \mathbf{E}_v] \rightarrow \mathbf{Z}_{\text{joint}} = \text{Fuse}(\mathbf{E}_t,\, \mathbf{E}_v) \rightarrow \hat{y} = \text{Head}(\mathbf{Z}_{\text{joint}})$</span>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Ingatkan kembali kepada mahasiswa bahwa pipeline 4 langkah ini adalah blueprint standar industri yang akan mereka temui di setiap paper ilmiah multimodal.
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 22: RANGKUMAN
+           ========================================================= -->
+      <section>
+
+        <h2>Rangkuman & Poin Kunci</h2>
+        <p>Benang merah dari hakikat multimodal hingga penerapan nyata:</p>
+
+        <div class="grid-2" style="margin-top: 16px;">
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue);">Hakikat & Tantangan</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.7;">
+              <li><strong>Multimodal</strong> &rarr; integrasi ragam modalitas untuk pemahaman lebih kaya & robust.</li>
+              <li><strong>Representasi</strong> &rarr; memetakan data heterogen ke vektor kompatibel.</li>
+              <li><strong>Alignment</strong> &rarr; mengkorelasikan bagian temporal/spasial.</li>
+            </ul>
+          </div>
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve);">Fusi & Aplikasi</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.7;">
+              <li><strong>Early Fusion</strong> &rarr; fitur awal.</li>
+              <li><strong>Late Fusion</strong> &rarr; keputusan mandiri akhir.</li>
+              <li><strong>Intermediate Fusion</strong> &rarr; lapisan tersembunyi.</li>
+              <li><strong>Aplikasi</strong> &rarr; Image Captioning, VQA, Sentimen, Retrieval.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 16px;">
+          <span class="material-symbols-outlined icon-blue">lightbulb</span>
+          <div>
+            <p style="font-size: 0.82em; margin: 0;">
+              <strong>Kunci:</strong> Tiga pilar (Representasi, Alignment, Fusi) adalah peta jalan untuk seluruh semester — akan dibedah mendalam di pertemuan-pertemuan berikutnya.
+            </p>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Review kembali poin 1-4. Minta mahasiswa mengulangi secara singkat apa beda Early dan Late fusion.
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 23: DISKUSI KELAS
+           ========================================================= -->
+      <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Diskusi Kelas">
+
+        <h2 style="text-align: center; margin-bottom: 24px;">Diskusi Kelas</h2>
+        <p style="text-align: center; margin-bottom: 24px;">Diskusikan bersama rekan di samping Anda selama 3-5 menit:</p>
+        <div style="display: flex; flex-direction: column; gap: 14px; max-width: 860px; margin: 0 auto;">
+          <div class="c-callout c-callout-info">
+            <span class="material-symbols-outlined icon-blue">help</span>
+            <div>
+              <p style="margin: 0; font-size: 0.85em; line-height: 1.6;">
+                <strong style="color: var(--ctp-blue);">Pertanyaan 1:</strong> Selain teks, gambar, video, dan suara, <strong>modalitas data apa lagi</strong> di dunia nyata yang sangat menarik diintegrasikan? Apa contoh skenario aplikasinya?
+              </p>
+            </div>
+          </div>
+          <div class="c-callout c-callout-warning">
+            <span class="material-symbols-outlined icon-mauve">help</span>
+            <div>
+              <p style="margin: 0; font-size: 0.85em; line-height: 1.6;">
+                <strong style="color: var(--ctp-mauve);">Pertanyaan 2:</strong> Apa saja potensi <strong>risiko, bias sosial, atau kegagalan etis</strong> yang dapat timbul saat kita menggabungkan berbagai data yang sangat heterogen?
+              </p>
+            </div>
+          </div>
+          <div class="c-callout c-callout-success">
+            <span class="material-symbols-outlined icon-teal">help</span>
+            <div>
+              <p style="margin: 0; font-size: 0.85em; line-height: 1.6;">
+                <strong style="color: var(--ctp-teal);">Pertanyaan 3:</strong> Bagaimana kemampuan multimodal model AI generasi terkini akan <strong>mengubah cara fundamental manusia berinteraksi</strong> dengan perangkat komputer 5 tahun ke depan?
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Berikan waktu 5 menit untuk diskusi. Jawaban nomor 1 bisa: EEG (gelombang otak), sinyal sensorik kedokteran, data pasar finansial + berita teks.
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 24: REFERENSI UTAMA
+           ========================================================= -->
+      <section>
+
+        <h2>Referensi & Bacaan Lanjutan</h2>
+        <p style="margin-bottom: 20px;">Rekomendasi literatur akademik wajib dan survei mendalam:</p>
+
+        <ol style="list-style: none; padding: 0; margin: 0; counter-reset: ref-counter;">
+          <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;">
+            <span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[1]</span>
+            <div>
+              <p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">
+                Goodfellow, I., Bengio, Y., & Courville, A. (2016).
+              </p>
+              <p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;">
+                <em>Deep Learning</em>. MIT Press. — Bab 1: Introduction & dasar-dasar arsitektur Neural Networks.
+              </p>
+            </div>
+          </li>
+          <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;">
+            <span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[2]</span>
+            <div>
+              <p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">
+                Liang, P. P., Zadeh, A., & Morency, L. P. (2023).
+              </p>
+              <p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;">
+                <em>Tutorial on Multimodal Machine Learning</em>. ICML 2023. — Taksonomi representasi, alignment, dan fusion.
+              </p>
+            </div>
+          </li>
+          <li style="counter-increment: ref-counter; padding: 14px 0; display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;">
+            <span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[3]</span>
+            <div>
+              <p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">
+                Baltrušaitis, T., Ahuja, C., & Morency, L. P. (2018).
+              </p>
+              <p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;">
+                <em>Multimodal Machine Learning: A Survey and Taxonomy</em>. IEEE TPAMI, 40(2), 421–443. — Survei komprehensif taksonomi multimodal.
+              </p>
+            </div>
+          </li>
+        </ol>
+
+        <aside class="notes">
+          Paper Baltrušaitis 2018 dan Tutorial ICML 2023 adalah bacaan paling komprehensif bagi yang ingin melanjutkan tugas akhir atau riset di bidang ini.
+        </aside>
+      </section>
+
+
+      <!-- =========================================================
+           SLIDE 25: PENUTUP & TEASER MINGGU DEPAN
+           ========================================================= -->
+      <section>
+        <div style="margin: auto 0; text-align: center;">
+
+          <h2 style="font-size: 1.8em; font-weight: 800; color: var(--ctp-text); margin-bottom: 16px;">
+            Terima Kasih
+          </h2>
+
+          <p style="font-size: 1.05em; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.6;">
+            Pertemuan selanjutnya:<br>
+            <strong style="color: var(--ctp-blue);">Representasi Modalitas I: Teks</strong>
+          </p>
+
+          <div style="background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-radius: 12px; padding: 18px 24px; display: inline-block; max-width: 480px;">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">
+              Pertanyaan &amp; Diskusi
+            </div>
+            <div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;">
+              <span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span>
+            </div>
+          </div>
+
+        </div>
+
+        <aside class="notes">
+          Tutup sesi dengan menyemangati mahasiswa untuk membaca materi pendukung minggu depan mengenai representasi teks.
+        </aside>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Persistent Edge-to-Edge Deck Footer -->
+  <footer class="deck-footer">
+    <div class="deck-footer-left">
+      <span class="deck-footer-code">IF25-40304</span>
+      <span class="deck-footer-sep">•</span>
+      <span class="deck-footer-dept">Teknik Informatika ITERA</span>
+    </div>
+
+    <div class="deck-footer-center">
+      <button type="button" id="deck-footer-topic" class="deck-footer-topic" onclick="toggleTopicPopover(event)" title="Daftar Isi & Navigasi Cepat Slide (Klik)">
+        <span id="deck-footer-topic-text" class="deck-footer-topic-text">Pertemuan 01 • Pengantar Pembelajaran Mesin Multimodal</span>
+        <span class="material-symbols-outlined deck-footer-topic-icon">expand_less</span>
+      </button>
+    </div>
+
+    <div class="deck-footer-right">
+      <button type="button" class="deck-footer-btn" onclick="Reveal.prev()" title="Slide Sebelumnya (← / P)" aria-label="Slide Sebelumnya">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <button type="button" class="deck-counter-btn" onclick="Reveal.toggleOverview()" title="Klik untuk Matriks Seluruh Slide (Esc/O)">
+        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">25</span>
+      </button>
+      <button type="button" class="deck-footer-btn" onclick="Reveal.next()" title="Slide Berikutnya (→ / Space / N)" aria-label="Slide Berikutnya">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </footer>
+
+  <!-- Floating Slide Topic Navigation Popover (Bottom-Up) -->
+  <div class="deck-topic-popover" id="deck-topic-popover">
+    <div class="deck-popover-search-wrap">
+      <input type="text" id="deck-topic-search" class="deck-popover-search" placeholder="Cari slide..." oninput="filterTopicList(this.value)">
+    </div>
+    <div class="deck-topic-list" id="deck-topic-list">
+      <!-- Generated dynamically by buildTopicIndex() -->
+    </div>
+  </div>
+
+  <!-- Reveal.js Scripts and Plugins from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+
+  <script>
+    // =========================================================
+    // Responsive Resolution & Aspect Ratio Manager
+    // Supports: 16:9 (FHD), 16:10 (MacBook), 4:3 (Class Projectors), and Mobile
+    // =========================================================
+
+    let currentAspectMode = localStorage.getItem('reveal_aspect_mode') || 'auto';
+
+    function calculateResponsiveDimensions(mode) {
+      const winW = window.innerWidth;
+      const winH = window.innerHeight - 86.5; // accounts for persistent header (48px) + progress (2.5px) + footer (36px)
+      const ratio = winW / winH;
+
+      if (mode === '16-9') {
+        return { width: 1280, height: 720, label: '16:9' };
+      } else if (mode === '16-10') {
+        return { width: 1280, height: 800, label: '16:10' };
+      } else if (mode === '4-3') {
+        return { width: 1024, height: 768, label: '4:3' };
+      } else if (mode === 'mobile') {
+        return { width: 750, height: 1000, label: 'Mobile' };
+      } else {
+        // Auto mode: dynamic sensing based on available viewport
+        if (winW <= 768 || ratio < 1.15) {
+          return { width: 750, height: Math.max(900, Math.round(750 / Math.max(0.5, ratio))), label: 'Auto' };
+        } else if (ratio >= 1.65) {
+          return { width: 1280, height: 720, label: 'Auto' };
+        } else if (ratio >= 1.45) {
+          return { width: 1280, height: 800, label: 'Auto' };
+        } else {
+          return { width: 1024, height: 768, label: 'Auto' };
+        }
+      }
+    }
+
+    const initialDim = calculateResponsiveDimensions(currentAspectMode);
+
+    // Initialize Reveal.js with dynamic viewport dimensions
+    Reveal.initialize({
+      width: initialDim.width,
+      height: initialDim.height,
+      margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2.0,
+      hash: true,
+      slideNumber: false,
+      controls: false,
+      progress: false,
+      center: true,
+      touch: true,
+      transition: 'slide',
+      backgroundTransition: 'none',
+      plugins: [ RevealNotes, RevealHighlight, RevealMath.KaTeX ]
+    });
+
+    // Update Deck State (Hairline Progress Bar, Stepper, Dynamic Topic Title, Counter)
+    function updateDeckState(event) {
+      const indices = event ? { h: event.indexh, v: event.indexv } : Reveal.getIndices();
+      const totalSlides = Reveal.getTotalSlides();
+      const currentIdx = indices ? indices.h : 0;
+
+      // 1. Update Hairline Progress Bar
+      const progressBar = document.getElementById('deck-progress-bar');
+      if (progressBar) {
+        const progressPercent = totalSlides > 1 ? (currentIdx / (totalSlides - 1)) * 100 : 0;
+        progressBar.style.width = progressPercent + '%';
+      }
+
+      // 2. Update Footer Slide Counter (e.g. 01 / 24)
+      const currentEl = document.getElementById('deck-slide-current');
+      const totalEl = document.getElementById('deck-slide-total');
+      if (currentEl) currentEl.textContent = String(currentIdx + 1).padStart(2, '0');
+      if (totalEl) totalEl.textContent = String(totalSlides).padStart(2, '0');
+
+      // 3. Update Footer Dynamic Topic Title
+      const topicEl = document.getElementById('deck-footer-topic-text') || document.getElementById('deck-footer-topic');
+      if (topicEl) {
+        if (currentIdx === 0) {
+          topicEl.textContent = 'Pertemuan 01 • Pengantar Pembelajaran Mesin Multimodal';
+        } else {
+          const currentSlide = Reveal.getCurrentSlide();
+          if (currentSlide) {
+            const topicAttr = currentSlide.getAttribute('data-topic');
+            if (topicAttr) {
+              topicEl.textContent = topicAttr;
+            } else {
+              const heading = currentSlide.querySelector('h2') || currentSlide.querySelector('h1');
+              if (heading) {
+                topicEl.textContent = heading.textContent.trim();
+              } else {
+                topicEl.textContent = 'Pertemuan 01 • Pengantar Pembelajaran Mesin Multimodal';
+              }
+            }
+          }
+        }
+      }
+
+      // 4. Update Active Topic Item in Popover
+      updateActiveTopicItem(currentIdx);
+    }
+
+    Reveal.on('ready', event => {
+      document.body.classList.add('reveal-ready');
+      updateDeckState(event);
+      buildTopicIndex();
+    });
+    Reveal.on('slidechanged', updateDeckState);
+
+    // =========================================================
+    // Floating Slide Topic Navigation Popover (Daftar Isi)
+    // =========================================================
+    function buildTopicIndex() {
+      const listEl = document.getElementById('deck-topic-list');
+      if (!listEl) return;
+
+      const slides = document.querySelectorAll('.reveal .slides > section');
+      let html = '';
+
+      slides.forEach((slide, idx) => {
+        const topicAttr = slide.getAttribute('data-topic');
+        const h1 = slide.querySelector('h1');
+        const h2 = slide.querySelector('h2');
+        const partEl = slide.querySelector('.section-part-label');
+        const isSectionSlide = slide.classList.contains('section-slide') || !!slide.querySelector('.section-slide-content');
+        const partText = partEl ? partEl.textContent.trim().replace(/\s+/g, ' ') : '';
+
+        const h1Text = h1 ? h1.textContent.trim().replace(/\s+/g, ' ') : '';
+        const h2Text = h2 ? h2.textContent.trim().replace(/\s+/g, ' ') : '';
+        let title = '';
+
+        if (idx === 0) {
+          title = h1Text || 'Pembelajaran Mesin Multimodal';
+          html += `<div class="deck-topic-section">Pendahuluan & Identitas</div>`;
+        } else if (isSectionSlide || partText.startsWith('Bagian')) {
+          const secTitle = h1Text || h2Text || `Bagian ${idx}`;
+          const sectionLabel = partText ? `${partText}: ${secTitle}` : secTitle;
+          title = secTitle;
+          html += `<div class="deck-topic-section">${sectionLabel}</div>`;
+        } else if (topicAttr) {
+          title = topicAttr;
+        } else {
+          title = h2Text || h1Text || `Slide ${idx + 1}`;
+        }
+
+        const numStr = String(idx + 1).padStart(2, '0');
+        html += `
+          <div class="deck-topic-item" data-slide-index="${idx}" onclick="jumpToSlide(${idx})">
+            <span class="deck-topic-num">${numStr}</span>
+            <span class="deck-topic-name" title="${title}">${title}</span>
+          </div>
+        `;
+      });
+
+      listEl.innerHTML = html;
+      const currentIdx = Reveal.getIndices ? Reveal.getIndices().h : 0;
+      updateActiveTopicItem(currentIdx);
+    }
+
+    function updateActiveTopicItem(currentIdx) {
+      document.querySelectorAll('.deck-topic-item').forEach(item => {
+        const idx = parseInt(item.getAttribute('data-slide-index'), 10);
+        item.classList.toggle('active', idx === currentIdx);
+      });
+    }
+
+    function toggleTopicPopover(e) {
+      if (e) e.stopPropagation();
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (!popover) return;
+
+      const isActive = popover.classList.toggle('active');
+      if (btn) btn.classList.toggle('active', isActive);
+
+      if (isActive) {
+        const activeItem = popover.querySelector('.deck-topic-item.active');
+        if (activeItem) {
+          activeItem.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }
+        const searchInput = document.getElementById('deck-topic-search');
+        if (searchInput) {
+          searchInput.value = '';
+          filterTopicList('');
+          setTimeout(() => searchInput.focus(), 80);
+        }
+      }
+    }
+
+    function closeTopicPopover() {
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (popover) popover.classList.remove('active');
+      if (btn) btn.classList.remove('active');
+    }
+
+    function jumpToSlide(index) {
+      Reveal.slide(index);
+      closeTopicPopover();
+    }
+
+    function filterTopicList(query) {
+      const q = (query || '').toLowerCase().trim();
+      const items = document.querySelectorAll('.deck-topic-item');
+      const sections = document.querySelectorAll('.deck-topic-section');
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const num = (item.querySelector('.deck-topic-num') || {}).textContent || '';
+        const name = (item.querySelector('.deck-topic-name') || {}).textContent || '';
+        const matches = !q || num.toLowerCase().includes(q) || name.toLowerCase().includes(q);
+        item.style.display = matches ? 'grid' : 'none';
+        if (matches) visibleCount++;
+      });
+
+      sections.forEach(sec => {
+        let nextEl = sec.nextElementSibling;
+        let hasVisibleChild = false;
+        while (nextEl && !nextEl.classList.contains('deck-topic-section')) {
+          if (nextEl.classList.contains('deck-topic-item') && nextEl.style.display !== 'none') {
+            hasVisibleChild = true;
+            break;
+          }
+          nextEl = nextEl.nextElementSibling;
+        }
+        sec.style.display = hasVisibleChild ? 'block' : 'none';
+      });
+
+      const listEl = document.getElementById('deck-topic-list');
+      let emptyMsg = document.getElementById('deck-topic-empty-msg');
+      if (visibleCount === 0) {
+        if (!emptyMsg) {
+          emptyMsg = document.createElement('div');
+          emptyMsg.id = 'deck-topic-empty-msg';
+          emptyMsg.className = 'deck-topic-empty';
+          emptyMsg.textContent = 'Tidak ada slide yang cocok dengan pencarian.';
+          listEl.appendChild(emptyMsg);
+        }
+        emptyMsg.style.display = 'block';
+      } else if (emptyMsg) {
+        emptyMsg.style.display = 'none';
+      }
+    }
+
+    // Function to apply and switch aspect modes dynamically
+    function setAspectMode(mode) {
+      currentAspectMode = mode;
+      localStorage.setItem('reveal_aspect_mode', mode);
+
+      const dim = calculateResponsiveDimensions(mode);
+
+      // Reconfigure Reveal.js canvas
+      Reveal.configure({
+        width: dim.width,
+        height: dim.height,
+        margin: 0.04,
+        minScale: 0.2,
+        maxScale: 2.0
+      });
+
+      // Update Body Classes for CSS styling hooks
+      document.body.classList.remove('aspect-16-9', 'aspect-16-10', 'aspect-4-3', 'aspect-mobile');
+      if (mode === 'auto') {
+        if (window.innerWidth <= 768) document.body.classList.add('aspect-mobile');
+      } else {
+        document.body.classList.add('aspect-' + mode);
+      }
+
+      // Update UI label
+      const labelEl = document.getElementById('aspect-label');
+      if (labelEl) {
+        labelEl.textContent = dim.label;
+      }
+
+      // Update dropdown active status
+      document.querySelectorAll('.dropdown-item').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-aspect') === mode);
+      });
+
+      // Close dropdown
+      closeAspectDropdown();
+
+      // Relayout slides
+      setTimeout(() => {
+        Reveal.layout();
+      }, 50);
+    }
+
+    // Dropdown Handling
+    function toggleAspectDropdown(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('aspect-menu');
+      menu.classList.toggle('active');
+    }
+
+    function closeAspectDropdown() {
+      const menu = document.getElementById('aspect-menu');
+      if (menu) menu.classList.remove('active');
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.nav-dropdown')) {
+        closeAspectDropdown();
+      }
+      if (!e.target.closest('#deck-topic-popover') && !e.target.closest('#deck-footer-topic')) {
+        closeTopicPopover();
+      }
+    });
+
+    // Debounced window resize handler for intelligent Auto mode
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function() {
+        if (currentAspectMode === 'auto') {
+          const dim = calculateResponsiveDimensions('auto');
+          const cfg = Reveal.getConfig();
+          if (cfg.width !== dim.width || cfg.height !== dim.height) {
+            Reveal.configure({
+              width: dim.width,
+              height: dim.height
+            });
+            const labelEl = document.getElementById('aspect-label');
+            if (labelEl) labelEl.textContent = dim.label;
+            Reveal.layout();
+          }
+        }
+      }, 200);
+    });
+
+    // Initial label set on load
+    window.addEventListener('DOMContentLoaded', function() {
+      setAspectMode(currentAspectMode);
+    });
+
+    // Shortcuts modal handling
+    function openShortcutsModal() {
+      document.getElementById('shortcuts-modal').classList.add('active');
+    }
+
+    function closeShortcutsModal(event) {
+      if (!event || event.target.id === 'shortcuts-modal' || event.target.classList.contains('modal-close')) {
+        document.getElementById('shortcuts-modal').classList.remove('active');
+      }
+    }
+
+    // Keyboard Shortcuts Listener
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        const popover = document.getElementById('deck-topic-popover');
+        if (popover && popover.classList.contains('active')) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeTopicPopover();
+          return;
+        }
+      }
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        const modal = document.getElementById('shortcuts-modal');
+        modal.classList.toggle('active');
+      }
+    });
+  </script>
+
+</body>
+</html>

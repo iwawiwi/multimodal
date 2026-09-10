@@ -1,0 +1,34 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# Generated artifacts (regenerable from source)
+pdf/
+hands-on/*.docx
+
+# Node (Vivliostyle build pipeline)
+node_modules/
+.vivliostyle/
+
+# Global skill symlink (machine-specific absolute path -> ~/.agents/skills/)
+.agents/skills/lecture-slide-designer
+
+# Source PPTX decks (not part of the published site)
+origin/
