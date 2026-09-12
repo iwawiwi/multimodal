@@ -2,6 +2,7 @@
 /* Print Reveal.js deck after browser-side rendering completes. */
 const fs = require('fs');
 const http = require('http');
+const { WebSocket } = require('ws');
 
 const [url, output, expectedSlides] = process.argv.slice(2);
 const port = Number(process.env.CDP_PORT || 9222);
