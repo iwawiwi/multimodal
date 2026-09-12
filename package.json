@@ -4,7 +4,7 @@
   "private": true,
   "description": "Build pipeline for hands-on PDF documents (Vivliostyle)",
   "scripts": {
-    "bake": "node vivliostyle/bake.js hands-on/mgg02-hands-on.html hands-on/mgg02-hands-on.html",
+    "bake": "node vivliostyle/bake.js hands-on/mgg${HANDSON_WEEK:-03}-hands-on.html hands-on/mgg${HANDSON_WEEK:-03}-hands-on.html",
     "build:pdf": "vivliostyle build --style vivliostyle/print-formal.css",
     "build:pdf:preview": "vivliostyle preview --style vivliostyle/print-formal.css",
     "measure": "node scripts/measure_overflow.js"
