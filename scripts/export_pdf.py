@@ -17,6 +17,8 @@ import threading
 import tempfile
 import http.server
 import socketserver
+import shutil
+import re
 
 
 def get_chrome_path():
@@ -78,6 +80,8 @@ def export_slide_to_pdf(slide_filename, output_pdf=None):
         output_pdf = os.path.join("pdf", f"{base_name}.pdf")
 
     # Inject @page CSS into a temp copy
+    with open(slide_filename, "r", encoding="utf-8") as f:
+        expected_slides = len(re.findall(r"<section(?:\s|>)", f.read()))
     tmp_html = inject_print_css(slide_filename)
     tmp_basename = os.path.basename(tmp_html)
 
@@ -104,52 +108,57 @@ def export_slide_to_pdf(slide_filename, output_pdf=None):
     )
     print(f"Rendering [16:9] 1920×1080 -> {output_pdf} ...")
 
-    cmd = [
-        chrome,
-        "--headless=new",
-        "--disable-gpu",
-        "--no-sandbox",
-        "--no-pdf-header-footer",
-        "--virtual-time-budget=15000",
-        "--window-size=1920,1080",
-        f"--print-to-pdf={output_pdf}",
-        target_url,
+    # Direct --print-to-pdf can print before Reveal.js initializes, producing
+    # a valid-looking 1 KB blank PDF. Use CDP and wait for Reveal readiness.
+    cdp_port = 9300 + (os.getpid() % 500)
+    user_dir = tempfile.mkdtemp(prefix="multimodal-chrome-")
+    chrome_cmd = [
+        chrome, "--headless=new", "--disable-gpu", "--no-sandbox",
+        "--no-first-run", "--no-default-browser-check",
+        f"--remote-debugging-port={cdp_port}",
+        f"--user-data-dir={user_dir}", "--window-size=1920,1080",
+        "about:blank",
     ]
+    cdp_script = os.path.join(os.path.dirname(__file__), "chrome_print_pdf.js")
 
     try:
-        res = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
-        httpd.shutdown()
-
-        try:
-            os.unlink(tmp_html)
-        except OSError:
-            pass
-
+        browser = subprocess.Popen(chrome_cmd, stdout=subprocess.DEVNULL,
+                                   stderr=subprocess.PIPE, text=True)
+        env = os.environ.copy()
+        env["CDP_PORT"] = str(cdp_port)
+        res = subprocess.run(
+            ["node", cdp_script, target_url, output_pdf, str(expected_slides)],
+            capture_output=True, text=True, timeout=90, env=env,
+        )
         if res.returncode == 0 and os.path.exists(output_pdf):
             size_kb = os.path.getsize(output_pdf) / 1024
             print(f"✅ Successfully generated PDF: {output_pdf} ({size_kb:.1f} KB)")
             return True
-        else:
-            print(f"❌ Failed to generate PDF. Exit code: {res.returncode}")
-            if res.stderr:
-                print(f"   Stderr: {res.stderr[:500]}")
-            return False
+        print(f"❌ Failed to generate PDF. Exit code: {res.returncode}")
+        if res.stderr:
+            print(f"   Stderr: {res.stderr[:1000]}")
+        return False
     except subprocess.TimeoutExpired:
-        httpd.shutdown()
-        try:
-            os.unlink(tmp_html)
-        except OSError:
-            pass
-        print(f"❌ Timeout: Chrome did not finish within 60 seconds.")
+        print("❌ Timeout: Chrome did not finish within 90 seconds.")
         return False
     except Exception as e:
+        print(f"❌ Exception during PDF generation: {e}")
+        return False
+    finally:
+        try:
+            browser.terminate()
+            browser.wait(timeout=5)
+        except Exception:
+            try:
+                browser.kill()
+            except Exception:
+                pass
         httpd.shutdown()
+        shutil.rmtree(user_dir, ignore_errors=True)
         try:
             os.unlink(tmp_html)
         except OSError:
             pass
-        print(f"❌ Exception during PDF generation: {e}")
-        return False
 
 
 if __name__ == "__main__":
