@@ -48,6 +48,9 @@
           <button type="button" class="dropdown-item" data-aspect="mobile" onclick="setAspectMode('mobile')">
             <span class="item-title">Mobile</span>
           </button>
+          <button type="button" class="dropdown-item" data-aspect="text-large" onclick="setAspectMode('text-large')">
+            <span class="item-title">Teks Besar</span>
+          </button>
         </div>
       </div>
 
@@ -284,7 +287,7 @@
               Saat menonton video perkuliahan, mata Anda menangkap slide presentasi (visual) sementara telinga Anda mengolah narasi dosen (akustik).
             </p>
             <div style="font-size: 0.76em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.04em; text-transform: uppercase;">
-              Citra + Suara
+              Visual + Audio
             </div>
           </div>
 
@@ -320,15 +323,15 @@
 
 
       <!-- =========================================================
-           SLIDE 6: MOTIVASI 1: INFORMASI LEBIH LENGKAP & ROBUST
+           SLIDE 6: MOTIVASI 1: INFORMASI LEBIH LENGKAP & TANGGUH
            ========================================================= -->
       <section>
 
-        <h2>Motivasi 1: Informasi Lebih Lengkap & Robust</h2>
+        <h2>Motivasi 1: Informasi Lebih Lengkap & Tangguh</h2>
 
         <div class="grid-1-2" style="margin-top: 20px;">
           <div class="c-card c-card-peach c-card-accent-top">
-            <h3 style="color: var(--ctp-peach); margin-bottom: 8px;">Prinsip Kekokohan</h3>
+            <h3 style="color: var(--ctp-peach); margin-bottom: 8px;">Prinsip Ketangguhan</h3>
             <p style="font-size: 0.9em; line-height: 1.5;">
               Model multimodal jauh lebih tahan terhadap derau (<em>noise</em>) atau hilangnya data parsial dibandingkan model modalitas tunggal.
             </p>
@@ -347,7 +350,7 @@
             </div>
 
             <div class="c-card">
-              <h4 style="color: var(--ctp-text); margin-bottom: 6px;">2. Robustness Terhadap Kerusakan Sinyal (Missing Modality)</h4>
+              <h4 style="color: var(--ctp-text); margin-bottom: 6px;">2. Ketangguhan Terhadap Kerusakan Sinyal atau Ketiadaan Modalitas</h4>
               <p>
                 Dalam sistem kemudi otonom (<em>autonomous vehicles</em>), kamera visual bisa silau akibat matahari terik, tetapi sensor LiDAR dan Radar tetap mampu mendeteksi pejalan kaki secara akurat.
               </p>
@@ -367,15 +370,15 @@
       <section>
 
         <h2>Motivasi 2: Mengatasi Keterbatasan Unimodal</h2>
-        <p style="margin-bottom: 16px;">Setiap modalitas memiliki titik buta (<em>blind spots</em>) intrinsik bila berdiri sendiri:</p>
+        <p style="margin-bottom: 16px;">Setiap modalitas memiliki kelemahan intrinsik bila berdiri sendiri:</p>
 
         <table class="c-table">
           <thead>
             <tr>
-              <th style="width: 20%;">Modalitas</th>
-              <th style="width: 26%;">Informasi Ditangkap</th>
-              <th style="width: 27%;">Titik Buta Intrinsik (<em>Blind Spot</em>)</th>
-              <th style="width: 27%;">Sinergi Multimodal</th>
+              <th style="width: 25%;">Modalitas</th>
+              <th style="width: 25%;">Informasi Ditangkap</th>
+              <th style="width: 25%;">Kelemahan Intrinsik</th>
+              <th style="width: 25%;">Sinergi Multimodal</th>
             </tr>
           </thead>
           <tbody>
@@ -391,16 +394,16 @@
             <tr>
               <td class="c-table-criteria">
                 <span class="material-symbols-outlined icon-mauve" style="font-size: 15px; vertical-align: -2px; margin-right: 4px;">image</span>
-                Citra / Visual
+                Visual
               </td>
               <td>Wujud visual 2D/3D, tekstur, relasi spasial objek, koordinat geometri.</td>
               <td>Tidak mampu memaparkan alur naratif temporal dan motif logis di balik adegan.</td>
-              <td>Citra dilengkapi teks deskripsi latar belakang atau kueri penalaran (VQA).</td>
+              <td>Visual dilengkapi teks deskripsi latar belakang atau kueri penalaran (VQA).</td>
             </tr>
             <tr>
               <td class="c-table-criteria">
                 <span class="material-symbols-outlined icon-teal" style="font-size: 15px; vertical-align: -2px; margin-right: 4px;">graphic_eq</span>
-                Audio / Akustik
+                Audio
               </td>
               <td>Gelombang sinyal temporal, intonasi vokal, dinamika frekuensi suara.</td>
               <td>Rentan derau latar, sulit memisahkan pembicara (<em>cocktail party problem</em>).</td>
@@ -537,10 +540,10 @@
         <table class="c-table">
           <thead>
             <tr>
-              <th style="width: 18%;">Karakteristik</th>
-              <th style="width: 27%;">Modalitas Teks</th>
-              <th style="width: 27%;">Modalitas Citra & Video</th>
-              <th style="width: 28%;">Modalitas Audio / Suara</th>
+              <th style="width: 25%;">Karakteristik</th>
+              <th style="width: 25%;">Modalitas Teks</th>
+              <th style="width: 25%;">Modalitas Visual</th>
+              <th style="width: 25%;">Modalitas Audio</th>
             </tr>
           </thead>
           <tbody>
@@ -644,7 +647,7 @@
               Data sekuensial yang memiliki durasi, kecepatan pelafalan, atau keterlambatan waktu (<em>latency</em>) berbeda.
             </p>
             <div style="margin-top: 8px; padding: 8px 12px; background: var(--ctp-base); border-radius: 8px; font-size: 0.8em;">
-              <em>Contoh: Menyelaraskan suku kata yang diucapkan dengan bentuk bibir pembicara pada video wawancara.</em>
+              <strong>Contoh:</strong> Menyelaraskan suku kata yang diucapkan dengan bentuk bibir pembicara pada video wawancara.
             </div>
           </div>
 
@@ -657,7 +660,7 @@
               Menghubungkan entitas non-temporal, seperti relasi antara frasa teks dengan koordinat region pada citra.
             </p>
             <div style="margin-top: 8px; padding: 8px 12px; background: var(--ctp-base); border-radius: 8px; font-size: 0.8em;">
-              <em>Contoh: Menemukan bounding box lokasi "anjing berbulu putih" dalam gambar pemandangan taman yang luas.</em>
+              <strong>Contoh:</strong> Menemukan bounding box lokasi "anjing berbulu putih" dalam gambar pemandangan taman yang luas.
             </div>
           </div>
         </div>
@@ -679,9 +682,9 @@
         <table class="c-table">
           <thead>
             <tr>
-              <th style="width: 22%;">Kriteria Komparasi</th>
-              <th style="width: 39%;">Temporal Alignment (Dimensi Waktu)</th>
-              <th style="width: 39%;">Structural Alignment (Dimensi Spasial / Relasional)</th>
+              <th style="width: 20%;">Kriteria Komparasi</th>
+              <th style="width: 40%;">Temporal Alignment (Dimensi Waktu)</th>
+              <th style="width: 40%;">Structural Alignment (Dimensi Spasial / Relasional)</th>
             </tr>
           </thead>
           <tbody>
@@ -788,10 +791,10 @@
         <table class="c-table">
           <thead>
             <tr>
-              <th style="width: 22%;">Kriteria Evaluasi</th>
-              <th style="width: 26%;">Early Fusion (Input)</th>
-              <th style="width: 26%;">Late Fusion (Keputusan)</th>
-              <th style="width: 26%;">Intermediate Fusion (Laten)</th>
+              <th style="width: 25%;">Kriteria Evaluasi</th>
+              <th style="width: 25%;">Early Fusion (Input)</th>
+              <th style="width: 25%;">Late Fusion (Keputusan)</th>
+              <th style="width: 25%;">Intermediate Fusion (Laten)</th>
             </tr>
           </thead>
           <tbody>
@@ -815,7 +818,7 @@
             </tr>
             <tr>
               <td class="c-table-criteria">Kompleksitas Desain</td>
-              <td>Sederhana ($O(D_{\text{concat}})$)</td>
+              <td>Sederhana</td>
               <td>Sederhana (arsitektur modular terpisah)</td>
               <td>Tinggi (perlu tuning interaksi multi-layer)</td>
             </tr>
@@ -851,14 +854,15 @@
            ========================================================= -->
       <section>
 
-        <h2>Penerapan Model: Image Captioning & VQA</h2>
+        <h2>Penerapan Model: Image Captioning dan VQA</h2>
         <p style="margin-bottom: 14px;">Studi kasus konkret bagaimana representasi visual dan bahasa terintegrasi dalam tugas industri:</p>
 
-        <div class="case-showcase">
-          <!-- Image Captioning -->
-          <div class="case-input-pane">
-            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-mauve); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
-              Kasus 1: Image Captioning
+        <!-- Image Captioning -->
+        <div class="grid-2" style="margin-top: 20px;">
+          <div class="c-card c-card-teal c-card-accent-top">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-teal">1</span>
+              <h3 style="color: var(--ctp-teal); margin: 0;">Image Captioning</h3>
             </div>
             <p style="font-size: 0.85em; margin-bottom: 10px;">
               <strong>Tugas:</strong> Menghasilkan deskripsi tekstual yang natural dan bermakna dari konten gambar visual.
@@ -872,9 +876,10 @@
           </div>
 
           <!-- VQA -->
-          <div class="case-model-pane">
-            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-teal); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
-              Kasus 2: Visual Question Answering (VQA)
+          <div class="c-card c-card-peach c-card-accent-top">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-peach">2</span>
+              <h3 style="color: var(--ctp-peach); margin: 0;">Visual Question Answering</h3>
             </div>
             <p style="font-size: 0.85em; margin-bottom: 10px;">
               <strong>Tugas:</strong> Menjawab pertanyaan terbuka berbasis teks yang memerlukan penalaran citra mendalam.
@@ -899,7 +904,7 @@
            ========================================================= -->
       <section>
 
-        <h2>Penerapan Model Multimodal (3 & 4)</h2>
+        <h2>Penerapan Model: Sentimen Multimodal dan Retrieval</h2>
 
         <div class="grid-2" style="margin-top: 20px;">
           <!-- Sentimen Multimodal -->
@@ -909,7 +914,7 @@
               <h3 style="color: var(--ctp-teal); margin: 0;">Analisis Sentimen Multimodal</h3>
             </div>
             <p style="margin-bottom: 10px;">
-              Menentukan sentimen opini manusia (positif, netral, negatif) secara komprehensif dari video interaksi.
+              <strong>Tugas:</strong> Menentukan sentimen opini manusia (positif, netral, negatif) secara komprehensif dari video interaksi.
             </p>
             <div style="background: var(--ctp-base); padding: 12px; border-radius: 10px; font-size: 0.82em; margin-bottom: 10px;">
               <strong>Modalitas Terlibat:</strong> Transkrip ucapan (teks), intonasi nada dan frekuensi (audio), serta mikro-ekspresi dan gestur wajah (visual).
@@ -926,7 +931,7 @@
               <h3 style="color: var(--ctp-peach); margin: 0;">Multimodal Retrieval</h3>
             </div>
             <p style="margin-bottom: 10px;">
-              Mencari data dari satu modalitas menggunakan kueri dari modalitas lain secara lintas domain (<em>cross-modal</em>).
+              <strong>Tugas:</strong> Mencari data dari satu modalitas menggunakan kueri dari modalitas lain secara lintas domain (<em>cross-modal</em>).
             </p>
             <div style="background: var(--ctp-base); padding: 12px; border-radius: 10px; font-size: 0.82em; margin-bottom: 10px;">
               <strong>Kebutuhan Model:</strong> Ruang laten bersama (<em>joint embedding space</em>) dengan jarak semantik kosinus terkalibrasi.
@@ -1238,6 +1243,10 @@
         return { width: 1024, height: 768, label: '4:3' };
       } else if (mode === 'mobile') {
         return { width: 750, height: 1000, label: 'Mobile' };
+      } else if (mode === 'text-large') {
+        // HTML-only mode: smaller base resolution → Reveal upscales further
+        // → larger text on the projector. NOT applied to PDF export.
+        return { width: 960, height: 540, label: 'Teks Besar' };
       } else {
         // Auto mode: dynamic sensing based on available viewport
         if (winW <= 768 || ratio < 1.15) {

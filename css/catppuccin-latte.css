@@ -815,6 +815,69 @@ html, body {
   min-height: 180px;
 }
 
+/* =========================================================
+   Teks Besar mode (HTML-only, base 960×540 — see D-013)
+   Reveal upscales 2.0× here (vs 1.5× at 1280×720), so text is
+   +33% larger even after the modest font reductions below.
+   The reductions ONLY tighten dense holistic components so
+   they fit the smaller canvas without splitting them.
+   ========================================================= */
+.aspect-text-large .reveal h2 {
+  font-size: 1.35em;
+  margin-bottom: 10px;
+}
+.aspect-text-large .reveal p {
+  line-height: 1.45;
+}
+.aspect-text-large .c-table {
+  font-size: 0.72em;
+  margin: 10px 0;
+}
+.aspect-text-large .c-table th {
+  padding: 7px 11px;
+  font-size: 0.88em;
+}
+.aspect-text-large .c-table td {
+  padding: 7px 11px;
+  line-height: 1.38;
+}
+.aspect-text-large .formula-hero {
+  padding: 12px 18px;
+  margin: 10px 0;
+}
+.aspect-text-large .formula-hero .formula-math {
+  font-size: 1.05em;
+  line-height: 1.4;
+}
+.aspect-text-large .formula-breakdown {
+  gap: 10px;
+  margin-top: 10px;
+}
+.aspect-text-large .formula-term-box {
+  padding: 8px 10px;
+  font-size: 0.72em;
+  line-height: 1.35;
+}
+.aspect-text-large .big-idea-canvas h2 {
+  font-size: 1.6em;
+}
+.aspect-text-large .c-callout {
+  padding: 10px 14px;
+  font-size: 0.85em;
+}
+.aspect-text-large .grid-2,
+.aspect-text-large .grid-3,
+.aspect-text-large .grid-4 {
+  gap: 10px;
+}
+/* References list (D-002 canonical inline <ol>) — tighten vertical rhythm */
+.aspect-text-large ol[style*="counter-reset"] li {
+  padding: 8px 0 !important;
+}
+.aspect-text-large ol[style*="counter-reset"] p {
+  line-height: 1.32 !important;
+}
+
 /* Section Title Slide (Zero-Flex) */
 .section-slide {
   padding: 0 !important;

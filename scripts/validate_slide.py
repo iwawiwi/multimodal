@@ -37,13 +37,15 @@ from html.parser import HTMLParser
 ALLOWED_CTP_TOKENS = {
     'base', 'mantle', 'crust',
     'surface0', 'surface1', 'surface2',
-    'overlay0', 'overlay1',
+    'overlay0', 'overlay1', 'overlay2',
     'text', 'subtext1', 'subtext0',
     'blue', 'sapphire', 'mauve', 'teal',
     'green', 'peach', 'maroon', 'lavender',
 }
 
-# Raw Catppuccin palette colors that are NOT part of the design system.
+# Raw Catppuccin palette colors that are NOT part of the design system
+# for SLIDE CONTENT. yellow/sky are additionally allowed in Prism .token
+# rules (syntax highlighting = code data, not slide content).
 FORBIDDEN_CTP_TOKENS = {
     'rosewater', 'flamingo', 'pink', 'red', 'yellow', 'sky',
 }
@@ -70,7 +72,27 @@ class TagValidator(HTMLParser):
                 self.errors.append(f"Mismatched tag: expected </{self.stack[-1]}>, got </{tag}>")
 
 
-def check_design_compliance(content):
+def _token_used_in_prism_context(content, tok):
+    """
+    True if --ctp-yellow/--ctp-sky is used ONLY within a Prism .token rule
+    (syntax highlighting = code data, legal per design-tokens.md note).
+    """
+    token_rule = re.compile(
+        r'\.token\.(?:class-name|operator)\s*\{[^}]*var\(--ctp-' + re.escape(tok) + r'\)',
+        re.DOTALL,
+    )
+    return bool(token_rule.search(content))
+
+
+def _is_hands_on_doc(html_path):
+    """Hands-on docs (hands-on/mggNN-hands-on.html) are code-first companion
+    documents, NOT slide decks. Several slide-only rules do not apply:
+    vh/vw units (floating nav + drawer), and overflow-x: auto on code/terminal."""
+    base = os.path.basename(html_path)
+    return ('hands-on' in html_path) or ('hands-on' in base)
+
+
+def check_design_compliance(content, doc_type='slide'):
     """Return a list of design-language violation strings (empty = compliant)."""
     violations = []
 
@@ -92,6 +114,10 @@ def check_design_compliance(content):
     used_tokens = set(re.findall(r'--ctp-([a-z0-9]+)', content))
     for tok in sorted(used_tokens):
         if tok in FORBIDDEN_CTP_TOKENS:
+            # Exception: yellow/sky are legal ONLY inside Prism .token rules
+            # (syntax highlighting is code data, not slide content).
+            if tok in ('yellow', 'sky') and _token_used_in_prism_context(content, tok):
+                continue
             violations.append(
                 f"Undocumented token --ctp-{tok} — not part of the design system. "
                 f"Use a documented token (see design-tokens.md)."
@@ -119,7 +145,7 @@ def check_design_compliance(content):
     # 5. data-transition="zoom"
     if re.search(r'data-transition="zoom"', content):
         violations.append(
-            'Forbidden data-transition="zoom" — use fade (see SKILL.md transition standards).'
+            'Forbidden data-transition="zoom" — use the global slide transition (see SKILL.md).'
         )
 
     # 6. Spatial fragments
@@ -130,8 +156,8 @@ def check_design_compliance(content):
             )
             break
 
-    # 7. cqi / vh units inside slides
-    if re.search(r'\d+(?:\.\d+)?(?:cqi|vh)\b', content):
+    # 7. cqi / vh units inside slides (slide-only rule)
+    if doc_type == 'slide' and re.search(r'\d+(?:\.\d+)?(?:cqi|vh)\b', content):
         violations.append(
             'Forbidden cqi/vh unit inside slides — use flex/em/rem (see SKILL.md).'
         )
@@ -143,28 +169,29 @@ def check_design_compliance(content):
         )
 
     # 9. Scrollbars on slide content (no-scroll policy, D-009)
-    # Detect overflow: auto/scroll applied to slide-content components.
-    # The navigation popover .deck-topic-list is UI chrome and exempt.
-    overflow_patterns = [
-        r'overflow(?:-x|-y)?\s*:\s*(auto|scroll)',
-    ]
-    # Find CSS rules targeting slide components with overflow
-    # (in-file <style> blocks) — skip .deck-topic-list which is UI chrome.
-    style_blocks = re.findall(r'<style[^>]*>(.*?)</style>', content, re.DOTALL)
-    for block in style_blocks:
-        for rule_match in re.finditer(
-            r'([^{}]+)\{([^}]*overflow[^}]*)\}', block, re.DOTALL
-        ):
-            selector = rule_match.group(1)
-            body = rule_match.group(2)
-            if re.search(r'overflow(?:-x|-y)?\s*:\s*(auto|scroll)', body):
-                # Exempt UI chrome: deck-topic-list, and any .deck-* navigation
-                if re.search(r'deck-topic-list|deck-\w*(?:menu|popover|overlay|dropdown|search)', selector):
-                    continue
-                violations.append(
-                    'No-scroll policy (D-009): overflow auto/scroll on slide content '
-                    f'({selector.strip()}). Content must fit without scrolling — split the slide instead.'
-                )
+    # Slide-only: hands-on docs legitimately use overflow-x: auto on code
+    # windows/terminal bodies (code may exceed the column width).
+    if doc_type == 'slide':
+        overflow_patterns = [
+            r'overflow(?:-x|-y)?\s*:\s*(auto|scroll)',
+        ]
+        # Find CSS rules targeting slide components with overflow
+        # (in-file <style> blocks) — skip .deck-topic-list which is UI chrome.
+        style_blocks = re.findall(r'<style[^>]*>(.*?)</style>', content, re.DOTALL)
+        for block in style_blocks:
+            for rule_match in re.finditer(
+                r'([^{}]+)\{([^}]*overflow[^}]*)\}', block, re.DOTALL
+            ):
+                selector = rule_match.group(1)
+                body = rule_match.group(2)
+                if re.search(r'overflow(?:-x|-y)?\s*:\s*(auto|scroll)', body):
+                    # Exempt UI chrome: deck-topic-list, and any .deck-* navigation
+                    if re.search(r'deck-topic-list|deck-\w*(?:menu|popover|overlay|dropdown|search)', selector):
+                        continue
+                    violations.append(
+                        'No-scroll policy (D-009): overflow auto/scroll on slide content '
+                        f'({selector.strip()}). Content must fit without scrolling — split the slide instead.'
+                    )
 
     return violations
 
@@ -212,7 +239,8 @@ def validate_file(html_path):
             print(f"   - {bl}")
 
     # Design-language compliance
-    violations = check_design_compliance(content)
+    doc_type = 'hands-on' if _is_hands_on_doc(html_path) else 'slide'
+    violations = check_design_compliance(content, doc_type=doc_type)
     if violations:
         has_error = True
         print("❌ Design-Language Violations:")

@@ -154,6 +154,18 @@
     }
     .fn-btn.fn-toc:hover { background: #1455d9; border-color: #1455d9; color: #fff; }
     .fn-btn.fn-pdf { color: var(--ctp-blue); }
+    .fn-btn.fn-text-large { color: var(--ctp-mauve); }
+    .fn-btn.fn-text-large.active {
+      background: var(--ctp-mauve);
+      border-color: var(--ctp-mauve);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(136, 57, 239, 0.28);
+    }
+
+    /* --- Mode Teks Besar (HTML only; PDF tidak terpengaruh) --- */
+    html.text-large {
+      zoom: 1.35;  /* body 16→21.6px, code 13→17.5px */
+    }
 
     /* --- Drawer --- */
     .toc-drawer {
@@ -1164,6 +1176,9 @@ Nilai < 1 menunjukkan vektor kontekstual berbeda.</div>
     <button class="fn-btn fn-toc" type="button" onclick="toggleToc(true)" title="Daftar isi">
       <span class="material-symbols-outlined">toc</span>
     </button>
+    <button class="fn-btn fn-text-large" id="textLargeBtn" type="button" onclick="toggleTextLarge()" title="Teks Besar (untuk proyektor)">
+      <span class="material-symbols-outlined">text_increase</span>
+    </button>
     <a href="#" class="fn-btn fn-top" title="Kembali ke atas" onclick="scrollTop();return false;">
       <span class="material-symbols-outlined">arrow_upward</span>
     </a>
@@ -1269,6 +1284,31 @@ Nilai < 1 menunjukkan vektor kontekstual berbeda.</div>
     function scrollTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    // =========================================================
+    // Mode Teks Besar (HTML only; PDF tidak terpengaruh)
+    // =========================================================
+    function toggleTextLarge() {
+      var html = document.documentElement;
+      var btn = document.getElementById('textLargeBtn');
+      var isOn = html.classList.toggle('text-large');
+      if (btn) btn.classList.toggle('active', isOn);
+      try {
+        localStorage.setItem('hands_on_text_large', isOn ? '1' : '0');
+      } catch (e) {}
+    }
+
+    (function initTextLarge() {
+      var saved;
+      try {
+        saved = localStorage.getItem('hands_on_text_large');
+      } catch (e) {}
+      if (saved === '1') {
+        document.documentElement.classList.add('text-large');
+        var btn = document.getElementById('textLargeBtn');
+        if (btn) btn.classList.add('active');
+      }
+    })();
 
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') toggleToc(false);
