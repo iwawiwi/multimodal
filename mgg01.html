@@ -646,7 +646,7 @@
             <p style="font-size: 0.85em;">
               Data sekuensial yang memiliki durasi, kecepatan pelafalan, atau keterlambatan waktu (<em>latency</em>) berbeda.
             </p>
-            <div style="margin-top: 8px; padding: 8px 12px; background: var(--ctp-base); border-radius: 8px; font-size: 0.8em;">
+            <div style="background: var(--ctp-base); padding: 10px 12px; border-radius: 8px; font-size: 0.8em; margin-bottom: 10px; border: 1px dashed var(--ctp-surface1);">
               <strong>Contoh:</strong> Menyelaraskan suku kata yang diucapkan dengan bentuk bibir pembicara pada video wawancara.
             </div>
           </div>
@@ -659,7 +659,7 @@
             <p style="font-size: 0.85em;">
               Menghubungkan entitas non-temporal, seperti relasi antara frasa teks dengan koordinat region pada citra.
             </p>
-            <div style="margin-top: 8px; padding: 8px 12px; background: var(--ctp-base); border-radius: 8px; font-size: 0.8em;">
+            <div style="background: var(--ctp-base); padding: 10px 12px; border-radius: 8px; font-size: 0.8em; margin-bottom: 10px; border: 1px dashed var(--ctp-surface1);">
               <strong>Contoh:</strong> Menemukan bounding box lokasi "anjing berbulu putih" dalam gambar pemandangan taman yang luas.
             </div>
           </div>
@@ -867,11 +867,11 @@
             <p style="font-size: 0.85em; margin-bottom: 10px;">
               <strong>Tugas:</strong> Menghasilkan deskripsi tekstual yang natural dan bermakna dari konten gambar visual.
             </p>
-            <div style="background: var(--ctp-base); padding: 10px 12px; border-radius: 8px; font-size: 0.8em; margin-bottom: 10px; border: 1px solid var(--ctp-surface1);">
+            <div style="background: var(--ctp-base); padding: 10px 12px; border-radius: 8px; font-size: 0.8em; margin-bottom: 10px; border: 1px dashed var(--ctp-surface1);">
               <strong>Kebutuhan Model:</strong> Ekstraksi fitur spasial (ViT/CNN) dipadukan dengan pemodelan bahasa sekuensial (Transformer autoregressif).
             </div>
             <div class="c-callout c-callout-info" style="margin: 0; padding: 6px 10px; font-size: 0.78em;">
-              <em>Foto anjing di pantai → "Seekor golden retriever melompat mengejar bola di pasir pantai."</em>
+              Foto anjing di pantai → "Seekor golden retriever melompat mengejar bola di pasir pantai."
             </div>
           </div>
 
@@ -884,11 +884,11 @@
             <p style="font-size: 0.85em; margin-bottom: 10px;">
               <strong>Tugas:</strong> Menjawab pertanyaan terbuka berbasis teks yang memerlukan penalaran citra mendalam.
             </p>
-            <div style="background: var(--ctp-base); padding: 10px 12px; border-radius: 8px; font-size: 0.8em; margin-bottom: 10px; border: 1px solid var(--ctp-surface1);">
+            <div style="background: var(--ctp-base); padding: 10px 12px; border-radius: 8px; font-size: 0.8em; margin-bottom: 10px; border: 1px dashed var(--ctp-surface1);">
               <strong>Kebutuhan Model:</strong> Cross-attention kueri teks ke patch visual, penghitungan objek (<em>counting</em>), dan logika spasial relasional.
             </div>
             <div class="c-callout c-callout-info" style="margin: 0; padding: 6px 10px; font-size: 0.78em;">
-              <em>Pertanyaan: "Berapa mobil merah yang parkir di bawah pohon?" → Jawaban: "3 mobil".</em>
+              Pertanyaan: "Berapa mobil merah yang parkir di bawah pohon?" → Jawaban: "3 mobil".
             </div>
           </div>
         </div>
@@ -916,11 +916,11 @@
             <p style="margin-bottom: 10px;">
               <strong>Tugas:</strong> Menentukan sentimen opini manusia (positif, netral, negatif) secara komprehensif dari video interaksi.
             </p>
-            <div style="background: var(--ctp-base); padding: 12px; border-radius: 10px; font-size: 0.82em; margin-bottom: 10px;">
+            <div style="background: var(--ctp-base); padding: 10px 12px; border-radius: 8px; font-size: 0.8em; margin-bottom: 10px; border: 1px dashed var(--ctp-surface1);">
               <strong>Modalitas Terlibat:</strong> Transkrip ucapan (teks), intonasi nada dan frekuensi (audio), serta mikro-ekspresi dan gestur wajah (visual).
             </div>
             <div class="c-callout c-callout-info" style="margin: 0; padding: 8px 12px; font-size: 0.8em;">
-              <em>Contoh: Menganalisis kepuasan pelanggan dari rekaman video customer service atau ulasan produk di media sosial.</em>
+              Contoh: Menganalisis kepuasan pelanggan dari rekaman video customer service atau ulasan produk di media sosial.
             </div>
           </div>
 
@@ -933,11 +933,11 @@
             <p style="margin-bottom: 10px;">
               <strong>Tugas:</strong> Mencari data dari satu modalitas menggunakan kueri dari modalitas lain secara lintas domain (<em>cross-modal</em>).
             </p>
-            <div style="background: var(--ctp-base); padding: 12px; border-radius: 10px; font-size: 0.82em; margin-bottom: 10px;">
+            <div style="background: var(--ctp-base); padding: 10px 12px; border-radius: 8px; font-size: 0.8em; margin-bottom: 10px; border: 1px dashed var(--ctp-surface1);">
               <strong>Kebutuhan Model:</strong> Ruang laten bersama (<em>joint embedding space</em>) dengan jarak semantik kosinus terkalibrasi.
             </div>
             <div class="c-callout c-callout-info" style="margin: 0; padding: 8px 12px; font-size: 0.8em;">
-              <em>Contoh: Mencari foto album galeri menggunakan kalimat deskripsi teks ("kucing tidur di sofa cokelat").</em>
+              Contoh: Mencari foto album galeri menggunakan kalimat deskripsi teks ("kucing tidur di sofa cokelat").
             </div>
           </div>
         </div>

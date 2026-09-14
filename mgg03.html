@@ -138,8 +138,41 @@
       </div>
       <aside class="notes">Transisi ke bagian pertama. Fokus pada struktur spasial gambar dan alasan model perlu mempertahankan hubungan lokal.</aside>
     </section>
-    <section><h2>Gambar Bukan Sekadar Matriks</h2><div class="grid-2-1" style="align-items:center"><div class="diagram-canvas"><svg viewBox="0 0 520 300" role="img" aria-label="Grid piksel RGB"><rect x="60" y="35" width="260" height="220" rx="10" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/><g stroke="#9ca0b0" stroke-width="1"><path d="M103 35v220M147 35v220M190 35v220M233 35v220M277 35v220"/><path d="M60 79h260M60 123h260M60 167h260M60 211h260"/></g><circle cx="147" cy="123" r="12" fill="#1e66f5"/><circle cx="190" cy="123" r="12" fill="#8839ef"/><circle cx="233" cy="123" r="12" fill="#179299"/><text x="370" y="95" fill="#4c4f69" font-size="20" font-family="sans-serif" font-weight="700">H × W × C</text><text x="370" y="132" fill="#6c6f85" font-size="16" font-family="sans-serif">tinggi · lebar · saluran</text></svg></div><div><div class="narrative-step"><strong>Spasial</strong><br>Piksel berdekatan memiliki hubungan lokal.</div><div class="narrative-step"><strong>Saluran</strong><br>RGB menyimpan intensitas warna berbeda.</div><div class="narrative-step"><strong>Hierarki</strong><br>Tepi → tekstur → bagian → objek.</div></div></div><aside class="notes">Gunakan H, W, C untuk menjelaskan bentuk tensor gambar. Hubungkan kedekatan piksel dengan receptive field.</aside></section>
-    <section><h2>Tantangan Representasi Gambar</h2><table class="c-table"><thead><tr><th style="width:22%">Tantangan</th><th style="width:38%">Mengapa sulit?</th><th style="width:40%">Konsekuensi bagi model</th></tr></thead><tbody><tr><td class="c-table-criteria">Dimensi tinggi</td><td>256×256×3 sudah menghasilkan 196.608 nilai.</td><td>Parameter fully connected tumbuh sangat besar.</td></tr><tr><td class="c-table-criteria">Variasi tampilan</td><td>Pencahayaan, sudut, skala, dan oklusi berubah.</td><td>Model perlu fitur yang robust terhadap perubahan.</td></tr><tr><td class="c-table-criteria">Ketergantungan lokal</td><td>Makna muncul dari hubungan piksel bertetangga.</td><td>Flattening terlalu dini kehilangan struktur spasial.</td></tr></tbody></table><aside class="notes">Tabel ini memotivasi CNN: model perlu memanfaatkan struktur, bukan memperlakukan semua piksel sebagai fitur independen.</aside></section>
+    <section>
+      <h2>Gambar Bukan Sekadar Matriks</h2>
+      <p>Setiap gambar RGB direpresentasikan sebagai tensor tiga dimensi: tinggi, lebar, dan kanal warna.</p>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="diagram-canvas" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px; overflow: hidden;">
+          <img src="assets/data/image-representation.webp" alt="Representasi gambar digital RGB dengan dimensi tinggi H, lebar W, dan tiga kanal warna R, G, B" style="width: calc(100% + 72px); max-width: none; height: auto; margin-left: -36px; object-fit: contain;">
+        </div>
+
+        <div class="narrative-pane">
+          <div class="narrative-step">
+            <strong>01. Dimensi Spasial (\(H \times W\))</strong> menyimpan susunan piksel menurut tinggi dan lebar gambar.
+          </div>
+          <div class="narrative-step">
+            <strong>02. Kanal Warna (\(C = 3\))</strong> untuk gambar RGB: satu kanal merah, hijau, dan biru.
+          </div>
+          <div class="narrative-step">
+            <strong>03. Struktur Lokal</strong> Piksel berdekatan membentuk pola: tepi → tekstur → bagian → objek.
+          </div>
+        </div>
+      </div>
+
+      <aside class="notes">Gunakan ilustrasi seperti pada konsep word embeddings di mgg02. Tunjukkan bahwa H dan W membentuk struktur spasial, sedangkan C menyimpan kanal warna. Tekankan bahwa gambar bukan sekadar daftar angka: hubungan piksel bertetangga penting bagi model dan menjadi dasar receptive field pada CNN.</aside>
+    </section>
+
+    <section><h2>Tantangan Representasi Gambar</h2>
+        <table class="c-table">
+            <thead><tr><th style="width:22%">Tantangan</th><th style="width:38%">Mengapa sulit?</th><th style="width:40%">Konsekuensi bagi model</th></tr></thead>
+            <tbody>
+                <tr><td class="c-table-criteria">Dimensi tinggi</td><td>Resolusi gambar RGB 256 piksel memiliki \(256 \times 256 \times 3 = 196.608\) nilai piksel.</td><td>Parameter neuron <em>fully connected</em> tumbuh sangat besar jika mengikuti input.</td></tr>
+                <tr><td class="c-table-criteria">Variasi tampilan</td><td>Pencahayaan, sudut, skala, oklusi, dan bahkan lokasi objek bervariasi.</td><td>Model perlu fitur yang <em>robust</em> terhadap perubahan dan variasi.</td></tr>
+                <tr><td class="c-table-criteria">Ketergantungan lokal</td><td>Makna muncul dari hubungan piksel bertetangga.</td><td><em>Flattening</em> (representasi dari matriks menjadi vektor) terlalu dini kehilangan struktur spasial.</td></tr>
+            </tbody>
+        </table><aside class="notes">Tabel ini memotivasi CNN: model perlu memanfaatkan struktur, bukan memperlakukan semua piksel sebagai fitur independen.</aside></section>
+
     <!-- SECTION 2: CONVOLUTIONAL NEURAL NETWORKS -->
     <section class="section-slide" style="background: radial-gradient(circle at 90% 80%, rgba(136,57,239,0.06) 0%, transparent 100%);">
       <div class="section-slide-content">
@@ -151,12 +184,163 @@
       </div>
       <aside class="notes">Masuk ke CNN sebagai arsitektur yang sesuai dengan struktur grid data gambar.</aside>
     </section>
-    <section><h2>Mengapa CNN untuk Gambar?</h2><div class="grid-3" style="margin-top:24px"><div class="c-card c-card-blue c-card-accent-top"><h3>Local Receptive Field</h3><p>Neuron melihat area kecil sehingga hubungan lokal tetap terjaga.</p></div><div class="c-card c-card-mauve c-card-accent-top"><h3>Parameter Sharing</h3><p>Kernel yang sama mencari pola di berbagai lokasi gambar.</p></div><div class="c-card c-card-teal c-card-accent-top"><h3>Equivariance</h3><p>Pergeseran input menghasilkan pergeseran pola pada feature map.</p></div></div><div class="c-callout c-callout-success" style="margin-top:22px"><span class="material-symbols-outlined icon-green">compress</span><div>Lebih sedikit parameter, lebih banyak struktur visual yang dipertahankan.</div></div><aside class="notes">Bandingkan dengan fully connected layer: semua piksel terhubung ke semua neuron, tanpa bias spasial.</aside></section>
-    <section><h2>Konvolusi: Filter yang Mencari Pola</h2><div class="grid-2-1" style="align-items:center"><div class="diagram-canvas"><div class="pipeline-flow" style="grid-template-columns:1fr auto 1fr;align-items:center"><div class="pipeline-step"><strong>Input</strong><br>patch 3×3</div><div class="pipeline-arrow">→</div><div class="pipeline-step"><strong>Kernel</strong><br>bobot terlatih</div></div><div class="formula-hero" style="margin-top:20px"><div class="formula-math">$y(i,j)=\sum_{u,v}x(i+u,j+v)\,k(u,v)$</div></div></div><div><div class="narrative-step"><strong>Stride</strong><br>Langkah pergeseran kernel.</div><div class="narrative-step"><strong>Padding</strong><br>Menjaga atau mengatur ukuran keluaran.</div><div class="narrative-step"><strong>Feature map</strong><br>Peta aktivasi pola yang ditemukan.</div></div></div><aside class="notes">Jangan fokus pada hitung manual panjang. Tekankan bahwa kernel belajar detektor pola melalui data.</aside></section>
-    <section><h2>Dari Tepi ke Objek</h2><div class="pipeline-flow" style="margin-top:30px"><div class="pipeline-step"><span class="material-symbols-outlined icon-blue">grid_4x4</span><h3>Piksel</h3><p>Intensitas dan warna.</p></div><div class="pipeline-step"><span class="material-symbols-outlined icon-mauve">timeline</span><h3>Tepi</h3><p>Perubahan lokal.</p></div><div class="pipeline-step"><span class="material-symbols-outlined icon-teal">texture</span><h3>Tekstur</h3><p>Pola berulang.</p></div><div class="pipeline-step"><span class="material-symbols-outlined icon-green">category</span><h3>Bagian</h3><p>Komponen objek.</p></div></div><p class="c-callout c-callout-info" style="margin-top:25px">Lapisan dangkal cenderung menangkap pola sederhana; lapisan dalam menggabungkannya menjadi representasi abstrak.</p><aside class="notes">Gunakan analogi komposisional: garis membentuk sudut, sudut membentuk bagian, bagian membentuk objek.</aside></section>
-    <section><h2>Pooling: Merangkum Aktivasi</h2><div class="grid-2" style="align-items:center"><div class="diagram-canvas"><div class="grid-2" style="gap:10px"><div class="c-card"><h3>Max Pooling</h3><p style="font-size:2em;text-align:center;color:var(--ctp-blue)">max(·)</p><p>Mempertahankan respons paling kuat.</p></div><div class="c-card"><h3>Average Pooling</h3><p style="font-size:2em;text-align:center;color:var(--ctp-teal)">mean(·)</p><p>Merangkum respons secara rata-rata.</p></div></div></div><div><h3>Efek utama</h3><ul><li>Dimensi spasial lebih kecil.</li><li>Komputasi berikutnya lebih ringan.</li><li>Lebih toleran terhadap pergeseran kecil.</li></ul></div></div><aside class="notes">Pooling bukan pengganti konvolusi. Ia merangkum feature map dan mengurangi resolusi spasial.</aside></section>
-    <section><h2>Pola Dasar Arsitektur CNN</h2><div class="pipeline-flow" style="grid-template-columns:repeat(5,1fr);margin-top:30px"><div class="pipeline-step"><strong>Input</strong><br>gambar</div><div class="pipeline-step"><strong>Conv</strong><br>detektor pola</div><div class="pipeline-step"><strong>Pool</strong><br>ringkas</div><div class="pipeline-step"><strong>Conv</strong><br>fitur abstrak</div><div class="pipeline-step"><strong>Head</strong><br>prediksi</div></div><p style="margin-top:24px;text-align:center;color:var(--ctp-subtext0)">Klasifikasi hanya salah satu penggunaan; feature map atau embedding juga dapat dimanfaatkan tugas multimodal.</p><aside class="notes">Bedakan backbone sebagai ekstraktor fitur dan head sebagai bagian task-specific.</aside></section>
+    <section>
+      <h2>Mengapa CNN untuk Gambar?</h2>
+      <p>CNN dirancang untuk memanfaatkan struktur spasial pada data gambar.</p>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="diagram-canvas" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px;">
+          <svg viewBox="0 0 420 240" role="img" aria-label="Kernel kecil bergerak pada grid piksel untuk menangkap pola lokal">
+            <rect x="28" y="28" width="190" height="190" rx="8" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+            <g stroke="#9ca0b0" stroke-width="1">
+              <path d="M66 28v190M104 28v190M142 28v190M180 28v190"/>
+              <path d="M28 66h190M28 104h190M28 142h190M28 180h190"/>
+            </g>
+            <rect x="66" y="66" width="76" height="76" fill="#1e66f5" fill-opacity=".2" stroke="#1e66f5" stroke-width="4"/>
+            <text x="104" y="126" text-anchor="middle" fill="#1e66f5" font-size="16" font-family="sans-serif" font-weight="700">kernel</text>
+            <path d="M246 104h66" stroke="#8839ef" stroke-width="3" marker-end="url(#slide8-arrow)"/>
+            <rect x="326" y="62" width="66" height="84" rx="8" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
+            <path d="M338 128h42M338 116h30M338 104h36M338 92h24" stroke="#8839ef" stroke-width="4" stroke-linecap="round"/>
+            <text x="359" y="174" text-anchor="middle" fill="#8839ef" font-size="15" font-family="sans-serif" font-weight="700">feature map</text>
+            <defs><marker id="slide8-arrow" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8z" fill="#8839ef"/></marker></defs>
+          </svg>
+        </div>
+
+        <div class="narrative-pane">
+          <div class="narrative-step">
+            <strong>01. Local Receptive Field</strong> Neuron melihat area kecil sehingga hubungan piksel bertetangga tetap terjaga.
+          </div>
+          <div class="narrative-step">
+            <strong>02. Parameter Sharing</strong> Kernel yang sama mencari pola di berbagai lokasi gambar.
+          </div>
+          <div class="narrative-step">
+            <strong>03. Equivariance</strong> Pergeseran input menghasilkan pergeseran pola pada feature map.
+          </div>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-success" style="margin-top: 16px;"><span class="material-symbols-outlined icon-green">compress</span><div>Lebih sedikit parameter, lebih banyak struktur visual yang dipertahankan.</div></div>
+      <aside class="notes">Gunakan ilustrasi untuk membandingkan CNN dengan fully connected layer. CNN memproses area lokal dan memakai kernel yang sama di berbagai lokasi, sehingga struktur spasial tetap dipertahankan dengan jumlah parameter lebih kecil.</aside>
+    </section>
+
+    <section>
+      <h2>Konvolusi: Filter yang Mencari Pola</h2>
+      <p>Kernel bergerak di atas area lokal gambar dan menghitung respons untuk setiap posisi.</p>
+
+      <div class="formula-hero" style="margin-top: 16px;">
+        <div class="formula-label">Operasi Konvolusi</div>
+        <div class="formula-math">
+          $$y(i,j)=\sum_{u,v}x(i+u,j+v)\,k(u,v)$$
+        </div>
+      </div>
+      <div class="formula-breakdown" style="margin-top: 10px;">
+        <div class="formula-term-box" style="padding: 8px 10px;">
+          <strong>\(x(i+u,j+v)\)</strong>
+          Nilai piksel pada patch lokal di sekitar posisi \((i,j)\).
+        </div>
+        <div class="formula-term-box" style="padding: 8px 10px;">
+          <strong>\(k(u,v)\)</strong>
+          Bobot kernel pada indeks \(u,v\) yang belajar merespons pola tertentu, seperti tepi atau tekstur.
+        </div>
+        <div class="formula-term-box" style="padding: 8px 10px;">
+          <strong>\(y(i,j)\)</strong>
+          Nilai aktivasi pada feature map untuk posisi \((i,j)\).
+        </div>
+      </div>
+
+      <aside class="notes">Jangan fokus pada hitung manual yang panjang. Jelaskan bahwa setiap nilai feature map berasal dari perkalian antara nilai piksel lokal dan bobot kernel, lalu dijumlahkan. Kernel belajar menjadi detektor pola melalui data. Tekankan bahwa \(u\) dan \(v\) adalah indeks lokal di dalam kernel: \(u\) untuk baris dan \(v\) untuk kolom.</aside>
+    </section>
+
+    <section>
+      <h2>Mengatur Pergerakan Kernel</h2>
+      <p>Setelah menghitung satu posisi, kernel bergeser untuk membentuk seluruh feature map.</p>
+
+      <div class="grid-2" style="margin-top: 16px; align-items: center;">
+        <div class="diagram-canvas" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px; text-align: center;">
+          <img src="assets/data/conv2d-example.gif" alt="Animasi operasi konvolusi 2D: kernel bergerak pada input dan menghasilkan feature map" style="display: block; width: 100%; max-height: 260px; object-fit: contain; margin: 0 auto; mix-blend-mode: multiply;">
+          <small style="display: block; margin-top: 8px; color: var(--ctp-subtext0);">Sumber: Wikimedia Commons</small>
+        </div>
+        <div class="narrative-pane">
+          <div class="narrative-step"><strong>01. Stride</strong> Menentukan seberapa jauh kernel bergeser pada setiap langkah.</div>
+          <div class="narrative-step"><strong>02. Padding</strong> Menambahkan piksel di tepi input untuk mengatur ukuran keluaran.</div>
+          <div class="narrative-step"><strong>03. Feature Map</strong> Menyimpan respons kernel pada setiap posisi setelah proses konvolusi.</div>
+        </div>
+      </div>
+
+      <aside class="notes">Jelaskan bahwa konvolusi mengulang operasi yang sama pada banyak posisi. Stride mengatur jarak perpindahan kernel, padding mengatur perlakuan terhadap tepi input, dan kumpulan seluruh respons membentuk feature map.</aside>
+    </section>
+
+    <section>
+      <h2>Pooling: Merangkum Aktivasi</h2>
+      <p>Pooling merangkum area kecil pada feature map untuk mengurangi resolusi spasial.</p>
+
+      <div class="grid-2" style="margin-top: 16px; align-items: center;">
+        <div class="diagram-canvas" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px;">
+          <div class="grid-2" style="gap: 12px;">
+            <div class="formula-term-box" style="border-top: 3px solid var(--ctp-blue); text-align: center;">
+              <strong style="color: var(--ctp-blue); font-family: var(--font-sans);">Max Pooling</strong>
+              <div style="font-size: 1.7em; color: var(--ctp-blue); margin: 12px 0;">\(\max(\cdot)\)</div>
+              <p style="margin: 0;">Mempertahankan respons paling kuat.</p>
+            </div>
+            <div class="formula-term-box" style="border-top: 3px solid var(--ctp-teal); text-align: center;">
+              <strong style="color: var(--ctp-teal); font-family: var(--font-sans);">Average Pooling</strong>
+              <div style="font-size: 1.7em; color: var(--ctp-teal); margin: 12px 0;">\(\operatorname{mean}(\cdot)\)</div>
+              <p style="margin: 0;">Merangkum respons secara rata-rata.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="narrative-pane">
+          <div class="narrative-step"><strong>01. Dimensi Lebih Kecil</strong> Feature map berukuran lebih kecil setelah setiap area diringkas.</div>
+          <div class="narrative-step"><strong>02. Komputasi Lebih Ringan</strong> Layer berikutnya memproses lebih sedikit nilai aktivasi.</div>
+          <div class="narrative-step"><strong>03. Toleran terhadap Pergeseran</strong> Pola tetap terwakili meskipun berpindah sedikit pada gambar.</div>
+        </div>
+      </div>
+
+      <aside class="notes">Pooling bukan pengganti konvolusi. Ia merangkum feature map dan mengurangi resolusi spasial. Bandingkan max pooling yang memilih respons terbesar dengan average pooling yang menghitung nilai rata-rata.</aside>
+    </section>
+    <section>
+      <h2>Pola Dasar Arsitektur CNN</h2>
+      <p>CNN mengubah gambar menjadi representasi fitur secara bertahap sebelum menghasilkan keluaran tugas.</p>
+
+      <div class="diagram-canvas" style="margin-top: 8px; min-height: 200px; background: var(--ctp-mantle); border-radius: 10px; padding: 4px 10px;">
+        <div class="pipeline-flow" style="grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 0;">
+          <div class="pipeline-step" style="padding: 5px 4px;"><strong>Input</strong><br>gambar</div>
+          <div class="pipeline-step" style="padding: 5px 4px;"><strong>Conv</strong><br>pola lokal</div>
+          <div class="pipeline-step" style="padding: 5px 4px;"><strong>Pool</strong><br>ringkas</div>
+          <div class="pipeline-step" style="padding: 5px 4px;"><strong>Conv</strong><br>fitur abstrak</div>
+          <div class="pipeline-step" style="padding: 5px 4px;"><strong>Head</strong><br>prediksi</div>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-top: 8px;">
+        <div class="narrative-step"><strong>01. Backbone</strong> Convolution dan pooling mengekstraksi fitur secara bertahap.</div>
+        <div class="narrative-step"><strong>02. Aktivasi</strong> Fungsi non-linear membantu jaringan mempelajari pola kompleks.</div>
+        <div class="narrative-step"><strong>03. Task Head</strong> Fitur diubah menjadi label, feature map, atau embedding visual.</div>
+      </div>
+
+      <aside class="notes">Bedakan backbone sebagai ekstraktor fitur dan head sebagai bagian task-specific. Arsitektur CNN modern tidak selalu memakai fungsi aktivasi yang sama: ReLU banyak digunakan pada CNN klasik, sedangkan GELU atau SiLU/Swish dipakai pada sebagian arsitektur modern. Pilihan aktivasi mengikuti desain arsitektur dan karakteristik optimisasinya.</aside>
+    </section>
     <!-- SECTION 3: EVOLUSI ARSITEKTUR CNN -->
+    <section><h2>Dari Tepi ke Objek</h2>
+        <div class="pipeline-flow" style="margin-top:30px">
+            <div class="pipeline-step"><span class="material-symbols-outlined icon-blue">grid_4x4</span>
+                <h3 style="color: var(--ctp-blue)">Piksel</h3><p>Intensitas dan warna.</p>
+            </div>
+            <div class="pipeline-step"><span class="material-symbols-outlined icon-mauve">timeline</span>
+                <h3 style="color: var(--ctp-mauve)">Tepi</h3><p>Perubahan lokal.</p>
+            </div>
+            <div class="pipeline-step"><span class="material-symbols-outlined icon-teal">texture</span>
+                <h3 style="color: var(--ctp-teal)">Tekstur</h3><p>Pola berulang.</p>
+            </div>
+            <div class="pipeline-step"><span class="material-symbols-outlined icon-green">category</span>
+                <h3 style="color: var(--ctp-green)">Bagian</h3><p>Komponen objek.</p>
+            </div>
+        </div><p class="c-callout c-callout-info" style="margin-top:25px">Lapisan dangkal pada Convolutional Neural Network cenderung menangkap pola sederhana; lapisan dalam menggabungkannya menjadi representasi abstrak.</p>
+
+        <aside class="notes">Gunakan analogi komposisional: garis membentuk sudut, sudut membentuk bagian, bagian membentuk objek.</aside>
+    </section>
+
     <section class="section-slide" style="background: radial-gradient(circle at 50% 50%, rgba(23,146,153,0.06) 0%, transparent 100%);">
       <div class="section-slide-content">
         <span class="section-part-label section-part-teal">Bagian 3</span>
@@ -168,7 +352,42 @@
       <aside class="notes">Masuk ke sejarah singkat CNN dan alasan residual connection diperlukan pada jaringan yang lebih dalam.</aside>
     </section>
     <section><h2>LeNet, AlexNet, dan VGG</h2><table class="c-table"><thead><tr><th style="width:20%">Model</th><th style="width:40%">Kontribusi</th><th style="width:40%">Pelajaran desain</th></tr></thead><tbody><tr><td class="c-table-criteria">LeNet-5</td><td>CNN awal untuk pengenalan digit.</td><td>Conv → Pool → FC sudah efektif untuk pola sederhana.</td></tr><tr><td class="c-table-criteria">AlexNet</td><td>Mendorong CNN untuk ImageNet skala besar.</td><td>GPU, ReLU, dan augmentasi mengubah skala eksperimen.</td></tr><tr><td class="c-table-criteria">VGG</td><td>Menumpuk kernel kecil 3×3 secara konsisten.</td><td>Kedalaman meningkatkan abstraksi, tetapi biaya komputasi naik.</td></tr></tbody></table><aside class="notes">Fokus pada ide yang dibawa tiap arsitektur, bukan menghafal semua konfigurasi layer.</aside></section>
-    <section><h2>ResNet: Belajar Residual</h2><div class="grid-2-1" style="align-items:center"><div class="diagram-canvas"><svg viewBox="0 0 520 260" role="img" aria-label="Residual block"><rect x="80" y="90" width="130" height="70" rx="12" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/><text x="145" y="132" text-anchor="middle" fill="#4c4f69" font-size="20" font-family="sans-serif" font-weight="700">F(x)</text><rect x="310" y="90" width="130" height="70" rx="12" fill="#e6e9ef" stroke="#179299" stroke-width="3"/><text x="375" y="132" text-anchor="middle" fill="#4c4f69" font-size="20" font-family="sans-serif" font-weight="700">F(x)+x</text><path d="M210 125h90" stroke="#8839ef" stroke-width="4" marker-end="url(#a)"/><path d="M145 90V45h230v45" fill="none" stroke="#40a02b" stroke-width="4"/><text x="260" y="35" text-anchor="middle" fill="#40a02b" font-size="18" font-family="sans-serif">skip connection</text><defs><marker id="a" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8z" fill="#8839ef"/></marker></defs></svg></div><div><h3>Masalah</h3><p>Jaringan sangat dalam dapat mengalami vanishing gradients.</p><h3>Solusi</h3><p>Pelajari perubahan residual $F(x)$, lalu tambahkan kembali input $x$.</p></div></div><aside class="notes">Residual block mempermudah aliran gradien. Ini memungkinkan backbone sangat dalam seperti ResNet-50.</aside></section>
+    <section>
+      <h2>ResNet: Belajar Residual</h2>
+      <p>ResNet membantu jaringan yang sangat dalam belajar perubahan fitur tanpa kehilangan aliran informasi dari input.</p>
+
+      <div class="grid-2" style="margin-top: 16px; align-items: center;">
+        <div class="diagram-canvas" style="background: var(--ctp-mantle); border-radius: 10px; padding: 12px;">
+          <svg viewBox="0 0 520 260" role="img" aria-label="Residual block dengan skip connection">
+            <rect x="48" y="102" width="116" height="64" rx="10" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+            <text x="106" y="140" text-anchor="middle" fill="#4c4f69" font-size="20" font-family="sans-serif" font-weight="700">x</text>
+            <rect x="206" y="102" width="116" height="64" rx="10" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
+            <text x="264" y="140" text-anchor="middle" fill="#4c4f69" font-size="20" font-family="sans-serif" font-weight="700">F(x)</text>
+            <circle cx="394" cy="134" r="25" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
+            <text x="394" y="142" text-anchor="middle" fill="#179299" font-size="25" font-family="sans-serif" font-weight="700">+</text>
+            <path d="M164 134h38" stroke="#8839ef" stroke-width="3" marker-end="url(#resnet-arrow)"/>
+            <path d="M106 102V48h288v61" fill="none" stroke="#40a02b" stroke-width="4" marker-end="url(#resnet-skip)"/>
+            <text x="250" y="34" text-anchor="middle" fill="#40a02b" font-size="16" font-family="sans-serif" font-weight="700">skip connection</text>
+            <path d="M322 134h45" stroke="#8839ef" stroke-width="3" marker-end="url(#resnet-arrow)"/>
+            <path d="M419 134h50" stroke="#179299" stroke-width="3" marker-end="url(#resnet-arrow)"/>
+            <text x="466" y="124" text-anchor="middle" fill="#179299" font-size="16" font-family="sans-serif" font-weight="700">y</text>
+            <defs>
+              <marker id="resnet-arrow" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8z" fill="#8839ef"/></marker>
+              <marker id="resnet-skip" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8z" fill="#40a02b"/></marker>
+            </defs>
+          </svg>
+        </div>
+
+        <div class="narrative-pane">
+          <div class="narrative-step"><strong>01. Masalah Kedalaman</strong> Jaringan sangat dalam dapat mengalami vanishing gradients dan sulit dioptimalkan.</div>
+          <div class="narrative-step"><strong>02. Residual</strong> Blok mempelajari perubahan fitur \(F(x)\), bukan seluruh transformasi dari awal.</div>
+          <div class="narrative-step"><strong>03. Skip Connection</strong> Input \(x\) diteruskan dan ditambahkan kembali pada keluaran:
+            \(y = F(x) + x\).</div>
+        </div>
+      </div>
+
+      <aside class="notes">Jelaskan bahwa residual block memiliki dua jalur: jalur transformasi yang mempelajari F(x) dan jalur skip connection yang meneruskan input x. Keduanya dijumlahkan menjadi y = F(x) + x. Jalur langsung ini membantu aliran gradien dan memungkinkan backbone yang lebih dalam seperti ResNet-50.</aside>
+    </section>
     <!-- SECTION 4: PRE-TRAINED MODELS & TRANSFER LEARNING -->
     <section class="section-slide" style="background: radial-gradient(circle at 80% 30%, rgba(254,100,11,0.06) 0%, transparent 100%);">
       <div class="section-slide-content">
@@ -179,10 +398,58 @@
         </p>
       </div>
       <aside class="notes">Hubungkan ke masalah nyata: dataset khusus sering kecil, sementara model besar mahal dilatih dari awal.</aside>
+
     </section>
-    <section><h2>Dua Cara Memakai Model Pre-trained</h2><div class="grid-2" style="margin-top:25px"><div class="c-card c-card-blue c-card-accent-top"><h3>Feature Extraction</h3><p>Bekukan backbone, buang classifier terakhir, gunakan outputnya sebagai vektor fitur.</p><div class="c-callout c-callout-info">Cepat dan cocok ketika data target terbatas.</div></div><div class="c-card c-card-mauve c-card-accent-top"><h3>Fine-tuning</h3><p>Buka sebagian layer dan sesuaikan dengan data target memakai learning rate kecil.</p><div class="c-callout c-callout-warning">Lebih adaptif, tetapi lebih sensitif terhadap data dan konfigurasi.</div></div></div><aside class="notes">Hari ini hands-on memilih feature extraction agar fokus pada representasi, bukan pelatihan.</aside></section>
-    <section><h2>Data Augmentation</h2><div class="grid-2-1" style="align-items:center"><div class="c-card"><h3>Tujuan</h3><p>Membuat variasi masuk akal dari gambar yang ada agar model tidak menghafal contoh pelatihan.</p><div class="c-callout c-callout-success"><span class="material-symbols-outlined icon-green">auto_fix_high</span><div>Augmentasi harus menjaga label tetap benar.</div></div></div><div><div class="narrative-step"><strong>Geometrik</strong> rotasi, crop, flip, translasi.</div><div class="narrative-step"><strong>Warna</strong> brightness, contrast, saturation.</div><div class="narrative-step"><strong>Occlusion</strong> noise atau random erasing.</div></div></div><aside class="notes">Tekankan bahwa transformasi yang valid bergantung domain. Flip vertikal bisa tidak valid untuk citra medis tertentu.</aside></section>
-    <section><h2>Hands-on: Feature Extraction</h2><div class="pipeline-flow" style="margin-top:28px"><div class="pipeline-step"><strong>1 · Muat</strong><br>gambar + ResNet</div><div class="pipeline-step"><strong>2 · Pr proses</strong><br>resize + normalize</div><div class="pipeline-step"><strong>3 · Inferensi</strong><br>forward pass</div><div class="pipeline-step"><strong>4 · Bandingkan</strong><br>cosine similarity</div></div><p style="text-align:center;margin-top:26px">Output: vektor embedding visual, bukan label kelas.</p><aside class="notes">Perkenalkan lembar kerja. Mahasiswa mengamati dimensi embedding dan kemiripan dua gambar.</aside></section>
+    <section><h2>Dua Cara Memakai Model Pre-trained</h2>
+        <div class="grid-2" style="margin-top:25px">
+            <div class="c-card c-card-blue c-card-accent-top">
+                <h3 style="color: var(--ctp-blue)">Feature Extraction</h3><p>Bekukan (<em>freeze</em>) backbone, buang layer classifier atau <em>head</em>, gunakan outputnya sebagai vektor fitur.</p>
+                <div style="background: var(--ctp-base); padding: 10px 12px; border-radius: 8px; font-size: 0.8em; margin-bottom: 10px; border: 1px dashed var(--ctp-surface1);">
+                    <strong>Kelebihan:</strong> Cepat dan cocok ketika data target terbatas.
+                </div>
+            </div>
+            <div class="c-card c-card-mauve c-card-accent-top">
+                <h3 style="color: var(--ctp-mauve)">Fine-tuning</h3><p>Buka sebagian layer (atau semuanya) untuk kemudian dilatih pada data target dengan menerapkan <em>learning rate</em> kecil.</p>
+                <div style="background: var(--ctp-base); padding: 10px 12px; border-radius: 8px; font-size: 0.8em; margin-bottom: 10px; border: 1px dashed var(--ctp-surface1);">
+                    <strong>Kelebihan:</strong> Lebih adaptif, tetapi lebih sensitif terhadap data dan konfigurasi.
+                </div>
+            </div>
+        </div>
+        <aside class="notes">Hari ini hands-on memilih feature extraction agar fokus pada representasi, bukan pelatihan.</aside>
+    </section>
+
+    <section>
+      <h2>Data Augmentation</h2>
+      <p>Augmentasi menghasilkan variasi (logis) dari gambar agar model tidak menghafal sampel data latih.</p>
+
+      <div class="grid-2" style="margin-top: 10px; align-items: center;">
+        <div class="diagram-canvas" style="background: var(--ctp-mantle); border-radius: 10px; padding: 4px 12px;">
+          <svg viewBox="0 0 420 230" role="img" aria-label="Contoh transformasi augmentasi gambar: rotasi, perubahan warna, dan occlusion">
+            <rect x="24" y="42" width="92" height="132" rx="10" fill="#89b4fa" stroke="#1e66f5" stroke-width="3"/>
+            <circle cx="70" cy="88" r="24" fill="#f9e2af"/><path d="M45 145 Q70 112 95 145" fill="none" stroke="#8839ef" stroke-width="8" stroke-linecap="round"/>
+            <text x="70" y="198" text-anchor="middle" fill="#4c4f69" font-size="15" font-family="sans-serif" font-weight="700">Input</text>
+            <path d="M132 108h42" stroke="#8839ef" stroke-width="3" marker-end="url(#aug-arrow)"/>
+            <rect x="190" y="42" width="92" height="132" rx="10" fill="#89dceb" stroke="#179299" stroke-width="3" transform="rotate(8 236 108)"/>
+            <circle cx="236" cy="88" r="24" fill="#f9e2af" transform="rotate(8 236 108)"/><path d="M211 145 Q236 112 261 145" fill="none" stroke="#8839ef" stroke-width="8" stroke-linecap="round" transform="rotate(8 236 108)"/>
+            <text x="236" y="198" text-anchor="middle" fill="#4c4f69" font-size="15" font-family="sans-serif" font-weight="700">Transformasi</text>
+            <path d="M298 108h42" stroke="#8839ef" stroke-width="3" marker-end="url(#aug-arrow)"/>
+            <rect x="356" y="42" width="40" height="132" rx="8" fill="#a6e3a1" stroke="#40a02b" stroke-width="3"/>
+            <path d="M364 145 Q376 112 388 145" fill="none" stroke="#8839ef" stroke-width="7" stroke-linecap="round"/>
+            <text x="376" y="198" text-anchor="middle" fill="#4c4f69" font-size="15" font-family="sans-serif" font-weight="700">Variasi</text>
+            <defs><marker id="aug-arrow" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8z" fill="#8839ef"/></marker></defs>
+          </svg>
+        </div>
+
+        <div class="narrative-pane">
+          <div class="narrative-step"><strong>01. Geometrik</strong> Rotasi, <em>crop</em>, <em>flip</em>, dan translasi mengubah posisi atau orientasi gambar.</div>
+          <div class="narrative-step"><strong>02. Warna</strong> Perubahan <em>brightness</em>, kontras, dan saturasi menghasilkan variasi tampilan.</div>
+          <div class="narrative-step"><strong>03. Occlusion</strong> <em>Noise</em> atau <em>random erasing</em> menguji ketahanan model terhadap penghalang.</div>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-success" style="margin-top: 2px;"><span class="material-symbols-outlined icon-green">auto_fix_high</span><div>Transformasi harus mempertahankan label tetap sesuai.</div></div>
+      <aside class="notes">Tekankan bahwa augmentasi bukan sekadar memperbanyak data secara acak. Transformasi harus masuk akal untuk domain dan tidak mengubah label. Flip vertikal, misalnya, bisa tidak valid untuk citra medis tertentu.</aside>
+    </section>
     <!-- SLIDE 19: RANGKUMAN -->
     <section>
       <h2>Rangkuman &amp; Poin Kunci</h2>
