@@ -1,0 +1,529 @@
+% =============================================================
+%  Tugas Individu 02 — Representasi Teks
+%  IF25-40304 · Pembelajaran Mesin Multimodal · ITERA
+% =============================================================
+\documentclass[12pt, a4paper]{article}
+
+\usepackage{tugas-style}
+
+\renewcommand{\assignmentnumber}{02}
+\renewcommand{\doctitle}{Tugas Individu 02}
+\renewcommand{\duedate}{\color{ctpBlue}\faCalendarCheck\ \ Tenggat: sesuai jadwal kelas \faCalendarCheck}
+
+\begin{document}
+
+% ── HEADER ──────────────────────────────────────────────────
+\makeassignmentheader
+
+\hrule width0.3\textwidth
+\revisioninfo{%
+  \vhEntry{0.1}{16 September 2026}{I.W.W.}{Draf inisial tugas.}
+}
+\hrule
+\vskip .3in
+
+\tableofcontents
+\clearpage
+
+% =============================================================
+\section{Tujuan Pembelajaran}\label{sec:objectives}
+
+Setelah menyelesaikan tugas ini, mahasiswa mampu:
+\begin{objectives}
+  \item Membedakan representasi \emph{one-hot} (sparse, ortogonal) dan \emph{word embeddings} (dense, semantik).
+  \item Menghitung kemiripan kosinus dan menginterpretasikan kedekatan vektor kata.
+  \item Menggunakan operasi aritmetika vektor untuk menguji relasi semantik (analogi).
+  \item Memproyeksikan ruang vektor kata berdimensi tinggi ke 2D menggunakan PCA.
+  \item Menjelaskan keterbatasan embeddings statis terhadap polisemi dan keunggulan contextual embeddings.
+\end{objectives}
+
+% =============================================================
+\section{Catatan dan Batasan}\label{sec:notes}
+\vspace{-.1cm}
+
+\begin{minipage}{\linewidth}
+\begin{bclogo}[couleur=ctpBase, arrondi=0.1, logo=\bccrayon, ombre=false, couleurBord=ctpSurface, epBord=0.6]{Perhatikan hal berikut:}
+  \begin{coloredPen}
+    \item Tugas ini bersifat \textbf{individu}; tidak diperkenankan bekerja sama atau menyalin jawaban.
+    \item Kerjakan eksperimen secara \textbf{inferensi saja} --- tidak ada pelatihan model baru.
+    \item Tulis analisis dengan bahasa sendiri, bukan sekadar menyalin output program.
+    \item Model fastText berukuran besar ($\pm$1\,GB); unduh lebih awal atau gunakan alternatif yang disediakan.
+  \end{coloredPen}
+\end{bclogo}
+\end{minipage}
+
+% =============================================================
+\section{Perangkat Lunak dan Peralatan yang Diperlukan}\label{sec:requiredsw}
+
+\begin{itemize}[itemsep=2pt,parsep=0pt,topsep=2pt,partopsep=2pt]
+  \item[\color{ctpBlue}\faPython] \textbf{Python} 3.8 atau lebih baru.
+  \item[\color{ctpBlue}\faFileCode] \textbf{Paket wajib:} \code{numpy}, \code{matplotlib}, \code{scikit-learn}, \code{gensim}.
+  \item[\color{ctpBlue}\faFileCode] \textbf{Paket opsional (Soal 5 bonus):} \code{transformers}, \code{torch}.
+  \item[\color{ctpBlue}\faDownload] \textbf{Model pra-latih:} fastText bahasa Indonesia (\code{cc.id.300.vec.gz}, $\pm$1\,GB).
+\end{itemize}
+
+\begin{codewindow}{setup.sh}
+\begin{lstlisting}[style=pycode]
+pip install numpy matplotlib scikit-learn gensim
+\end{lstlisting}
+\end{codewindow}
+
+\begin{minipage}{\linewidth}
+\begin{bclogo}[couleur=ctpMantle, arrondi=0.1, logo=\bcinfo, ombre=false, couleurBord=ctpSurface, epBord=0.6]{Catatan Model Pra-Latih}
+  Model fastText Indonesia (\code{cc.id.300.vec.gz}) berukuran $\pm$1\,GB. Unduh dari
+  \href{https://fasttext.cc/docs/en/crawl-vectors.html}{fasttext.cc}. Jika terkendala
+  bandwidth, gunakan \code{glove-wiki-gigaword-50} via \code{gensim.downloader} sebagai
+  alternatif ($\pm$66\,MB, kosakata bahasa Inggris).
+\end{bclogo}
+\end{minipage}
+
+% =============================================================
+\section{Pernyataan Masalah}\label{sec:intro}
+
+Tugas ini melengkapi materi Pertemuan 02 tentang representasi teks untuk \emph{deep learning}.
+Anda akan melakukan eksperimen komputasi dan analisis tertulis untuk memverifikasi tiga klaim yang dibahas pada slide kuliah:
+\begin{enumerate}
+  \item One-hot encoding bersifat \textbf{ortogonal} --- tidak menangkap kemiripan makna antarkata.
+  \item Word embeddings bersifat \textbf{dense dan semantik} --- kata bermakna mirip berdekatan dalam ruang vektor.
+  \item Embeddings statis memiliki limitasi terhadap \textbf{polisemi} --- satu kata yang sama selalu mendapat vektor identik, terlepas dari konteks.
+\end{enumerate}
+
+Rincian dan persyaratan pengerjaan diberikan pada bagian berikutnya.
+
+% =============================================================
+\section{Persyaratan}\label{sec:requirements}
+
+Perhatikan setiap persyaratan pada soal-soal berikut.
+
+% ------------------------------------------------------------
+\subsection{Soal 1 --- One-Hot Encoding \& Keterbatasannya}
+\label{sec:soal1}
+
+Representasi teks paling sederhana adalah one-hot encoding, di mana setiap kata direpresentasikan sebagai vektor biner berdimensi = ukuran kosakata. Vektor ini bersifat \emph{ortogonal}: setiap pasang kata berbeda menghasilkan kemiripan kosinus nol.
+
+\subsubsection{Instruksi}
+\label{sec:soal1-instruksi}
+
+\textbf{(a)} Diberikan kosakata berikut:
+
+\begin{codewindow}{soal1\_data.py}
+\begin{lstlisting}[style=pycode]
+vocab = ["presiden", "teknologi", "musik", "indonesia", "sains"]
+\end{lstlisting}
+\end{codewindow}
+
+Bangun fungsi \code{one\_hot(kata, vocab)} yang mengembalikan vektor one-hot untuk sebuah kata. Tampilkan vektor untuk setiap kata dalam kosakata.
+
+\textbf{(b)} Implementasikan fungsi cosine similarity secara manual:
+
+\begin{center}
+\colorbox{ctpBase}{%
+  \parbox{0.75\linewidth}{\centering
+    \footnotesize\bfseries\color{ctpOverlay}\MakeUppercase{Cosine Similarity}\\[6pt]
+    {\large\color{ctpBlue}$\displaystyle\operatorname{sim}(\mathbf{a}, \mathbf{b}) = \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{a}\| \cdot \|\mathbf{b}\|}$}}}
+\end{center}
+
+Hitung dan tampilkan \textbf{matriks kemiripan kosinus ($5 \times 5$)} antar semua pasang kata.
+
+\textbf{(c)} Jawab secara tertulis (3--5 kalimat):
+\begin{itemize}
+  \item Mengapa semua kemiripan antar kata berbeda bernilai \textbf{0.0}?
+  \item Apa implikasinya terhadap model ML yang menerima input one-hot?
+  \item Secara intuitif, pasangan kata mana yang \emph{seharusnya} lebih mirip secara semantik? Mengapa one-hot tidak bisa menangkap ini?
+\end{itemize}
+
+\subsubsection{Kerangka Kode}
+\label{sec:soal1-kode}
+
+\begin{codewindow}{soal1\_kerangka.py}
+\begin{lstlisting}[style=pycode]
+import numpy as np
+
+vocab = ["presiden", "teknologi", "musik", "indonesia", "sains"]
+word_to_id = {kata: i for i, kata in enumerate(vocab)}
+
+def one_hot(kata, vocab, word_to_id):
+    """Mengembalikan vektor one-hot untuk sebuah kata."""
+    vektor = np.zeros(len(vocab))
+    vektor[word_to_id[kata]] = 1
+    return vektor
+
+def cosine_similarity(a, b):
+    """Kemiripan kosinus: (a.b) / (||a|| . ||b||)."""
+    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+\end{lstlisting}
+\end{codewindow}
+
+% ------------------------------------------------------------
+\clearpage
+\subsection{Soal 2 --- Word Embeddings: Vektor Dense \& Kemiripan Semantik}
+\label{sec:soal2}
+
+Word embeddings menggantikan vektor one-hot yang panjang dan \emph{sparse} dengan vektor \emph{dense} berdimensi rendah yang merepresentasikan makna. Kata yang bermakna mirip akan saling berdekatan dalam ruang vektor.
+
+\subsubsection{Instruksi}
+\label{sec:soal2-instruksi}
+
+\textbf{(a)} Muat model pra-latih fastText bahasa Indonesia:
+
+\begin{codewindow}{soal2\_muat.py}
+\begin{lstlisting}[style=pycode]
+from gensim.models import KeyedVectors
+
+model = KeyedVectors.load_word2vec_format("cc.id.300.vec.gz", binary=False)
+\end{lstlisting}
+\end{codewindow}
+
+Untuk setiap kata berikut, tampilkan \textbf{5 kata paling mirip} beserta skor kemiripan kosinus: \code{"presiden"}, \code{"teknologi"}, \code{"musik"}.
+
+\begin{codewindow}{soal2\_similar.py}
+\begin{lstlisting}[style=pycode]
+for kata in ["presiden", "teknologi", "musik"]:
+    print(f"\n5 kata paling mirip dengan '{kata}':")
+    for kata_mirip, skor in model.most_similar(kata, topn=5):
+        print(f"  {kata_mirip:<16} {skor:.4f}")
+\end{lstlisting}
+\end{codewindow}
+
+\textbf{(b)} Hitung dan tampilkan secara numerik:
+
+\begin{codewindow}{soal2\_numerik.py}
+\begin{lstlisting}[style=pycode]
+sim_presiden_indonesia = model.similarity("presiden", "indonesia")
+sim_presiden_musik     = model.similarity("presiden", "musik")
+
+print(f"sim(presiden, indonesia) = {sim_presiden_indonesia:.4f}")
+print(f"sim(presiden, musik)     = {sim_presiden_musik:.4f}")
+\end{lstlisting}
+\end{codewindow}
+
+\textbf{(c)} Jawab dalam 3--5 kalimat:
+\begin{itemize}
+  \item Apakah \code{"presiden"} lebih dekat ke \code{"indonesia"} atau ke \code{"musik"} di ruang embedding?
+  \item Bandingkan secara eksplisit dengan hasil Soal 1: apa yang berubah ketika berpindah dari one-hot ke embeddings?
+  \item Bagaimana embeddings mengatasi keterbatasan ortogonalitas?
+\end{itemize}
+
+% ------------------------------------------------------------
+\subsection{Soal 3 --- Analogi Vektor dalam Bahasa Indonesia}
+\label{sec:soal3}
+
+Sifat penting word embeddings adalah kemampuannya merepresentasikan \emph{relasi semantik} melalui operasi aritmetika vektor. Operasi seperti \code{raja - pria + wanita = ratu} menunjukkan bahwa embeddings menangkap hubungan gender, geografi, dan peran secara geometris.
+
+\subsubsection{Instruksi}
+\label{sec:soal3-instruksi}
+
+Uji analogi vektor berikut pada fastText Indonesia:
+
+\begin{center}\small
+\begin{tabular}{@{} C{0.6cm} L{6.5cm} L{4cm} @{}}
+  \toprule \textbf{No} & \textbf{Rumus Analogi} & \textbf{Hasil Diharapkan} \\
+  \midrule
+  (a) & \code{raja - pria + wanita = ?}          & ratu \\
+  (b) & \code{jepang - asia + eropa = ?}         & jerman / perancis \\
+  (c) & \code{jakarta - indonesia + jepang = ?}  & tokyo \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\begin{codewindow}{soal3\_analogi.py}
+\begin{lstlisting}[style=pycode]
+# (a) raja - pria + wanita
+hasil_a = model.most_similar(
+    positive=["wanita", "raja"], negative=["pria"], topn=3
+)
+print("raja - pria + wanita =")
+for kata, skor in hasil_a:
+    print(f"  {kata:<16} {skor:.4f}")
+
+# (b) jepang - asia + eropa
+hasil_b = model.most_similar(
+    positive=["eropa", "jepang"], negative=["asia"], topn=3
+)
+print("\njepang - asia + eropa =")
+for kata, skor in hasil_b:
+    print(f"  {kata:<16} {skor:.4f}")
+
+# (c) jakarta - indonesia + jepang
+hasil_c = model.most_similar(
+    positive=["jepang", "jakarta"], negative=["indonesia"], topn=3
+)
+print("\njakarta - indonesia + jepang =")
+for kata, skor in hasil_c:
+    print(f"  {kata:<16} {skor:.4f}")
+\end{lstlisting}
+\end{codewindow}
+
+Tampilkan hasil \textbf{top-3} untuk setiap analogi, lalu jawab:
+\begin{itemize}
+  \item Apakah ketiga analogi menghasilkan kata yang masuk akal?
+  \item Jika hasilnya tidak sempurna, hipotesiskan mengapa (misal: bias korpus, frekuensi kata, ambiguitas).
+\end{itemize}
+
+\begin{callout}[ctpGreen]
+\textbf{\color{ctpGreen}Bonus:} Buat \textbf{satu analogi kreatif} Anda sendiri dalam bahasa Indonesia. Pilih kata-kata yang memiliki hubungan semantik jelas. Tampilkan hasil dan evaluasi keberhasilannya dalam 2--3 kalimat.
+\end{callout}
+
+% ------------------------------------------------------------
+\clearpage
+\subsection{Soal 4 --- Visualisasi Ruang Vektor Kata Indonesia}
+\label{sec:soal4}
+
+Untuk mengamati sifat ``kata bermakna mirip berdekatan'', vektor embedding diproyeksikan ke dua dimensi menggunakan PCA (\emph{Principal Component Analysis}).
+
+\subsubsection{Instruksi}
+\label{sec:soal4-instruksi}
+
+Pilih \textbf{12 kata} dari fastText Indonesia yang terdiri dari \textbf{3--4 kelompok semantik}:
+
+\begin{center}\small
+\begin{tabular}{@{} L{2.5cm} L{8cm} @{}}
+  \toprule \textbf{Kelompok} & \textbf{Contoh Kata} \\
+  \midrule
+  Negara  & \code{indonesia}, \code{jepang}, \code{brasil} \\
+  Hewan   & \code{kucing}, \code{anjing}, \code{burung} \\
+  Profesi & \code{dokter}, \code{guru}, \code{insinyur} \\
+  Makanan & \code{nasi}, \code{rendang}, \code{sate} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{(a)} Ekstrak vektor dan reduksi dimensi ke 2D menggunakan PCA, lalu buat scatter plot:
+
+\begin{codewindow}{soal4\_visualisasi.py}
+\begin{lstlisting}[style=pycode]
+import numpy as np
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+
+kata_pilihan = [
+    "indonesia", "jepang", "brasil",
+    "kucing", "anjing", "burung",
+    "dokter", "guru", "insinyur",
+    "nasi", "rendang", "sate",
+]
+
+kelompok = {
+    "indonesia": "Negara",   "jepang": "Negara",   "brasil": "Negara",
+    "kucing": "Hewan",       "anjing": "Hewan",     "burung": "Hewan",
+    "dokter": "Profesi",     "guru": "Profesi",     "insinyur": "Profesi",
+    "nasi": "Makanan",       "rendang": "Makanan",  "sate": "Makanan",
+}
+
+warna = {
+    "Negara": "#1e66f5", "Hewan": "#40a02b",
+    "Profesi": "#8839ef", "Makanan": "#fe640b",
+}
+
+# Ekstrak vektor & reduksi dimensi
+vektor = np.array([model[k] for k in kata_pilihan])
+pca = PCA(n_components=2)
+koordinat_2d = pca.fit_transform(vektor)
+
+# Plot
+plt.figure(figsize=(8, 6))
+sudah_label = set()
+for i, kata in enumerate(kata_pilihan):
+    k = kelompok[kata]
+    lbl = k if k not in sudah_label else ""
+    sudah_label.add(k)
+    plt.scatter(koordinat_2d[i, 0], koordinat_2d[i, 1],
+                c=warna[k], s=100, label=lbl)
+    plt.annotate(kata, (koordinat_2d[i, 0], koordinat_2d[i, 1]),
+                 textcoords="offset points", xytext=(8, 4),
+                 fontsize=10, fontweight="bold")
+plt.title("Proyeksi 2D Vektor Kata Indonesia (PCA)")
+plt.xlabel("Komponen Utama 1")
+plt.ylabel("Komponen Utama 2")
+plt.legend()
+plt.grid(alpha=0.3)
+plt.tight_layout()
+plt.savefig("visualisasi_embeddings.png", dpi=150)
+plt.show()
+\end{lstlisting}
+\end{codewindow}
+
+\textbf{(b)} Analisis (3--5 kalimat):
+\begin{itemize}
+  \item Apakah kluster yang terbentuk sesuai intuisi Anda?
+  \item Kata mana yang paling ``tercampur'' atau berjauhan dari klompoknya?
+  \item Mengapa menurut Anda hal tersebut terjadi?
+\end{itemize}
+
+% ------------------------------------------------------------
+\subsection{Soal 5 --- Polisemi: Limitasi Embeddings Statis}
+\label{sec:soal5}
+
+Word embeddings klasik memberikan \textbf{satu vektor tetap per kata}, sehingga tidak dapat membedakan makna kata yang bergantung pada konteks. Kata \textbf{``tahu''} dalam bahasa Indonesia memiliki dua makna yang benar-benar berbeda: makanan dari kedelai (nomina) dan mengetahui (verba).
+
+\subsubsection{Instruksi}
+\label{sec:soal5-instruksi}
+
+\textbf{(a)} Dari fastText Indonesia, ambil vektor kata \code{"tahu"}. Tampilkan 5 kata terdekat:
+
+\begin{codewindow}{soal5\_polisemi.py}
+\begin{lstlisting}[style=pycode]
+print("5 kata paling mirip dengan 'tahu':")
+for kata, skor in model.most_similar("tahu", topn=5):
+    print(f"  {kata:<16} {skor:.4f}")
+\end{lstlisting}
+\end{codewindow}
+
+\textbf{(b)} Kata \code{"tahu"} memiliki \textbf{2 makna yang berbeda}:
+
+\begin{callout}[ctpBlue]
+{\color{ctpBlue}\bfseries Makanan:} ``Ibu membeli \textbf{tahu} goreng di pasar.'' (makanan dari kedelai)
+\end{callout}
+\begin{callout}[ctpBlue]
+{\color{ctpBlue}\bfseries Mengetahui:} ``Saya \textbf{tahu} jawaban soal itu.'' (kata kerja: mengetahui)
+\end{callout}
+
+Jawab dalam 3--5 kalimat:
+\begin{itemize}
+  \item Apakah 5 kata terdekat dari fastText mencerminkan \textbf{kedua} makna tersebut, atau hanya salah satu?
+  \item Apakah makna yang terwakili cenderung ke makanan atau ke pengetahuan? Mengapa?
+  \item Mengapa hal ini menjadi keterbatasan fundamental embeddings statis?
+\end{itemize}
+
+\textbf{(c)} \emph{(Opsional --- Bonus)} Jika lingkungan mendukung \code{transformers} dan \code{torch}:
+
+\begin{codewindow}{soal5\_bonus\_indobert.py}
+\begin{lstlisting}[style=pycode]
+from transformers import AutoTokenizer, AutoModel
+import torch
+
+# Muat IndoBERT pra-latih (inferensi saja, tanpa pelatihan)
+name = "indobenchmark/indobert-base-p1"
+tokenizer = AutoTokenizer.from_pretrained(name)
+model_bert = AutoModel.from_pretrained(name)
+model_bert.eval()
+
+def vektor_kata(kalimat, kata):
+    """Vektor kontekstual dari hidden state BERT."""
+    enc = tokenizer(kalimat, return_tensors="pt")
+    with torch.no_grad():
+        out = model_bert(**enc)
+    hidden = out.last_hidden_state[0]
+    ids = tokenizer.encode(kata, add_special_tokens=False)
+    pos = (enc["input_ids"][0] == ids[0]).nonzero()[0].item()
+    return hidden[pos]
+
+# Kata yang sama, dua konteks berbeda
+s1 = "Ibu membeli tahu goreng di pasar."
+s2 = "Saya tahu jawaban soal itu."
+
+v1 = vektor_kata(s1, "tahu")
+v2 = vektor_kata(s2, "tahu")
+
+cos = torch.nn.functional.cosine_similarity(
+    v1.unsqueeze(0), v2.unsqueeze(0)
+).item()
+
+print(f"Kemiripan vektor 'tahu' antar dua konteks: {cos:.4f}")
+print("Nilai jauh dari 1.0 membuktikan embeddings kontekstual berbeda.")
+\end{lstlisting}
+\end{codewindow}
+
+Bandingkan hasil IndoBERT dengan fastText. Tulis kesimpulan:
+\begin{itemize}
+  \item Seberapa berbeda vektor kontekstual \code{"tahu"} di dua kalimat tersebut?
+  \item Bagaimana hal ini membuktikan keunggulan contextual embeddings?
+\end{itemize}
+
+% ------------------------------------------------------------
+\clearpage
+\subsection{Soal 6 --- Refleksi: Evolusi Arsitektur Sekuensial}
+\label{sec:soal6}
+
+Representasi teks yang baik memerlukan arsitektur yang mampu menangkap \textbf{ketergantungan sekuensial}. Bagian ini menguji pemahaman konseptual terhadap evolusi arsitektur dari RNN ke Transformer.
+
+\subsubsection{Instruksi}
+\label{sec:soal6-instruksi}
+
+Jawab \textbf{dua} pertanyaan berikut dalam bentuk paragraf singkat (masing-masing \textbf{5--8 kalimat}):
+
+\begin{callout}[ctpLavender]
+\textbf{\color{ctpLavender}(a) Vanishing Gradient \& Mekanisme LSTM}\par\vspace{2pt}
+RNN memiliki masalah \emph{vanishing gradient}: saat memproses sekuens panjang, informasi dari kata-kata awal menghilang sebelum mencapai kata akhir. Jelaskan secara intuitif:
+\begin{itemize}
+  \item Mengapa masalah ini muncul? (Kaitkan dengan propagasi gradien melalui banyak langkah waktu.)
+  \item Bagaimana LSTM mengatasinya melalui mekanisme \emph{gates} (forget gate, input gate, output gate)?
+  \item Gunakan \textbf{analogi sederhana} untuk memperjelas penjelasan Anda.
+\end{itemize}
+\end{callout}
+
+\begin{callout}[ctpLavender]
+\textbf{\color{ctpLavender}(b) RNN/LSTM vs Transformer: Trade-off}\par\vspace{2pt}
+Transformer kini mendominasi NLP melalui mekanisme \emph{self-attention} yang memproses seluruh sekuens secara paralel. Namun, RNN/LSTM masih relevan di beberapa skenario.
+\begin{itemize}
+  \item Sebutkan \textbf{satu contoh konkret} skenario di mana RNN/LSTM mungkin lebih unggul atau lebih praktis daripada Transformer.
+  \item Jelaskan alasannya dengan merujuk pada \textbf{sifat arsitektur} keduanya.
+\end{itemize}
+\end{callout}
+
+% =============================================================
+\clearpage
+\section{Kriteria Penilaian}\label{sec:evaluation}
+
+Tugas Anda akan dinilai berdasarkan kriteria berikut:
+
+\renewcommand{\arraystretch}{1.5}
+\begin{center}\small
+\begin{tabular}{|p{11.5cm}|c|}
+  \hline
+  \thead{\color{ctpBlue} Kriteria} & \thead{\color{ctpBlue}Bobot} \\
+  \hline
+  Kebenaran teknis --- kode berjalan tanpa error, output benar, penggunaan library tepat. & 40\% \\
+  \hline
+  Kedalaman analisis --- penjelasan tertulis mendalam, bukan sekadar mendeskripsikan output. & 30\% \\
+  \hline
+  Eksplorasi kreatif --- pemilihan kata/kelompok menarik (Soal 4), analogi kreatif (Soal 3). & 15\% \\
+  \hline
+  Kualitas presentasi --- laporan rapi, terstruktur, visualisasi informatif dan berlabel. & 15\% \\
+  \hline
+  \textbf{Total} & \textbf{100\%} \\
+  \hline
+\end{tabular}
+\end{center}
+
+% =============================================================
+\section{Apa yang Dikumpulkan}\label{sec:submit}
+
+Seluruh artefak tugas dikemas ke dalam \textbf{satu berkas arsip} dengan format penamaan:
+\begin{center}
+  \code{mgg02\_tugas\_nim.zip}
+\end{center}
+
+dengan \code{nim} diganti oleh Nomor Induk Mahasiswa (NIM) masing-masing tanpa spasi.
+
+\textbf{Artefak yang dapat disertakan di dalam arsip} (dapat lebih dari satu jenis berkas, disesuaikan dengan bentuk penyelesaian Anda):
+\begin{borderedsquare}
+  \item \code{mgg02\_tugas\_NIM.ipynb} --- apabila penyelesaian dikerjakan menggunakan Jupyter Notebook (termasuk Google Colab). Notebook \textbf{wajib telah dijalankan} sehingga seluruh \emph{output} sel tersimpan di dalam berkas.
+  \item \code{mgg02\_tugas\_NIM.py} --- apabila penyelesaian dikerjakan dalam bentuk skrip Python.
+  \item \code{mgg02\_tugas\_NIM.pdf} --- apabila analisis ditulis dalam dokumen teks terpisah.
+  \item \code{mgg02\_tugas\_xx.jpg} --- apabila terdapat plot atau gambar pendukung tambahan; \code{xx} merupakan nomor urut visualisasi (misalnya \code{01}, \code{02}, dan seterusnya).
+\end{borderedsquare}
+
+Setiap berkas menggunakan awalan \code{mgg02\_tugas\_NIM} yang sama, dengan \code{NIM} ditulis secara konsisten (huruf besar/kecil mengikuti NIM resmi). Pastikan seluruh berkas berada tepat di dalam satu arsip \code{.zip} tanpa struktur folder bertingkat yang tidak perlu.
+
+\begin{callout}[ctpBlue]
+\textbf{\color{ctpBlue}Catatan Pengerjaan}
+\begin{itemize}
+  \item \textbf{Soal 1--5:} Wajib dikerjakan oleh semua mahasiswa.
+  \item \textbf{Soal 5(c):} Opsional / Bonus --- memerlukan \code{transformers} + \code{torch} ($\sim$400\,MB).
+  \item \textbf{Soal 6:} Dapat dikerjakan tanpa kode --- murni pemahaman konseptual.
+  \item \textbf{Estimasi waktu:} 3--4 jam.
+\end{itemize}
+\end{callout}
+
+\section*{Referensi}
+{\small\color{ctpSubtext}
+\begin{enumerate}[label={[\arabic*]}, leftmargin=2em]
+  \item Mikolov, T., et al.\ (2013). \emph{Efficient Estimation of Word Representations in Vector Space}.
+  \item Vaswani, A., et al.\ (2017). \emph{Attention Is All You Need}.
+  \item Devlin, J., et al.\ (2019). \emph{BERT: Pre-training of Deep Bidirectional Transformers}.
+  \item Bojanowski, P., et al.\ (2017). \emph{Enriching Word Vectors with Subword Information} (fastText).
+  \item Wilie, B., et al.\ (2020). \emph{IndoNLU: Benchmark and Resources for Evaluating Indonesian NLU}.
+\end{enumerate}}
+
+\end{document}

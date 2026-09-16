@@ -1,0 +1,373 @@
+% =============================================================
+%  Tugas Individu 03 — Representasi Gambar
+%  IF25-40304 · Pembelajaran Mesin Multimodal · ITERA
+% =============================================================
+\documentclass[12pt, a4paper]{article}
+
+\usepackage{tugas-style}
+
+\renewcommand{\assignmentnumber}{03}
+\renewcommand{\doctitle}{Tugas Individu 03}
+\renewcommand{\duedate}{\color{ctpBlue}\faCalendarCheck\ \ Tenggat: sesuai jadwal kelas \faCalendarCheck}
+
+\begin{document}
+
+% ── HEADER ──────────────────────────────────────────────────
+\makeassignmentheader
+
+\hrule width0.3\textwidth
+\revisioninfo{%
+  \vhEntry{0.1}{16 September 2026}{I.W.W.}{Draf inisial tugas.}
+}
+\hrule
+\vskip .3in
+
+\tableofcontents
+\clearpage
+
+% =============================================================
+\section{Tujuan Pembelajaran}\label{sec:objectives}
+
+Setelah menyelesaikan tugas ini, mahasiswa mampu:
+\begin{objectives}
+  \item Merepresentasikan gambar sebagai tensor RGB berdimensi $H \times W \times C$ beserta metadatanya.
+  \item Menggunakan ResNet50 pra-latih sebagai ekstraktor fitur visual (feature extractor).
+  \item Menghitung kemiripan kosinus antar-embedding gambar dan menginterpretasikan hasilnya.
+  \item Memproyeksikan embedding gambar berdimensi tinggi ke 2D menggunakan PCA.
+  \item Menganalisis secara kritis keterbatasan representasi visual dan cosine similarity.
+\end{objectives}
+
+% =============================================================
+\section{Catatan dan Batasan}\label{sec:notes}
+\vspace{-.1cm}
+
+\begin{minipage}{\linewidth}
+\begin{bclogo}[couleur=ctpBase, arrondi=0.1, logo=\bccrayon, ombre=false, couleurBord=ctpSurface, epBord=0.6]{Perhatikan hal berikut:}
+  \begin{coloredPen}
+    \item Tugas ini bersifat \textbf{individu}; tidak diperkenankan bekerja sama atau menyalin jawaban.
+    \item Seluruh eksperimen memakai \textbf{inferensi} pada ResNet50 pra-latih --- jangan melakukan \code{fit()}, \code{backward()}, atau pelatihan ulang classifier.
+    \item Fokus tugas adalah mengamati dan menganalisis representasi visual, bukan melatih model baru.
+    \item Siapkan gambar lokal yang dapat dibandingkan secara visual; unduh weights ResNet50 lebih awal.
+  \end{coloredPen}
+\end{bclogo}
+\end{minipage}
+
+% =============================================================
+\section{Perangkat Lunak dan Peralatan yang Diperlukan}\label{sec:requiredsw}
+
+\begin{itemize}[itemsep=2pt,parsep=0pt,topsep=2pt,partopsep=2pt]
+  \item[\color{ctpBlue}\faPython] \textbf{Python} 3.8 atau lebih baru.
+  \item[\color{ctpBlue}\faFileCode] \textbf{Paket wajib:} \code{torch}, \code{torchvision}, \code{Pillow}, \code{matplotlib}, \code{scikit-learn}.
+  \item[\color{ctpBlue}\faImage] \textbf{Gambar:} dua atau lebih gambar dengan isi yang dapat dibandingkan secara visual.
+  \item[\color{ctpBlue}\faDownload] \textbf{Internet:} saat pertama kali mengunduh weights ResNet50.
+\end{itemize}
+
+\begin{codewindow}{setup.sh}
+\begin{lstlisting}[style=pycode]
+pip install torch torchvision pillow matplotlib scikit-learn
+\end{lstlisting}
+\end{codewindow}
+
+\begin{minipage}{\linewidth}
+\begin{bclogo}[couleur=ctpMantle, arrondi=0.1, logo=\bcinfo, ombre=false, couleurBord=ctpSurface, epBord=0.6]{Batasan Cakupan}
+  Seluruh tugas menggunakan inferensi pada model ResNet50 pra-latih. Jangan melakukan
+  \code{fit()}, \code{backward()}, atau pelatihan ulang classifier. Fokus tugas adalah
+  mengamati dan menganalisis representasi visual.
+\end{bclogo}
+\end{minipage}
+
+% =============================================================
+\section{Pernyataan Masalah}\label{sec:intro}
+
+Tugas ini melengkapi materi Pertemuan 03 tentang representasi gambar, CNN, ResNet, dan transfer learning. Anda akan melakukan eksperimen inferensi menggunakan model ResNet50 pra-latih untuk memverifikasi tiga gagasan utama:
+\begin{enumerate}
+  \item Gambar memiliki struktur spasial dan tiga kanal warna RGB, bukan sekadar daftar angka independen.
+  \item CNN membangun representasi hierarkis dari pola lokal menuju fitur visual yang lebih abstrak.
+  \item Backbone pra-latih dapat digunakan sebagai ekstraktor fitur visual tanpa melatih ulang model.
+\end{enumerate}
+
+Rincian dan persyaratan pengerjaan diberikan pada bagian berikutnya.
+
+% =============================================================
+\section{Persyaratan}\label{sec:requirements}
+
+Perhatikan setiap persyaratan pada soal-soal berikut.
+
+% ------------------------------------------------------------
+\subsection{Soal 1 --- Gambar sebagai Tensor RGB}
+\label{sec:soal1}
+
+Gambar RGB dapat direpresentasikan sebagai tensor dengan bentuk $H \times W \times C$, dengan $H$ sebagai tinggi, $W$ sebagai lebar, dan $C=3$ sebagai kanal merah, hijau, dan biru.
+
+\subsubsection{Instruksi}
+\label{sec:soal1-instruksi}
+
+\textbf{(a)} Pilih dua gambar lokal dengan ukuran atau rasio aspek yang berbeda. Muat gambar menggunakan Pillow, lalu tampilkan:
+\begin{itemize}
+  \item ukuran asli setiap gambar;
+  \item mode warna;
+  \item jumlah kanal;
+  \item rasio aspek.
+\end{itemize}
+
+\textbf{(b)} Tampilkan kedua gambar menggunakan \code{matplotlib} dan jelaskan perbedaan visualnya secara singkat.
+
+\textbf{(c)} Jawab dalam 3--5 kalimat:
+\begin{itemize}
+  \item Mengapa gambar tidak cukup direpresentasikan sebagai daftar angka tanpa struktur spasial?
+  \item Apa konsekuensi perbedaan ukuran dan rasio aspek sebelum gambar diproses CNN?
+  \item Mengapa gambar RGB memiliki $C=3$?
+\end{itemize}
+
+\subsubsection{Contoh Kerangka Kode}
+\label{sec:soal1-kode}
+
+\begin{codewindow}{soal1\_tensor.py}
+\begin{lstlisting}[style=pycode]
+from pathlib import Path
+from PIL import Image
+import matplotlib.pyplot as plt
+
+paths  = [Path("data/image_a.jpg"), Path("data/image_b.jpg")]
+images = [Image.open(path).convert("RGB") for path in paths]
+
+for path, image in zip(paths, images):
+    width, height = image.size
+    print(path.name, image.size, image.mode)
+    print("channels:", len(image.getbands()))
+    print("aspect ratio:", round(width / height, 3))
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 4))
+for axis, path, image in zip(axes, paths, images):
+    axis.imshow(image)
+    axis.set_title(path.name)
+    axis.axis("off")
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+\end{codewindow}
+
+% ------------------------------------------------------------
+\clearpage
+\subsection{Soal 2 --- ResNet50 sebagai Feature Extractor}
+\label{sec:soal2}
+
+ResNet50 yang telah dilatih pada ImageNet dapat digunakan sebagai backbone untuk menghasilkan embedding visual. Classifier terakhir dilepas sehingga keluaran model berupa vektor fitur berdimensi 2048.
+
+\subsubsection{Instruksi}
+\label{sec:soal2-instruksi}
+
+\textbf{(a)} Muat weights ResNet50 dan ubah classifier terakhir menjadi \code{torch.nn.Identity()}.
+
+\textbf{(b)} Gunakan transformasi resmi dari weights model. Jalankan inferensi pada dua gambar yang dipilih pada Soal 1.
+
+\textbf{(c)} Tampilkan bentuk keluaran setiap gambar. Pastikan hasilnya berupa vektor \code{(2048,)} setelah dimensi batch dihilangkan.
+
+\begin{codewindow}{soal2\_resnet50.py}
+\begin{lstlisting}[style=pycode]
+import torch
+from torchvision.models import ResNet50_Weights, resnet50
+
+weights  = ResNet50_Weights.DEFAULT
+backbone = resnet50(weights=weights)
+backbone.fc = torch.nn.Identity()
+backbone.eval()
+
+preprocess = weights.transforms()
+
+features = []
+with torch.inference_mode():
+    for image in images:
+        tensor  = preprocess(image).unsqueeze(0)
+        feature = backbone(tensor).squeeze(0)
+        features.append(feature)
+        print("feature shape:", tuple(feature.shape))
+\end{lstlisting}
+\end{codewindow}
+
+\textbf{(d)} Jawab dalam 3--5 kalimat:
+\begin{itemize}
+  \item Mengapa classifier terakhir dilepas?
+  \item Mengapa mode \code{eval()} dan \code{torch.inference\_mode()} sesuai untuk tugas ini?
+  \item Mengapa keluaran backbone berupa vektor, bukan lagi matriks piksel?
+\end{itemize}
+
+% ------------------------------------------------------------
+\subsection{Soal 3 --- Kemiripan Kosinus Antar-Gambar}
+\label{sec:soal3}
+
+Dua gambar dapat dibandingkan melalui arah vektor embedding. Kemiripan kosinus dihitung dengan:
+\[
+\operatorname{sim}(\mathbf{a}, \mathbf{b}) =
+\frac{\mathbf{a} \cdot \mathbf{b}}
+{\lVert\mathbf{a}\rVert\,\lVert\mathbf{b}\rVert}
+\]
+
+\subsubsection{Instruksi}
+\label{sec:soal3-instruksi}
+
+\textbf{(a)} Hitung kemiripan kosinus antara dua embedding.
+
+\begin{codewindow}{soal3\_cosine.py}
+\begin{lstlisting}[style=pycode]
+import torch.nn.functional as F
+
+similarity = F.cosine_similarity(
+    features[0].unsqueeze(0),
+    features[1].unsqueeze(0),
+).item()
+
+print(f"cosine similarity: {similarity:.4f}")
+\end{lstlisting}
+\end{codewindow}
+
+\textbf{(b)} Ulangi eksperimen dengan pasangan gambar kedua. Pilih satu pasangan yang secara visual mirip dan satu pasangan yang berbeda.
+
+\textbf{(c)} Sajikan hasil dalam tabel:
+
+\begin{center}\small
+\begin{tabular}{@{} L{2cm} L{4.5cm} C{2.2cm} L{3.5cm} @{}}
+  \toprule \textbf{Pasangan} & \textbf{Deskripsi visual} & \textbf{Cosine similarity} & \textbf{Interpretasi} \\
+  \midrule
+  A & $\ldots$ & $\ldots$ & $\ldots$ \\
+  B & $\ldots$ & $\ldots$ & $\ldots$ \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{(d)} Analisis dalam 3--5 kalimat:
+\begin{itemize}
+  \item Apakah pasangan yang lebih mirip secara visual selalu memiliki nilai cosine lebih tinggi?
+  \item Informasi visual apa yang kemungkinan besar memengaruhi nilai tersebut?
+  \item Mengapa nilai cosine bukan probabilitas bahwa dua gambar berasal dari kelas yang sama?
+\end{itemize}
+
+% ------------------------------------------------------------
+\clearpage
+\subsection{Soal 4 --- Visualisasi Embedding Gambar}
+\label{sec:soal4}
+
+Embedding 2048 dimensi sulit diamati secara langsung. Gunakan PCA untuk memproyeksikan beberapa embedding ke ruang dua dimensi.
+
+\subsubsection{Instruksi}
+\label{sec:soal4-instruksi}
+
+\textbf{(a)} Siapkan minimal \textbf{6 gambar} yang terbagi ke dalam \textbf{2 atau 3 kelompok visual}. Contoh kelompok: hewan, kendaraan, makanan, atau pemandangan.
+
+\textbf{(b)} Ekstrak embedding setiap gambar menggunakan pipeline pada Soal 2.
+
+\textbf{(c)} Reduksi embedding ke dua dimensi menggunakan PCA dan buat scatter plot berlabel.
+
+\begin{codewindow}{soal4\_visualisasi.py}
+\begin{lstlisting}[style=pycode]
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
+
+# features: list tensor berdimensi 2048
+matrix      = torch.stack(features).numpy()
+coordinates = PCA(n_components=2).fit_transform(matrix)
+
+plt.figure(figsize=(8, 6))
+for i, (x, y) in enumerate(coordinates):
+    plt.scatter(x, y, s=100)
+    plt.annotate(labels[i], (x, y), xytext=(7, 4),
+                 textcoords="offset points", fontweight="bold")
+plt.title("Proyeksi 2D Embedding Gambar")
+plt.xlabel("Komponen Utama 1")
+plt.ylabel("Komponen Utama 2")
+plt.grid(alpha=0.3)
+plt.tight_layout()
+plt.savefig("visualisasi_embedding_gambar.png", dpi=150)
+plt.show()
+\end{lstlisting}
+\end{codewindow}
+
+\textbf{(d)} Analisis dalam 3--5 kalimat:
+\begin{itemize}
+  \item Apakah gambar dalam kelompok yang sama cenderung berdekatan?
+  \item Gambar mana yang paling jauh dari kelompoknya?
+  \item Mengapa proyeksi PCA dua dimensi tidak selalu mempertahankan seluruh informasi embedding asli?
+\end{itemize}
+
+% ------------------------------------------------------------
+\subsection{Soal 5 --- Analisis Kritis Representasi Visual}
+\label{sec:soal5}
+
+Jawab pertanyaan berikut dalam bentuk paragraf singkat (masing-masing 5--8 kalimat):
+
+\textbf{(a) Backbone dan Tugas Baru}
+
+ResNet50 dilatih untuk klasifikasi ImageNet, tetapi pada tugas ini digunakan sebagai ekstraktor fitur. Jelaskan mengapa fitur dari model pra-latih dapat digunakan untuk tugas yang berbeda, dan kapan pendekatan ini mungkin kurang sesuai.
+
+\textbf{(b) Struktur Lokal dan Abstraksi}
+
+Hubungkan proses \code{convolution\ $\to$\ pooling\ $\to$\ feature map\ $\to$\ embedding} dengan hierarki representasi dari piksel, tepi, tekstur, hingga bagian objek.
+
+\textbf{(c) Keterbatasan Cosine Similarity}
+
+Jelaskan mengapa dua gambar dapat memiliki nilai cosine yang tinggi meskipun manusia menilai keduanya tidak identik. Pertimbangkan pengaruh dataset ImageNet, preprocessing, latar belakang, dan bias backbone.
+
+% =============================================================
+\clearpage
+\section{Kriteria Penilaian}\label{sec:evaluation}
+
+Tugas Anda akan dinilai berdasarkan kriteria berikut:
+
+\renewcommand{\arraystretch}{1.5}
+\begin{center}\small
+\begin{tabular}{|p{11.5cm}|c|}
+  \hline
+  \thead{\color{ctpBlue} Kriteria} & \thead{\color{ctpBlue}Bobot} \\
+  \hline
+  Kebenaran teknis --- kode berjalan tanpa error dan pipeline inferensi digunakan dengan tepat. & 35\% \\
+  \hline
+  Kedalaman analisis --- penjelasan menghubungkan output dengan konsep CNN dan representasi visual. & 30\% \\
+  \hline
+  Eksperimen --- pemilihan pasangan/kelompok gambar dan interpretasi hasil. & 20\% \\
+  \hline
+  Kualitas presentasi --- laporan rapi, terstruktur, dan visualisasi informatif. & 15\% \\
+  \hline
+  \textbf{Total} & \textbf{100\%} \\
+  \hline
+\end{tabular}
+\end{center}
+
+% =============================================================
+\section{Apa yang Dikumpulkan}\label{sec:submit}
+
+Seluruh artefak tugas dikemas ke dalam \textbf{satu berkas arsip} dengan format penamaan:
+\begin{center}
+  \code{mgg03\_tugas\_nim.zip}
+\end{center}
+
+dengan \code{nim} diganti oleh Nomor Induk Mahasiswa (NIM) masing-masing tanpa spasi.
+
+\textbf{Artefak yang dapat disertakan di dalam arsip} (dapat lebih dari satu jenis berkas, disesuaikan dengan bentuk penyelesaian Anda):
+\begin{borderedsquare}
+  \item \code{mgg03\_tugas\_NIM.ipynb} --- apabila penyelesaian dikerjakan menggunakan Jupyter Notebook (termasuk Google Colab). Notebook \textbf{wajib telah dijalankan} sehingga seluruh \emph{output} sel tersimpan di dalam berkas.
+  \item \code{mgg03\_tugas\_NIM.py} --- apabila penyelesaian dikerjakan dalam bentuk skrip Python.
+  \item \code{mgg03\_tugas\_NIM.pdf} --- apabila analisis ditulis dalam dokumen teks terpisah.
+  \item \code{mgg03\_tugas\_xx.jpg} --- apabila terdapat plot atau gambar pendukung tambahan; \code{xx} merupakan nomor urut visualisasi (misalnya \code{01}, \code{02}, dan seterusnya).
+\end{borderedsquare}
+
+Setiap berkas menggunakan awalan \code{mgg03\_tugas\_NIM} yang sama, dengan \code{NIM} ditulis secara konsisten (huruf besar/kecil mengikuti NIM resmi). Pastikan seluruh berkas berada tepat di dalam satu arsip \code{.zip} tanpa struktur folder bertingkat yang tidak perlu.
+
+\begin{callout}[ctpBlue]
+\textbf{\color{ctpBlue}Catatan Pengerjaan}
+\begin{itemize}
+  \item \textbf{Soal 1--4:} Wajib dikerjakan oleh semua mahasiswa.
+  \item \textbf{Soal 5:} Wajib dikerjakan sebagai analisis konseptual tanpa pelatihan model.
+  \item \textbf{Estimasi waktu:} 2--3 jam.
+\end{itemize}
+\end{callout}
+
+\section*{Referensi}
+{\small\color{ctpSubtext}
+\begin{enumerate}[label={[\arabic*]}, leftmargin=2em]
+  \item He, K., Zhang, X., Ren, S., \& Sun, J. (2016). \emph{Deep Residual Learning for Image Recognition}. CVPR. \url{https://doi.org/10.1109/CVPR.2016.90}
+  \item PyTorch Contributors. \emph{ResNet-50 --- Torchvision documentation}. \url{https://pytorch.org/vision/stable/models/generated/torchvision.models.resnet50.html}
+  \item Goodfellow, I., Bengio, Y., \& Courville, A. (2016). \emph{Deep Learning}, Bab 9: Convolutional Networks. MIT Press.
+\end{enumerate}}
+
+\end{document}

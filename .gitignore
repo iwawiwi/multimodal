@@ -29,6 +29,17 @@ node_modules/
 
 # Global skill symlink (machine-specific absolute path -> ~/.agents/skills/)
 .agents/skills/lecture-slide-designer
+.agents/skills/assignment-document-designer
+
+# LaTeX assignment build artifacts (regenerable from .tex source)
+tugas/*.aux
+tugas/*.log
+tugas/*.toc
+tugas/*.ver
+tugas/*.hst
+tugas/*.out
+tugas/*.pdf
+tugas/*.html
 
 # Source PPTX decks (not part of the published site)
 origin/
