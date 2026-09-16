@@ -388,6 +388,43 @@
 
       <aside class="notes">Jelaskan bahwa residual block memiliki dua jalur: jalur transformasi yang mempelajari F(x) dan jalur skip connection yang meneruskan input x. Keduanya dijumlahkan menjadi y = F(x) + x. Jalur langsung ini membantu aliran gradien dan memungkinkan backbone yang lebih dalam seperti ResNet-50.</aside>
     </section>
+
+    <!-- SLIDE: BIG IDEA — INDUCTIVE BIAS -->
+    <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Big Idea: Inductive Bias">
+      <div class="big-idea-canvas">
+        <h2 class="big-idea-question">
+          Haruskah model &ldquo;diajari&rdquo; melihat pola lokal terlebih dahulu, atau dibiarkan menemukan struktur sendiri dari data?
+        </h2>
+        <p class="big-idea-takeaway">
+          <strong>Pertanyaan Inductive Bias:</strong> CNN menanamkan asumsi lokalitas dan hierarki spasial (bias kuat) &mdash; efisien, tetapi kaku. Vision Transformer (2020) hampir tanpa asumsi bawaan (bias lemah), membiarkan <em>self-attention</em> menemukan relasi antar-<em>patch</em> langsung dari data. Konsekuensinya: lebih fleksibel, tetapi butuh banyak data untuk melatihnya.
+        </p>
+      </div>
+      <aside class="notes">
+        Titik balik paradigma: CNN &ldquo;menanam&rdquo; jawaban di arsitektur, ViT membiarkan data yang menjawab. Ajak mahasiswa mengaitkan self-attention (Pertemuan 02) dengan patch gambar. Transisi ke slide ViT berikutnya.
+      </aside>
+    </section>
+
+    <!-- SLIDE: VISION TRANSFORMER — PERGESERAN INDUCTIVE BIAS -->
+    <section>
+      <h2>Vision Transformer: Pergeseran Inductive Bias</h2>
+      <p><strong>Inductive bias</strong> = asumsi bawaan yang ditanam ke arsitektur agar model belajar efisien dari data terbatas.</p>
+
+      <table class="c-table" style="margin-top: 12px;">
+        <thead><tr><th style="width:18%">Aspek</th><th style="width:41%">CNN (bias kuat)</th><th style="width:41%">ViT (bias lemah)</th></tr></thead>
+        <tbody>
+          <tr><td class="c-table-criteria">Unit dasar</td><td>Kernel lokal 3&times;3</td><td><em>Patch</em> gambar 16&times;16</td></tr>
+          <tr><td class="c-table-criteria">Asumsi bawaan</td><td>Lokalitas, translasi, hierarki</td><td>Hampir tanpa asumsi spasial</td></tr>
+          <tr><td class="c-table-criteria">Relasi fitur</td><td>Lokal &rarr; global (bertahap)</td><td>Global via <em>self-attention</em></td></tr>
+          <tr><td class="c-table-criteria">Kebutuhan data</td><td>Efisien, data sedikit cukup</td><td>Lapar data &rarr; perlu pre-trained</td></tr>
+        </tbody>
+      </table>
+
+      <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">auto_awesome</span><div>Contoh arsitektur Transformer untuk gambar antara lain ViT dan SwinTransformer</div></div>
+      <aside class="notes">
+        Puncak narasi evolusi arsitektur: setelah CNN matang di ResNet, ViT menggeser paradigma dengan membuang sebagian besar asumsi spasial. Tekankan kolom &ldquo;Asumsi bawaan&rdquo; — di sinilah konsep inductive bias menjadi pembeda. Weak bias membuat ViT lebih fleksibel tetapi membutuhkan data/pre-training lebih banyak, yang menjadi jembatan alami ke Seksi 4 (Pre-trained Models).
+      </aside>
+    </section>
+
     <!-- SECTION 4: PRE-TRAINED MODELS & TRANSFER LEARNING -->
     <section class="section-slide" style="background: radial-gradient(circle at 80% 30%, rgba(254,100,11,0.06) 0%, transparent 100%);">
       <div class="section-slide-content">
