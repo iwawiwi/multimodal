@@ -7,12 +7,15 @@
 //
 // Catatan: `style`/`css` adalah INLINE config (CLI flag), bukan di sini.
 // File ini hanya memuat BuildTask: entry, size, static, output, dll.
+const week = process.env.HANDSON_WEEK || '03';
+const is02 = week === '02';
+
 module.exports = {
-  title: 'Hands-on 02: Eksplorasi Word Embeddings',
+  title: is02 ? 'Hands-on 02: Eksplorasi Word Embeddings' : 'Hands-on 03: Feature Extraction Gambar',
   author: 'Pembelajaran Mesin Multimodal (IF25-40304)',
   language: 'id',
   size: 'A4',
-  entry: ['hands-on/mgg02-hands-on.html'],
+  entry: [`hands-on/mgg${week}-hands-on.html`],
   // Server Vivliostyle menjadikan folder `hands-on/` sebagai root, sehingga
   // referensi `../assets/...` pada HTML perlu dipetakan ke folder assets asli
   // (resolve `../assets` dari root server `hands-on/` → `assets/` project).
@@ -20,5 +23,5 @@ module.exports = {
     '/assets': '../assets',
   },
   workspaceDir: '.vivliostyle',
-  output: 'pdf/mgg02-hands-on.pdf',
+  output: `pdf/mgg${week}-hands-on.pdf`,
 };

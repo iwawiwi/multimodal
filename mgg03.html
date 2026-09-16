@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pertemuan 03: Representasi Modalitas II — Gambar | ITERA</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <link rel="stylesheet" href="css/catppuccin-latte.css">
+</head>
+<body>
+  <header class="deck-header">
+    <div class="deck-header-left">
+      <a href="index.html" class="deck-brand-link" title="Kembali ke Portal Kuliah">
+        <img src="assets/img/logo_2.png" alt="Logo ITERA" class="deck-logo">
+        <img src="assets/img/dikti-saintek-berdampak-color.svg" alt="Logo Dikti Saintek Berdampak" class="deck-logo">
+      </a>
+    </div>
+
+    <div class="deck-header-right">
+      <!-- Aspect Ratio / Projector Switcher -->
+      <div class="nav-dropdown">
+        <button type="button" class="deck-ctrl-btn" id="aspect-btn" onclick="toggleAspectDropdown(event)" title="Sesuaikan Rasio Layar & Proyektor">
+          <span class="material-symbols-outlined">aspect_ratio</span>
+          <span id="aspect-label" class="deck-btn-label">Auto</span>
+          <span class="material-symbols-outlined" style="font-size: 14px;">arrow_drop_down</span>
+        </button>
+        <div class="nav-dropdown-menu" id="aspect-menu">
+          <button type="button" class="dropdown-item active" data-aspect="auto" onclick="setAspectMode('auto')">
+            <span class="item-title">Auto</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-9" onclick="setAspectMode('16-9')">
+            <span class="item-title">16:9</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-10" onclick="setAspectMode('16-10')">
+            <span class="item-title">16:10</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="4-3" onclick="setAspectMode('4-3')">
+            <span class="item-title">4:3</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="mobile" onclick="setAspectMode('mobile')">
+            <span class="item-title">Mobile</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="text-large" onclick="setAspectMode('text-large')">
+            <span class="item-title">Teks Besar</span>
+          </button>
+        </div>
+      </div>
+
+      <button type="button" class="deck-ctrl-btn" onclick="Reveal.toggleOverview()" title="Lihat Matriks Seluruh Slide (Esc/O)">
+        <span class="material-symbols-outlined">grid_view</span>
+        <span class="deck-btn-label">Overview</span>
+      </button>
+      <button type="button" class="deck-ctrl-btn" onclick="openShortcutsModal()" title="Panduan Pintasan Keyboard (?)">
+        <span class="material-symbols-outlined">keyboard</span>
+        <span class="deck-btn-label">Pintasan</span>
+      </button>
+      <a href="index.html" class="deck-ctrl-btn" title="Kembali ke Portal Kuliah">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span class="deck-btn-label">Portal</span>
+      </a>
+    </div>
+  </header>
+  <div class="deck-progress-track"><div class="deck-progress-bar" id="deck-progress-bar"></div></div>
+  <div id="shortcuts-modal" onclick="closeShortcutsModal(event)"><div class="modal-content" onclick="event.stopPropagation()"><div class="modal-header"><h4 style="margin:0;font-weight:800"><span class="material-symbols-outlined icon-blue">keyboard</span> Pintasan Navigasi Presentasi</h4><button class="modal-close" onclick="closeShortcutsModal()">&times;</button></div><div class="shortcut-row"><span>Slide berikutnya</span><span><span class="kbd-key">Space</span> / <span class="kbd-key">→</span></span></div><div class="shortcut-row"><span>Slide sebelumnya</span><span><span class="kbd-key">←</span></span></div><div class="shortcut-row"><span>Catatan dosen</span><span><span class="kbd-key">S</span></span></div></div></div>
+  <div class="reveal"><div class="slides">
+      <section id="deck-title">
+        <div style="margin: auto 0; text-align: left;">
+          <h1 style="font-size: 2.3em; line-height: 1.15; font-weight: 800; color: var(--ctp-text); margin-bottom: 12px; letter-spacing: -0.025em;">
+            Pembelajaran Mesin Multimodal
+          </h1>
+          <div style="font-size: 1.15em; font-weight: 600; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.4;">
+            Pertemuan 03 &bull; Representasi Modalitas II: Gambar
+          </div>
+          <div style="max-width: 620px; background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-left: 3.5px solid var(--ctp-blue); border-radius: 12px; padding: 18px 24px;">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">
+              Dosen Pengampu
+            </div>
+            <div style="font-size: 1.1em; font-weight: 800; color: var(--ctp-text); margin-bottom: 6px;">
+              I Wayan Wiprayoga Wisesa
+            </div>
+            <div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;">
+              Program Studi Teknik Informatika<br>
+              Jurusan Teknologi Produksi dan Industri<br>
+              Institut Teknologi Sumatera (ITERA)<br>
+              <span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Buka sesi Pertemuan 3. Hubungkan struktur data gambar dengan kebutuhan CNN sebagai ekstraktor fitur visual.
+        </aside>
+      </section>
+    <!-- SLIDE 2: CAPAIAN PEMBELAJARAN -->
+    <section>
+      <h2>Tujuan Pembelajaran Sesi Ini</h2>
+      <p style="margin-bottom: 24px;">Di akhir sesi kuliah ini, mahasiswa diharapkan mampu menguasai kompetensi dasar berikut:</p>
+
+      <div class="grid-3">
+        <div class="c-card c-card-accent-top c-card-blue">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-blue">01</span>
+            <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Karakteristik Gambar</h4>
+          </div>
+          <p>Menjelaskan struktur spasial, piksel, saluran warna, dan tantangan data gambar.</p>
+        </div>
+
+        <div class="c-card c-card-accent-top c-card-mauve">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-mauve">02</span>
+            <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Arsitektur CNN</h4>
+          </div>
+          <p>Memahami prinsip konvolusi, pooling, dan residual connection pada CNN.</p>
+        </div>
+
+        <div class="c-card c-card-accent-top c-card-teal">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-teal">03</span>
+            <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Representasi Visual</h4>
+          </div>
+          <p>Menggunakan model pre-trained sebagai ekstraktor fitur gambar.</p>
+        </div>
+      </div>
+
+      <aside class="notes">
+        Jelaskan tiga kompetensi utama yang akan dicapai mahasiswa setelah sesi ini. Tekankan bahwa sesi ini membangun fondasi untuk memahami representasi visual dalam sistem multimodal.
+      </aside>
+    </section>
+    <!-- SLIDE 3: SECTION DIVIDER -->
+    <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(30,102,245,0.06) 0%, transparent 100%);">
+      <div class="section-slide-content">
+        <span class="section-part-label section-part-blue">Bagian 1</span>
+        <h1>Gambar sebagai Data</h1>
+        <p class="subtitle">
+          Memahami struktur piksel, saluran warna, dan tantangan representasi data gambar.
+        </p>
+      </div>
+      <aside class="notes">Transisi ke bagian pertama. Fokus pada struktur spasial gambar dan alasan model perlu mempertahankan hubungan lokal.</aside>
+    </section>
+    <section>
+      <h2>Gambar Bukan Sekadar Matriks</h2>
+      <p>Setiap gambar RGB direpresentasikan sebagai tensor tiga dimensi: tinggi, lebar, dan kanal warna.</p>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="diagram-canvas" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px; overflow: hidden;">
+          <img src="assets/data/image-representation.webp" alt="Representasi gambar digital RGB dengan dimensi tinggi H, lebar W, dan tiga kanal warna R, G, B" style="width: calc(100% + 72px); max-width: none; height: auto; margin-left: -36px; object-fit: contain;">
+        </div>
+
+        <div class="narrative-pane">
+          <div class="narrative-step">
+            <strong>01. Dimensi Spasial (\(H \times W\))</strong> menyimpan susunan piksel menurut tinggi dan lebar gambar.
+          </div>
+          <div class="narrative-step">
+            <strong>02. Kanal Warna (\(C = 3\))</strong> untuk gambar RGB: satu kanal merah, hijau, dan biru.
+          </div>
+          <div class="narrative-step">
+            <strong>03. Struktur Lokal</strong> Piksel berdekatan membentuk pola: tepi → tekstur → bagian → objek.
+          </div>
+        </div>
+      </div>
+
+      <aside class="notes">Gunakan ilustrasi seperti pada konsep word embeddings di mgg02. Tunjukkan bahwa H dan W membentuk struktur spasial, sedangkan C menyimpan kanal warna. Tekankan bahwa gambar bukan sekadar daftar angka: hubungan piksel bertetangga penting bagi model dan menjadi dasar receptive field pada CNN.</aside>
+    </section>
+
+    <section><h2>Tantangan Representasi Gambar</h2>
+        <table class="c-table">
+            <thead><tr><th style="width:22%">Tantangan</th><th style="width:38%">Mengapa sulit?</th><th style="width:40%">Konsekuensi bagi model</th></tr></thead>
+            <tbody>
+                <tr><td class="c-table-criteria">Dimensi tinggi</td><td>Resolusi gambar RGB 256 piksel memiliki \(256 \times 256 \times 3 = 196.608\) nilai piksel.</td><td>Parameter neuron <em>fully connected</em> tumbuh sangat besar jika mengikuti input.</td></tr>
+                <tr><td class="c-table-criteria">Variasi tampilan</td><td>Pencahayaan, sudut, skala, oklusi, dan bahkan lokasi objek bervariasi.</td><td>Model perlu fitur yang <em>robust</em> terhadap perubahan dan variasi.</td></tr>
+                <tr><td class="c-table-criteria">Ketergantungan lokal</td><td>Makna muncul dari hubungan piksel bertetangga.</td><td><em>Flattening</em> (representasi dari matriks menjadi vektor) terlalu dini kehilangan struktur spasial.</td></tr>
+            </tbody>
+        </table><aside class="notes">Tabel ini memotivasi CNN: model perlu memanfaatkan struktur, bukan memperlakukan semua piksel sebagai fitur independen.</aside></section>
+
+    <!-- SECTION 2: CONVOLUTIONAL NEURAL NETWORKS -->
+    <section class="section-slide" style="background: radial-gradient(circle at 90% 80%, rgba(136,57,239,0.06) 0%, transparent 100%);">
+      <div class="section-slide-content">
+        <span class="section-part-label section-part-mauve">Bagian 2</span>
+        <h1>Convolutional Neural Networks</h1>
+        <p class="subtitle">
+          Memanfaatkan struktur lokal, parameter sharing, dan hierarki fitur untuk membaca gambar.
+        </p>
+      </div>
+      <aside class="notes">Masuk ke CNN sebagai arsitektur yang sesuai dengan struktur grid data gambar.</aside>
+    </section>
+    <section>
+      <h2>Mengapa CNN untuk Gambar?</h2>
+      <p>CNN dirancang untuk memanfaatkan struktur spasial pada data gambar.</p>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="diagram-canvas" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px;">
+          <svg viewBox="0 0 420 240" role="img" aria-label="Kernel kecil bergerak pada grid piksel untuk menangkap pola lokal">
+            <rect x="28" y="28" width="190" height="190" rx="8" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+            <g stroke="#9ca0b0" stroke-width="1">
+              <path d="M66 28v190M104 28v190M142 28v190M180 28v190"/>
+              <path d="M28 66h190M28 104h190M28 142h190M28 180h190"/>
+            </g>
+            <rect x="66" y="66" width="76" height="76" fill="#1e66f5" fill-opacity=".2" stroke="#1e66f5" stroke-width="4"/>
+            <text x="104" y="126" text-anchor="middle" fill="#1e66f5" font-size="16" font-family="sans-serif" font-weight="700">kernel</text>
+            <path d="M246 104h66" stroke="#8839ef" stroke-width="3" marker-end="url(#slide8-arrow)"/>
+            <rect x="326" y="62" width="66" height="84" rx="8" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
+            <path d="M338 128h42M338 116h30M338 104h36M338 92h24" stroke="#8839ef" stroke-width="4" stroke-linecap="round"/>
+            <text x="359" y="174" text-anchor="middle" fill="#8839ef" font-size="15" font-family="sans-serif" font-weight="700">feature map</text>
+            <defs><marker id="slide8-arrow" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8z" fill="#8839ef"/></marker></defs>
+          </svg>
+        </div>
+
+        <div class="narrative-pane">
+          <div class="narrative-step">
+            <strong>01. Local Receptive Field</strong> Neuron melihat area kecil sehingga hubungan piksel bertetangga tetap terjaga.
+          </div>
+          <div class="narrative-step">
+            <strong>02. Parameter Sharing</strong> Kernel yang sama mencari pola di berbagai lokasi gambar.
+          </div>
+          <div class="narrative-step">
+            <strong>03. Equivariance</strong> Pergeseran input menghasilkan pergeseran pola pada feature map.
+          </div>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-success" style="margin-top: 16px;"><span class="material-symbols-outlined icon-green">compress</span><div>Lebih sedikit parameter, lebih banyak struktur visual yang dipertahankan.</div></div>
+      <aside class="notes">Gunakan ilustrasi untuk membandingkan CNN dengan fully connected layer. CNN memproses area lokal dan memakai kernel yang sama di berbagai lokasi, sehingga struktur spasial tetap dipertahankan dengan jumlah parameter lebih kecil.</aside>
+    </section>
+
+    <section>
+      <h2>Konvolusi: Filter yang Mencari Pola</h2>
+      <p>Kernel bergerak di atas area lokal gambar dan menghitung respons untuk setiap posisi.</p>
+
+      <div class="formula-hero" style="margin-top: 16px;">
+        <div class="formula-label">Operasi Konvolusi</div>
+        <div class="formula-math">
+          $$y(i,j)=\sum_{u,v}x(i+u,j+v)\,k(u,v)$$
+        </div>
+      </div>
+      <div class="formula-breakdown" style="margin-top: 10px;">
+        <div class="formula-term-box" style="padding: 8px 10px;">
+          <strong>\(x(i+u,j+v)\)</strong>
+          Nilai piksel pada patch lokal di sekitar posisi \((i,j)\).
+        </div>
+        <div class="formula-term-box" style="padding: 8px 10px;">
+          <strong>\(k(u,v)\)</strong>
+          Bobot kernel pada indeks \(u,v\) yang belajar merespons pola tertentu, seperti tepi atau tekstur.
+        </div>
+        <div class="formula-term-box" style="padding: 8px 10px;">
+          <strong>\(y(i,j)\)</strong>
+          Nilai aktivasi pada feature map untuk posisi \((i,j)\).
+        </div>
+      </div>
+
+      <aside class="notes">Jangan fokus pada hitung manual yang panjang. Jelaskan bahwa setiap nilai feature map berasal dari perkalian antara nilai piksel lokal dan bobot kernel, lalu dijumlahkan. Kernel belajar menjadi detektor pola melalui data. Tekankan bahwa \(u\) dan \(v\) adalah indeks lokal di dalam kernel: \(u\) untuk baris dan \(v\) untuk kolom.</aside>
+    </section>
+
+    <section>
+      <h2>Mengatur Pergerakan Kernel</h2>
+      <p>Setelah menghitung satu posisi, kernel bergeser untuk membentuk seluruh feature map.</p>
+
+      <div class="grid-2" style="margin-top: 16px; align-items: center;">
+        <div class="diagram-canvas" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px; text-align: center;">
+          <img src="assets/data/conv2d-example.gif" alt="Animasi operasi konvolusi 2D: kernel bergerak pada input dan menghasilkan feature map" style="display: block; width: 100%; max-height: 260px; object-fit: contain; margin: 0 auto; mix-blend-mode: multiply;">
+          <small style="display: block; margin-top: 8px; color: var(--ctp-subtext0);">Sumber: Wikimedia Commons</small>
+        </div>
+        <div class="narrative-pane">
+          <div class="narrative-step"><strong>01. Stride</strong> Menentukan seberapa jauh kernel bergeser pada setiap langkah.</div>
+          <div class="narrative-step"><strong>02. Padding</strong> Menambahkan piksel di tepi input untuk mengatur ukuran keluaran.</div>
+          <div class="narrative-step"><strong>03. Feature Map</strong> Menyimpan respons kernel pada setiap posisi setelah proses konvolusi.</div>
+        </div>
+      </div>
+
+      <aside class="notes">Jelaskan bahwa konvolusi mengulang operasi yang sama pada banyak posisi. Stride mengatur jarak perpindahan kernel, padding mengatur perlakuan terhadap tepi input, dan kumpulan seluruh respons membentuk feature map.</aside>
+    </section>
+
+    <section>
+      <h2>Pooling: Merangkum Aktivasi</h2>
+      <p>Pooling merangkum area kecil pada feature map untuk mengurangi resolusi spasial.</p>
+
+      <div class="grid-2" style="margin-top: 16px; align-items: center;">
+        <div class="diagram-canvas" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px;">
+          <div class="grid-2" style="gap: 12px;">
+            <div class="formula-term-box" style="border-top: 3px solid var(--ctp-blue); text-align: center;">
+              <strong style="color: var(--ctp-blue); font-family: var(--font-sans);">Max Pooling</strong>
+              <div style="font-size: 1.7em; color: var(--ctp-blue); margin: 12px 0;">\(\max(\cdot)\)</div>
+              <p style="margin: 0;">Mempertahankan respons paling kuat.</p>
+            </div>
+            <div class="formula-term-box" style="border-top: 3px solid var(--ctp-teal); text-align: center;">
+              <strong style="color: var(--ctp-teal); font-family: var(--font-sans);">Average Pooling</strong>
+              <div style="font-size: 1.7em; color: var(--ctp-teal); margin: 12px 0;">\(\operatorname{mean}(\cdot)\)</div>
+              <p style="margin: 0;">Merangkum respons secara rata-rata.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="narrative-pane">
+          <div class="narrative-step"><strong>01. Dimensi Lebih Kecil</strong> Feature map berukuran lebih kecil setelah setiap area diringkas.</div>
+          <div class="narrative-step"><strong>02. Komputasi Lebih Ringan</strong> Layer berikutnya memproses lebih sedikit nilai aktivasi.</div>
+          <div class="narrative-step"><strong>03. Toleran terhadap Pergeseran</strong> Pola tetap terwakili meskipun berpindah sedikit pada gambar.</div>
+        </div>
+      </div>
+
+      <aside class="notes">Pooling bukan pengganti konvolusi. Ia merangkum feature map dan mengurangi resolusi spasial. Bandingkan max pooling yang memilih respons terbesar dengan average pooling yang menghitung nilai rata-rata.</aside>
+    </section>
+    <section>
+      <h2>Pola Dasar Arsitektur CNN</h2>
+      <p>CNN mengubah gambar menjadi representasi fitur secara bertahap sebelum menghasilkan keluaran tugas.</p>
+
+      <div class="diagram-canvas" style="margin-top: 8px; min-height: 200px; background: var(--ctp-mantle); border-radius: 10px; padding: 4px 10px;">
+        <div class="pipeline-flow" style="grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 0;">
+          <div class="pipeline-step" style="padding: 5px 4px;"><strong><span style="color: var(--ctp-teal)">Input</span></strong><br>gambar</div>
+          <div class="pipeline-step" style="padding: 5px 4px;"><strong><span style="color: var(--ctp-blue)">Conv</span></strong><br>pola lokal</div>
+          <div class="pipeline-step" style="padding: 5px 4px;"><strong><span style="color: var(--ctp-mauve)">Pool</span></strong><br>ringkas</div>
+          <div class="pipeline-step" style="padding: 5px 4px;"><strong><span style="color: var(--ctp-blue)">Conv</span></strong><br>fitur abstrak</div>
+          <div class="pipeline-step" style="padding: 5px 4px;"><strong><span style="color: var(--ctp-peach)">Head</span></strong><br>prediksi</div>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-top: 8px;">
+        <div class="narrative-step"><strong>01. Backbone</strong> Convolution dan pooling mengekstraksi fitur secara bertahap.</div>
+        <div class="narrative-step"><strong>02. Aktivasi</strong> Fungsi non-linear membantu jaringan mempelajari pola kompleks.</div>
+        <div class="narrative-step"><strong>03. Task Head</strong> Fitur diubah menjadi label, feature map, atau embedding visual.</div>
+      </div>
+
+      <aside class="notes">Bedakan backbone sebagai ekstraktor fitur dan head sebagai bagian task-specific. Arsitektur CNN modern tidak selalu memakai fungsi aktivasi yang sama: ReLU banyak digunakan pada CNN klasik, sedangkan GELU atau SiLU/Swish dipakai pada sebagian arsitektur modern. Pilihan aktivasi mengikuti desain arsitektur dan karakteristik optimisasinya.</aside>
+    </section>
+    <!-- SECTION 3: EVOLUSI ARSITEKTUR CNN -->
+    <section><h2>Dari Tepi ke Objek</h2>
+        <div class="pipeline-flow" style="margin-top:30px">
+            <div class="pipeline-step"><span class="material-symbols-outlined icon-blue">grid_4x4</span>
+                <h3 style="color: var(--ctp-blue)">Piksel</h3><p>Intensitas dan warna.</p>
+            </div>
+            <div class="pipeline-step"><span class="material-symbols-outlined icon-mauve">timeline</span>
+                <h3 style="color: var(--ctp-mauve)">Tepi</h3><p>Perubahan lokal.</p>
+            </div>
+            <div class="pipeline-step"><span class="material-symbols-outlined icon-teal">texture</span>
+                <h3 style="color: var(--ctp-teal)">Tekstur</h3><p>Pola berulang.</p>
+            </div>
+            <div class="pipeline-step"><span class="material-symbols-outlined icon-green">category</span>
+                <h3 style="color: var(--ctp-green)">Bagian</h3><p>Komponen objek.</p>
+            </div>
+        </div><p class="c-callout c-callout-info" style="margin-top:25px">Lapisan dangkal pada Convolutional Neural Network cenderung menangkap pola sederhana; lapisan dalam menggabungkannya menjadi representasi abstrak.</p>
+
+        <aside class="notes">Gunakan analogi komposisional: garis membentuk sudut, sudut membentuk bagian, bagian membentuk objek.</aside>
+    </section>
+
+    <section class="section-slide" style="background: radial-gradient(circle at 50% 50%, rgba(23,146,153,0.06) 0%, transparent 100%);">
+      <div class="section-slide-content">
+        <span class="section-part-label section-part-teal">Bagian 3</span>
+        <h1>Evolusi Arsitektur CNN</h1>
+        <p class="subtitle">
+          Dari jaringan konvolusional awal hingga ResNet yang memungkinkan model lebih dalam.
+        </p>
+      </div>
+      <aside class="notes">Masuk ke sejarah singkat CNN dan alasan residual connection diperlukan pada jaringan yang lebih dalam.</aside>
+    </section>
+    <section><h2>LeNet, AlexNet, dan VGG</h2><table class="c-table"><thead><tr><th style="width:20%">Model</th><th style="width:40%">Kontribusi</th><th style="width:40%">Pelajaran desain</th></tr></thead><tbody><tr><td class="c-table-criteria">LeNet-5</td><td>CNN awal untuk pengenalan digit.</td><td>Conv → Pool → FC sudah efektif untuk pola sederhana.</td></tr><tr><td class="c-table-criteria">AlexNet</td><td>Mendorong CNN untuk ImageNet skala besar.</td><td>GPU, ReLU, dan augmentasi mengubah skala eksperimen.</td></tr><tr><td class="c-table-criteria">VGG</td><td>Menumpuk kernel kecil 3×3 secara konsisten.</td><td>Kedalaman meningkatkan abstraksi, tetapi biaya komputasi naik.</td></tr></tbody></table><aside class="notes">Fokus pada ide yang dibawa tiap arsitektur, bukan menghafal semua konfigurasi layer.</aside></section>
+    <section>
+      <h2>ResNet: Belajar Residual</h2>
+      <p>ResNet membantu jaringan yang sangat dalam belajar perubahan fitur tanpa kehilangan aliran informasi dari input.</p>
+
+      <div class="grid-2" style="margin-top: 16px; align-items: center;">
+        <div class="diagram-canvas" style="background: var(--ctp-mantle); border-radius: 10px; padding: 12px;">
+          <svg viewBox="0 0 520 260" role="img" aria-label="Residual block dengan skip connection">
+            <rect x="48" y="102" width="116" height="64" rx="10" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+            <text x="106" y="140" text-anchor="middle" fill="#4c4f69" font-size="20" font-family="sans-serif" font-weight="700">x</text>
+            <rect x="206" y="102" width="116" height="64" rx="10" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
+            <text x="264" y="140" text-anchor="middle" fill="#4c4f69" font-size="20" font-family="sans-serif" font-weight="700">F(x)</text>
+            <circle cx="394" cy="134" r="25" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
+            <text x="394" y="142" text-anchor="middle" fill="#179299" font-size="25" font-family="sans-serif" font-weight="700">+</text>
+            <path d="M164 134h38" stroke="#8839ef" stroke-width="3" marker-end="url(#resnet-arrow)"/>
+            <path d="M106 102V48h288v61" fill="none" stroke="#40a02b" stroke-width="4" marker-end="url(#resnet-skip)"/>
+            <text x="250" y="34" text-anchor="middle" fill="#40a02b" font-size="16" font-family="sans-serif" font-weight="700">skip connection</text>
+            <path d="M322 134h45" stroke="#8839ef" stroke-width="3" marker-end="url(#resnet-arrow)"/>
+            <path d="M419 134h50" stroke="#179299" stroke-width="3" marker-end="url(#resnet-arrow)"/>
+            <text x="466" y="124" text-anchor="middle" fill="#179299" font-size="16" font-family="sans-serif" font-weight="700">y</text>
+            <defs>
+              <marker id="resnet-arrow" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8z" fill="#8839ef"/></marker>
+              <marker id="resnet-skip" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8z" fill="#40a02b"/></marker>
+            </defs>
+          </svg>
+        </div>
+
+        <div class="narrative-pane">
+          <div class="narrative-step"><strong>01. Masalah Kedalaman</strong> Jaringan sangat dalam dapat mengalami vanishing gradients dan sulit dioptimalkan.</div>
+          <div class="narrative-step"><strong>02. Residual</strong> Blok mempelajari perubahan fitur \(F(x)\), bukan seluruh transformasi dari awal.</div>
+          <div class="narrative-step"><strong>03. Skip Connection</strong> Input \(x\) diteruskan dan ditambahkan kembali pada keluaran:
+            \(y = F(x) + x\).</div>
+        </div>
+      </div>
+
+      <aside class="notes">Jelaskan bahwa residual block memiliki dua jalur: jalur transformasi yang mempelajari F(x) dan jalur skip connection yang meneruskan input x. Keduanya dijumlahkan menjadi y = F(x) + x. Jalur langsung ini membantu aliran gradien dan memungkinkan backbone yang lebih dalam seperti ResNet-50.</aside>
+    </section>
+    <!-- SECTION 4: PRE-TRAINED MODELS & TRANSFER LEARNING -->
+    <section class="section-slide" style="background: radial-gradient(circle at 80% 30%, rgba(254,100,11,0.06) 0%, transparent 100%);">
+      <div class="section-slide-content">
+        <span class="section-part-label section-part-peach">Bagian 4</span>
+        <h1>Pre-trained Models &amp; Transfer Learning</h1>
+        <p class="subtitle">
+          Memanfaatkan pengetahuan visual yang telah dipelajari untuk tugas gambar baru.
+        </p>
+      </div>
+      <aside class="notes">Hubungkan ke masalah nyata: dataset khusus sering kecil, sementara model besar mahal dilatih dari awal.</aside>
+
+    </section>
+    <section><h2>Dua Cara Memakai Model Pre-trained</h2>
+        <div class="grid-2" style="margin-top:25px">
+            <div class="c-card c-card-blue c-card-accent-top">
+                <h3 style="color: var(--ctp-blue)">Feature Extraction</h3><p>Bekukan (<em>freeze</em>) backbone, buang layer classifier atau <em>head</em>, gunakan outputnya sebagai vektor fitur.</p>
+                <div style="background: var(--ctp-base); padding: 10px 12px; border-radius: 8px; font-size: 0.8em; margin-bottom: 10px; border: 1px dashed var(--ctp-surface1);">
+                    <strong>Kelebihan:</strong> Cepat dan cocok ketika data target terbatas.
+                </div>
+            </div>
+            <div class="c-card c-card-mauve c-card-accent-top">
+                <h3 style="color: var(--ctp-mauve)">Fine-tuning</h3><p>Buka sebagian layer (atau semuanya) untuk kemudian dilatih pada data target dengan menerapkan <em>learning rate</em> kecil.</p>
+                <div style="background: var(--ctp-base); padding: 10px 12px; border-radius: 8px; font-size: 0.8em; margin-bottom: 10px; border: 1px dashed var(--ctp-surface1);">
+                    <strong>Kelebihan:</strong> Lebih adaptif, tetapi lebih sensitif terhadap data dan konfigurasi.
+                </div>
+            </div>
+        </div>
+        <aside class="notes">Hari ini hands-on memilih feature extraction agar fokus pada representasi, bukan pelatihan.</aside>
+    </section>
+
+    <section>
+      <h2>Data Augmentation</h2>
+      <p>Augmentasi menghasilkan variasi (logis) dari gambar agar model tidak menghafal sampel data latih.</p>
+
+      <div class="grid-2" style="margin-top: 10px; align-items: center;">
+        <div class="diagram-canvas" style="background: var(--ctp-mantle); border-radius: 10px; padding: 4px 12px;">
+          <svg viewBox="0 0 420 230" role="img" aria-label="Contoh transformasi augmentasi gambar: rotasi, perubahan warna, dan occlusion">
+            <rect x="24" y="42" width="92" height="132" rx="10" fill="#89b4fa" stroke="#1e66f5" stroke-width="3"/>
+            <circle cx="70" cy="88" r="24" fill="#f9e2af"/><path d="M45 145 Q70 112 95 145" fill="none" stroke="#8839ef" stroke-width="8" stroke-linecap="round"/>
+            <text x="70" y="198" text-anchor="middle" fill="#4c4f69" font-size="15" font-family="sans-serif" font-weight="700">Input</text>
+            <path d="M132 108h42" stroke="#8839ef" stroke-width="3" marker-end="url(#aug-arrow)"/>
+            <rect x="190" y="42" width="92" height="132" rx="10" fill="#89dceb" stroke="#179299" stroke-width="3" transform="rotate(8 236 108)"/>
+            <circle cx="236" cy="88" r="24" fill="#f9e2af" transform="rotate(8 236 108)"/><path d="M211 145 Q236 112 261 145" fill="none" stroke="#8839ef" stroke-width="8" stroke-linecap="round" transform="rotate(8 236 108)"/>
+            <text x="236" y="198" text-anchor="middle" fill="#4c4f69" font-size="15" font-family="sans-serif" font-weight="700">Transformasi</text>
+            <path d="M298 108h42" stroke="#8839ef" stroke-width="3" marker-end="url(#aug-arrow)"/>
+            <rect x="356" y="42" width="40" height="132" rx="8" fill="#a6e3a1" stroke="#40a02b" stroke-width="3"/>
+            <path d="M364 145 Q376 112 388 145" fill="none" stroke="#8839ef" stroke-width="7" stroke-linecap="round"/>
+            <text x="376" y="198" text-anchor="middle" fill="#4c4f69" font-size="15" font-family="sans-serif" font-weight="700">Variasi</text>
+            <defs><marker id="aug-arrow" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8z" fill="#8839ef"/></marker></defs>
+          </svg>
+        </div>
+
+        <div class="narrative-pane">
+          <div class="narrative-step"><strong>01. Geometrik</strong> Rotasi, <em>crop</em>, <em>flip</em>, dan translasi mengubah posisi atau orientasi gambar.</div>
+          <div class="narrative-step"><strong>02. Warna</strong> Perubahan <em>brightness</em>, kontras, dan saturasi menghasilkan variasi tampilan.</div>
+          <div class="narrative-step"><strong>03. Occlusion</strong> <em>Noise</em> atau <em>random erasing</em> menguji ketahanan model terhadap penghalang.</div>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-success" style="margin-top: 2px;"><span class="material-symbols-outlined icon-green">auto_fix_high</span><div>Transformasi harus mempertahankan label tetap sesuai.</div></div>
+      <aside class="notes">Tekankan bahwa augmentasi bukan sekadar memperbanyak data secara acak. Transformasi harus masuk akal untuk domain dan tidak mengubah label. Flip vertikal, misalnya, bisa tidak valid untuk citra medis tertentu.</aside>
+    </section>
+    <!-- SLIDE 19: RANGKUMAN -->
+    <section>
+      <h2>Rangkuman &amp; Poin Kunci</h2>
+      <p>Benang merah representasi gambar dari struktur piksel hingga embedding visual berbasis model pre-trained.</p>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="c-card" style="background: var(--ctp-mantle);">
+          <div class="c-card-header">
+            <h4 style="color: var(--ctp-blue);">Evolusi Representasi</h4>
+          </div>
+          <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.7;">
+            <li><strong>Piksel &amp; Saluran</strong> &rarr; struktur spasial dan warna</li>
+            <li><strong>Konvolusi</strong> &rarr; pola lokal dan feature map</li>
+            <li><strong>Pooling</strong> &rarr; ringkasan spasial dan invariansi kecil</li>
+          </ul>
+        </div>
+        <div class="c-card" style="background: var(--ctp-mantle);">
+          <div class="c-card-header">
+            <h4 style="color: var(--ctp-mauve);">Evolusi Arsitektur</h4>
+          </div>
+          <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.7;">
+            <li><strong>LeNet, AlexNet, VGG</strong> &rarr; CNN semakin dalam</li>
+            <li><strong>ResNet</strong> &rarr; residual connection</li>
+            <li><strong>Pre-trained Model</strong> &rarr; fitur siap pakai</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="c-callout" style="margin-top: 16px;">
+        <p style="font-size: 0.82em; margin: 0;">
+          <strong>Kunci untuk Multimodal:</strong> Representasi visual yang baik adalah fondasi untuk sistem multimodal — dari <em>image captioning</em> hingga <em>visual question answering</em>.
+        </p>
+      </div>
+
+      <aside class="notes">
+        Rangkum alur dari piksel ke feature map, lalu ke embedding visual. Tekankan bahwa model pre-trained memungkinkan representasi gambar digunakan kembali dalam berbagai tugas multimodal.
+      </aside>
+    </section>
+    <!-- SLIDE 20: DISKUSI & REFLEKSI -->
+    <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Diskusi Kelas">
+      <h2 style="text-align: center; margin-bottom: 24px;">Diskusi Kelas</h2>
+      <p style="text-align: center; margin-bottom: 24px;">Diskusikan bersama rekan di samping Anda selama 3-5 menit:</p>
+      <div style="display: flex; flex-direction: column; gap: 14px; max-width: 860px; margin: 0 auto;">
+        <div class="c-callout c-callout-info"><span class="material-symbols-outlined icon-blue">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-blue);">Pertanyaan 1:</strong> Mengapa CNN lebih sesuai untuk gambar dibandingkan fully connected layer yang memperlakukan semua piksel sebagai fitur independen?</p></div></div>
+        <div class="c-callout c-callout-warning"><span class="material-symbols-outlined icon-mauve">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-mauve);">Pertanyaan 2:</strong> Dalam skenario apa Anda akan memilih feature extraction dibandingkan fine-tuning pada model pre-trained?</p></div></div>
+        <div class="c-callout c-callout-success"><span class="material-symbols-outlined icon-teal">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-teal);">Pertanyaan 3:</strong> Transformasi augmentasi apa yang dapat mengubah label gambar pada domain tertentu, seperti citra medis atau kendaraan?</p></div></div>
+      </div>
+      <aside class="notes">Tiga pertanyaan diskusi untuk menghubungkan struktur gambar, pilihan arsitektur, dan penggunaan model pre-trained. Beri waktu 3–5 menit, lalu minta beberapa kelompok berbagi jawaban.</aside>
+    </section>
+
+    <!-- SLIDE 21: REFERENSI -->
+    <section>
+      <h2>Referensi Utama &amp; Bacaan Lanjutan</h2>
+      <p style="margin-bottom: 20px;">Rekomendasi literatur akademik wajib dan bacaan lanjutan:</p>
+      <ol style="list-style: none; padding: 0; margin: 0; counter-reset: ref-counter;">
+        <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[1]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Goodfellow, I., Bengio, Y., &amp; Courville, A. (2016).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Deep Learning</em>. MIT Press. — Bab 9: Convolutional Networks.</p></div></li>
+        <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[2]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">LeCun, Y., Bottou, L., Bengio, Y., &amp; Haffner, P. (1998).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Gradient-Based Learning Applied to Document Recognition</em>. Proceedings of the IEEE.</p></div></li>
+        <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[3]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Krizhevsky, A., Sutskever, I., &amp; Hinton, G. E. (2012).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>ImageNet Classification with Deep Convolutional Neural Networks</em>. NeurIPS.</p></div></li>
+        <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[4]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">He, K., Zhang, X., Ren, S., &amp; Sun, J. (2016).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Deep Residual Learning for Image Recognition</em>. CVPR.</p></div></li>
+        <li style="counter-increment: ref-counter; padding: 14px 0; display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[5]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">PyTorch Contributors.</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Models and Pre-trained Weights — Torchvision Documentation</em>.</p></div></li>
+      </ol>
+      <aside class="notes">Lima referensi utama mencakup fondasi CNN, AlexNet, dan ResNet, serta dokumentasi implementasi model pre-trained.</aside>
+    </section>
+
+    <!-- SLIDE 22: PENUTUP -->
+    <section>
+      <div style="margin: auto 0; text-align: center;">
+        <h2 style="font-size: 1.8em; font-weight: 800; color: var(--ctp-text); margin-bottom: 16px;">Terima Kasih</h2>
+        <p style="font-size: 1.05em; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.6;">Pertemuan selanjutnya:<br><strong style="color: var(--ctp-blue);">Representasi Modalitas III: Audio &amp; Video</strong></p>
+        <div style="background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-radius: 12px; padding: 18px 24px; display: inline-block; max-width: 480px;"><div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">Pertanyaan &amp; Diskusi</div><div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;"><span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span></div></div>
+      </div>
+      <aside class="notes">Tutup sesi. Ingatkan mahasiswa untuk membaca referensi dan menyiapkan pertanyaan untuk pertemuan selanjutnya tentang representasi audio dan video.</aside>
+    </section>
+  </div></div>
+  <!-- Persistent Edge-to-Edge Deck Footer -->
+  <footer class="deck-footer">
+    <div class="deck-footer-left">
+      <span class="deck-footer-code">IF25-40304</span>
+      <span class="deck-footer-sep">&bull;</span>
+      <span class="deck-footer-dept">Teknik Informatika ITERA</span>
+    </div>
+
+    <div class="deck-footer-center">
+      <button type="button" id="deck-footer-topic" class="deck-footer-topic" onclick="toggleTopicPopover(event)" title="Daftar Isi & Navigasi Cepat Slide (Klik)">
+        <span id="deck-footer-topic-text" class="deck-footer-topic-text">Pertemuan 03 &bull; Representasi Modalitas II: Gambar</span>
+        <span class="material-symbols-outlined deck-footer-topic-icon">expand_less</span>
+      </button>
+    </div>
+
+    <div class="deck-footer-right">
+      <button type="button" class="deck-footer-btn" onclick="Reveal.prev()" title="Slide Sebelumnya (← / P)" aria-label="Slide Sebelumnya">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <button type="button" class="deck-counter-btn" onclick="Reveal.toggleOverview()" title="Klik untuk Matriks Seluruh Slide (Esc/O)">
+        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">22</span>
+      </button>
+      <button type="button" class="deck-footer-btn" onclick="Reveal.next()" title="Slide Berikutnya (→ / Space / N)" aria-label="Slide Berikutnya">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </footer>
+  <div class="deck-topic-popover" id="deck-topic-popover"><div class="deck-popover-search-wrap"><input type="text" id="deck-topic-search" class="deck-popover-search" placeholder="Cari slide..." oninput="filterTopicList(this.value)"></div><div class="deck-topic-list" id="deck-topic-list"></div></div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+  <script>
+
+    let currentAspectMode = localStorage.getItem('reveal_aspect_mode') || 'auto';
+
+    function calculateResponsiveDimensions(mode) {
+      const winW = window.innerWidth;
+      const winH = window.innerHeight - 86.5;
+      const ratio = winW / winH;
+
+      if (mode === '16-9') return { width: 1280, height: 720, label: '16:9' };
+      if (mode === '16-10') return { width: 1280, height: 800, label: '16:10' };
+      if (mode === '4-3') return { width: 1024, height: 768, label: '4:3' };
+      if (mode === 'mobile') return { width: 750, height: 1000, label: 'Mobile' };
+      if (mode === 'text-large') return { width: 960, height: 540, label: 'Teks Besar' };
+
+      // Auto mode
+      if (winW <= 768 || ratio < 1.15) {
+        return { width: 750, height: Math.max(900, Math.round(750 / Math.max(0.5, ratio))), label: 'Auto' };
+      } else if (ratio >= 1.65) {
+        return { width: 1280, height: 720, label: 'Auto' };
+      } else if (ratio >= 1.45) {
+        return { width: 1280, height: 800, label: 'Auto' };
+      } else {
+        return { width: 1024, height: 768, label: 'Auto' };
+      }
+    }
+
+    const initialDim = calculateResponsiveDimensions(currentAspectMode);
+
+    Reveal.initialize({
+      width: initialDim.width,
+      height: initialDim.height,
+      margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2.0,
+      hash: true,
+      slideNumber: false,
+      controls: false,
+      progress: false,
+      center: true,
+      touch: true,
+      transition: 'slide',
+      backgroundTransition: 'none',
+      plugins: [ RevealNotes, RevealHighlight, RevealMath.KaTeX ]
+    });
+
+    function updateDeckState(event) {
+      const indices = event ? { h: event.indexh, v: event.indexv } : Reveal.getIndices();
+      const totalSlides = Reveal.getTotalSlides();
+      const currentIdx = indices ? indices.h : 0;
+
+      const progressBar = document.getElementById('deck-progress-bar');
+      if (progressBar) {
+        const progressPercent = totalSlides > 1 ? (currentIdx / (totalSlides - 1)) * 100 : 0;
+        progressBar.style.width = progressPercent + '%';
+      }
+
+      const currentEl = document.getElementById('deck-slide-current');
+      const totalEl = document.getElementById('deck-slide-total');
+      if (currentEl) currentEl.textContent = String(currentIdx + 1).padStart(2, '0');
+      if (totalEl) totalEl.textContent = String(totalSlides).padStart(2, '0');
+
+      const topicEl = document.getElementById('deck-footer-topic-text') || document.getElementById('deck-footer-topic');
+      if (topicEl) {
+        if (currentIdx === 0) {
+          topicEl.textContent = 'Pertemuan 03 \u2022 Representasi Modalitas II: Gambar';
+        } else {
+          const currentSlide = Reveal.getCurrentSlide();
+          if (currentSlide) {
+            const topicAttr = currentSlide.getAttribute('data-topic');
+            if (topicAttr) {
+              topicEl.textContent = topicAttr;
+            } else {
+              const heading = currentSlide.querySelector('h2') || currentSlide.querySelector('h1');
+              if (heading) {
+                topicEl.textContent = heading.textContent.trim();
+              } else {
+                topicEl.textContent = 'Pertemuan 03 \u2022 Representasi Modalitas II: Gambar';
+              }
+            }
+          }
+        }
+      }
+
+      updateActiveTopicItem(currentIdx);
+    }
+
+    Reveal.on('ready', event => {
+      document.body.classList.add('reveal-ready');
+      updateDeckState(event);
+      buildTopicIndex();
+    });
+    Reveal.on('slidechanged', updateDeckState);
+
+    // =========================================================
+    // Floating Slide Topic Navigation Popover (Daftar Isi)
+    // =========================================================
+    function buildTopicIndex() {
+      const listEl = document.getElementById('deck-topic-list');
+      if (!listEl) return;
+
+      const slides = document.querySelectorAll('.reveal .slides > section');
+      let html = '';
+
+      slides.forEach((slide, idx) => {
+        const topicAttr = slide.getAttribute('data-topic');
+        const h1 = slide.querySelector('h1');
+        const h2 = slide.querySelector('h2');
+        const partEl = slide.querySelector('.section-part-label');
+        const isSectionSlide = slide.classList.contains('section-slide') || !!slide.querySelector('.section-slide-content');
+        const partText = partEl ? partEl.textContent.trim().replace(/\s+/g, ' ') : '';
+
+        const h1Text = h1 ? h1.textContent.trim().replace(/\s+/g, ' ') : '';
+        const h2Text = h2 ? h2.textContent.trim().replace(/\s+/g, ' ') : '';
+        let title = '';
+
+        if (idx === 0) {
+          title = h1Text || 'Representasi Modalitas II: Gambar';
+          html += '<div class="deck-topic-section">Pendahuluan & Identitas</div>';
+        } else if (isSectionSlide || partText.startsWith('Bagian')) {
+          const secTitle = h1Text || h2Text || 'Bagian ' + idx;
+          const sectionLabel = partText ? partText + ': ' + secTitle : secTitle;
+          title = secTitle;
+          html += '<div class="deck-topic-section">' + sectionLabel + '</div>';
+        } else if (topicAttr) {
+          title = topicAttr;
+        } else {
+          title = h2Text || h1Text || 'Slide ' + (idx + 1);
+        }
+
+        const numStr = String(idx + 1).padStart(2, '0');
+        html += '<div class="deck-topic-item" data-slide-index="' + idx + '" onclick="jumpToSlide(' + idx + ')"><span class="deck-topic-num">' + numStr + '</span><span class="deck-topic-name" title="' + title + '">' + title + '</span></div>';
+      });
+
+      listEl.innerHTML = html;
+      const currentIdx = Reveal.getIndices ? Reveal.getIndices().h : 0;
+      updateActiveTopicItem(currentIdx);
+    }
+
+    function updateActiveTopicItem(currentIdx) {
+      document.querySelectorAll('.deck-topic-item').forEach(item => {
+        const idx = parseInt(item.getAttribute('data-slide-index'), 10);
+        item.classList.toggle('active', idx === currentIdx);
+      });
+    }
+
+    function toggleTopicPopover(e) {
+      if (e) e.stopPropagation();
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (!popover) return;
+
+      const isActive = popover.classList.toggle('active');
+      if (btn) btn.classList.toggle('active', isActive);
+
+      if (isActive) {
+        const activeItem = popover.querySelector('.deck-topic-item.active');
+        if (activeItem) {
+          activeItem.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }
+        const searchInput = document.getElementById('deck-topic-search');
+        if (searchInput) {
+          searchInput.value = '';
+          filterTopicList('');
+          setTimeout(() => searchInput.focus(), 80);
+        }
+      }
+    }
+
+    function closeTopicPopover() {
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (popover) popover.classList.remove('active');
+      if (btn) btn.classList.remove('active');
+    }
+
+    function jumpToSlide(index) {
+      Reveal.slide(index);
+      closeTopicPopover();
+    }
+
+    function filterTopicList(query) {
+      const q = (query || '').toLowerCase().trim();
+      const items = document.querySelectorAll('.deck-topic-item');
+      const sections = document.querySelectorAll('.deck-topic-section');
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const num = (item.querySelector('.deck-topic-num') || {}).textContent || '';
+        const name = (item.querySelector('.deck-topic-name') || {}).textContent || '';
+        const matches = !q || num.toLowerCase().includes(q) || name.toLowerCase().includes(q);
+        item.style.display = matches ? 'grid' : 'none';
+        if (matches) visibleCount++;
+      });
+
+      sections.forEach(sec => {
+        let nextEl = sec.nextElementSibling;
+        let hasVisibleChild = false;
+        while (nextEl && !nextEl.classList.contains('deck-topic-section')) {
+          if (nextEl.classList.contains('deck-topic-item') && nextEl.style.display !== 'none') {
+            hasVisibleChild = true;
+            break;
+          }
+          nextEl = nextEl.nextElementSibling;
+        }
+        sec.style.display = hasVisibleChild ? 'block' : 'none';
+      });
+
+      const listEl = document.getElementById('deck-topic-list');
+      let emptyMsg = document.getElementById('deck-topic-empty-msg');
+      if (visibleCount === 0) {
+        if (!emptyMsg) {
+          emptyMsg = document.createElement('div');
+          emptyMsg.id = 'deck-topic-empty-msg';
+          emptyMsg.className = 'deck-topic-empty';
+          emptyMsg.textContent = 'Tidak ada slide yang cocok dengan pencarian.';
+          listEl.appendChild(emptyMsg);
+        }
+        emptyMsg.style.display = 'block';
+      } else if (emptyMsg) {
+        emptyMsg.style.display = 'none';
+      }
+    }
+
+    function setAspectMode(mode) {
+      currentAspectMode = mode;
+      localStorage.setItem('reveal_aspect_mode', mode);
+      const dim = calculateResponsiveDimensions(mode);
+
+      Reveal.configure({
+        width: dim.width,
+        height: dim.height,
+        margin: 0.04,
+        minScale: 0.2,
+        maxScale: 2.0
+      });
+
+      document.body.classList.remove('aspect-16-9', 'aspect-16-10', 'aspect-4-3', 'aspect-mobile');
+      if (mode === 'auto') {
+        if (window.innerWidth <= 768) document.body.classList.add('aspect-mobile');
+      } else {
+        document.body.classList.add('aspect-' + mode);
+      }
+
+      const labelEl = document.getElementById('aspect-label');
+      if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+
+      document.querySelectorAll('.dropdown-item').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-aspect') === mode);
+      });
+
+      closeAspectDropdown();
+      setTimeout(() => Reveal.layout(), 50);
+    }
+
+    function toggleAspectDropdown(e) {
+      if (e) e.stopPropagation();
+      document.getElementById('aspect-menu').classList.toggle('active');
+    }
+
+    function closeAspectDropdown() {
+      const menu = document.getElementById('aspect-menu');
+      if (menu) menu.classList.remove('active');
+    }
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-dropdown')) closeAspectDropdown();
+      if (!e.target.closest('#deck-topic-popover') && !e.target.closest('#deck-footer-topic')) closeTopicPopover();
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (currentAspectMode === 'auto') {
+          const dim = calculateResponsiveDimensions('auto');
+          const cfg = Reveal.getConfig();
+          if (cfg.width !== dim.width || cfg.height !== dim.height) {
+            Reveal.configure({ width: dim.width, height: dim.height });
+            const labelEl = document.getElementById('aspect-label');
+            if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+            Reveal.layout();
+          }
+        }
+      }, 200);
+    });
+
+    window.addEventListener('DOMContentLoaded', () => setAspectMode(currentAspectMode));
+
+    function openShortcutsModal() {
+      document.getElementById('shortcuts-modal').classList.add('active');
+    }
+
+    function closeShortcutsModal(event) {
+      if (!event || event.target.id === 'shortcuts-modal' || event.target.classList.contains('modal-close')) {
+        document.getElementById('shortcuts-modal').classList.remove('active');
+      }
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const popover = document.getElementById('deck-topic-popover');
+        if (popover && popover.classList.contains('active')) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeTopicPopover();
+          return;
+        }
+      }
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        document.getElementById('shortcuts-modal').classList.toggle('active');
+      }
+    });
+
+  </script>
+</body></html>

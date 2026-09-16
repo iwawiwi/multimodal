@@ -1,0 +1,344 @@
+% =============================================================
+%  tugas-style.sty — Shared style untuk seluruh tugas mingguan
+%  Pembelajaran Mesin Multimodal (IF25-40304)
+%
+%  Struktur visual merujuk pada template `latex-homework`:
+%    - header blok (minipage + doublerule + instruktur)
+%    - judul di antara dua garis
+%    - daftar isi terhubung (hyperlinked TOC)
+%    - list dingbat / fontawesome
+%    - kotak catatan (bclogo)
+%    - tabel kriteria penilaian
+%    - footer "halaman X dari Y"
+%  Warna memakai palet Catppuccin Latte (identitas kursus).
+% =============================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tugas-style}[2026/09/16 Shared assignment style]
+
+% ── Metadata (dapat ditimpa di tiap dokumen) ────────────────
+\providecommand{\semester}{Ganjil 2026/2027}
+\providecommand{\csection}{IF25-40304}
+\providecommand{\coursetitle}{Pembelajaran Mesin Multimodal}
+\providecommand{\coursenumber}{IF25-40304}
+\providecommand{\instructor}{I Wayan Wiprayoga Wisesa}
+\providecommand{\college}{Institut Teknologi Sumatera}
+\providecommand{\faculty}{Jurusan Teknologi Produksi dan Industri}
+\providecommand{\department}{Program Studi Teknik Informatika}
+\providecommand{\doctitle}{Tugas Individu}
+\providecommand{\duedate}{}
+\providecommand{\assignmentnumber}{02}
+
+% ── Dasar ───────────────────────────────────────────────────
+\usepackage{iftex}
+\ifPDFTeX
+  % pdfLaTeX: pakai font Type1 (fallback yang tersedia)
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage[bahasa]{babel}
+  \usepackage{lmodern}
+  \usepackage{sourcesanspro}
+  \usepackage{sourcecodepro}
+\else
+  % LuaLaTeX / XeLaTeX: pakai OpenType (Source Sans 3 + JetBrains Mono)
+  \usepackage{fontspec}
+  \usepackage[bahasa]{babel}
+  \usepackage[default,lining,tabular]{sourcesans}
+  \usepackage{jetbrainsmono-otf}
+  \setmonofont{jetbrainsmono}
+\fi
+\usepackage{microtype}
+
+% ── Geometri (mengikuti template: bottom ramping) ───────────
+\usepackage[left=1in,right=1in,top=1in,bottom=0.7in,headheight=15pt]{geometry}
+
+% ── Warna ───────────────────────────────────────────────────
+\usepackage[dvipsnames, svgnames, x11names]{xcolor}
+% Catppuccin Latte (identitas kursus)
+\definecolor{ctpText}{HTML}{000000}
+\definecolor{ctpSubtext}{HTML}{000000}
+\definecolor{ctpOverlay}{HTML}{8C8FA1}
+\definecolor{ctpSurface}{HTML}{CCD0DA}
+\definecolor{ctpMantle}{HTML}{E6E9EF}
+\definecolor{ctpBase}{HTML}{EFF1F5}
+\definecolor{ctpBlue}{HTML}{1E66F5}
+\definecolor{ctpMauve}{HTML}{8839EF}
+\definecolor{ctpTeal}{HTML}{179299}
+\definecolor{ctpGreen}{HTML}{40A02B}
+\definecolor{ctpPeach}{HTML}{FE640B}
+\definecolor{ctpMaroon}{HTML}{E64553}
+\definecolor{ctpLavender}{HTML}{7287FD}
+\definecolor{ctpYellow}{HTML}{DF8E1D}
+\definecolor{ctpSky}{HTML}{04A5E5}
+% Aksen sekunder ala template rujukan
+\definecolor{darkblue}{HTML}{1E3A8A}
+\definecolor{darkred}{HTML}{9B1C1C}
+\definecolor{darkgreen}{HTML}{166534}
+\definecolor{rltred}{HTML}{BF0000}
+\definecolor{rltblue}{HTML}{1E40AF}
+\color{black}
+
+% ── Tabel & daftar ──────────────────────────────────────────
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{calc}
+\usepackage{enumitem}
+\setlist{noitemsep}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+\newcommand*{\thead}[1]{\multicolumn{1}{l}{\bfseries #1}}
+
+% ── Simbol (dingbat / fontawesome) ──────────────────────────
+\usepackage{pifont}
+\usepackage{bbding}
+\usepackage{fontawesome5}
+
+% ── Kotak catatan (bclogo, ala template rujukan) ────────────
+\usepackage[tikz]{bclogo}
+
+% ── Judul seksi (sectsty) & spasi (titlesec) ────────────────
+\usepackage{sectsty}
+\allsectionsfont{\sffamily\bfseries\color{ctpBlue}}
+\sectionfont{\Large}
+\subsectionfont{\large\color{ctpSubtext}}
+\subsubsectionfont{\normalsize\color{ctpSubtext}}
+\usepackage{titlesec}
+\titlespacing{\section}{0pt}{12pt}{9pt}
+\titlespacing{\subsection}{0pt}{10pt}{6pt}
+\titlespacing{\subsubsection}{0pt}{8pt}{4pt}
+
+% ── Matematika & teorema ────────────────────────────────────
+\usepackage{amsmath, amssymb}
+\usepackage{amsthm}
+\usepackage{caption}
+
+% ── Grafis ──────────────────────────────────────────────────
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{tikz}
+
+% ── Kode (listings + jendela kode) ──────────────────────────
+\usepackage{listings}
+\lstset{
+  basicstyle=\small\color{ctpText}\ttfamily,
+  keywordstyle=\color{ctpMauve}\bfseries,
+  stringstyle=\color{ctpGreen},
+  commentstyle=\color{ctpOverlay}\itshape,
+  numberstyle=\tiny\color{ctpOverlay},
+  numbersep=8pt,
+  frame=none,
+  numbers=left,
+  breaklines=true,
+  breakatwhitespace=false,
+  tabsize=4,
+  showstringspaces=false,
+  aboveskip=0pt,
+  belowskip=0pt,
+  xleftmargin=28pt,
+  columns=fullflexible,
+  keepspaces=true,
+}
+\lstdefinestyle{pycode}{
+  language=Python,
+  morekeywords={as, with, in, not, is, True, False, None, self, lambda},
+  emph={print, len, enumerate, np, plt, model, set, array, zeros, format},
+  emphstyle=\color{ctpMaroon},
+}
+
+% ── Jendela kode ────────────────────────────────────────────
+\newlength{\headerht}  \setlength{\headerht}{26pt}
+\newlength{\gutterwd}  \setlength{\gutterwd}{28pt}
+
+\newcommand{\codewindowoverlay}[1]{%
+  \fill[ctpMantle] (frame.north west) rectangle ([yshift=-\headerht]frame.north east);
+  \draw[ctpSurface, line width=0.4pt] ([yshift=-\headerht]frame.north west) -- ([yshift=-\headerht]frame.north east);
+  \fill[ctpMaroon] ([xshift=14pt, yshift=-13pt]frame.north west) circle (3.5pt);
+  \fill[ctpYellow] ([xshift=26pt, yshift=-13pt]frame.north west) circle (3.5pt);
+  \fill[ctpGreen]  ([xshift=38pt, yshift=-13pt]frame.north west) circle (3.5pt);
+  \node[anchor=west, font=\footnotesize\ttfamily\color{ctpOverlay}, xshift=52pt, yshift=-13pt] at (frame.north west) {#1};
+  \fill[ctpMantle] ([yshift=-\headerht]frame.north west) rectangle ([xshift=\gutterwd]frame.south west);
+  \draw[ctpSurface, line width=0.4pt] ([yshift=-\headerht, xshift=\gutterwd]frame.north west) -- ([xshift=\gutterwd]frame.south west);
+}
+
+\newcommand{\codewindowgutter}{%
+  \fill[ctpMantle] (frame.north west) rectangle ([xshift=\gutterwd]frame.south west);
+  \draw[ctpSurface, line width=0.4pt] ([xshift=\gutterwd]frame.north west) -- ([xshift=\gutterwd]frame.south west);
+}
+
+\newenvironment{codewindow}[1]{%
+  \begin{tcolorbox}[
+    colback=ctpBase, colframe=ctpSurface, arc=8pt,
+    left=0pt, right=0pt, top=\headerht, bottom=0pt,
+    boxsep=0pt, before skip=12pt, after skip=10pt,
+    breakable, enhanced,
+    overlay unbroken={\codewindowoverlay{#1}},
+    overlay first={\codewindowoverlay{#1}},
+    overlay middle={\codewindowgutter},
+    overlay last={\codewindowgutter},
+  ]
+}{%
+  \end{tcolorbox}
+}
+
+% ── Kotak tcolorbox tambahan ────────────────────────────────
+\usepackage[most, skins, breakable]{tcolorbox}
+\tcbset{enhanced, breakable, left=10pt, right=10pt, top=8pt, bottom=8pt, boxsep=0pt, before skip=12pt, after skip=12pt}
+\newtcolorbox{callout}[1][]{colback=ctpMantle, colframe=ctpSurface, borderline west={3pt}{0pt}{#1}, arc=6pt, left=12pt, right=10pt, top=6pt, bottom=6pt}
+
+% ── Inline code & nomor soal ────────────────────────────────
+\newcommand{\code}[1]{{\color{black}\ttfamily #1}}
+\newcommand{\soalnum}[2]{\colorbox{#1!12}{\color{#1}\bfseries\ttfamily\large #2}}
+
+% ── List kustom (ala template rujukan) ──────────────────────
+\newcommand{\customhrule}[1]{\rule[1.4pt]{\linewidth}{#1}}
+\newcommand{\doublerule}[1][.4pt]{%
+  \noindent
+  \makebox[0pt][l]{\rule[.7ex]{\linewidth}{#1}}%
+  \rule[1pt]{\linewidth}{#1}\par}
+
+\newlist{greenrectangles}{itemize}{4}
+\setlist[greenrectangles]{itemsep=5pt,parsep=0pt,topsep=4pt,partopsep=3pt}
+\setlist[greenrectangles,1]{font=\color{darkgreen},label={\color{darkgreen}{\Rectangle}}}
+
+\newlist{alphalist}{enumerate}{9}
+\setlist[alphalist]{topsep=4pt,partopsep=0pt,itemsep=3pt,parsep=0pt,labelindent=0.5cm,leftmargin=*}
+\setlist[alphalist,1]{label=\textbf{\alph*)}}
+
+\newlist{itemizedlist}{itemize}{9}
+\setlist[itemizedlist]{topsep=4pt,partopsep=0pt,itemsep=3pt,parsep=0pt,labelindent=0.5cm,leftmargin=*}
+
+\newlist{arrows}{itemize}{4}
+\setlist[arrows]{topsep=4pt,partopsep=0pt,itemsep=3pt,parsep=0pt,labelindent=0.5cm,leftmargin=*}
+\setlist[arrows,1]{font=\color{ctpPeach},label={\HandRight}}
+
+\newlist{borderedsquare}{itemize}{4}
+\setlist[borderedsquare]{topsep=4pt,partopsep=0pt,itemsep=3pt,parsep=0pt,labelindent=0.5cm,leftmargin=*}
+\setlist[borderedsquare,1]{label=\ding{111}}
+
+\newlist{curveddarrow}{itemize}{4}
+\setlist[curveddarrow]{topsep=4pt,partopsep=0pt,itemsep=3pt,parsep=0pt,labelindent=0.5cm,leftmargin=*}
+\setlist[curveddarrow,1]{label=\small\faMarker}
+
+\newlist{coloredPen}{itemize}{4}
+\setlist[coloredPen]{topsep=4pt,partopsep=0pt,itemsep=3pt,parsep=0pt,labelindent=0.5cm,leftmargin=*}
+\setlist[coloredPen,1]{font=\color{ctpPeach},label=\small\faMarker}
+
+\newlist{objectives}{itemize}{4}
+\setlist[objectives]{topsep=4pt,partopsep=0pt,itemsep=3pt,parsep=0pt,labelindent=0.5cm,leftmargin=*}
+\setlist[objectives,1]{label=\small\ding{224}}
+
+\newlist{filledstarlist}{itemize}{4}
+\setlist[filledstarlist]{topsep=4pt,partopsep=0pt,itemsep=3pt,parsep=0pt,labelindent=0.5cm,leftmargin=*}
+\setlist[filledstarlist,1]{label=\small\ding{88}}
+
+\newlist{emptyCircleList}{itemize}{4}
+\setlist[emptyCircleList]{topsep=4pt,partopsep=0pt,itemsep=3pt,parsep=0pt,labelindent=0.5cm,leftmargin=*}
+\setlist[emptyCircleList,1]{label=\small\ding{109}}
+
+\newlist{filledRightArrowList}{itemize}{4}
+\setlist[filledRightArrowList]{topsep=4pt,partopsep=0pt,itemsep=3pt,parsep=0pt,labelindent=0.5cm,leftmargin=*}
+\setlist[filledRightArrowList,1]{label=\small\ding{228}}
+
+\newlist{numberedEmptyList}{itemize}{9}
+\setlist[numberedEmptyList]{topsep=4pt,partopsep=0pt,itemsep=3pt,parsep=0pt,labelindent=0.5cm,leftmargin=*}
+\setlist[numberedEmptyList,9]{label=\ding{182}}
+
+\newlist{rightHandPointingList}{itemize}{4}
+\setlist[rightHandPointingList]{topsep=4pt,partopsep=0pt,itemsep=3pt,parsep=0pt,labelindent=0.5cm,leftmargin=*}
+\setlist[rightHandPointingList,1]{font=\color{ctpPeach},label={\HandRight}}
+
+% ── Riwayat revisi (vhistory) ──────────────────────────────
+\usepackage[owncaptions]{vhistory}
+\renewcommand{\vhhistoryname}{Riwayat Revisi}
+\renewcommand{\vhversionname}{Revisi}
+\renewcommand{\vhdatename}{Tanggal}
+\renewcommand{\vhauthorname}{Penulis}
+\renewcommand{\vhchangename}{Deskripsi}
+\newcommand{\revisioninfo}[1]{%
+  {\small
+    \begin{versionhistory}
+      #1
+    \end{versionhistory}
+  }
+}
+
+% ── Header & footer (fancyhdr + lastpage) ───────────────────
+\usepackage{fancyhdr, lastpage}
+\pagestyle{fancyplain}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\headrule}{{\color{ctpSurface}\hrule width\headwidth height\headrulewidth}}
+\renewcommand{\footrule}{{\color{ctpSurface}\hrule width\headwidth height\footrulewidth}}
+\lhead{{\footnotesize\color{ctpOverlay}\textsc{Tugas Individu \assignmentnumber}}}
+\rhead{{\footnotesize\color{ctpOverlay}\textsc{\coursenumber\ --\ \coursetitle}}}
+\lfoot{{\footnotesize\color{ctpOverlay}\textsc{\college}}}
+\cfoot{}
+\rfoot{{\footnotesize\color{ctpOverlay}Halaman \thepage\ dari \pageref{LastPage}}}
+% Gaya laman cover: hanya footer, tanpa header (ala template rujukan)
+\fancypagestyle{cover}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0.4pt}%
+  \renewcommand{\footrule}{{\color{ctpSurface}\hrule width\headwidth height\footrulewidth}}%
+  \lfoot{{\footnotesize\color{ctpOverlay}\textsc{\college}}}%
+  \cfoot{}%
+  \rfoot{{\footnotesize\color{ctpOverlay}Halaman \thepage\ dari \pageref{LastPage}}}%
+}
+
+% ── Hyperlink (paling akhir) ────────────────────────────────
+\usepackage[colorlinks, pagebackref, pdfusetitle,
+  urlcolor=ctpBlue, citecolor=ctpBlue, linkcolor=ctpBlue,
+  plainpages=false]{hyperref}
+\usepackage[open,openlevel=1]{bookmark}
+
+\hypersetup{pdfauthor={\instructor},
+  pdftitle={\coursenumber\ --\ \coursetitle},
+  pdfsubject={\doctitle\ (\semester)},
+  pdfkeywords={\college, \department},
+  pdfproducer={LaTeX},
+  pdfcreator={pdfLaTeX},
+  bookmarksnumbered = true,
+  bookmarksopen     = true,
+  pdfpagelabels     = true,
+  pdfstartview={XYZ null null 1.2}}
+
+% ── Blok header dokumen (ala template rujukan) ──────────────
+\newcommand{\makeassignmentheader}{%
+  \thispagestyle{cover}
+  \noindent
+  \begin{minipage}{.42\textwidth}
+    \includegraphics[height=30pt]{../assets/img/logo_2.png}\hspace{12pt}%
+    \includegraphics[height=30pt]{../assets/img/dikti-saintek-berdampak-color.pdf}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}{0.54\textwidth}
+    \raggedleft
+    {\Large\color{ctpText}\textsc{\coursenumber\ \coursetitle}\par}
+    \doublerule
+    \textsc{Dosen}: \instructor
+  \end{minipage}
+  \vspace{2.4cm}
+  {\hrule\vspace{.2cm}\centering
+   {\scshape\Large\color{ctpBlue}\doctitle\ \textemdash\ \small\bfseries\textsc{\semester}\par}
+   \vspace{.3cm}}
+  {\hrule\vspace{.3cm}\centering\small\duedate\par}
+  \vspace{1.6cm}
+}
+
+% ── Tabel informasi tugas (menggantikan versionhistory) ─────
+\newcommand{\assignmentinfo}[1]{%
+  \begin{center}\small
+    \colorbox{ctpBase}{%
+      \begin{tabular}{@{}r@{\hspace{10pt}}l@{}}
+        #1
+      \end{tabular}}%
+  \end{center}
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+
+\endinput
