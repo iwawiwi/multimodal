@@ -1,0 +1,337 @@
+% =============================================================
+%  Tugas Individu 04 — Representasi Audio & Video
+%  IF25-40304 · Pembelajaran Mesin Multimodal · ITERA
+% =============================================================
+\documentclass[12pt, a4paper]{article}
+
+\usepackage{tugas-style}
+
+\renewcommand{\assignmentnumber}{04}
+\renewcommand{\doctitle}{Tugas Individu 04}
+\renewcommand{\duedate}{\color{ctpBlue}\faCalendarCheck\ \ Tenggat: sesuai jadwal kelas \faCalendarCheck}
+
+\begin{document}
+
+% ── HEADER ──────────────────────────────────────────────────
+\makeassignmentheader
+
+\hrule width0.3\textwidth
+\revisioninfo{%
+  \vhEntry{0.1}{16 September 2026}{I.W.W.}{Draf inisial tugas.}
+}
+\hrule
+\vskip .3in
+
+\tableofcontents
+\clearpage
+
+% =============================================================
+\section{Tujuan Pembelajaran}\label{sec:objectives}
+
+Setelah menyelesaikan tugas ini, mahasiswa mampu:
+\begin{objectives}
+  \item Merepresentasikan sinyal audio sebagai deretan sampel amplitudo dan menjelaskan syarat \emph{sampling} bebas \emph{aliasing}.
+  \item Menghitung dan menginterpretasikan spektrogram hasil STFT sebagai peta waktu--frekuensi.
+  \item Mengekstrak koefisien MFCC sebagai fitur audio yang ringkas dan \emph{robust}.
+  \item Merepresentasikan video sebagai sekuens frame dan menjelaskan keterbatasan pendekatan \emph{frame-by-frame}.
+  \item Menganalisis secara kritis pilihan arsitektur (3D CNN vs CNN + RNN/LSTM vs Transformer) untuk pemrosesan video.
+\end{objectives}
+
+% =============================================================
+\section{Catatan dan Batasan}\label{sec:notes}
+\vspace{-.1cm}
+
+\begin{minipage}{\linewidth}
+\begin{bclogo}[couleur=ctpBase, arrondi=0.1, logo=\bccrayon, ombre=false, couleurBord=ctpSurface, epBord=0.6]{Perhatikan hal berikut:}
+  \begin{coloredPen}
+    \item Tugas ini bersifat \textbf{individu}; tidak diperkenankan bekerja sama atau menyalin jawaban.
+    \item Seluruh eksperimen memakai \textbf{sinyal sintetis} yang dibangkitkan dengan NumPy --- tidak ada berkas audio/video eksternal yang wajib diunduh.
+    \item Fokus tugas adalah mengamati dan menganalisis representasi audio/video, bukan melatih model klasifikasi.
+    \item Gunakan \code{librosa} untuk STFT/spektrogram/MFCC; jangan menulis ulang implementasi Fourier secara manual.
+  \end{coloredPen}
+\end{bclogo}
+\end{minipage}
+
+% =============================================================
+\section{Perangkat Lunak dan Peralatan yang Diperlukan}\label{sec:requiredsw}
+
+\begin{itemize}[itemsep=2pt,parsep=0pt,topsep=2pt,partopsep=2pt]
+  \item[\color{ctpBlue}\faPython] \textbf{Python} 3.8 atau lebih baru.
+  \item[\color{ctpBlue}\faFileCode] \textbf{Paket wajib:} \code{numpy}, \code{librosa}, \code{matplotlib}.
+  \item[\color{ctpBlue}\faWaveSquare] \textbf{Data:} sinyal sintetis yang dibangkitkan secara programatik (nada murni dan campurannya).
+  \item[\color{ctpBlue}\faVideo] \textbf{Video:} sekuens frame sintetis (misal objek bergerak sederhana) yang dibangkitkan dengan NumPy.
+\end{itemize}
+
+\begin{codewindow}{setup.sh}
+\begin{lstlisting}[style=pycode]
+pip install numpy librosa matplotlib
+\end{lstlisting}
+\end{codewindow}
+
+\begin{minipage}{\linewidth}
+\begin{bclogo}[couleur=ctpMantle, arrondi=0.1, logo=\bcinfo, ombre=false, couleurBord=ctpSurface, epBord=0.6]{Batasan Cakupan}
+  Seluruh tugas menggunakan sinyal audio dan video \textbf{sintetis}. Tujuannya mengamati
+  rantai representasi dari prinsip pertama --- dari raw waveform ke spektrogram/MFCC,
+  dan dari frame statis ke pemodelan temporal --- tanpa ketergantungan pada dataset eksternal.
+\end{bclogo}
+\end{minipage}
+
+% =============================================================
+\section{Pernyataan Masalah}\label{sec:intro}
+
+Tugas ini melengkapi materi Pertemuan 04 tentang representasi audio dan video. Anda akan melakukan eksperimen komputasi berbasis sinyal sintetis untuk memverifikasi tiga gagasan utama:
+\begin{enumerate}
+  \item Audio adalah sinyal sekuensial dan temporal --- representasi mentahnya berupa deretan sampel amplitudo terhadap waktu.
+  \item Transformasi STFT mengubah sinyal 1D menjadi spektrogram 2D (waktu $\times$ frekuensi) yang dapat diproses CNN.
+  \item Video adalah sekuens frame gambar --- memproses tiap frame secara terpisah mengabaikan dimensi temporal (gerakan).
+\end{enumerate}
+
+Rincian dan persyaratan pengerjaan diberikan pada bagian berikutnya.
+
+% =============================================================
+\section{Persyaratan}\label{sec:requirements}
+
+Perhatikan setiap persyaratan pada soal-soal berikut.
+
+% ------------------------------------------------------------
+\subsection{Soal 1 --- Raw Waveform dan Teorema Sampling}
+\label{sec:soal1}
+
+Sinyal audio mentah adalah deretan sampel amplitudo terhadap waktu. Teorema Nyquist--Shannon mensyaratkan laju pencuplikan memenuhi $f_s > 2\,f_{\max}$ agar sinyal asli dapat direkonstruksi tanpa \emph{aliasing}.
+
+\subsubsection{Instruksi}
+\label{sec:soal1-instruksi}
+
+\textbf{(a)} Bangkitkan nada murni 440\,Hz (nada A4) berdurasi 2 detik dengan \emph{sampling rate} $f_s = 22050$\,Hz. Plot 500 sampel pertamanya.
+
+\textbf{(b)} Campurkan nada 440\,Hz dan 880\,Hz, lalu turunkan \emph{sampling rate} menjadi 1000\,Hz untuk mensimulasikan \emph{aliasing}. Plot hasilnya.
+
+\textbf{(c)} Jawab dalam 3--5 kalimat:
+\begin{itemize}
+  \item Mengapa sinyal berdurasi 2 detik pada $f_s = 22050$\,Hz menghasilkan 44100 sampel?
+  \item Mengapa 880\,Hz yang dicuplik pada 1000\,Hz tidak lagi menyerupai gelombang aslinya?
+  \item Apa konsekuensi \emph{aliasing} terhadap model pembelajaran mesin?
+\end{itemize}
+
+\subsubsection{Kerangka Kode}
+\label{sec:soal1-kode}
+
+\begin{codewindow}{soal1\_waveform.py}
+\begin{lstlisting}[style=pycode]
+import numpy as np
+import matplotlib.pyplot as plt
+
+SR, DURASI = 22050, 2.0
+n_sampel = int(SR * DURASI)
+t = np.linspace(0, DURASI, n_sampel, endpoint=False)
+
+freq = 440.0
+sinyal = 0.5 * np.sin(2 * np.pi * freq * t)
+
+plt.figure(figsize=(10, 3))
+plt.plot(t[:500], sinyal[:500], color="#1e66f5")
+plt.xlabel("Waktu (detik)")
+plt.ylabel("Amplitudo")
+plt.title("Gelombang Suara 440 Hz")
+plt.grid(alpha=0.3)
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+\end{codewindow}
+
+% ------------------------------------------------------------
+\subsection{Soal 2 --- Spektrogram (STFT)}
+\label{sec:soal2}
+
+STFT mengiris sinyal menjadi jendela waktu dan menghitung komponen frekuensi tiap jendela, menghasilkan peta 2D waktu $\times$ frekuensi yang disebut spektrogram.
+
+\subsubsection{Instruksi}
+\label{sec:soal2-instruksi}
+
+\textbf{(a)} Hitung STFT dari sinyal campuran 440\,Hz + 880\,Hz menggunakan \code{librosa.stft} dengan \code{n\_fft=2048} dan \code{hop\_length=512}. Tampilkan spektrogram dalam skala dB.
+
+\textbf{(b)} Ulangi dengan dua ukuran jendela berbeda (\code{n\_fft=4096} dan \code{n\_fft=512}) dan bandingkan ketajaman frekuensi terhadap ketajaman waktu.
+
+\begin{codewindow}{soal2\_spektrogram.py}
+\begin{lstlisting}[style=pycode]
+import librosa
+import librosa.display
+
+D = librosa.stft(sinyal_campuran, n_fft=2048, hop_length=512)
+S_db = librosa.amplitude_to_db(np.abs(D), ref=np.max)
+
+plt.figure(figsize=(10, 5))
+librosa.display.specshow(
+    S_db, sr=SR, hop_length=512,
+    x_axis="time", y_axis="hz"
+)
+plt.colorbar(format="%+2.0f dB")
+plt.title("Spektrogram Campuran 440 Hz + 880 Hz")
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+\end{codewindow}
+
+\textbf{(c)} Jawab dalam 3--5 kalimat:
+\begin{itemize}
+  \item Bagaimana spektrogram merepresentasikan dua nada yang bercampur?
+  \item Apa \emph{trade-off} antara jendela panjang dan jendela pendek?
+  \item Mengapa spektrogram 2D lebih cocok diproses CNN dibanding raw waveform 1D?
+\end{itemize}
+
+% ------------------------------------------------------------
+\subsection{Soal 3 --- MFCC}
+\label{sec:soal3}
+
+MFCC memadatkan spektrum Mel menjadi vektor koefisien kecil yang menangkap \emph{timbre}. Alurnya: framing $\to$ STFT $\to$ filterbank Mel $\to$ log $\to$ DCT.
+
+\subsubsection{Instruksi}
+\label{sec:soal3-instruksi}
+
+\textbf{(a)} Ekstrak 13 koefisien MFCC dari sinyal campuran menggunakan \code{librosa.feature.mfcc}. Tampilkan bentuk (shape) hasil dan visualisasikan.
+
+\begin{codewindow}{soal3\_mfcc.py}
+\begin{lstlisting}[style=pycode]
+mfcc = librosa.feature.mfcc(y=sinyal_campuran, sr=SR, n_mfcc=13)
+
+print("bentuk MFCC:", mfcc.shape)
+
+plt.figure(figsize=(10, 5))
+librosa.display.specshow(mfcc, sr=SR, hop_length=512, x_axis="time")
+plt.colorbar(label="Koefisien")
+plt.title("MFCC Campuran 440 Hz + 880 Hz")
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+\end{codewindow}
+
+\textbf{(b)} Jawab dalam 3--5 kalimat:
+\begin{itemize}
+  \item Apa arti dimensi pada bentuk \code{(13, N)} hasil MFCC?
+  \item Mengapa MFCC lebih ringkas daripada spektrogram mentah?
+  \item Mengapa filterbank Mel lebih sesuai dengan persepsi pendengaran manusia?
+\end{itemize}
+
+% ------------------------------------------------------------
+\clearpage
+\subsection{Soal 4 --- Video sebagai Sekuens Frame}
+\label{sec:soal4}
+
+Pendekatan paling sederhana adalah memperlakukan video sebagai urutan frame gambar. Namun, pendekatan \emph{frame-by-frame} mengabaikan informasi temporal (gerakan, urutan, perubahan antar frame).
+
+\subsubsection{Instruksi}
+\label{sec:soal4-instruksi}
+
+\textbf{(a)} Bangkitkan ``video'' sintetis berupa kotak $8\times8$ yang bergerak horizontal melintasi 24 frame berukuran $48\times64$.
+
+\begin{codewindow}{soal4\_video.py}
+\begin{lstlisting}[style=pycode]
+frame_count = 24
+h, w = 48, 64
+frames = []
+
+for i in range(frame_count):
+    frame = np.zeros((h, w), dtype=np.uint8)
+    posisi_x = int(i * (w - 8) / (frame_count - 1))
+    frame[20:28, posisi_x:posisi_x + 8] = 255
+    frames.append(frame)
+
+fig, axes = plt.subplots(1, 4, figsize=(10, 2.5))
+for ax, idx in zip(axes, [0, 8, 16, 23]):
+    ax.imshow(frames[idx], cmap="gray")
+    ax.set_title(f"t = {idx}")
+    ax.axis("off")
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+\end{codewindow}
+
+\textbf{(b)} Jawab dalam 3--5 kalimat:
+\begin{itemize}
+  \item Informasi apa yang hilang jika setiap frame diproses CNN 2D secara independen?
+  \item Bagaimana arah dan kecepatan gerakan kotak bisa tertangkap oleh pemodelan temporal?
+  \item Mengapa video bukan sekadar ``tumpukan gambar''?
+\end{itemize}
+
+% ------------------------------------------------------------
+\subsection{Soal 5 --- Analisis Kritis Pilihan Arsitektur}
+\label{sec:soal5}
+
+Jawab pertanyaan berikut dalam bentuk paragraf singkat (masing-masing 5--8 kalimat):
+
+\textbf{(a) 3D CNN vs CNN + RNN/LSTM}
+
+Jelaskan perbedaan mendasar antara 3D CNN dan kombinasi 2D CNN + RNN/LSTM untuk pemodelan video. Kaitkan dengan konsep konvolusi 3D $y(i,j,t)=\sum_{u,v,w}x(i+u,j+v,t+w)\,k(u,v,w)$ dan kapan masing-masing pendekatan lebih unggul.
+
+\textbf{(b) Transformer untuk Audio dan Video}
+
+Jelaskan bagaimana mekanisme \emph{self-attention} menangkap ketergantungan jarak jauh pada audio dan video tanpa pemrosesan sekuensial kata-per-kata. Sebutkan satu contoh penerapan untuk audio (misal ASR/TTS) dan satu untuk video (misal Video Transformer).
+
+\textbf{(c) Tantangan Pemrosesan Video}
+
+Pilih dua dari enam tantangan video yang dibahas pada slide (dimensi tinggi, redundansi temporal, variasi gerakan, ketergantungan jangka panjang, kualitas data, anotasi data) dan jelaskan bagaimana masing-masing memengaruhi pilihan arsitektur atau strategi pelatihan.
+
+% =============================================================
+\clearpage
+\section{Kriteria Penilaian}\label{sec:evaluation}
+
+Tugas Anda akan dinilai berdasarkan kriteria berikut:
+
+\renewcommand{\arraystretch}{1.5}
+\begin{center}\small
+\begin{tabular}{|p{11.5cm}|c|}
+  \hline
+  \thead{\color{ctpBlue} Kriteria} & \thead{\color{ctpBlue}Bobot} \\
+  \hline
+  Kebenaran teknis --- kode berjalan tanpa error dan pipeline representasi digunakan dengan tepat. & 35\% \\
+  \hline
+  Kedalaman analisis --- penjelasan menghubungkan output dengan konsep sampling, STFT, MFCC, dan pemodelan temporal. & 30\% \\
+  \hline
+  Eksperimen --- pengamatan aliasing, \emph{trade-off} jendela STFT, dan analisis frame video. & 20\% \\
+  \hline
+  Kualitas presentasi --- laporan rapi, terstruktur, dan visualisasi informatif. & 15\% \\
+  \hline
+  \textbf{Total} & \textbf{100\%} \\
+  \hline
+\end{tabular}
+\end{center}
+
+% =============================================================
+\section{Apa yang Dikumpulkan}\label{sec:submit}
+
+Seluruh artefak tugas dikemas ke dalam \textbf{satu berkas arsip} dengan format penamaan:
+\begin{center}
+  \code{mgg04\_tugas\_nim.zip}
+\end{center}
+
+dengan \code{nim} diganti oleh Nomor Induk Mahasiswa (NIM) masing-masing tanpa spasi.
+
+\textbf{Artefak yang dapat disertakan di dalam arsip} (dapat lebih dari satu jenis berkas, disesuaikan dengan bentuk penyelesaian Anda):
+\begin{borderedsquare}
+  \item \code{mgg04\_tugas\_NIM.ipynb} --- apabila penyelesaian dikerjakan menggunakan Jupyter Notebook (termasuk Google Colab). Notebook \textbf{wajib telah dijalankan} sehingga seluruh \emph{output} sel tersimpan di dalam berkas.
+  \item \code{mgg04\_tugas\_NIM.py} --- apabila penyelesaian dikerjakan dalam bentuk skrip Python.
+  \item \code{mgg04\_tugas\_NIM.pdf} --- apabila analisis ditulis dalam dokumen teks terpisah.
+  \item \code{mgg04\_tugas\_xx.jpg} --- apabila terdapat plot atau gambar pendukung tambahan; \code{xx} merupakan nomor urut visualisasi (misalnya \code{01}, \code{02}, dan seterusnya).
+\end{borderedsquare}
+
+Setiap berkas menggunakan awalan \code{mgg04\_tugas\_NIM} yang sama, dengan \code{NIM} ditulis secara konsisten (huruf besar/kecil mengikuti NIM resmi). Pastikan seluruh berkas berada tepat di dalam satu arsip \code{.zip} tanpa struktur folder bertingkat yang tidak perlu.
+
+\begin{callout}[ctpBlue]
+\textbf{\color{ctpBlue}Catatan Pengerjaan}
+\begin{itemize}
+  \item \textbf{Soal 1--4:} Wajib dikerjakan oleh semua mahasiswa.
+  \item \textbf{Soal 5:} Wajib dikerjakan sebagai analisis konseptual tanpa pelatihan model.
+  \item \textbf{Estimasi waktu:} 2--3 jam.
+\end{itemize}
+\end{callout}
+
+\section*{Referensi}
+{\small\color{ctpSubtext}
+\begin{enumerate}[label={[\arabic*]}, leftmargin=2em]
+  \item Goodfellow, I., Bengio, Y., \& Courville, A. (2016). \emph{Deep Learning}, Bab 10: Sequence Modeling. MIT Press.
+  \item Tran, D., Bourdev, L., Fergus, R., Torresani, L., \& Paluri, M. (2015). \emph{Learning Spatiotemporal Features with 3D Convolutional Networks}. ICCV. \url{https://doi.org/10.1109/ICCV.2015.510}
+  \item McFee, B., et al. \emph{librosa: Audio and Music Signal Analysis in Python}. \url{https://librosa.org}
+  \item Jurafsky, D., \& Martin, J. H. (terbaru). \emph{Speech and Language Processing} --- bab pengenalan ucapan.
+\end{enumerate}}
+
+\end{document}

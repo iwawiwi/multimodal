@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lembar Kerja 04: Representasi Audio & Video — Representasi Modalitas III</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+  <style>
+    :root {
+      --ctp-base: #eff1f5;
+      --ctp-mantle: #e6e9ef;
+      --ctp-crust: #dce0e8;
+      --ctp-surface0: #ccd0da;
+      --ctp-surface1: #bcc0cc;
+      --ctp-overlay0: #9ca0b0;
+      --ctp-overlay1: #8c8fa1;
+      --ctp-overlay2: #7c7f93;
+      --ctp-text: #4c4f69;
+      --ctp-subtext1: #5c5f77;
+      --ctp-subtext0: #6c6f85;
+      --ctp-blue: #1e66f5;
+      --ctp-sapphire: #209fb5;
+      --ctp-mauve: #8839ef;
+      --ctp-teal: #179299;
+      --ctp-green: #40a02b;
+      --ctp-peach: #fe640b;
+      --ctp-maroon: #e64553;
+      --ctp-lavender: #7287fd;
+      --ctp-yellow: #df8e1d;
+      --ctp-sky: #04a5e5;
+
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { -webkit-text-size-adjust: 100%; text-rendering: optimizeLegibility; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--ctp-base);
+      color: var(--ctp-text);
+      font-family: var(--font-sans);
+      line-height: 1.7;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* =========================================================
+       Header dokumen akademik (kompak, bukan hero 100vh)
+       ========================================================= */
+    .doc-header-block {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 44px 40px 0 40px;
+    }
+    .doc-logos {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .doc-logos img { height: 34px; width: auto; }
+    .doc-course {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ctp-subtext0);
+      letter-spacing: 0.02em;
+      margin-bottom: 6px;
+    }
+    .doc-kicker {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ctp-blue);
+      margin-bottom: 10px;
+    }
+    .doc-header-block h1 {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.25;
+      color: var(--ctp-text);
+      margin: 0 0 8px 0;
+    }
+    .doc-subtitle {
+      font-size: 16px;
+      color: var(--ctp-subtext0);
+      margin: 0;
+    }
+    .doc-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 20px;
+      font-size: 12.5px;
+      color: var(--ctp-subtext0);
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--ctp-surface0);
+    }
+
+    /* =========================================================
+       Floating Navigation Pill + TOC Drawer
+       ========================================================= */
+    .floating-nav {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .fn-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid var(--ctp-surface1);
+      background: var(--ctp-base);
+      color: var(--ctp-subtext0);
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(76, 79, 105, 0.12);
+      transition: all 0.15s ease;
+    }
+    .fn-btn:hover {
+      border-color: var(--ctp-blue);
+      color: var(--ctp-blue);
+      background: #ffffff;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(30, 102, 245, 0.18);
+    }
+    .fn-btn .material-symbols-outlined {
+      font-size: 21px;
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .fn-btn.fn-toc {
+      background: var(--ctp-blue);
+      border-color: var(--ctp-blue);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(30, 102, 245, 0.28);
+    }
+    .fn-btn.fn-toc:hover { background: #1455d9; border-color: #1455d9; color: #fff; }
+    .fn-btn.fn-pdf { color: var(--ctp-blue); }
+    .fn-btn.fn-text-large { color: var(--ctp-mauve); }
+    .fn-btn.fn-text-large.active {
+      background: var(--ctp-mauve);
+      border-color: var(--ctp-mauve);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(136, 57, 239, 0.28);
+    }
+
+    /* --- Mode Teks Besar (HTML only; PDF tidak terpengaruh) --- */
+    html.text-large {
+      zoom: 1.35;
+    }
+
+    /* --- Drawer --- */
+    .toc-drawer {
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      width: 340px;
+      max-width: 88vw;
+      z-index: 110;
+      background: var(--ctp-base);
+      border-left: 1px solid var(--ctp-surface1);
+      box-shadow: -8px 0 24px rgba(76, 79, 105, 0.18);
+      transform: translateX(100%);
+      transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    .toc-drawer.open { transform: translateX(0); }
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--ctp-surface1);
+      position: sticky;
+      top: 0;
+      background: var(--ctp-base);
+      z-index: 1;
+    }
+    .drawer-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ctp-blue);
+    }
+    .drawer-title .material-symbols-outlined { font-size: 18px; }
+    .drawer-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: var(--ctp-subtext0);
+      cursor: pointer;
+    }
+    .drawer-close:hover { background: var(--ctp-surface0); color: var(--ctp-text); }
+    .drawer-close .material-symbols-outlined { font-size: 20px; }
+    .toc-drawer .toc-list { list-style: none; margin: 8px 0; padding: 0 12px; }
+    .toc-drawer .toc-list li { margin: 0; border-bottom: 1px solid var(--ctp-surface0); }
+    .toc-drawer .toc-list li:last-child { border-bottom: none; }
+    .toc-drawer .toc-list a {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 11px 8px;
+      text-decoration: none;
+      color: var(--ctp-text);
+      font-size: 14px;
+      border-radius: 6px;
+    }
+    .toc-drawer .toc-list a:hover { color: var(--ctp-blue); background: var(--ctp-mantle); }
+    .toc-drawer .toc-num {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--ctp-blue);
+      min-width: 22px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .toc-drawer .toc-label { flex-grow: 1; }
+
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 105;
+      background: rgba(76, 79, 105, 0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.28s ease;
+    }
+    .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+
+    /* =========================================================
+       Isi dokumen
+       ========================================================= */
+    .page {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 28px 40px 90px 40px;
+    }
+
+    h2 {
+      font-size: 21px;
+      font-weight: 800;
+      color: var(--ctp-text);
+      letter-spacing: -0.015em;
+      margin: 44px 0 10px 0;
+      padding-top: 8px;
+    }
+    h2 .sec-num {
+      font-family: var(--font-mono);
+      color: var(--ctp-blue);
+      font-size: 17px;
+      margin-right: 8px;
+      font-weight: 700;
+    }
+    h3 {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--ctp-subtext0);
+      margin: 24px 0 8px 0;
+    }
+    p { margin: 0 0 14px 0; color: var(--ctp-text); }
+    ul, ol { margin: 0 0 16px 0; padding-left: 24px; }
+    li { margin-bottom: 6px; }
+    strong { color: var(--ctp-text); }
+    em { color: var(--ctp-subtext0); }
+    a { color: var(--ctp-blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Inline code */
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.9em;
+      background: var(--ctp-mantle);
+      border: 1px solid var(--ctp-surface0);
+      border-radius: 5px;
+      padding: 1px 6px;
+      color: var(--ctp-mauve);
+    }
+
+    /* =========================================================
+       Notes (thin left border — bukan kartu)
+       ========================================================= */
+    .note {
+      border-left: 3px solid;
+      padding: 2px 0 2px 14px;
+      margin: 18px 0;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+    .note .note-title { font-weight: 800; display: block; margin-bottom: 2px; }
+    .note-blue   { border-left-color: var(--ctp-blue); }
+    .note-blue   .note-title { color: var(--ctp-blue); }
+    .note-peach  { border-left-color: var(--ctp-peach); }
+    .note-peach  .note-title { color: var(--ctp-peach); }
+    .note-green  { border-left-color: var(--ctp-green); }
+    .note-green  .note-title { color: var(--ctp-green); }
+    .note-mauve  { border-left-color: var(--ctp-mauve); }
+    .note-mauve  .note-title { color: var(--ctp-mauve); }
+
+    /* =========================================================
+       Code Window (IDE framing — light)
+       ========================================================= */
+    .code-window {
+      border: 1px solid var(--ctp-surface0);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 18px 0;
+      background: var(--ctp-base);
+      box-shadow: 0 1px 2px rgba(76, 79, 105, 0.06);
+    }
+    .code-window-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--ctp-mantle);
+      border-bottom: 1px solid var(--ctp-surface0);
+      padding: 9px 14px;
+    }
+    .window-dots { display: flex; gap: 6px; flex-shrink: 0; }
+    .window-dots .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+    .dot-red    { background: var(--ctp-maroon); }
+    .dot-yellow { background: var(--ctp-yellow); }
+    .dot-green  { background: var(--ctp-green); }
+    .code-filename {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ctp-subtext0);
+      flex-grow: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--ctp-surface1);
+      background: var(--ctp-base);
+      color: var(--ctp-subtext0);
+      font-size: 11.5px;
+      font-weight: 600;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+    .copy-btn:hover { border-color: var(--ctp-blue); color: var(--ctp-blue); background: #fff; }
+    .copy-btn .material-symbols-outlined { font-size: 15px; }
+    .copy-btn.copied { border-color: var(--ctp-green); color: var(--ctp-green); background: #fff; }
+
+    .code-window pre {
+      margin: 0;
+      padding: 0;
+      background: var(--ctp-base);
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--ctp-surface1) transparent;
+    }
+    .code-window pre::-webkit-scrollbar { height: 8px; }
+    .code-window pre::-webkit-scrollbar-thumb { background: var(--ctp-surface1); border-radius: 4px; }
+    .code-window pre::-webkit-scrollbar-track { background: transparent; }
+
+    .code-window pre[class*="language-"],
+    .code-window code[class*="language-"] {
+      color: var(--ctp-text);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.6;
+      direction: ltr;
+      text-align: left;
+      white-space: pre;
+      word-spacing: normal;
+      word-break: normal;
+      tab-size: 4;
+      hyphens: none;
+    }
+    .code-window pre[class*="language-"] > code[class*="language-"] {
+      display: block;
+      padding: 12px 0;
+    }
+
+    /* --- Baked line numbers (statis) --- */
+    .code-window pre.code-baked > code {
+      display: table;
+      width: 100%;
+      padding: 0;
+      border-collapse: collapse;
+    }
+    .code-window .code-line {
+      display: table-row;
+    }
+    .code-window .ln {
+      display: table-cell;
+      text-align: right;
+      padding: 3px 14px 3px 16px;
+      color: var(--ctp-overlay1);
+      background: var(--ctp-mantle);
+      border-right: 1px solid var(--ctp-surface0);
+      user-select: none;
+      -webkit-user-select: none;
+      white-space: nowrap;
+      font-size: 12px;
+      min-width: 3em;
+      vertical-align: top;
+    }
+    .code-window .lc {
+      display: table-cell;
+      padding: 3px 18px;
+      white-space: pre;
+      color: var(--ctp-text);
+      font-size: 13px;
+      vertical-align: top;
+    }
+    .code-window .code-line:first-child .ln,
+    .code-window .code-line:first-child .lc { padding-top: 12px; }
+    .code-window .code-line:last-child .ln,
+    .code-window .code-line:last-child .lc { padding-bottom: 12px; }
+
+    /* Prism token colors (Catppuccin Latte) */
+    .token.comment, .token.prolog, .token.doctype, .token.cdata { color: var(--ctp-overlay2); font-style: italic; }
+    .token.punctuation { color: var(--ctp-subtext1); }
+    .token.keyword { color: var(--ctp-mauve); }
+    .token.string, .token.char { color: var(--ctp-green); }
+    .token.number, .token.boolean { color: var(--ctp-peach); }
+    .token.function { color: var(--ctp-blue); }
+    .token.builtin { color: var(--ctp-maroon); }
+    .token.class-name { color: var(--ctp-yellow); }
+    .token.operator { color: var(--ctp-sky); }
+    .token.property { color: var(--ctp-teal); }
+    .token.decorator { color: var(--ctp-mauve); }
+    .token.interpolation { color: var(--ctp-peach); }
+
+    /* =========================================================
+       Terminal (output)
+       ========================================================= */
+    .terminal {
+      border: 1px solid var(--ctp-surface0);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 18px 0;
+    }
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--ctp-mantle);
+      border-bottom: 1px solid var(--ctp-surface0);
+      padding: 8px 14px;
+    }
+    .terminal-header .material-symbols-outlined { font-size: 15px; color: var(--ctp-teal); }
+    .terminal-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ctp-overlay1);
+    }
+    .terminal-body {
+      background: var(--ctp-base);
+      padding: 14px 18px;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      color: var(--ctp-subtext1);
+      white-space: pre-wrap;
+      line-height: 1.5;
+      overflow-x: auto;
+    }
+
+    /* Formula */
+    .formula {
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--ctp-blue);
+      background: var(--ctp-mantle);
+      border: 1px solid var(--ctp-surface0);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 16px 0;
+      letter-spacing: 0.01em;
+    }
+
+    hr { border: none; border-top: 1px solid var(--ctp-surface0); margin: 36px 0; }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+    th {
+      background: var(--ctp-mantle);
+      text-align: left;
+      font-weight: 700;
+      padding: 10px 14px;
+      border: 1px solid var(--ctp-surface0);
+      color: var(--ctp-text);
+    }
+    td { padding: 10px 14px; border: 1px solid var(--ctp-surface0); color: var(--ctp-subtext1); }
+    tr:nth-child(even) td { background: var(--ctp-mantle); }
+
+    .reference-list {
+      font-size: 13px;
+      color: var(--ctp-subtext0);
+      list-style: none;
+      padding: 0;
+    }
+    .reference-list li {
+      padding: 9px 0;
+      border-bottom: 1px solid var(--ctp-surface0);
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 12px;
+    }
+    .reference-list .ref-num {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--ctp-blue);
+      text-align: right;
+    }
+
+    @media (max-width: 640px) {
+      .floating-nav { bottom: 16px; right: 16px; }
+      .fn-btn { width: 42px; height: 42px; }
+      .doc-header-block { padding: 28px 16px 0 16px; }
+      .page { padding: 20px 16px 80px 16px; }
+      .doc-header-block h1 { font-size: 24px; }
+    }
+
+    /* Print */
+    @media print {
+      body { background: #fff; }
+      .floating-nav { display: none; }
+      .drawer-backdrop { display: none; }
+      .copy-btn { display: none; }
+      .page { max-width: 100%; padding: 0; }
+
+      .toc-drawer {
+        position: static;
+        width: 100%;
+        max-width: 100%;
+        transform: none;
+        border-left: none;
+        box-shadow: none;
+        background: transparent;
+        display: block;
+        overflow: visible;
+        break-after: page;
+        page-break-after: always;
+      }
+      .toc-drawer .drawer-header { position: static; background: transparent; }
+      .toc-drawer .drawer-close { display: none; }
+
+      .doc-header-block { break-after: page; page-break-after: always; }
+
+      p, li { orphans: 3; widows: 3; }
+      h2, h3 { break-after: avoid; page-break-after: avoid; }
+
+      .code-window { break-inside: auto; page-break-inside: auto; }
+      .code-window-header { break-after: avoid; page-break-after: avoid; }
+      pre { break-inside: auto; page-break-inside: auto; }
+      .terminal, .note, table, .formula { break-inside: avoid; page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<header class="doc-header-block">
+    <div class="doc-logos">
+      <img src="../assets/img/logo_2.png" alt="Logo ITERA">
+      <img src="../assets/img/dikti-saintek-berdampak-color.svg" alt="Logo Kemdiktisaintek">
+    </div>
+    <div class="doc-course">IF25-40304 &middot; Pembelajaran Mesin Multimodal</div>
+    <div class="doc-kicker">Lembar Kerja 04</div>
+    <h1>Dari Gelombang Suara ke Spektrogram: Representasi Audio &amp; Video</h1>
+    <p class="doc-subtitle">Representasi Modalitas III: Audio &amp; Video</p>
+    <div class="doc-meta">
+      <span>Program Studi Teknik Informatika</span>
+      <span>Institut Teknologi Sumatera (ITERA)</span>
+    </div>
+  </header>
+
+  <div class="page">
+
+  <aside class="toc-drawer" id="tocDrawer" aria-label="Daftar isi"><div class="drawer-header"><span class="drawer-title"><span class="material-symbols-outlined">list</span> Daftar Isi</span><button class="drawer-close" type="button" onclick="toggleToc(false)" title="Tutup"><span class="material-symbols-outlined">close</span></button></div><ul class="toc-list"><li><a href="#sec-data" onclick="gotoSection(this)"><span class="toc-num">01</span><span class="toc-label">Audio &amp; Video sebagai Data</span></a></li><li><a href="#sec-setup" onclick="gotoSection(this)"><span class="toc-num">02</span><span class="toc-label">Setup Lingkungan</span></a></li><li><a href="#sec-waveform" onclick="gotoSection(this)"><span class="toc-num">03</span><span class="toc-label">Raw Waveform &amp; Sampling</span></a></li><li><a href="#sec-spektrogram" onclick="gotoSection(this)"><span class="toc-num">04</span><span class="toc-label">Spektrogram (STFT)</span></a></li><li><a href="#sec-mfcc" onclick="gotoSection(this)"><span class="toc-num">05</span><span class="toc-label">MFCC</span></a></li><li><a href="#sec-video" onclick="gotoSection(this)"><span class="toc-num">06</span><span class="toc-label">Video sebagai Sekuens Frame</span></a></li><li><a href="#sec-referensi" onclick="gotoSection(this)"><span class="toc-num">⚑</span><span class="toc-label">Referensi</span></a></li></ul></aside><div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleToc(false)"></div>
+
+  <p>Lembar kerja ini melengkapi materi Pertemuan 04 (Representasi Modalitas III: Audio &amp; Video). Eksperimen komputasi berikut bertujuan memverifikasi tiga gagasan utama yang dibahas pada slide:</p>
+  <ol>
+    <li>Audio adalah sinyal <strong>sekuensial dan temporal</strong> — representasi mentahnya berupa deretan sampel amplitudo terhadap waktu.</li>
+    <li>Transformasi <strong>STFT</strong> mengubah sinyal 1D menjadi <strong>spektrogram 2D</strong> (waktu × frekuensi) yang bisa diproses CNN.</li>
+    <li>Video adalah <strong>sekuens frame gambar</strong> — memproses tiap frame secara terpisah mengabaikan dimensi temporal (gerakan).</li>
+  </ol>
+  <div class="note note-peach"><span class="note-title">Batasan cakupan komputasi</span>Seluruh percobaan menggunakan <strong>sinyal sintetis</strong> yang dibangkitkan dengan NumPy — tidak ada berkas audio/video eksternal yang wajib diunduh. Tujuannya mengamati representasi audio/video dari prinsip pertama, bukan melatih model klasifikasi.</div>
+  <p>Lingkungan yang diperlukan: Python dengan paket <code>numpy</code>, <code>librosa</code>, dan <code>matplotlib</code>.</p>
+
+  <section id="sec-data"><h2><span class="sec-num">01</span> Audio &amp; Video sebagai Data</h2><p>Slide 4–6 menjelaskan bahwa audio dan video membawa <strong>dimensi waktu</strong> yang tidak dimiliki teks maupun gambar statis. Audio adalah sinyal 1D yang berubah seiring waktu; video adalah urutan frame gambar (struktur spasial + temporal).</p><table><thead><tr><th>Modalitas</th><th>Struktur dasar</th><th>Sumbu informasi</th></tr></thead><tbody><tr><td>Audio</td><td>Deretan sampel amplitudo</td><td>Waktu (temporal)</td></tr><tr><td>Video</td><td>Urutan frame gambar</td><td>Spasial + temporal</td></tr></tbody></table><div class="note note-blue"><span class="note-title">Hubungan dengan slide 4–6</span>Karena kedua modalitas bersifat temporal, representasi yang baik harus menangkap <em>perubahan seiring waktu</em>, bukan hanya isi statis. Inilah inti dari seluruh lembar kerja ini.</div></section>
+
+  <section id="sec-setup"><h2><span class="sec-num">02</span> Setup Lingkungan</h2><p>Gunakan Python dengan NumPy, Librosa, dan Matplotlib.</p><div class="code-window"><div class="code-window-header">
+      <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+      <span class="code-filename">terminal</span>
+      <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
+    </div>
+    <pre class="code-baked language-bash"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc">python -m pip <span class="token function">install</span> numpy librosa matplotlib</span></span></code></pre></div><p>Import library dan tetapkan konstanta sinyal yang akan dipakai sepanjang eksperimen.</p><div class="code-window"><div class="code-window-header">
+      <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+      <span class="code-filename">audio_repr.py</span>
+      <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
+    </div>
+    <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc"><span class="token keyword">import</span> librosa</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc"><span class="token keyword">import</span> librosa<span class="token punctuation">.</span>display</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc"><span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc">SR <span class="token operator">=</span> <span class="token number">22050</span>            <span class="token comment"># sampling rate (Hz)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc">DURASI <span class="token operator">=</span> <span class="token number">2.0</span>          <span class="token comment"># durasi sinyal (detik)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc">n_sampel <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span>SR <span class="token operator">*</span> DURASI<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">9</span><span class="lc">t <span class="token operator">=</span> np<span class="token punctuation">.</span>linspace<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> DURASI<span class="token punctuation">,</span> n_sampel<span class="token punctuation">,</span> endpoint<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">10</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">11</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"sampling rate:"</span><span class="token punctuation">,</span> SR<span class="token punctuation">,</span> <span class="token string">"Hz"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">12</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"jumlah sampel:"</span><span class="token punctuation">,</span> n_sampel<span class="token punctuation">)</span></span></span></code></pre></div>
+    <div class="terminal">
+      <div class="terminal-header">
+        <span class="material-symbols-outlined">terminal</span>
+        <span class="terminal-title">Output</span>
+      </div>
+      <div class="terminal-body">sampling rate: 22050 Hz
+jumlah sampel: 44100</div>
+    </div><div class="note"><strong>Pertanyaan awal:</strong> Mengapa sinyal berdurasi 2 detik dengan <em>sampling rate</em> 22.050 Hz menghasilkan 44.100 sampel?</div></section>
+
+  <section id="sec-waveform"><h2><span class="sec-num">03</span> Raw Waveform &amp; Sampling</h2><p>Slide 8–9 membahas <strong>gelombang suara mentah</strong> dan <strong>teorema sampling Nyquist–Shannon</strong>. Bangun nada murni, lalu amati bentuk gelombangnya.</p><div class="formula">f_s &gt; 2 · f_max</div><div class="code-window"><div class="code-window-header">
+      <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+      <span class="code-filename">audio_repr.py</span>
+      <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
+    </div>
+    <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc"><span class="token comment"># Nada murni 440 Hz (nada A4)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc">freq <span class="token operator">=</span> <span class="token number">440.0</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc">sinyal <span class="token operator">=</span> <span class="token number">0.5</span> <span class="token operator">*</span> np<span class="token punctuation">.</span>sin<span class="token punctuation">(</span><span class="token number">2</span> <span class="token operator">*</span> np<span class="token punctuation">.</span>pi <span class="token operator">*</span> freq <span class="token operator">*</span> t<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc">plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc">plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>t<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">500</span><span class="token punctuation">]</span><span class="token punctuation">,</span> sinyal<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">500</span><span class="token punctuation">]</span><span class="token punctuation">,</span> color<span class="token operator">=</span><span class="token string">"#1e66f5"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc">plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span><span class="token string">"Waktu (detik)"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc">plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">"Amplitudo"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">9</span><span class="lc">plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">"Gelombang Suara 440 Hz — 500 sampel pertama"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">10</span><span class="lc">plt<span class="token punctuation">.</span>grid<span class="token punctuation">(</span>alpha<span class="token operator">=</span><span class="token number">0.3</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">11</span><span class="lc">plt<span class="token punctuation">.</span>tight_layout<span class="token punctuation">(</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">12</span><span class="lc">plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span></span></span></code></pre></div><p>Sekarang campurkan dua nada (440 Hz dan 880 Hz) untuk meniru sinyal yang lebih kompleks, lalu lakukan eksperimen <strong>aliasing</strong> dengan menurunkan <em>sampling rate</em> di bawah laju Nyquist.</p><div class="code-window"><div class="code-window-header">
+      <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+      <span class="code-filename">audio_repr.py</span>
+      <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
+    </div>
+    <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc"><span class="token comment"># Campuran dua nada: 440 Hz + 880 Hz</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc">sinyal_campuran <span class="token operator">=</span> <span class="token number">0.5</span> <span class="token operator">*</span> np<span class="token punctuation">.</span>sin<span class="token punctuation">(</span><span class="token number">2</span> <span class="token operator">*</span> np<span class="token punctuation">.</span>pi <span class="token operator">*</span> <span class="token number">440</span> <span class="token operator">*</span> t<span class="token punctuation">)</span> \</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc">                <span class="token operator">+</span> <span class="token number">0.3</span> <span class="token operator">*</span> np<span class="token punctuation">.</span>sin<span class="token punctuation">(</span><span class="token number">2</span> <span class="token operator">*</span> np<span class="token punctuation">.</span>pi <span class="token operator">*</span> <span class="token number">880</span> <span class="token operator">*</span> t<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc"><span class="token comment"># Aliasing: cuplik 880 Hz hanya pada 1000 Hz (&lt; 2 * 880)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc">sr_rendah <span class="token operator">=</span> <span class="token number">1000</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc">t_alias <span class="token operator">=</span> np<span class="token punctuation">.</span>linspace<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> DURASI<span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">(</span>sr_rendah <span class="token operator">*</span> DURASI<span class="token punctuation">)</span><span class="token punctuation">,</span> endpoint<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc">sinyal_alias <span class="token operator">=</span> <span class="token number">0.5</span> <span class="token operator">*</span> np<span class="token punctuation">.</span>sin<span class="token punctuation">(</span><span class="token number">2</span> <span class="token operator">*</span> np<span class="token punctuation">.</span>pi <span class="token operator">*</span> <span class="token number">880</span> <span class="token operator">*</span> t_alias<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">9</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">10</span><span class="lc">plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">11</span><span class="lc">plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>t_alias<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">200</span><span class="token punctuation">]</span><span class="token punctuation">,</span> sinyal_alias<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">200</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">"o-"</span><span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">12</span><span class="lc">         color<span class="token operator">=</span><span class="token string">"#e64553"</span><span class="token punctuation">,</span> markersize<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">13</span><span class="lc">plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">"Aliasing: 880 Hz dicuplik pada 1000 Hz"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">14</span><span class="lc">plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span><span class="token string">"Waktu (detik)"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">15</span><span class="lc">plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">"Amplitudo"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">16</span><span class="lc">plt<span class="token punctuation">.</span>grid<span class="token punctuation">(</span>alpha<span class="token operator">=</span><span class="token number">0.3</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">17</span><span class="lc">plt<span class="token punctuation">.</span>tight_layout<span class="token punctuation">(</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">18</span><span class="lc">plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span></span></span></code></pre></div><div class="note note-mauve"><span class="note-title">Amati</span>Pada plot aliasing, titik-titik sampel membentuk pola yang <strong>tidak lagi menyerupai</strong> gelombang 880 Hz — frekuensi tinggi "menyamar" menjadi frekuensi rendah. Inilah akibat melanggar teorema Nyquist–Shannon.</div></section>
+
+  <section id="sec-spektrogram"><h2><span class="sec-num">04</span> Spektrogram (STFT)</h2><p>Slide 10–11 menjelaskan bahwa <strong>Short-Time Fourier Transform (STFT)</strong> mengiris sinyal menjadi jendela waktu dan menghitung komponen frekuensi tiap jendela, menghasilkan peta 2D <em>waktu × frekuensi</em>.</p><div class="code-window"><div class="code-window-header">
+      <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+      <span class="code-filename">audio_repr.py</span>
+      <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
+    </div>
+    <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc"><span class="token comment"># STFT: n_fft = ukuran jendela, hop_length = lompatan antar jendela</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc">D <span class="token operator">=</span> librosa<span class="token punctuation">.</span>stft<span class="token punctuation">(</span>sinyal_campuran<span class="token punctuation">,</span> n_fft<span class="token operator">=</span><span class="token number">2048</span><span class="token punctuation">,</span> hop_length<span class="token operator">=</span><span class="token number">512</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc">S_db <span class="token operator">=</span> librosa<span class="token punctuation">.</span>amplitude_to_db<span class="token punctuation">(</span>np<span class="token punctuation">.</span><span class="token builtin">abs</span><span class="token punctuation">(</span>D<span class="token punctuation">)</span><span class="token punctuation">,</span> ref<span class="token operator">=</span>np<span class="token punctuation">.</span><span class="token builtin">max</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc">plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc">librosa<span class="token punctuation">.</span>display<span class="token punctuation">.</span>specshow<span class="token punctuation">(</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc">    S_db<span class="token punctuation">,</span> sr<span class="token operator">=</span>SR<span class="token punctuation">,</span> hop_length<span class="token operator">=</span><span class="token number">512</span><span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc">    x_axis<span class="token operator">=</span><span class="token string">"time"</span><span class="token punctuation">,</span> y_axis<span class="token operator">=</span><span class="token string">"hz"</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">9</span><span class="lc"><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">10</span><span class="lc">plt<span class="token punctuation">.</span>colorbar<span class="token punctuation">(</span><span class="token builtin">format</span><span class="token operator">=</span><span class="token string">"%+2.0f dB"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">11</span><span class="lc">plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">"Spektrogram Campuran 440 Hz + 880 Hz"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">12</span><span class="lc">plt<span class="token punctuation">.</span>tight_layout<span class="token punctuation">(</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">13</span><span class="lc">plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span></span></span></code></pre></div><p>Untuk mengamati <em>trade-off</em> resolusi waktu–frekuensi, ulangi STFT dengan ukuran jendela yang berbeda dan bandingkan ketajaman frekuensi terhadap ketajaman waktu.</p><div class="code-window"><div class="code-window-header">
+      <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+      <span class="code-filename">audio_repr.py</span>
+      <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
+    </div>
+    <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc"><span class="token comment"># Jendela panjang (n_fft=4096): resolusi frekuensi lebih tajam</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc">D_large <span class="token operator">=</span> librosa<span class="token punctuation">.</span>stft<span class="token punctuation">(</span>sinyal_campuran<span class="token punctuation">,</span> n_fft<span class="token operator">=</span><span class="token number">4096</span><span class="token punctuation">,</span> hop_length<span class="token operator">=</span><span class="token number">512</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc">S_large <span class="token operator">=</span> librosa<span class="token punctuation">.</span>amplitude_to_db<span class="token punctuation">(</span>np<span class="token punctuation">.</span><span class="token builtin">abs</span><span class="token punctuation">(</span>D_large<span class="token punctuation">)</span><span class="token punctuation">,</span> ref<span class="token operator">=</span>np<span class="token punctuation">.</span><span class="token builtin">max</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc"><span class="token comment"># Jendela pendek (n_fft=512): resolusi waktu lebih tajam</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc">D_small <span class="token operator">=</span> librosa<span class="token punctuation">.</span>stft<span class="token punctuation">(</span>sinyal_campuran<span class="token punctuation">,</span> n_fft<span class="token operator">=</span><span class="token number">512</span><span class="token punctuation">,</span> hop_length<span class="token operator">=</span><span class="token number">128</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc">S_small <span class="token operator">=</span> librosa<span class="token punctuation">.</span>amplitude_to_db<span class="token punctuation">(</span>np<span class="token punctuation">.</span><span class="token builtin">abs</span><span class="token punctuation">(</span>D_small<span class="token punctuation">)</span><span class="token punctuation">,</span> ref<span class="token operator">=</span>np<span class="token punctuation">.</span><span class="token builtin">max</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">9</span><span class="lc">fig<span class="token punctuation">,</span> axes <span class="token operator">=</span> plt<span class="token punctuation">.</span>subplots<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">10</span><span class="lc">librosa<span class="token punctuation">.</span>display<span class="token punctuation">.</span>specshow<span class="token punctuation">(</span>S_large<span class="token punctuation">,</span> sr<span class="token operator">=</span>SR<span class="token punctuation">,</span> hop_length<span class="token operator">=</span><span class="token number">512</span><span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">11</span><span class="lc">                         x_axis<span class="token operator">=</span><span class="token string">"time"</span><span class="token punctuation">,</span> y_axis<span class="token operator">=</span><span class="token string">"hz"</span><span class="token punctuation">,</span> ax<span class="token operator">=</span>axes<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">12</span><span class="lc">axes<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>set_title<span class="token punctuation">(</span><span class="token string">"n_fft = 4096 (frekuensi tajam)"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">13</span><span class="lc">librosa<span class="token punctuation">.</span>display<span class="token punctuation">.</span>specshow<span class="token punctuation">(</span>S_small<span class="token punctuation">,</span> sr<span class="token operator">=</span>SR<span class="token punctuation">,</span> hop_length<span class="token operator">=</span><span class="token number">128</span><span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">14</span><span class="lc">                         x_axis<span class="token operator">=</span><span class="token string">"time"</span><span class="token punctuation">,</span> y_axis<span class="token operator">=</span><span class="token string">"hz"</span><span class="token punctuation">,</span> ax<span class="token operator">=</span>axes<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">15</span><span class="lc">axes<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>set_title<span class="token punctuation">(</span><span class="token string">"n_fft = 512 (waktu tajam)"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">16</span><span class="lc">plt<span class="token punctuation">.</span>tight_layout<span class="token punctuation">(</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">17</span><span class="lc">plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span></span></span></code></pre></div><div class="note note-blue"><span class="note-title">Intuisi</span>Jendela <em>panjang</em> memuat lebih banyak sampel sehingga frekuensi terukur lebih akurat, tetapi lokasi waktu menjadi kabur; jendela <em>pendek</em> sebaliknya. Ini prinsip ketidakpastian waktu–frekuensi.</div></section>
+
+  <section id="sec-mfcc"><h2><span class="sec-num">05</span> MFCC</h2><p>Slide 13 menjelaskan <strong>Mel-Frequency Cepstral Coefficients (MFCC)</strong>: fitur ringkas yang memadatkan spektrum Mel menjadi vektor koefisien kecil yang menangkap <em>timbre</em>.</p><div class="code-window"><div class="code-window-header">
+      <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+      <span class="code-filename">audio_repr.py</span>
+      <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
+    </div>
+    <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc"><span class="token comment"># Ekstrak 13 koefisien MFCC dari sinyal campuran</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc">mfcc <span class="token operator">=</span> librosa<span class="token punctuation">.</span>feature<span class="token punctuation">.</span>mfcc<span class="token punctuation">(</span>y<span class="token operator">=</span>sinyal_campuran<span class="token punctuation">,</span> sr<span class="token operator">=</span>SR<span class="token punctuation">,</span> n_mfcc<span class="token operator">=</span><span class="token number">13</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"bentuk MFCC:"</span><span class="token punctuation">,</span> mfcc<span class="token punctuation">.</span>shape<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc">plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc">librosa<span class="token punctuation">.</span>display<span class="token punctuation">.</span>specshow<span class="token punctuation">(</span>mfcc<span class="token punctuation">,</span> sr<span class="token operator">=</span>SR<span class="token punctuation">,</span> hop_length<span class="token operator">=</span><span class="token number">512</span><span class="token punctuation">,</span> x_axis<span class="token operator">=</span><span class="token string">"time"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc">plt<span class="token punctuation">.</span>colorbar<span class="token punctuation">(</span>label<span class="token operator">=</span><span class="token string">"Koefisien"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">9</span><span class="lc">plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">"MFCC Campuran 440 Hz + 880 Hz"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">10</span><span class="lc">plt<span class="token punctuation">.</span>tight_layout<span class="token punctuation">(</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">11</span><span class="lc">plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span></span></span></code></pre></div>
+    <div class="terminal">
+      <div class="terminal-header">
+        <span class="material-symbols-outlined">terminal</span>
+        <span class="terminal-title">Output</span>
+      </div>
+      <div class="terminal-body">bentuk MFCC: (13, 87)</div>
+    </div><div class="note"><strong>Interpretasi:</strong> bentuk <code>(13, 87)</code> berarti 13 koefisien MFCC untuk 87 jendela waktu. Bandingkan dengan spektrogram mentah yang jauh lebih besar — MFCC memadatkan informasi menjadi representasi ringkas.</div></section>
+
+  <section id="sec-video"><h2><span class="sec-num">06</span> Video sebagai Sekuens Frame</h2><p>Slide 19–20 menunjukkan bahwa pendekatan paling sederhana adalah memperlakukan video sebagai <strong>urutan frame gambar</strong>, tetapi pendekatan ini mengabaikan informasi temporal (gerakan). Bangun "video" sintetis berupa kotak yang bergerak melintasi frame.</p><div class="code-window"><div class="code-window-header">
+      <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+      <span class="code-filename">video_repr.py</span>
+      <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
+    </div>
+    <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc"><span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc"><span class="token comment"># Video sintetis: kotak 8x8 bergerak horizontal</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc">frame_count <span class="token operator">=</span> <span class="token number">24</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc">h<span class="token punctuation">,</span> w <span class="token operator">=</span> <span class="token number">48</span><span class="token punctuation">,</span> <span class="token number">64</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc">frames <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">9</span><span class="lc"><span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>frame_count<span class="token punctuation">)</span><span class="token punctuation">:</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">10</span><span class="lc">    frame <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token punctuation">(</span>h<span class="token punctuation">,</span> w<span class="token punctuation">)</span><span class="token punctuation">,</span> dtype<span class="token operator">=</span>np<span class="token punctuation">.</span>uint8<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">11</span><span class="lc">    posisi_x <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span>i <span class="token operator">*</span> <span class="token punctuation">(</span>w <span class="token operator">-</span> <span class="token number">8</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token punctuation">(</span>frame_count <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">12</span><span class="lc">    frame<span class="token punctuation">[</span><span class="token number">20</span><span class="token punctuation">:</span><span class="token number">28</span><span class="token punctuation">,</span> posisi_x<span class="token punctuation">:</span>posisi_x <span class="token operator">+</span> <span class="token number">8</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">255</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">13</span><span class="lc">    frames<span class="token punctuation">.</span>append<span class="token punctuation">(</span>frame<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">14</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">15</span><span class="lc"><span class="token comment"># Tampilkan 4 frame pada waktu berbeda</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">16</span><span class="lc">fig<span class="token punctuation">,</span> axes <span class="token operator">=</span> plt<span class="token punctuation">.</span>subplots<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">2.5</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">17</span><span class="lc"><span class="token keyword">for</span> ax<span class="token punctuation">,</span> idx <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>axes<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">,</span> <span class="token number">23</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">18</span><span class="lc">    ax<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span>frames<span class="token punctuation">[</span>idx<span class="token punctuation">]</span><span class="token punctuation">,</span> cmap<span class="token operator">=</span><span class="token string">"gray"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">19</span><span class="lc">    ax<span class="token punctuation">.</span>set_title<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"t = </span><span class="token interpolation"><span class="token punctuation">{</span>idx<span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">20</span><span class="lc">    ax<span class="token punctuation">.</span>axis<span class="token punctuation">(</span><span class="token string">"off"</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">21</span><span class="lc">plt<span class="token punctuation">.</span>tight_layout<span class="token punctuation">(</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">22</span><span class="lc">plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span></span></span></code></pre></div><p>Perhatikan bahwa setiap frame adalah gambar statis 2D. Jika setiap frame diproses CNN 2D secara <strong>independen</strong> (pendekatan <em>frame-by-frame</em>), arah dan kecepatan gerakan kotak tidak tertangkap.</p><div class="note note-green"><span class="note-title">Jembatan ke arsitektur</span>Untuk menangkap gerakan, diperlukan pemodelan temporal: <strong>3D CNN</strong> (kernel dengan dimensi waktu), <strong>CNN + RNN/LSTM</strong> (spasial lalu temporal), atau <strong>Video Transformer</strong> (attention ruang-waktu). Slide 21–24 membahas ketiganya.</div></section>
+
+  <section><h2>Rangkuman</h2><div class="note note-blue"><span class="note-title">Representasi audio &amp; video</span><strong>Audio</strong> berjalan dari raw waveform (1D) → spektrogram (2D, STFT) → MFCC (fitur ringkas). <strong>Video</strong> adalah sekuens frame; memproses frame secara terpisah mengabaikan temporal.</div><ul>
+    <li>Sampling rate harus memenuhi <code>f_s &gt; 2·f_max</code> agar tidak terjadi aliasing.</li>
+    <li>STFT mengubah sinyal 1D menjadi peta waktu–frekuensi 2D.</li>
+    <li>MFCC memadatkan spektrum Mel menjadi vektor koefisien kecil.</li>
+    <li>Video membawa informasi spasial <em>dan</em> temporal sekaligus.</li>
+  </ul><p style="margin-top:28px;color:var(--ctp-subtext0)">Gunakan hasil eksperimen ini sebagai bahan untuk Tugas Individu 04.</p></section>
+
+  <section id="sec-referensi">
+    <h2><span class="sec-num">⚑</span> Referensi Utama</h2>
+    <ul class="reference-list">
+      <li><span class="ref-num">[1]</span><span><strong>Goodfellow, I., Bengio, Y., &amp; Courville, A.</strong> (2016). <em>Deep Learning</em>, Bab 10: Sequence Modeling. MIT Press.</span></li>
+      <li><span class="ref-num">[2]</span><span><strong>Tran, D., Bourdev, L., Fergus, R., Torresani, L., &amp; Paluri, M.</strong> (2015). <em>Learning Spatiotemporal Features with 3D Convolutional Networks</em>. ICCV. <a href="https://doi.org/10.1109/ICCV.2015.510">doi.org/10.1109/ICCV.2015.510</a></span></li>
+      <li><span class="ref-num">[3]</span><span><strong>McFee, B., et al.</strong> <em>librosa: Audio and Music Signal Analysis in Python</em>. <a href="https://librosa.org">librosa.org</a></span></li>
+      <li><span class="ref-num">[4]</span><span><strong>Jurafsky, D., &amp; Martin, J. H.</strong> (terbaru). <em>Speech and Language Processing</em> — bab pengenalan ucapan.</span></li>
+    </ul>
+  </section>
+</div>
+<nav class="floating-nav" aria-label="Navigasi dokumen">
+  <button class="fn-btn fn-toc" type="button" onclick="toggleToc(true)" title="Daftar isi"><span class="material-symbols-outlined">toc</span></button>
+  <button class="fn-btn fn-text-large" id="textLargeBtn" type="button" onclick="toggleTextLarge()" title="Teks Besar (untuk proyektor)"><span class="material-symbols-outlined">text_increase</span></button>
+  <a href="#" class="fn-btn fn-top" title="Kembali ke atas" onclick="scrollTop();return false;"><span class="material-symbols-outlined">arrow_upward</span></a>
+  <a href="../index.html" class="fn-btn fn-portal" title="Kembali ke Portal Kuliah"><span class="material-symbols-outlined">arrow_back</span></a>
+  <a href="../pdf/mgg04-hands-on.pdf" class="fn-btn fn-pdf" download title="Unduh versi PDF"><span class="material-symbols-outlined">picture_as_pdf</span></a>
+</nav>
+<script>
+function copyCode(btn){var codeEl=btn.closest('.code-window').querySelector('pre code');var lines=codeEl.querySelectorAll('.lc');var text=lines.length?Array.from(lines).map(function(x){return x.textContent}).join('\n'):codeEl.textContent;if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(function(){flashCopied(btn)}).catch(function(){fallbackCopy(text,btn)});else fallbackCopy(text,btn)}
+function fallbackCopy(text,btn){var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');flashCopied(btn)}catch(e){}document.body.removeChild(ta)}
+function flashCopied(btn){var i=btn.querySelector('.material-symbols-outlined'),l=btn.querySelector('span:last-child');if(i)i.textContent='check';if(l)l.textContent='Tersalin';setTimeout(function(){if(i)i.textContent='content_copy';if(l)l.textContent='Salin'},2000)}
+function toggleToc(open){var d=document.getElementById('tocDrawer'),b=document.getElementById('drawerBackdrop'),on=open===undefined?!d.classList.contains('open'):open;d.classList.toggle('open',on);b.classList.toggle('open',on);document.body.style.overflow=on?'hidden':''}function gotoSection(link){var t=document.querySelector(link.getAttribute('href'));toggleToc(false);if(t)setTimeout(function(){t.scrollIntoView({behavior:'smooth',block:'start'})},180);return false}function scrollTop(){window.scrollTo({top:0,behavior:'smooth'})}function toggleTextLarge(){var on=document.documentElement.classList.toggle('text-large'),b=document.getElementById('textLargeBtn');if(b)b.classList.toggle('active',on);try{localStorage.setItem('hands_on_text_large',on?'1':'0')}catch(e){}}(function(){try{if(localStorage.getItem('hands_on_text_large')==='1'){document.documentElement.classList.add('text-large');var b=document.getElementById('textLargeBtn');if(b)b.classList.add('active')}}catch(e){}})();document.addEventListener('keydown',function(e){if(e.key==='Escape')toggleToc(false)});
+</script>
+</body></html>

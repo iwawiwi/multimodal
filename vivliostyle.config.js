@@ -8,10 +8,14 @@
 // Catatan: `style`/`css` adalah INLINE config (CLI flag), bukan di sini.
 // File ini hanya memuat BuildTask: entry, size, static, output, dll.
 const week = process.env.HANDSON_WEEK || '03';
-const is02 = week === '02';
+const titles = {
+  '02': 'Hands-on 02: Eksplorasi Word Embeddings',
+  '03': 'Hands-on 03: Feature Extraction Gambar',
+  '04': 'Hands-on 04: Representasi Audio & Video',
+};
 
 module.exports = {
-  title: is02 ? 'Hands-on 02: Eksplorasi Word Embeddings' : 'Hands-on 03: Feature Extraction Gambar',
+  title: titles[week] || `Hands-on ${week}`,
   author: 'Pembelajaran Mesin Multimodal (IF25-40304)',
   language: 'id',
   size: 'A4',

@@ -53,7 +53,7 @@ These placeholders in `resources/slide-template.html` are substituted from this 
 | 01 | Pengantar Pembelajaran Mesin Multimodal | lecture | — |
 | 02 | Representasi Modalitas I: Teks | lecture | `Word Embeddings Lab` (`pdf/mgg02-hands-on.pdf`) |
 | 03 | Representasi Modalitas II: Gambar | lecture | — |
-| 04 | Representasi Modalitas III: Audio & Video | lecture | — |
+| 04 | Representasi Modalitas III: Audio & Video | lecture | `Representasi Audio & Video` (`pdf/mgg04-hands-on.pdf`) |
 | 05 | Fusion Strategies I: Early & Late Fusion | lecture | — |
 | 06 | Fusion Strategies II: Intermediate & Cross-Attention | lecture | — |
 | 07 | Alignment: Temporal & Structural | lecture | — |
