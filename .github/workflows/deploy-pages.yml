@@ -43,6 +43,7 @@ jobs:
           python3 scripts/export_pdf.py mgg01.html
           python3 scripts/export_pdf.py mgg02.html
           python3 scripts/export_pdf.py mgg03.html
+          python3 scripts/export_pdf.py mgg04.html
 
       - name: Build hands-on PDFs (Vivliostyle)
         run: |
@@ -50,6 +51,8 @@ jobs:
           HANDSON_WEEK=02 npm run build:pdf
           HANDSON_WEEK=03 npm run bake
           HANDSON_WEEK=03 npm run build:pdf
+          HANDSON_WEEK=04 npm run bake
+          HANDSON_WEEK=04 npm run build:pdf
 
       - name: Verify PDFs exist
         run: |
@@ -57,8 +60,10 @@ jobs:
           test -f pdf/mgg01.pdf
           test -f pdf/mgg02.pdf
           test -f pdf/mgg03.pdf
+          test -f pdf/mgg04.pdf
           test -f pdf/mgg02-hands-on.pdf
           test -f pdf/mgg03-hands-on.pdf
+          test -f pdf/mgg04-hands-on.pdf
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
