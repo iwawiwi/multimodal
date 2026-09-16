@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pertemuan 04: Representasi Modalitas III — Audio & Video | ITERA</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <link rel="stylesheet" href="css/catppuccin-latte.css">
+</head>
+<body>
+  <header class="deck-header">
+    <div class="deck-header-left">
+      <a href="index.html" class="deck-brand-link" title="Kembali ke Portal Kuliah">
+        <img src="assets/img/logo_2.png" alt="Logo ITERA" class="deck-logo">
+        <img src="assets/img/dikti-saintek-berdampak-color.svg" alt="Logo Dikti Saintek Berdampak" class="deck-logo">
+      </a>
+    </div>
+
+    <div class="deck-header-right">
+      <!-- Aspect Ratio / Projector Switcher -->
+      <div class="nav-dropdown">
+        <button type="button" class="deck-ctrl-btn" id="aspect-btn" onclick="toggleAspectDropdown(event)" title="Sesuaikan Rasio Layar & Proyektor">
+          <span class="material-symbols-outlined">aspect_ratio</span>
+          <span id="aspect-label" class="deck-btn-label">Auto</span>
+          <span class="material-symbols-outlined" style="font-size: 14px;">arrow_drop_down</span>
+        </button>
+        <div class="nav-dropdown-menu" id="aspect-menu">
+          <button type="button" class="dropdown-item active" data-aspect="auto" onclick="setAspectMode('auto')">
+            <span class="item-title">Auto</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-9" onclick="setAspectMode('16-9')">
+            <span class="item-title">16:9</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-10" onclick="setAspectMode('16-10')">
+            <span class="item-title">16:10</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="4-3" onclick="setAspectMode('4-3')">
+            <span class="item-title">4:3</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="mobile" onclick="setAspectMode('mobile')">
+            <span class="item-title">Mobile</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="text-large" onclick="setAspectMode('text-large')">
+            <span class="item-title">Teks Besar</span>
+          </button>
+        </div>
+      </div>
+
+      <button type="button" class="deck-ctrl-btn" onclick="Reveal.toggleOverview()" title="Lihat Matriks Seluruh Slide (Esc/O)">
+        <span class="material-symbols-outlined">grid_view</span>
+        <span class="deck-btn-label">Overview</span>
+      </button>
+      <button type="button" class="deck-ctrl-btn" onclick="openShortcutsModal()" title="Panduan Pintasan Keyboard (?)">
+        <span class="material-symbols-outlined">keyboard</span>
+        <span class="deck-btn-label">Pintasan</span>
+      </button>
+      <a href="index.html" class="deck-ctrl-btn" title="Kembali ke Portal Kuliah">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span class="deck-btn-label">Portal</span>
+      </a>
+    </div>
+  </header>
+  <div class="deck-progress-track"><div class="deck-progress-bar" id="deck-progress-bar"></div></div>
+  <div id="shortcuts-modal" onclick="closeShortcutsModal(event)"><div class="modal-content" onclick="event.stopPropagation()"><div class="modal-header"><h4 style="margin:0;font-weight:800"><span class="material-symbols-outlined icon-blue">keyboard</span> Pintasan Navigasi Presentasi</h4><button class="modal-close" onclick="closeShortcutsModal()">&times;</button></div><div class="shortcut-row"><span>Slide berikutnya</span><span><span class="kbd-key">Space</span> / <span class="kbd-key">→</span></span></div><div class="shortcut-row"><span>Slide sebelumnya</span><span><span class="kbd-key">←</span></span></div><div class="shortcut-row"><span>Catatan dosen</span><span><span class="kbd-key">S</span></span></div></div></div>
+  <div class="reveal"><div class="slides">
+      <section id="deck-title">
+        <div style="margin: auto 0; text-align: left;">
+          <h1 style="font-size: 2.3em; line-height: 1.15; font-weight: 800; color: var(--ctp-text); margin-bottom: 12px; letter-spacing: -0.025em;">
+            Pembelajaran Mesin Multimodal
+          </h1>
+          <div style="font-size: 1.15em; font-weight: 600; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.4;">
+            Pertemuan 04 &bull; Representasi Modalitas III: Audio &amp; Video
+          </div>
+          <div style="max-width: 620px; background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-left: 3.5px solid var(--ctp-blue); border-radius: 12px; padding: 18px 24px;">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">
+              Dosen Pengampu
+            </div>
+            <div style="font-size: 1.1em; font-weight: 800; color: var(--ctp-text); margin-bottom: 6px;">
+              I Wayan Wiprayoga Wisesa
+            </div>
+            <div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;">
+              Program Studi Teknik Informatika<br>
+              Jurusan Teknologi Produksi dan Industri<br>
+              Institut Teknologi Sumatera (ITERA)<br>
+              <span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Buka sesi Pertemuan 4. Hubungkan data audio dan video dengan dua modalitas yang telah dipelajari (teks dan gambar) — keduanya menambahkan dimensi waktu.
+        </aside>
+      </section>
+
+    <!-- SLIDE 2: CAPAIAN PEMBELAJARAN -->
+    <section>
+      <h2>Tujuan Pembelajaran Sesi Ini</h2>
+      <p style="margin-bottom: 24px;">Di akhir sesi kuliah ini, mahasiswa diharapkan mampu menguasai kompetensi dasar berikut:</p>
+
+      <div class="grid-4">
+        <div class="c-card c-card-accent-top c-card-blue">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-blue">01</span>
+            <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Karakteristik Audio &amp; Video</h4>
+          </div>
+          <p>Menjelaskan karakteristik data audio dan video serta tantangannya dalam pembelajaran mesin.</p>
+        </div>
+
+        <div class="c-card c-card-accent-top c-card-mauve">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-mauve">02</span>
+            <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Representasi Audio</h4>
+          </div>
+          <p>Memahami metode representasi audio seperti spektrogram dan MFCC untuk deep learning.</p>
+        </div>
+
+        <div class="c-card c-card-accent-top c-card-teal">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-teal">03</span>
+            <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Arsitektur DL Audio-Video</h4>
+          </div>
+          <p>Menjelaskan arsitektur deep learning seperti 3D CNN dan RNN/LSTM untuk audio dan video.</p>
+        </div>
+
+        <div class="c-card c-card-accent-top c-card-peach">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-peach">04</span>
+            <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Tantangan Video</h4>
+          </div>
+          <p>Mengidentifikasi tantangan spesifik pemrosesan video seperti dimensi tinggi dan redundansi temporal.</p>
+        </div>
+      </div>
+
+      <aside class="notes">
+        Jelaskan empat kompetensi utama. Tekankan bahwa sesi ini menutup rangkaian representasi modalitas (teks, gambar, audio, video) sebelum masuk ke strategi fusi.
+      </aside>
+    </section>
+
+    <!-- SLIDE 3: SECTION DIVIDER 1 -->
+    <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(30,102,245,0.06) 0%, transparent 100%);">
+      <div class="section-slide-content">
+        <span class="section-part-label section-part-blue">Bagian 1</span>
+        <h1>Audio &amp; Video sebagai Data</h1>
+        <p class="subtitle">
+          Memahami karakteristik dan tantangan dua modalitas yang membawa dimensi waktu.
+        </p>
+      </div>
+      <aside class="notes">Mulai dari sifat dasar data audio dan video — keduanya sekuensial/temporal, berbeda dari teks dan gambar statis.</aside>
+    </section>
+
+    <!-- SLIDE 4: KARAKTERISTIK DATA AUDIO -->
+    <section>
+      <h2>Karakteristik Data Audio</h2>
+      <p>Audio adalah sinyal yang berubah seiring waktu — dibangun dari dua komponen dasar.</p>
+
+      <div class="grid-2" style="margin-top: 16px;">
+          <div class="diagram-canvas" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px; overflow: hidden;">
+            <svg viewBox="0 0 420 240" role="img" aria-label="Gelombang suara dengan sumbu amplitudo dan frekuensi">
+                <line x1="40" y1="120" x2="400" y2="120" stroke="#9ca0b0" stroke-width="2"/>
+                <line x1="40" y1="20" x2="40" y2="220" stroke="#9ca0b0" stroke-width="2"/>
+                <text x="16" y="126" fill="#6c6f85" font-size="13" font-family="sans-serif" font-weight="700">0</text>
+                <text x="180" y="14" fill="#6c6f85" font-size="13" font-family="sans-serif" font-weight="700">Amplitudo</text>
+                <path d="M40 120 Q60 60 80 120 T120 120 T160 120 T200 120 T240 120 T280 120 T320 120 T360 120 T400 120"
+                    fill="none" stroke="#1e66f5" stroke-width="3"/>
+                <path d="M40 120 Q70 40 100 120 T160 120 T220 120 T280 120 T340 120 T400 120"
+                    fill="none" stroke="#8839ef" stroke-width="3" stroke-dasharray="6 5"/>
+                <text x="250" y="230" fill="#6c6f85" font-size="13" font-family="sans-serif" font-weight="700">Waktu</text>
+            </svg>
+          </div>
+
+        <div class="narrative-pane">
+          <div class="narrative-step">
+            <strong>01. Sekuensial dan Temporal</strong> informasi berubah seiring waktu.
+          </div>
+          <div class="narrative-step">
+            <strong>02. Frekuensi dan Amplitudo</strong> dua komponen dasar suara.
+          </div>
+          <div class="narrative-step">
+            <strong>03. Variasi Panjang Data</strong> durasi bervariasi dan sangat rentan terhadap <em>noise</em> lingkungan.
+          </div>
+        </div>
+      </div>
+
+      <aside class="notes">Tekankan tiga sifat: sekuensial (ada urutan waktu), komponen frekuensi/amplitudo, dan variabilitas panjang + noise. Ini menjadi alasan audio tidak bisa diproses seperti gambar statis.</aside>
+    </section>
+
+    <!-- SLIDE 5: KARAKTERISTIK DATA VIDEO -->
+    <section>
+      <h2>Karakteristik Data Video</h2>
+      <p>Video adalah urutan frame gambar — menggabungkan struktur gambar dengan dimensi waktu.</p>
+
+      <div class="pipeline-flow" style="margin-top: 22px;">
+        <div class="pipeline-step"><span class="material-symbols-outlined icon-blue">image</span><h3 style="color: var(--ctp-blue)">Frame t</h3><p>Gambar pada waktu ke-t.</p></div>
+        <div class="pipeline-step"><span class="material-symbols-outlined icon-mauve">image</span><h3 style="color: var(--ctp-mauve)">Frame t+1</h3><p>Perubahan gerakan.</p></div>
+        <div class="pipeline-step"><span class="material-symbols-outlined icon-teal">image</span><h3 style="color: var(--ctp-teal)">Frame t+2</h3><p>Kontinuitas temporal.</p></div>
+        <div class="pipeline-step"><span class="material-symbols-outlined icon-green">movie</span><h3 style="color: var(--ctp-green)">Sekuens</h3><p>Urutan utuh frame.</p></div>
+      </div>
+
+      <table class="c-table" style="margin-top: 18px;">
+        <thead><tr><th style="width:30%">Aspek</th><th style="width:70%">Penjelasan</th></tr></thead>
+        <tbody>
+          <tr><td class="c-table-criteria">Sekuens gambar</td><td>Video adalah urutan frame gambar.</td></tr>
+          <tr><td class="c-table-criteria">Spasial &amp; temporal</td><td>Informasi spasial (dalam frame) dan temporal (antar frame).</td></tr>
+          <tr><td class="c-table-criteria">Dimensi sangat tinggi</td><td>Gabungan dimensi gambar dan dimensi waktu.</td></tr>
+          <tr><td class="c-table-criteria">Redundansi</td><td>Banyak informasi berulang antar frame.</td></tr>
+        </tbody>
+      </table>
+
+      <aside class="notes">Video = sekuens gambar. Dua sumbu informasi: spasial (isi tiap frame) dan temporal (perubahan antar frame). Dimensi tinggi dan redundansi menjadi tantangan utama.</aside>
+    </section>
+
+    <!-- SLIDE 6: TANTANGAN PEMROSESAN AUDIO/VIDEO -->
+    <section>
+      <h2>Tantangan dalam Pemrosesan Audio/Video</h2>
+      <p>Tiga tantangan lintas-modalitas yang paling menonjol.</p>
+
+      <div class="grid-3" style="margin-top: 16px;">
+          <div class="c-card c-card-blue c-card-accent-top">
+          <h3 style="color: var(--ctp-blue)">Volume Data</h3>
+          <p>Sangat besar, terutama video — membutuhkan komputasi dan memori masif.</p>
+        </div>
+        <div class="c-card c-card-mauve c-card-accent-top">
+          <h3 style="color: var(--ctp-mauve)">Ketergantungan Jarak Jauh</h3>
+          <p>Menangkap hubungan antar peristiwa yang berjauhan dalam waktu.</p>
+        </div>
+        <div class="c-card c-card-teal c-card-accent-top">
+          <h3 style="color: var(--ctp-teal)">Asinkronisitas</h3>
+          <p>Peristiwa di audio/video mungkin tidak sinkron dengan modalitas lain.</p>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 18px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Ketiga tantangan ini menjadi alasan mengapa representasi yang <em>ringkas</em> dan <em>informatif</em> sangat menentukan kinerja model.</div></div>
+
+      <aside class="notes">Tiga tantangan: volume (dimensi tinggi), long-range dependency, dan asinkronisitas antar-modalitas. Asinkronisitas menjadi kunci di kuliah fusi nanti.</aside>
+    </section>
+
+    <!-- SLIDE 7: SECTION DIVIDER 2 -->
+    <section class="section-slide" style="background: radial-gradient(circle at 90% 80%, rgba(136,57,239,0.06) 0%, transparent 100%);">
+      <div class="section-slide-content">
+        <span class="section-part-label section-part-mauve">Bagian 2</span>
+        <h1>Representasi Audio</h1>
+        <p class="subtitle">
+          Dari gelombang suara mentah ke representasi 2D yang siap diproses deep learning.
+        </p>
+      </div>
+      <aside class="notes">Masuk ke representasi audio: raw waveform → spektrogram → MFCC. Ini adalah rantai transformasi inti pemrosesan audio.</aside>
+    </section>
+
+    <!-- SLIDE 8: GELOMBANG SUARA (RAW AUDIO) -->
+    <section>
+      <h2>Gelombang Suara (Raw Audio)</h2>
+      <p>Representasi dasar: sinyal kontinu dicuplik dan dikuantisasi menjadi deretan sampel amplitudo.</p>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="diagram-canvas" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px; overflow: hidden;">
+          <img src="assets/data/4-bit-linear-pcm.svg" alt="Kurva sinyal analog di atas garis tangga hasil kuantisasi 4-bit linear PCM, dari rentang level -8 hingga 7" style="display: block; width: 100%; max-height: 250px; object-fit: contain; margin: 0 auto;">
+          <small style="display: block; margin-top: 8px; color: var(--ctp-subtext0);">Sumber: Wikimedia Commons</small>
+        </div>
+
+        <div class="narrative-pane">
+          <div class="narrative-step">
+            <strong>01. Sampling</strong> Sinyal analog kontinu dicuplik pada interval waktu diskret dan tetap (\(t\)).
+          </div>
+          <div class="narrative-step">
+            <strong>02. Kuantisasi</strong> Setiap sampel dibulatkan ke level terdekat — pada 4-bit hanya tersedia 16 level.
+          </div>
+          <div class="narrative-step">
+            <strong>03. Sinyal Suara Digital</strong> Hasilnya sekuens angka amplitudo \(x[t]\).
+          </div>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-mauve">warning</span><div>Sulit diproses langsung oleh deep learning karena <strong>variasi tinggi</strong> dan <strong>noise</strong> yang kuat.</div></div>
+
+      <aside class="notes">Raw waveform adalah sinyal 1D. Deep learning kesulitan karena sinyal ini sangat bervariasi dan rentan noise. Kita butuh representasi yang lebih terstruktur — spektrogram.</aside>
+    </section>
+
+    <!-- SLIDE 9: TEOREMA SAMPLING NYQUIST–SHANNON -->
+    <section>
+      <h2>Teorema Sampling Nyquist–Shannon</h2>
+      <p>Sinyal audio kontinu hanya dapat direkonstruksi secara utuh dari sampelnya jika laju pencuplikan cukup tinggi terhadap kandungan frekuensi tertingginya.</p>
+
+      <div class="formula-hero" style="margin-top: 12px;">
+        <div class="formula-label">Teorema Sampling Nyquist–Shannon</div>
+        <div class="formula-math">
+          $$f_s \;&gt;\; 2\,f_{\max}$$
+        </div>
+      </div>
+      <div class="formula-breakdown" style="margin-top: 8px;">
+        <div class="formula-term-box" style="padding: 8px 10px;">
+          <strong>\(f_s\)</strong>
+          Laju pencuplikan (sampling rate) — banyaknya sampel per detik, dalam Hz.
+        </div>
+        <div class="formula-term-box" style="padding: 8px 10px;">
+          <strong>\(f_{\max}\)</strong>
+          Frekuensi tertinggi yang terkandung dalam sinyal — batas pita (bandlimit).
+        </div>
+        <div class="formula-term-box" style="padding: 8px 10px;">
+          <strong>\(2\,f_{\max}\)</strong>
+          Laju Nyquist — ambang minimum agar sampel tetap mewakili sinyal asli.
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-warning" style="margin-top: 8px;"><span class="material-symbols-outlined icon-mauve">warning</span><div>Jika \(f_s \le 2\,f_{\max}\), frekuensi tinggi <strong>terlipat</strong> menjadi frekuensi rendah palsu (<em>aliasing</em>) dan sinyal asli tidak dapat dipulihkan.</div></div>
+
+      <aside class="notes">Teorema ini adalah fondasi seluruh audio digital: ia menjamin bahwa sinyal kontinu bisa diwakili oleh deretan sampel diskret (gambar PCM pada slide sebelumnya) asalkan laju cuplik melebihi dua kali frekuensi maksimum. f_s adalah sampling rate, f_max adalah bandlimit sinyal, dan 2f_max disebut laju Nyquist. Bila syarat dilanggar, terjadi aliasing — frekuensi tinggi 'menyamar' jadi frekuensi rendah. Jangkar nyata: pendengaran manusia ±20 Hz–20 kHz sehingga laju Nyquist 40 kHz, dan CD memakai f_s = 44,1 kHz sebagai margin. Tekankan bahwa memilih f_s adalah keputusan rekayasa yang diturunkan dari teorema, bukan angka sembarang.</aside>
+    </section>
+
+    <!-- SLIDE 10: SPEKTROGRAM -->
+    <section>
+      <h2>Spektrogram</h2>
+      <p>Representasi visual sinyal audio yang menunjukkan bagaimana frekuensi berubah seiring waktu — dihitung dengan <strong>Short-Time Fourier Transform (STFT)</strong>.</p>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="diagram-canvas" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px; overflow: hidden;">
+          <img src="assets/data/spectrogram-violin.webp" alt="Spektrogram biola: peta panas frekuensi terhadap waktu, dengan warna terang menandakan amplitudo tinggi">
+          <small style="display: block; margin-top: 8px; color: var(--ctp-subtext0);">Sumber: Wikimedia Commons</small>
+        </div>
+        <div class="narrative-pane">
+          <div class="narrative-step"><strong>01. Sumbu X (Waktu)</strong> setiap kolom adalah satu jendela waktu.</div>
+          <div class="narrative-step"><strong>02. Sumbu Y (Frekuensi)</strong> seberapa tinggi nada komponen sinyal.</div>
+          <div class="narrative-step"><strong>03. Intensitas warna</strong> kekuatan sinyal pada tiap frekuensi.</div>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-success" style="margin-top: 8px;"><span class="material-symbols-outlined icon-green">auto_awesome</span><div>Spektrogram mengubah representasi <strong>1D menjadi 2D</strong> (mirip gambar) sehingga bisa diproses CNN.</div></div>
+
+      <aside class="notes">Spektrogram adalah jembatan antara audio dan gambar. STFT mengiris sinyal menjadi jendela-jendela waktu dan menghitung komponen frekuensi tiap jendela. Hasilnya peta 2D: waktu × frekuensi, dengan warna = amplitudo.</aside>
+    </section>
+
+    <!-- SLIDE 11: STFT — MATEMATIKA DI BALIK SPEKTROGRAM -->
+    <section>
+      <h2>STFT: Matematika di Balik Spektrogram</h2>
+      <p>Membagi sinyal menjadi jendela waktu, lalu mengukur intensitas frekuensi pada setiap jendela.</p>
+
+      <div class="formula-hero" style="margin-top: 10px;">
+        <div class="formula-label">Short-Time Fourier Transform</div>
+        <div class="formula-math">
+          $$X(m,\omega)=\sum_{n}x[n]\,w[n-m]\,e^{-j\omega n}$$
+        </div>
+      </div>
+      <div class="formula-breakdown" style="margin-top: 8px;">
+        <div class="formula-term-box" style="padding: 8px 10px;">
+          <strong>\(x[n]\)</strong>
+          Sinyal audio diskret — deretan sampel amplitudo pada indeks waktu \(n\).
+        </div>
+        <div class="formula-term-box" style="padding: 8px 10px;">
+          <strong>\(w[n-m]\)</strong>
+          Fungsi jendela (misal Hann) yang digeser ke posisi \(m\); membatasi analisis pada potongan waktu lokal.
+        </div>
+        <div class="formula-term-box" style="padding: 8px 10px;">
+          <strong>\(e^{-j\omega n}\)</strong>
+          Basis kompleks pada frekuensi sudut \(\omega\) — mengukur seberapa kuat komponen frekuensi itu hadir.
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 8px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Menghitung \(|X(m,\omega)|\) untuk semua \(m\) dan \(\omega\) menghasilkan <strong>spektrogram</strong>: satu kolom per jendela waktu, satu baris per frekuensi.</div></div>
+
+      <aside class="notes">STFT adalah operasi inti Bagian 2. Fungsi jendela w membatasi analisis pada potongan singkat sehingga sinyal non-stasioner seperti ucapan bisa dianalisis. Indeks m menggeser jendela sepanjang waktu (dengan hop size), sedangkan omega memindai frekuensi. Magnitudo |X| disusun sebagai matriks waktu × frekuensi = spektrogram. Jangan hitung manual; tekankan peran tiap simbol dan jelaskan bahwa pilihan lebar jendela menyeimbangkan resolusi waktu vs frekuensi.</aside>
+    </section>
+
+    <!-- SLIDE 12: JENIS-JENIS SPEKTROGRAM -->
+    <section>
+      <h2>Jenis-jenis Spektrogram</h2>
+      <p>Skala frekuensi menentukan bagaimana spektrogram "melihat" sinyal.</p>
+
+      <table class="c-table" style="margin-top: 16px;">
+        <thead><tr><th style="width:26%">Jenis</th><th style="width:40%">Skala frekuensi</th><th style="width:34%">Kegunaan</th></tr></thead>
+        <tbody>
+          <tr><td class="c-table-criteria">Linear-frequency</td><td>Frekuensi linear (Hz merata)</td><td>Representasi dasar, setara STFT mentah.</td></tr>
+          <tr><td class="c-table-criteria">Mel-frequency</td><td>Diskalakan ke skala Mel</td><td>Lebih cocok dengan persepsi pendengaran manusia.</td></tr>
+          <tr><td class="c-table-criteria">Log-frequency</td><td>Skala logaritmik</td><td>Menyeimbangkan resolusi frekuensi rendah dan tinggi.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="c-callout c-callout-info" style="margin-top: 18px;"><span class="material-symbols-outlined icon-blue">hearing</span><div>Skala <strong>Mel</strong> meniru cara telinga manusia mempersepsikan tinggi nada — pilihan dominan untuk pengenalan ucapan.</div></div>
+
+      <aside class="notes">Bedakan tiga skala frekuensi. Tekankan Mel-scale karena relevan untuk MFCC dan pengenalan ucapan. Jangan menghafal rumus — fokus pada intuisi "persepsi manusia".</aside>
+    </section>
+
+    <!-- SLIDE 13: MFCC — KONSEP & PIPELINE -->
+    <section>
+      <h2>MFCC: Fitur Kompak dari Spektrum Mel</h2>
+      <p>Mel-Frequency Cepstral Coefficients meringkas spektrum Mel menjadi vektor koefisien kecil yang menangkap <em>timbre</em>.</p>
+
+      <div class="diagram-canvas" style="margin-top: 8px; min-height: 180px; background: var(--ctp-mantle); border-radius: 10px; padding: 4px 10px;">
+        <div class="pipeline-flow" style="grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 0;">
+          <div class="pipeline-step" style="padding: 5px 4px;"><strong><span style="color: var(--ctp-blue)">Frame</span></strong><br>potong per jendela</div>
+          <div class="pipeline-step" style="padding: 5px 4px;"><strong><span style="color: var(--ctp-mauve)">STFT</span></strong><br>spektrum per frame</div>
+          <div class="pipeline-step" style="padding: 5px 4px;"><strong><span style="color: var(--ctp-teal)">Mel Filter</span></strong><br>skala persepsi</div>
+          <div class="pipeline-step" style="padding: 5px 4px;"><strong><span style="color: var(--ctp-peach)">Log</span></strong><br>kompresi energi</div>
+          <div class="pipeline-step" style="padding: 5px 4px;"><strong><span style="color: var(--ctp-green)">DCT</span></strong><br>koefisien MFCC</div>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-top: 6px;">
+        <div class="narrative-step"><strong>01. <em>Timbre</em></strong> Menangkap kualitas suara yang membedakan sumber bunyi.</div>
+        <div class="narrative-step"><strong>02. Ringkas</strong> Beberapa koefisien awal sudah mewakili bentuk spektral.</div>
+        <div class="narrative-step"><strong>03. <em>Robust</em></strong> Lebih tahan terhadap variasi non-linear sinyal audio.</div>
+      </div>
+
+      <div class="c-card" style="margin-top: 8px; padding: 12px 18px;">
+        <div style="display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; font-size: 0.82em;">
+          <span style="color: var(--ctp-text); font-weight: 700; white-space: nowrap;">Alur Data Matematis:</span>
+          <span style="font-size: 0.9em; text-align: right;">$\mathbf{x}[n] \rightarrow \mathbf{S}_m = \text{Mel}\!\left(\left|\text{STFT}(\mathbf{x})\right|^2\right) \rightarrow \mathbf{c} = \text{DCT}\!\left(\log \mathbf{S}_m\right)$</span>
+        </div>
+      </div>
+
+      <aside class="notes">MFCC adalah pipeline klasik. Framing memotong sinyal menjadi jendela pendek; STFT menghitung spektrum tiap frame; filterbank Mel memetakan ke skala persepsi; log mengompresi dinamika energi; DCT mendekorelasi menjadi koefisien. Standar di pengenalan ucapan sebelum era deep learning, dan masih dipakai sebagai fitur input. Tekankan bahwa Mel memperhatikan persepsi manusia, sedangkan DCT membuat koefisien saling bebas. Alur matematisnya: sinyal x[n] diubah STFT menjadi spektrum daya, dipetakan ke kanal Mel menjadi S_m, dikompresi log, lalu DCT menghasilkan vektor koefisien c.</aside>
+    </section>
+
+    <!-- SLIDE 14: SECTION DIVIDER 3 -->
+    <section class="section-slide" style="background: radial-gradient(circle at 50% 50%, rgba(23,146,153,0.06) 0%, transparent 100%);">
+      <div class="section-slide-content">
+        <span class="section-part-label section-part-teal">Bagian 3</span>
+        <h1>Deep Learning untuk Audio</h1>
+        <p class="subtitle">
+          Tiga keluarga arsitektur: CNN, RNN/LSTM/GRU, dan Transformer.
+        </p>
+      </div>
+      <aside class="notes">Tiga arsitektur untuk audio memanfaatkan dua bentuk input: spektrogram (2D) dan sekuens fitur (1D). Ini paralel dengan teks dan gambar.</aside>
+    </section>
+
+    <!-- SLIDE 15: CNN UNTUK AUDIO -->
+    <section>
+      <h2>CNN untuk Audio</h2>
+      <p>CNN beroperasi pada spektrogram — memperlakukannya seperti gambar 2D.</p>
+
+      <div class="grid-3" style="margin-top: 16px;">
+        <div class="c-card c-card-blue c-card-accent-top">
+          <h3 style="color: var(--ctp-blue)">Input: Spektrogram</h3>
+          <p>Spektrogram 2D diperlakukan seperti gambar — sumbu waktu (kolom) \(\times\) frekuensi (baris).</p>
+        </div>
+        <div class="c-card c-card-mauve c-card-accent-top">
+          <h3 style="color: var(--ctp-mauve)">Operasi Konvolusi</h3>
+          <p>Operasi konvolusi diterapkan pada spektogram untuk mendeteksi pola lokal, misalnya fitur suara tertentu.</p>
+        </div>
+        <div class="c-card c-card-teal c-card-accent-top">
+          <h3 style="color: var(--ctp-teal)">Output: Feature Map</h3>
+          <p>Feature map merangkum pola spasial-temporal lokal dari spektrogram.</p>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 18px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>CNN efektif karena spektrogram sudah berbentuk 2D — kernel menangkap pola lokal pada peta frekuensi-waktu, bukan sinyal 1D mentah.</div></div>
+
+      <aside class="notes">CNN efektif untuk audio karena spektrogram sudah 2D. Kernel menangkap pola lokal pada peta frekuensi-waktu — misalnya formant vokal atau serangan konsonan. Kaitkan kembali dengan Pertemuan 03: arsitektur konvolusi yang sama, hanya domain inputnya berubah dari gambar menjadi spektrogram.</aside>
+    </section>
+
+    <!-- SLIDE 16: RNN/LSTM/GRU UNTUK AUDIO -->
+    <section>
+      <h2>RNN/LSTM/GRU untuk Audio</h2>
+      <p>Model sekuensial beroperasi pada sekuens fitur audio — menangkap ketergantungan temporal.</p>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="c-card c-card-blue c-card-accent-top">
+          <h3 style="color: var(--ctp-blue)">Input: Sekuens Fitur</h3>
+          <p>Sekuens fitur audio (misal: MFCC, atau output CNN).</p>
+        </div>
+        <div class="c-card c-card-mauve c-card-accent-top">
+          <h3 style="color: var(--ctp-mauve)">Hidden State</h3>
+          <p>Hidden state mengalir antar langkah waktu, membawa konteks sebelumnya dan menangkap ketergantungan temporal.</p>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 18px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>LSTM dan GRU mengatasi <em>vanishing gradient</em> RNN sederhana.</div></div>
+
+      <aside class="notes">Audio adalah sekuens, sehingga RNN/LSTM/GRU cocok. Ingatkan mahasiswa bahwa LSTM/GRU sudah dipelajari di Pertemuan 02 — konsepnya sama, inputnya kini fitur audio.</aside>
+    </section>
+
+    <!-- SLIDE 17: TRANSFORMER UNTUK AUDIO -->
+    <section>
+      <h2>Transformer untuk Audio</h2>
+      <p>Semakin populer untuk tugas audio kompleks — memanfaatkan mekanisme attention.</p>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="c-card c-card-accent-top c-card-blue">
+          <div class="c-card-header"><h4 style="color: var(--ctp-blue); margin-bottom: 0;">Mekanisme attention</h4></div>
+          <p>Menangkap ketergantungan jarak jauh tanpa proses sekuensial kata per kata.</p>
+        </div>
+        <div class="c-card c-card-accent-top c-card-teal">
+          <div class="c-card-header"><h4 style="color: var(--ctp-teal); margin-bottom: 0;">Contoh penerapan</h4></div>
+          <p>Pengenalan ucapan skala besar (ASR) dan sintesis suara (TTS).</p>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-success" style="margin-top: 18px;"><span class="material-symbols-outlined icon-green">check_circle</span><div>Paralelisme Transformer membuat training jauh lebih cepat dibanding RNN.</div></div>
+
+      <aside class="notes">Transformer untuk audio mengikuti pola yang sama dengan teks (Pertemuan 02): self-attention menangkap long-range dependency. Contoh modern: Whisper (ASR), WaveNet/VALL-E (TTS).</aside>
+    </section>
+
+    <!-- SLIDE 18: SECTION DIVIDER 4 -->
+    <section class="section-slide" style="background: radial-gradient(circle at 80% 30%, rgba(254,100,11,0.06) 0%, transparent 100%);">
+      <div class="section-slide-content">
+        <span class="section-part-label section-part-peach">Bagian 4</span>
+        <h1>Representasi Video</h1>
+        <p class="subtitle">
+          Dari <em>frame-by-frame</em> sederhana hingga pemodelan spasial-temporal penuh.
+        </p>
+      </div>
+      <aside class="notes">Masuk ke video. Tantangan utama: bagaimana menangkap dimensi temporal tanpa kehilangan struktur spasial.</aside>
+    </section>
+
+    <!-- SLIDE 19: VIDEO SEBAGAI SEKUENS GAMBAR -->
+    <section>
+      <h2>Video sebagai Sekuens Gambar</h2>
+      <p>Pendekatan paling sederhana: memperlakukan video sebagai urutan frame gambar.</p>
+
+      <div class="pipeline-flow" style="margin-top: 22px;">
+        <div class="pipeline-step"><span class="material-symbols-outlined icon-blue">image</span><h3 style="color: var(--ctp-blue)">Frame 1</h3><p>CNN 2D</p></div>
+        <div class="pipeline-step"><span class="material-symbols-outlined icon-mauve">image</span><h3 style="color: var(--ctp-mauve)">Frame 2</h3><p>CNN 2D</p></div>
+        <div class="pipeline-step"><span class="material-symbols-outlined icon-teal">image</span><h3 style="color: var(--ctp-teal)">Frame N</h3><p>CNN 2D</p></div>
+        <div class="pipeline-step"><span class="material-symbols-outlined icon-green">merge</span><h3 style="color: var(--ctp-green)">Gabung</h3><p>Agregasi fitur</p></div>
+      </div>
+
+      <div class="c-card" style="margin-top: 14px; padding: 12px 18px;">
+        <div style="display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; font-size: 0.82em;">
+          <span style="color: var(--ctp-text); font-weight: 700; white-space: nowrap;">Alur Data Matematis:</span>
+          <span style="font-size: 0.9em; text-align: right;">$\mathbf{F}_t = \text{CNN}(\mathbf{x}_t) \;\; \text{(independen)} \;\; \rightarrow \;\; \mathbf{z} = \text{Agg}\big(\mathbf{F}_1,\dots,\mathbf{F}_T\big)$</span>
+        </div>
+      </div>
+
+      <aside class="notes">Pendekatan frame-by-frame memanfaatkan CNN 2D yang sudah mapan (Pertemuan 03). Namun ini mengabaikan hubungan antar frame — menjadi keterbatasan pada slide berikutnya. Alur matematisnya menegaskan kelemahan itu: tiap frame x_t dikodekan CNN secara independen menjadi F_t tanpa interaksi antar waktu, lalu seluruh F_t dirangkum oleh fungsi agregasi Agg — umumnya mean, max, atau concat. Karena tidak ada mekanisme yang menghubungkan frame, informasi gerakan hilang.</aside>
+    </section>
+
+    <!-- SLIDE 20: BIG IDEA — DIMENSI WAKTU -->
+    <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Big Idea: Dimensi Waktu">
+      <div class="big-idea-canvas">
+        <h2 class="big-idea-question">
+          Apakah cukup memproses setiap frame secara terpisah, lalu "menjumlahkan" hasilnya?
+        </h2>
+        <p class="big-idea-takeaway">
+          <strong>Masalah Dimensi Waktu:</strong> Pendekatan <em>frame-by-frame</em> mengabaikan informasi temporal — gerakan, urutan, dan perubahan antar frame. Video bukan sekadar tumpukan gambar; makna muncul dari bagaimana frame berubah seiring waktu. Ini mendorong arsitektur yang memodelkan spasial dan temporal secara bersamaan.
+        </p>
+      </div>
+      <aside class="notes">
+        Titik balik paradigma: mengabaikan waktu berarti kehilangan esensi video. Ajak mahasiswa berpikir — mengapa urutan frame penting? Transisi ke 3D CNN yang menangkap spasial-temporal sekaligus.
+      </aside>
+    </section>
+
+    <!-- SLIDE 21: KONVOLUSI 3D — MATEMATIKA SPASIAL-TEMPORAL -->
+    <section>
+      <h2>Konvolusi 3D: Menambah Dimensi Waktu</h2>
+      <p>Konvolusi 3D menambahkan satu dimensi lagi untuk waktu.</p>
+
+      <div class="formula-hero" style="margin-top: 12px;">
+        <div class="formula-label">Operasi Konvolusi 3D</div>
+        <div class="formula-math">
+          $$y(i,j,t)=\sum_{u,v,w}x(i+u,\,j+v,\,t+w)\,k(u,v,w)$$
+        </div>
+      </div>
+      <div class="formula-breakdown" style="margin-top: 8px;">
+        <div class="formula-term-box" style="padding: 8px 10px;">
+          <strong>\(x(i+u,\,j+v,\,t+w)\)</strong>
+          Nilai voxel pada volume lokal di sekitar posisi \((i,j,t)\): spasial \(i,j\) dan temporal \(t\).
+        </div>
+        <div class="formula-term-box" style="padding: 8px 10px;">
+          <strong>\(k(u,v,w)\)</strong>
+          Bobot kernel 3D; lapisan \(w\) membuat kernel peka terhadap gerakan antar frame.
+        </div>
+        <div class="formula-term-box" style="padding: 8px 10px;">
+          <strong>\(y(i,j,t)\)</strong>
+          Aktivasi pada feature map 3D — merangkum pola ruang-waktu di posisi itu.
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 8px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Perbandingan langsung: konvolusi 2D menjumlahkan atas \((u,v)\) saja, sedangkan konvolusi 3D menambahkan \(w\).</div></div>
+
+      <aside class="notes">Kaitkan langsung dengan rumus konvolusi 2D pada Pertemuan 03. Perbedaan tunggal adalah indeks w untuk dimensi temporal. Tekankan bahwa penambahan satu indeks inilah yang memungkinkan kernel mendeteksi gerakan, bukan hanya tekstur statis. Biayanya: jumlah operasi dan parameter bertambah sebesar ukuran kernel temporal. Jelaskan tiap simbol; tidak perlu perhitungan manual.</aside>
+    </section>
+
+    <!-- SLIDE 22: 3D CNN -->
+    <section>
+      <h2>3D Convolutional Neural Networks (3D CNN)</h2>
+      <p>Filter konvolusi 3D beroperasi pada dimensi spasial <strong>dan</strong> temporal secara langsung.</p>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="diagram-canvas" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px; overflow: hidden;">
+          <img src="assets/data/conv2d-vs-3d-cnn.webp" alt="Perbandingan konvolusi 2D pada gambar tunggal dengan konvolusi 3D pada volume video yang menambahkan dimensi waktu">
+          <small style="display: block; margin-top: 8px; color: var(--ctp-subtext0);">Sumber: ResearchGate</small>
+        </div>
+        <div class="narrative-pane">
+          <div class="narrative-step"><strong>01. Dimensi spasial</strong> seperti konvolusi 2D beroperasi pada dimensi tinggi \(\times\) lebar pada tiap frame.</div>
+          <div class="narrative-step"><strong>02. Dimensi temporal</strong> ditambah juga beroperasi pada dimensi waktu.</div>
+          <div class="narrative-step"><strong>03. Kernel 3D</strong> Kernel berukuran 3D (tinggi \(\times\) lebar \(\times\) waktu).</div>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-success" style="margin-top: 14px;"><span class="material-symbols-outlined icon-green">check_circle</span><div>Cocok untuk <strong>pengenalan aksi</strong> dan <strong>deteksi peristiwa</strong> dalam video.</div></div>
+
+      <aside class="notes">3D CNN menambahkan dimensi waktu ke konvolusi. Kernel 3D menyapu (H × W × T) sekaligus, sehingga gerakan tertangkap langsung. Contoh klasik: C3D, I3D. Biaya komputasi lebih besar.</aside>
+    </section>
+
+    <!-- SLIDE 23: CNN + RNN/LSTM UNTUK VIDEO -->
+    <section>
+      <h2>Kombinasi CNN + RNN/LSTM untuk Video</h2>
+      <p>Pendekatan hibrid yang paling umum: CNN untuk spasial, RNN/LSTM untuk temporal.</p>
+
+      <div class="pipeline-flow" style="margin-top: 22px;">
+        <div class="pipeline-step"><span class="material-symbols-outlined icon-blue">image</span><h3 style="color: var(--ctp-blue)">Frame</h3><p>Urutan frame video</p></div>
+        <div class="pipeline-step"><span class="material-symbols-outlined icon-mauve">view_in_ar</span><h3 style="color: var(--ctp-mauve)">CNN 2D</h3><p>Vektor fitur tiap frame</p></div>
+        <div class="pipeline-step"><span class="material-symbols-outlined icon-teal">account_tree</span><h3 style="color: var(--ctp-teal)">RNN/LSTM</h3><p>Sekuens fitur → temporal</p></div>
+        <div class="pipeline-step"><span class="material-symbols-outlined icon-green">flag</span><h3 style="color: var(--ctp-green)">Representasi</h3><p>Hidden state akhir</p></div>
+      </div>
+
+      <div class="c-card" style="margin-top: 14px; padding: 12px 18px;">
+        <div style="display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; font-size: 0.82em;">
+          <span style="color: var(--ctp-text); font-weight: 700; white-space: nowrap;">Alur Data Matematis:</span>
+          <span style="font-size: 0.9em; text-align: right;">$\{\mathbf{x}_t\}_{t=1}^{T} \rightarrow \mathbf{F}_t = \text{CNN}(\mathbf{x}_t) \rightarrow \mathbf{h}_t = \text{RNN}(\mathbf{F}_t,\, \mathbf{h}_{t-1}) \rightarrow \hat{y} = \text{Head}(\mathbf{h}_T)$</span>
+        </div>
+      </div>
+
+      <aside class="notes">Hibrid CNN+RNN adalah pola klasik: CNN mengekstrak fitur spasial per frame, RNN/LSTM menangkap evolusi temporal dari sekuens fitur. Hasil akhirnya vektor tunggal representasi video. Tekankan alur matematisnya: tiap frame x_t diubah CNN menjadi vektor fitur F_t, lalu RNN memperbarui hidden state h_t dari F_t dan h_{t-1}; kepala klasifikasi membaca h_T sebagai representasi utuh video.</aside>
+    </section>
+
+    <!-- SLIDE 24: TRANSFORMER UNTUK VIDEO -->
+    <section>
+      <h2>Transformer untuk Video</h2>
+      <p>Mirip teks dan gambar — video juga diproses sebagai sekuens <em>patch</em>.</p>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="c-card c-card-accent-top c-card-mauve">
+          <div class="c-card-header"><h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Video Transformer</h4></div>
+          <p>Attention menangkap hubungan spasial dan temporal antar <em>patch</em> video.</p>
+        </div>
+        <div class="c-card c-card-accent-top c-card-teal">
+          <div class="c-card-header"><h4 style="color: var(--ctp-teal); margin-bottom: 0;">Sekuens patch</h4></div>
+          <p>Video dipecah menjadi <em>patch</em> ruang-waktu, mirip ViT untuk gambar.</p>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-success" style="margin-top: 18px;"><span class="material-symbols-outlined icon-green">auto_awesome</span><div>Konsep <em>weak inductive bias</em> dari ViT meluas ke video: attention menemukan relasi ruang-waktu dari data.</div></div>
+
+      <aside class="notes">Video Transformer adalah generalisasi ViT ke dimensi waktu. Patch spasial-temporal diproses self-attention, menangkap hubungan ruang dan waktu sekaligus. Contoh: TimeSformer, Video Swin Transformer.</aside>
+    </section>
+
+    <!-- SLIDE 25: TANTANGAN PEMROSESAN VIDEO -->
+    <section>
+      <h2>Tantangan dalam Pemrosesan Video</h2>
+      <p>Enam tantangan yang membuat video menjadi modalitas paling menuntut.</p>
+
+      <table class="c-table" style="margin-top: 16px;">
+        <thead><tr><th style="width:30%">Tantangan</th><th style="width:70%">Penjelasan</th></tr></thead>
+        <tbody>
+          <tr><td class="c-table-criteria">Dimensi tinggi &amp; volume</td><td>Video resolusi tinggi dan durasi panjang menghasilkan data masif.</td></tr>
+          <tr><td class="c-table-criteria">Redundansi temporal</td><td>Banyak frame sangat mirip — perlu efisiensi menangani pengulangan.</td></tr>
+          <tr><td class="c-table-criteria">Variasi gerakan</td><td>Objek sama dapat bergerak dengan cara sangat berbeda.</td></tr>
+          <tr><td class="c-table-criteria">Ketergantungan jangka panjang</td><td>Peristiwa penting mungkin berjauhan dalam sekuens.</td></tr>
+          <tr><td class="c-table-criteria">Kualitas data</td><td>Video bisa buram, pencahayaan buruk, atau ada oklusi.</td></tr>
+          <tr><td class="c-table-criteria">Anotasi data</td><td>Melabeli data video sangat mahal dan memakan waktu.</td></tr>
+        </tbody>
+      </table>
+
+      <aside class="notes">Enam tantangan video. Sorot redundansi temporal (frame mirip) dan anotasi mahal — keduanya mempengaruhi pilihan arsitektur dan strategi pelatihan.</aside>
+    </section>
+
+    <!-- SLIDE 26: RANGKUMAN -->
+    <section>
+      <h2>Rangkuman &amp; Poin Kunci</h2>
+      <p>Benang merah representasi audio dan video dari sinyal mentah hingga embedding berbasis deep learning.</p>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="c-card" style="background: var(--ctp-mantle);">
+          <div class="c-card-header">
+            <h4 style="color: var(--ctp-blue);">Representasi Audio</h4>
+          </div>
+          <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.7;">
+            <li><strong>Raw waveform</strong> &rarr; sinyal 1D amplitudo-waktu</li>
+            <li><strong>Spektrogram</strong> &rarr; peta 2D frekuensi-waktu (STFT)</li>
+            <li><strong>MFCC</strong> &rarr; fitur ringkas timbre untuk ucapan</li>
+          </ul>
+        </div>
+        <div class="c-card" style="background: var(--ctp-mantle);">
+          <div class="c-card-header">
+            <h4 style="color: var(--ctp-mauve);">Representasi Video</h4>
+          </div>
+          <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.7;">
+            <li><strong>Frame-by-frame</strong> &rarr; sederhana, abaikan temporal</li>
+            <li><strong>3D CNN</strong> &rarr; spasial-temporal langsung</li>
+            <li><strong>CNN + RNN/LSTM</strong> &rarr; spasial + temporal hibrid</li>
+            <li><strong>Video Transformer</strong> &rarr; attention ruang-waktu</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div><strong>Kunci Multimodal:</strong> audio dan video menambahkan dimensi temporal — representasi yang baik harus menangkap <em>perubahan seiring waktu</em>, bukan hanya isi statis.</div></div>
+
+      <aside class="notes">Rangkum dua jalur representasi. Tekankan pola umum: CNN untuk struktur (spektrogram/frame), RNN/Transformer untuk temporal. Dimensi waktu adalah pembeda dari teks dan gambar.</aside>
+    </section>
+
+    <!-- SLIDE 27: DISKUSI & REFLEKSI -->
+    <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Diskusi Kelas">
+      <h2 style="text-align: center; margin-bottom: 24px;">Diskusi Kelas</h2>
+      <p style="text-align: center; margin-bottom: 24px;">Diskusikan bersama rekan di samping Anda selama 3-5 menit:</p>
+      <div style="display: flex; flex-direction: column; gap: 14px; max-width: 860px; margin: 0 auto;">
+        <div class="c-callout c-callout-info"><span class="material-symbols-outlined icon-blue">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-blue);">Pertanyaan 1:</strong> Mengapa mengubah sinyal audio 1D menjadi spektrogram 2D sangat membantu untuk pemrosesan deep learning?</p></div></div>
+        <div class="c-callout c-callout-warning"><span class="material-symbols-outlined icon-mauve">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-mauve);">Pertanyaan 2:</strong> Dalam skenario apa Anda memilih 3D CNN dibandingkan kombinasi 2D CNN + RNN/LSTM untuk video? Pertimbangkan <em>trade-off</em>-nya.</p></div></div>
+        <div class="c-callout c-callout-success"><span class="material-symbols-outlined icon-teal">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-teal);">Pertanyaan 3:</strong> Bagaimana teknik kompresi video (misal: MPEG) dapat mempengaruhi kemampuan model deep learning mengekstrak fitur?</p></div></div>
+      </div>
+      <aside class="notes">Tiga pertanyaan diskusi menghubungkan representasi (spektrogram), pilihan arsitektur (3D CNN vs hibrid), dan pengaruh kompresi. Beri waktu 3–5 menit, lalu minta beberapa kelompok berbagi.</aside>
+    </section>
+
+    <!-- SLIDE 28: REFERENSI -->
+    <section>
+      <h2>Referensi Utama &amp; Bacaan Lanjutan</h2>
+      <p style="margin-bottom: 20px;">Rekomendasi literatur akademik wajib dan bacaan lanjutan:</p>
+      <ol style="list-style: none; padding: 0; margin: 0; counter-reset: ref-counter;">
+        <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[1]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Goodfellow, I., Bengio, Y., &amp; Courville, A. (2016).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Deep Learning</em>. MIT Press. — Bab 9: Convolutional Networks; Bab 10: Sequence Modeling.</p></div></li>
+        <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[2]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Liang, P., Zadeh, A., &amp; Morency, L.-P. (2023).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Tutorial on Multimodal Machine Learning</em>. ICML. — bagian representasi audio &amp; video.</p></div></li>
+        <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[3]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Karpathy, A., Toderici, G., Shetty, S., Leung, T., Sukthankar, R., &amp; Fei-Fei, L. (2014).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Large-scale Video Classification with Convolutional Neural Networks</em>. CVPR.</p></div></li>
+        <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[4]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Tran, D., Bourdev, L., Fergus, R., Torresani, L., &amp; Paluri, M. (2015).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Learning Spatiotemporal Features with 3D Convolutional Networks</em>. ICCV.</p></div></li>
+        <li style="counter-increment: ref-counter; padding: 14px 0; display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[5]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Jurafsky, D., &amp; Martin, J. H. (terbaru).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Speech and Language Processing</em>. — bab pengenalan ucapan.</p></div></li>
+      </ol>
+      <aside class="notes">Lima referensi mencakup fondasi deep learning, tutorial multimodal, klasifikasi video (Karpathy), 3D CNN (Tran), dan pengenalan ucapan (Jurafsky &amp; Martin).</aside>
+    </section>
+
+    <!-- SLIDE 29: PENUTUP -->
+    <section>
+      <div style="margin: auto 0; text-align: center;">
+        <h2 style="font-size: 1.8em; font-weight: 800; color: var(--ctp-text); margin-bottom: 16px;">Terima Kasih</h2>
+        <p style="font-size: 1.05em; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.6;">Pertemuan selanjutnya:<br><strong style="color: var(--ctp-blue);">Strategi Fusi Multimodal I: Early &amp; Late Fusion</strong></p>
+        <div style="background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-radius: 12px; padding: 18px 24px; display: inline-block; max-width: 480px;"><div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">Pertanyaan &amp; Diskusi</div><div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;"><span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span></div></div>
+      </div>
+      <aside class="notes">Tutup sesi. Ingatkan bahwa representasi audio &amp; video menutup rangkaian representasi modalitas — pertemuan berikutnya masuk ke strategi fusi multimodal.</aside>
+    </section>
+  </div></div>
+  <!-- Persistent Edge-to-Edge Deck Footer -->
+  <footer class="deck-footer">
+    <div class="deck-footer-left">
+      <span class="deck-footer-code">IF25-40304</span>
+      <span class="deck-footer-sep">&bull;</span>
+      <span class="deck-footer-dept">Teknik Informatika ITERA</span>
+    </div>
+
+    <div class="deck-footer-center">
+      <button type="button" id="deck-footer-topic" class="deck-footer-topic" onclick="toggleTopicPopover(event)" title="Daftar Isi & Navigasi Cepat Slide (Klik)">
+        <span id="deck-footer-topic-text" class="deck-footer-topic-text">Pertemuan 04 &bull; Representasi Modalitas III: Audio &amp; Video</span>
+        <span class="material-symbols-outlined deck-footer-topic-icon">expand_less</span>
+      </button>
+    </div>
+
+    <div class="deck-footer-right">
+      <button type="button" class="deck-footer-btn" onclick="Reveal.prev()" title="Slide Sebelumnya (← / P)" aria-label="Slide Sebelumnya">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <button type="button" class="deck-counter-btn" onclick="Reveal.toggleOverview()" title="Klik untuk Matriks Seluruh Slide (Esc/O)">
+        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">29</span>
+      </button>
+      <button type="button" class="deck-footer-btn" onclick="Reveal.next()" title="Slide Berikutnya (→ / Space / N)" aria-label="Slide Berikutnya">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </footer>
+  <div class="deck-topic-popover" id="deck-topic-popover"><div class="deck-popover-search-wrap"><input type="text" id="deck-topic-search" class="deck-popover-search" placeholder="Cari slide..." oninput="filterTopicList(this.value)"></div><div class="deck-topic-list" id="deck-topic-list"></div></div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+  <script>
+
+    let currentAspectMode = localStorage.getItem('reveal_aspect_mode') || 'auto';
+
+    function calculateResponsiveDimensions(mode) {
+      const winW = window.innerWidth;
+      const winH = window.innerHeight - 86.5;
+      const ratio = winW / winH;
+
+      if (mode === '16-9') return { width: 1280, height: 720, label: '16:9' };
+      if (mode === '16-10') return { width: 1280, height: 800, label: '16:10' };
+      if (mode === '4-3') return { width: 1024, height: 768, label: '4:3' };
+      if (mode === 'mobile') return { width: 750, height: 1000, label: 'Mobile' };
+      if (mode === 'text-large') return { width: 960, height: 540, label: 'Teks Besar' };
+
+      // Auto mode
+      if (winW <= 768 || ratio < 1.15) {
+        return { width: 750, height: Math.max(900, Math.round(750 / Math.max(0.5, ratio))), label: 'Auto' };
+      } else if (ratio >= 1.65) {
+        return { width: 1280, height: 720, label: 'Auto' };
+      } else if (ratio >= 1.45) {
+        return { width: 1280, height: 800, label: 'Auto' };
+      } else {
+        return { width: 1024, height: 768, label: 'Auto' };
+      }
+    }
+
+    const initialDim = calculateResponsiveDimensions(currentAspectMode);
+
+    Reveal.initialize({
+      width: initialDim.width,
+      height: initialDim.height,
+      margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2.0,
+      hash: true,
+      slideNumber: false,
+      controls: false,
+      progress: false,
+      center: true,
+      touch: true,
+      transition: 'slide',
+      backgroundTransition: 'none',
+      plugins: [ RevealNotes, RevealHighlight, RevealMath.KaTeX ]
+    });
+
+    function updateDeckState(event) {
+      const indices = event ? { h: event.indexh, v: event.indexv } : Reveal.getIndices();
+      const totalSlides = Reveal.getTotalSlides();
+      const currentIdx = indices ? indices.h : 0;
+
+      const progressBar = document.getElementById('deck-progress-bar');
+      if (progressBar) {
+        const progressPercent = totalSlides > 1 ? (currentIdx / (totalSlides - 1)) * 100 : 0;
+        progressBar.style.width = progressPercent + '%';
+      }
+
+      const currentEl = document.getElementById('deck-slide-current');
+      const totalEl = document.getElementById('deck-slide-total');
+      if (currentEl) currentEl.textContent = String(currentIdx + 1).padStart(2, '0');
+      if (totalEl) totalEl.textContent = String(totalSlides).padStart(2, '0');
+
+      const topicEl = document.getElementById('deck-footer-topic-text') || document.getElementById('deck-footer-topic');
+      if (topicEl) {
+        if (currentIdx === 0) {
+          topicEl.textContent = 'Pertemuan 04 \u2022 Representasi Modalitas III: Audio & Video';
+        } else {
+          const currentSlide = Reveal.getCurrentSlide();
+          if (currentSlide) {
+            const topicAttr = currentSlide.getAttribute('data-topic');
+            if (topicAttr) {
+              topicEl.textContent = topicAttr;
+            } else {
+              const heading = currentSlide.querySelector('h2') || currentSlide.querySelector('h1');
+              if (heading) {
+                topicEl.textContent = heading.textContent.trim();
+              } else {
+                topicEl.textContent = 'Pertemuan 04 \u2022 Representasi Modalitas III: Audio & Video';
+              }
+            }
+          }
+        }
+      }
+
+      updateActiveTopicItem(currentIdx);
+    }
+
+    Reveal.on('ready', event => {
+      document.body.classList.add('reveal-ready');
+      updateDeckState(event);
+      buildTopicIndex();
+    });
+    Reveal.on('slidechanged', updateDeckState);
+
+    // =========================================================
+    // Floating Slide Topic Navigation Popover (Daftar Isi)
+    // =========================================================
+    function buildTopicIndex() {
+      const listEl = document.getElementById('deck-topic-list');
+      if (!listEl) return;
+
+      const slides = document.querySelectorAll('.reveal .slides > section');
+      let html = '';
+
+      slides.forEach((slide, idx) => {
+        const topicAttr = slide.getAttribute('data-topic');
+        const h1 = slide.querySelector('h1');
+        const h2 = slide.querySelector('h2');
+        const partEl = slide.querySelector('.section-part-label');
+        const isSectionSlide = slide.classList.contains('section-slide') || !!slide.querySelector('.section-slide-content');
+        const partText = partEl ? partEl.textContent.trim().replace(/\s+/g, ' ') : '';
+
+        const h1Text = h1 ? h1.textContent.trim().replace(/\s+/g, ' ') : '';
+        const h2Text = h2 ? h2.textContent.trim().replace(/\s+/g, ' ') : '';
+        let title = '';
+
+        if (idx === 0) {
+          title = h1Text || 'Representasi Modalitas III: Audio & Video';
+          html += '<div class="deck-topic-section">Pendahuluan & Identitas</div>';
+        } else if (isSectionSlide || partText.startsWith('Bagian')) {
+          const secTitle = h1Text || h2Text || 'Bagian ' + idx;
+          const sectionLabel = partText ? partText + ': ' + secTitle : secTitle;
+          title = secTitle;
+          html += '<div class="deck-topic-section">' + sectionLabel + '</div>';
+        } else if (topicAttr) {
+          title = topicAttr;
+        } else {
+          title = h2Text || h1Text || 'Slide ' + (idx + 1);
+        }
+
+        const numStr = String(idx + 1).padStart(2, '0');
+        html += '<div class="deck-topic-item" data-slide-index="' + idx + '" onclick="jumpToSlide(' + idx + ')"><span class="deck-topic-num">' + numStr + '</span><span class="deck-topic-name" title="' + title + '">' + title + '</span></div>';
+      });
+
+      listEl.innerHTML = html;
+      const currentIdx = Reveal.getIndices ? Reveal.getIndices().h : 0;
+      updateActiveTopicItem(currentIdx);
+    }
+
+    function updateActiveTopicItem(currentIdx) {
+      document.querySelectorAll('.deck-topic-item').forEach(item => {
+        const idx = parseInt(item.getAttribute('data-slide-index'), 10);
+        item.classList.toggle('active', idx === currentIdx);
+      });
+    }
+
+    function toggleTopicPopover(e) {
+      if (e) e.stopPropagation();
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (!popover) return;
+
+      const isActive = popover.classList.toggle('active');
+      if (btn) btn.classList.toggle('active', isActive);
+
+      if (isActive) {
+        const activeItem = popover.querySelector('.deck-topic-item.active');
+        if (activeItem) {
+          activeItem.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }
+        const searchInput = document.getElementById('deck-topic-search');
+        if (searchInput) {
+          searchInput.value = '';
+          filterTopicList('');
+          setTimeout(() => searchInput.focus(), 80);
+        }
+      }
+    }
+
+    function closeTopicPopover() {
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (popover) popover.classList.remove('active');
+      if (btn) btn.classList.remove('active');
+    }
+
+    function jumpToSlide(index) {
+      Reveal.slide(index);
+      closeTopicPopover();
+    }
+
+    function filterTopicList(query) {
+      const q = (query || '').toLowerCase().trim();
+      const items = document.querySelectorAll('.deck-topic-item');
+      const sections = document.querySelectorAll('.deck-topic-section');
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const num = (item.querySelector('.deck-topic-num') || {}).textContent || '';
+        const name = (item.querySelector('.deck-topic-name') || {}).textContent || '';
+        const matches = !q || num.toLowerCase().includes(q) || name.toLowerCase().includes(q);
+        item.style.display = matches ? 'grid' : 'none';
+        if (matches) visibleCount++;
+      });
+
+      sections.forEach(sec => {
+        let nextEl = sec.nextElementSibling;
+        let hasVisibleChild = false;
+        while (nextEl && !nextEl.classList.contains('deck-topic-section')) {
+          if (nextEl.classList.contains('deck-topic-item') && nextEl.style.display !== 'none') {
+            hasVisibleChild = true;
+            break;
+          }
+          nextEl = nextEl.nextElementSibling;
+        }
+        sec.style.display = hasVisibleChild ? 'block' : 'none';
+      });
+
+      const listEl = document.getElementById('deck-topic-list');
+      let emptyMsg = document.getElementById('deck-topic-empty-msg');
+      if (visibleCount === 0) {
+        if (!emptyMsg) {
+          emptyMsg = document.createElement('div');
+          emptyMsg.id = 'deck-topic-empty-msg';
+          emptyMsg.className = 'deck-topic-empty';
+          emptyMsg.textContent = 'Tidak ada slide yang cocok dengan pencarian.';
+          listEl.appendChild(emptyMsg);
+        }
+        emptyMsg.style.display = 'block';
+      } else if (emptyMsg) {
+        emptyMsg.style.display = 'none';
+      }
+    }
+
+    function setAspectMode(mode) {
+      currentAspectMode = mode;
+      localStorage.setItem('reveal_aspect_mode', mode);
+      const dim = calculateResponsiveDimensions(mode);
+
+      Reveal.configure({
+        width: dim.width,
+        height: dim.height,
+        margin: 0.04,
+        minScale: 0.2,
+        maxScale: 2.0
+      });
+
+      document.body.classList.remove('aspect-16-9', 'aspect-16-10', 'aspect-4-3', 'aspect-mobile');
+      if (mode === 'auto') {
+        if (window.innerWidth <= 768) document.body.classList.add('aspect-mobile');
+      } else {
+        document.body.classList.add('aspect-' + mode);
+      }
+
+      const labelEl = document.getElementById('aspect-label');
+      if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+
+      document.querySelectorAll('.dropdown-item').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-aspect') === mode);
+      });
+
+      closeAspectDropdown();
+      setTimeout(() => Reveal.layout(), 50);
+    }
+
+    function toggleAspectDropdown(e) {
+      if (e) e.stopPropagation();
+      document.getElementById('aspect-menu').classList.toggle('active');
+    }
+
+    function closeAspectDropdown() {
+      const menu = document.getElementById('aspect-menu');
+      if (menu) menu.classList.remove('active');
+    }
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-dropdown')) closeAspectDropdown();
+      if (!e.target.closest('#deck-topic-popover') && !e.target.closest('#deck-footer-topic')) closeTopicPopover();
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (currentAspectMode === 'auto') {
+          const dim = calculateResponsiveDimensions('auto');
+          const cfg = Reveal.getConfig();
+          if (cfg.width !== dim.width || cfg.height !== dim.height) {
+            Reveal.configure({ width: dim.width, height: dim.height });
+            const labelEl = document.getElementById('aspect-label');
+            if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+            Reveal.layout();
+          }
+        }
+      }, 200);
+    });
+
+    window.addEventListener('DOMContentLoaded', () => setAspectMode(currentAspectMode));
+
+    function openShortcutsModal() {
+      document.getElementById('shortcuts-modal').classList.add('active');
+    }
+
+    function closeShortcutsModal(event) {
+      if (!event || event.target.id === 'shortcuts-modal' || event.target.classList.contains('modal-close')) {
+        document.getElementById('shortcuts-modal').classList.remove('active');
+      }
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const popover = document.getElementById('deck-topic-popover');
+        if (popover && popover.classList.contains('active')) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeTopicPopover();
+          return;
+        }
+      }
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        document.getElementById('shortcuts-modal').classList.toggle('active');
+      }
+    });
+
+  </script>
+</body></html>
