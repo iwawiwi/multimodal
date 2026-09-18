@@ -500,6 +500,40 @@
       overflow-x: auto;
     }
 
+    /* Grid & card — dipakai oleh kartu dua kolom.
+       Port dari css/catppuccin-latte.css. Sebelumnya .grid-2 dan .c-card
+       DIPAKAI di markup tetapi TIDAK PERNAH didefinisikan di berkas ini,
+       sehingga kartu tampil sebagai blok polos tanpa kolom, border, atau
+       latar (bug bawaan sejak commit pertama). */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin: 16px 0;
+    }
+
+    .c-card {
+      background: var(--ctp-mantle);
+      border: 1px solid var(--ctp-surface1);
+      border-radius: 14px;
+      padding: 14px 16px;
+      text-align: left;
+      box-sizing: border-box;
+    }
+
+    .c-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ctp-text);
+      margin: 0 0 6px;
+    }
+
+    .c-card p { margin: 0; }
+
+    @media (max-width: 720px) {
+      .grid-2 { grid-template-columns: 1fr; gap: 10px; }
+    }
+
     /* Formula */
     .formula {
       text-align: center;
@@ -617,11 +651,11 @@
   <div class="page">
 
     <!-- Daftar Isi (layar: drawer; print: blok statis) -->
-  <aside class="toc-drawer" id="tocDrawer" aria-label="Daftar isi"><div class="drawer-header"><span class="drawer-title"><span class="material-symbols-outlined">list</span> Daftar Isi</span><button class="drawer-close" type="button" onclick="toggleToc(false)" title="Tutup"><span class="material-symbols-outlined">close</span></button></div><ul class="toc-list"><li><a href="#sec-gambar" onclick="gotoSection(this)"><span class="toc-num">01</span><span class="toc-label">Gambar sebagai Data</span></a></li><li><a href="#sec-cnn" onclick="gotoSection(this)"><span class="toc-num">02</span><span class="toc-label">CNN dan ResNet</span></a></li><li><a href="#sec-setup" onclick="gotoSection(this)"><span class="toc-num">03</span><span class="toc-label">Setup Lingkungan</span></a></li><li><a href="#sec-ekstraksi" onclick="gotoSection(this)"><span class="toc-num">04</span><span class="toc-label">Feature Extraction</span></a></li><li><a href="#sec-kemiripan" onclick="gotoSection(this)"><span class="toc-num">05</span><span class="toc-label">Kemiripan di Ruang Fitur</span></a></li><li><a href="#sec-referensi" onclick="gotoSection(this)"><span class="toc-num">⚑</span><span class="toc-label">Referensi</span></a></li></ul></aside><div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleToc(false)"></div>
+  <aside class="toc-drawer" id="tocDrawer" aria-label="Daftar isi"><div class="drawer-header"><span class="drawer-title"><span class="material-symbols-outlined">list</span> Daftar Isi</span><button class="drawer-close" type="button" onclick="toggleToc(false)" title="Tutup"><span class="material-symbols-outlined">close</span></button></div><ul class="toc-list"><li><a href="#sec-gambar" onclick="gotoSection(this)"><span class="toc-num">01</span><span class="toc-label">Gambar sebagai Data</span></a></li><li><a href="#sec-cnn" onclick="gotoSection(this)"><span class="toc-num">02</span><span class="toc-label">CNN dan ResNet</span></a></li><li><a href="#sec-setup" onclick="gotoSection(this)"><span class="toc-num">03</span><span class="toc-label">Setup Lingkungan</span></a></li><li><a href="#sec-konvolusi" onclick="gotoSection(this)"><span class="toc-num">04</span><span class="toc-label">Konvolusi 2D dan Pooling</span></a></li><li><a href="#sec-model" onclick="gotoSection(this)"><span class="toc-num">05</span><span class="toc-label">Muat Model Pre-trained</span></a></li><li><a href="#sec-ekstraksi" onclick="gotoSection(this)"><span class="toc-num">06</span><span class="toc-label">Preprocessing dan Feature Extraction</span></a></li><li><a href="#sec-kemiripan" onclick="gotoSection(this)"><span class="toc-num">07</span><span class="toc-label">Kemiripan di Ruang Fitur</span></a></li><li><a href="#sec-rangkuman" onclick="gotoSection(this)"><span class="toc-num"></span><span class="toc-label">Rangkuman</span></a></li><li><a href="#sec-referensi" onclick="gotoSection(this)"><span class="toc-num">⚑</span><span class="toc-label">Referensi</span></a></li></ul></aside><div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleToc(false)"></div>
   <p>Lembar kerja ini melengkapi materi Pertemuan 03 (Representasi Modalitas II: Gambar). Eksperimen komputasi berikut bertujuan memverifikasi tiga gagasan utama yang dibahas pada slide:</p>
   <ol>
     <li>Gambar memiliki struktur <strong>spasial</strong> dan saluran yang perlu dipertahankan saat diproses.</li>
-    <li>CNN membangun fitur secara <strong>hierarkis</strong>, sedangkan ResNet memakai residual connection agar jaringan dalam lebih mudah dilatih.</li>
+    <li>CNN membangun fitur secara <strong>hierarkis</strong> melalui konvolusi dan pooling, sedangkan ResNet memakai residual connection agar jaringan dalam lebih mudah dilatih.</li>
     <li>Model pre-trained dapat digunakan sebagai <strong>ekstraktor</strong> embedding visual tanpa melatih ulang model.</li>
   </ol>
   <div class="note note-peach"><span class="note-title">Batasan cakupan komputasi</span>Seluruh percobaan menggunakan inferensi pada model ResNet50 pre-trained. Tidak ada proses pelatihan (<code>fit()</code>/<code>train()</code>); tujuan lembar kerja ini adalah mengamati representasi visual, bukan membangun model klasifikasi baru.</div>
@@ -654,7 +688,168 @@
 <span class="code-line"><span class="ln" aria-hidden="true">11</span><span class="lc">&nbsp;</span></span>
 <span class="code-line"><span class="ln" aria-hidden="true">12</span><span class="lc">DEVICE <span class="token operator">=</span> <span class="token string">"cuda"</span> <span class="token keyword">if</span> torch<span class="token punctuation">.</span>cuda<span class="token punctuation">.</span>is_available<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">else</span> <span class="token string">"cpu"</span></span></span>
 <span class="code-line"><span class="ln" aria-hidden="true">13</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"device: </span><span class="token interpolation"><span class="token punctuation">{</span>DEVICE<span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span></span></span></code></pre></div><div class="note"><strong>Pertanyaan awal:</strong> Apa perbedaan konsekuensi memakai gambar dengan ukuran dan rasio aspek yang berbeda?</div></section>
-  <section id="sec-model"><h2>04 · Muat Model Pre-trained</h2><p>Slide 22–25 membahas pre-trained model dan transfer learning. Pada pendekatan feature extraction, classifier terakhir dilepas sehingga keluaran ResNet50 menjadi representasi 2048 dimensi.</p><div class="code-window"><div class="code-window-header">
+<section id="sec-konvolusi">
+    <h2><span class="sec-num">04</span> Konvolusi 2D dan Pooling</h2>
+
+    <p>Slide 8 memakai notasi <code>y(i,j) = &Sigma; x(i+u, j+v) &middot; k(u,v)</code> dan slide 9 menyebut <em>stride</em> serta <em>padding</em>. Bagian ini menjalankan operasi tersebut pada satu contoh kecil, sehingga terlihat bahwa setiap nilai <em>feature map</em> hanyalah penjumlahan hasil kali piksel lokal dengan kernel.</p>
+
+    <div class="grid-2">
+      <div class="c-card">
+        <h3>Kernel</h3>
+        <p>Matriks bobot kecil yang bergerak di atas gambar. Nilainya dipelajari; untuk demonstrasi kita pakai kernel Sobel yang mendeteksi tepi vertikal.</p>
+      </div>
+      <div class="c-card">
+        <h3>Lokalitas</h3>
+        <p>Satu nilai keluaran hanya melihat jendela <code>K &times; K</code> piksel, bukan seluruh gambar. Sifat inilah yang membuat konvolusi efisien.</p>
+      </div>
+    </div>
+
+    <p>Mulai dari tambalan <code>5 &times; 5</code> sederhana: kolom kiri bernilai 0 (gelap) dan kolom kanan bernilai 1 (terang), sehingga terdapat satu tepi vertikal di tengah.</p>
+
+    <div class="code-window"><div class="code-window-header">
+      <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+      <span class="code-filename">konvolusi_2d.py</span>
+      <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
+    </div>
+    <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc">patch <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc">                  <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc">                  <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc">                  <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc">                  <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span> dtype<span class="token operator">=</span>np<span class="token punctuation">.</span>float32<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">9</span><span class="lc">sobel_x <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">10</span><span class="lc">                    <span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">11</span><span class="lc">                    <span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span> dtype<span class="token operator">=</span>np<span class="token punctuation">.</span>float32<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">12</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">13</span><span class="lc">window <span class="token operator">=</span> patch<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">:</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">:</span><span class="token number">4</span><span class="token punctuation">]</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">14</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span>window<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">15</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"y(0,1) ="</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>window <span class="token operator">*</span> sobel_x<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span></code></pre></div>
+
+    <p>Satu nilai keluaran dihitung dengan mengalikan elemen lalu menjumlahkan seluruh hasilnya:</p>
+
+    <div class="formula">y(0,1) = &Sigma; window[u,v] &middot; kernel[u,v] = 4.0</div>
+
+    <p>Rinciannya: baris pertama <code>(-1&middot;0) + (0&middot;0) + (1&middot;1) = 1</code>, baris kedua <code>(-2&middot;0) + (0&middot;0) + (2&middot;1) = 2</code>, baris ketiga <code>(-1&middot;0) + (0&middot;0) + (1&middot;1) = 1</code>. Totalnya <code>1 + 2 + 1 = 4</code>. Respons besar dan positif menandai adanya tepi pada posisi itu.</p>
+
+    <div class="terminal">
+      <div class="terminal-header">
+        <span class="material-symbols-outlined">terminal</span>
+        <span class="terminal-title">Output</span>
+      </div>
+      <div class="terminal-body">[[0. 0. 1.]
+ [0. 0. 1.]
+ [0. 0. 1.]]
+<span class="output-label">y(0,1) =</span> 4.0</div>
+    </div>
+
+    <p>Menghitung satu nilai sudah bisa ditelusuri tangan. Namun seluruh <em>feature map</em> berarti mengulang operasi itu di setiap posisi. Di sinilah pustaka mengambil alih &mdash; dan kita bisa memverifikasi bahwa hasilnya identik.</p>
+
+    <div class="code-window"><div class="code-window-header">
+      <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+      <span class="code-filename">konvolusi_2d.py</span>
+      <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
+    </div>
+    <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc"><span class="token keyword">import</span> torch</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc"><span class="token keyword">import</span> torch<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>functional <span class="token keyword">as</span> F</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc">H<span class="token punctuation">,</span> W <span class="token operator">=</span> patch<span class="token punctuation">.</span>shape</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc">K <span class="token operator">=</span> sobel_x<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc">feature <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token punctuation">(</span>H <span class="token operator">-</span> K <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> W <span class="token operator">-</span> K <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> dtype<span class="token operator">=</span>np<span class="token punctuation">.</span>float32<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc"><span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>feature<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">9</span><span class="lc">    <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>feature<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">10</span><span class="lc">        feature<span class="token punctuation">[</span>i<span class="token punctuation">,</span> j<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span>patch<span class="token punctuation">[</span>i<span class="token punctuation">:</span>i<span class="token operator">+</span>K<span class="token punctuation">,</span> j<span class="token punctuation">:</span>j<span class="token operator">+</span>K<span class="token punctuation">]</span> <span class="token operator">*</span> sobel_x<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">11</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">12</span><span class="lc">tensor <span class="token operator">=</span> torch<span class="token punctuation">.</span>from_numpy<span class="token punctuation">(</span>patch<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token boolean">None</span><span class="token punctuation">,</span> <span class="token boolean">None</span><span class="token punctuation">]</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">13</span><span class="lc">weight <span class="token operator">=</span> torch<span class="token punctuation">.</span>from_numpy<span class="token punctuation">(</span>sobel_x<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token boolean">None</span><span class="token punctuation">,</span> <span class="token boolean">None</span><span class="token punctuation">]</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">14</span><span class="lc">torch_feature <span class="token operator">=</span> F<span class="token punctuation">.</span>conv2d<span class="token punctuation">(</span>tensor<span class="token punctuation">,</span> weight<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>numpy<span class="token punctuation">(</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">15</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">16</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span>feature<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">17</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span>torch_feature<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">18</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"selisih maks:"</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span><span class="token builtin">abs</span><span class="token punctuation">(</span>feature <span class="token operator">-</span> torch_feature<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">max</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span></code></pre></div>
+
+    <div class="terminal">
+      <div class="terminal-header">
+        <span class="material-symbols-outlined">terminal</span>
+        <span class="terminal-title">Output</span>
+      </div>
+      <div class="terminal-body">[[0. 4. 4.]
+ [0. 4. 4.]
+ [0. 4. 4.]]
+[[0. 4. 4.]
+ [0. 4. 4.]
+ [0. 4. 4.]]
+<span class="output-label">selisih maks:</span> 0.0</div>
+    </div>
+
+    <div class="note note-green"><span class="note-title">Mengapa ini penting</span>Loopyang kita tulis dan <code>F.conv2d</code> menghasilkan angka yang sama persis. Perhatikan tiga hal: bentuk masukan <code>(1, 1, H, W)</code> menyatakan <em>batch</em> dan <em>channel</em>; setiap nilai hanya menjumlahkan jendela lokal, sesuai sifat lokalitas; dan seluruh posisi memakai kernel yang sama, inilah <em>parameter sharing</em>. ResNet50 memakai operasi ini berulang pada 64, 128, 256, hingga 512 filter.</div>
+
+    <p>Dua pengaturan yang disebut slide 9 mengubah jumlah posisi keluaran. Untuk masukan <code>H &times; H</code>, kernel <code>K &times; K</code>, padding <code>P</code>, dan stride <code>S</code>:</p>
+
+    <div class="formula">H_out = &lfloor;(H &minus; K + 2P) / S&rfloor; + 1</div>
+
+    <p>Stride memperbesar lompatan sehingga keluaran mengecil; padding menambah piksel di tepi sehingga tepi ikut terhitung. Tabel berikut membandingkan rumus dengan hasil <code>F.conv2d</code> yang sebenarnya:</p>
+
+    <div class="code-window"><div class="code-window-header">
+      <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+      <span class="code-filename">ukurankeluaran.py</span>
+      <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
+    </div>
+    <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc"><span class="token keyword">import</span> torch</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc"><span class="token keyword">import</span> torch<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>functional <span class="token keyword">as</span> F</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc"><span class="token keyword">for</span> H<span class="token punctuation">,</span> K<span class="token punctuation">,</span> P<span class="token punctuation">,</span> S <span class="token keyword">in</span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">:</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc">    rumus <span class="token operator">=</span> <span class="token punctuation">(</span>H <span class="token operator">-</span> K <span class="token operator">+</span> <span class="token number">2</span> <span class="token operator">*</span> P<span class="token punctuation">)</span> <span class="token operator">//</span> S <span class="token operator">+</span> <span class="token number">1</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc">    nyata <span class="token operator">=</span> F<span class="token punctuation">.</span>conv2d<span class="token punctuation">(</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc">        torch<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> H<span class="token punctuation">,</span> H<span class="token punctuation">)</span><span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc">        torch<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> K<span class="token punctuation">,</span> K<span class="token punctuation">)</span><span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">9</span><span class="lc">        padding<span class="token operator">=</span>P<span class="token punctuation">,</span> stride<span class="token operator">=</span>S<span class="token punctuation">,</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">10</span><span class="lc">    <span class="token punctuation">)</span><span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">11</span><span class="lc">    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"H=</span><span class="token interpolation"><span class="token punctuation">{</span>H<span class="token punctuation">}</span></span><span class="token string"> K=</span><span class="token interpolation"><span class="token punctuation">{</span>K<span class="token punctuation">}</span></span><span class="token string"> P=</span><span class="token interpolation"><span class="token punctuation">{</span>P<span class="token punctuation">}</span></span><span class="token string"> S=</span><span class="token interpolation"><span class="token punctuation">{</span>S<span class="token punctuation">}</span></span><span class="token string">: rumus=</span><span class="token interpolation"><span class="token punctuation">{</span>rumus<span class="token punctuation">}</span></span><span class="token string"> conv2d=</span><span class="token interpolation"><span class="token punctuation">{</span>nyata<span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span></span></span></code></pre></div>
+
+    <div class="terminal">
+      <div class="terminal-header">
+        <span class="material-symbols-outlined">terminal</span>
+        <span class="terminal-title">Output</span>
+      </div>
+      <div class="terminal-body"><span class="output-label">H=5 K=3 P=0 S=1:</span> rumus=3 conv2d=3
+<span class="output-label">H=5 K=3 P=1 S=1:</span> rumus=5 conv2d=5
+<span class="output-label">H=5 K=3 P=1 S=2:</span> rumus=3 conv2d=3</div>
+    </div>
+
+    <p>Feature map kemudian diringkas oleh <em>pooling</em> (slide 10). Max pooling mengambil nilai terbesar pada setiap jendela, sehingga ukuran mengecil dan jaringan lebih tahan terhadap pergeseran kecil:</p>
+
+    <div class="code-window"><div class="code-window-header">
+      <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+      <span class="code-filename">pooling.py</span>
+      <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
+    </div>
+    <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc"><span class="token keyword">import</span> torch</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc"><span class="token keyword">import</span> torch<span class="token punctuation">.</span>nn<span class="token punctuation">.</span>functional <span class="token keyword">as</span> F</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc">feature_t <span class="token operator">=</span> torch<span class="token punctuation">.</span>from_numpy<span class="token punctuation">(</span>feature<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token boolean">None</span><span class="token punctuation">,</span> <span class="token boolean">None</span><span class="token punctuation">]</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc">pooled <span class="token operator">=</span> F<span class="token punctuation">.</span>max_pool2d<span class="token punctuation">(</span>feature_t<span class="token punctuation">,</span> kernel_size<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"feature map"</span><span class="token punctuation">,</span> <span class="token builtin">tuple</span><span class="token punctuation">(</span>feature_t<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"maxpool 2x2"</span><span class="token punctuation">,</span> <span class="token builtin">tuple</span><span class="token punctuation">(</span>pooled<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span></code></pre></div>
+
+    <div class="terminal">
+      <div class="terminal-header">
+        <span class="material-symbols-outlined">terminal</span>
+        <span class="terminal-title">Output</span>
+      </div>
+      <div class="terminal-body"><span class="output-label">feature map</span> (3, 3)
+<span class="output-label">maxpool 2x2</span> (1, 1)</div>
+    </div>
+
+    <div class="note"><strong>Rangkaian lengkapnya:</strong> piksel &rarr; konvolusi menghasilkan <em>feature map</em> &rarr; pooling meringkasnya &rarr; lapisan berulang membentuk hierarki fitur (slide 12) &rarr; ResNet50 merangkumnya menjadi vektor 2048 dimensi. Bagian berikutnya memakai model pra-latih yang lapisan-lapisan konvolusinya sudah berisi kernel hasil pelatihan pada ImageNet.</div>
+
+    <div class="note">
+      <strong>Catatan aritmetika:</strong> yang ditulis <code>&Sigma; x(i+u, j+v) &middot; k(u,v)</code> pada slide 8 secara teknis adalah <em>cross-correlation</em> &mdash; kernel tidak dibalik terlebih dahulu. Pustaka deep learning, termasuk <code>F.conv2d</code> dan <code>torch.nn.Conv2d</code>, memakai konvensi yang sama. Karena kernel <em>dipelajari</em> dari data, pembalikan tersebut tidak mengubah kapasitas model, sehingga istilah &ldquo;konvolusi&rdquo; tetap dipakai secara luas.
+    </div>
+  </section>
+  <section id="sec-model"><h2><span class="sec-num">05</span> Muat Model Pre-trained</h2><p>Slide 22–25 membahas pre-trained model dan transfer learning. Pada pendekatan feature extraction, classifier terakhir dilepas sehingga keluaran ResNet50 menjadi representasi 2048 dimensi.</p><div class="code-window"><div class="code-window-header">
       <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
       <span class="code-filename">feature_extraction.py</span>
       <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
@@ -666,8 +861,8 @@
 <span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc">backbone<span class="token punctuation">.</span><span class="token builtin">eval</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span></span>
 <span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc">&nbsp;</span></span>
 <span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc">preprocess <span class="token operator">=</span> weights<span class="token punctuation">.</span>transforms<span class="token punctuation">(</span><span class="token punctuation">)</span></span></span>
-<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span>backbone<span class="token punctuation">.</span>fc<span class="token punctuation">)</span></span></span></code></pre></div><div class="callout"><strong>Mengapa <code>eval()</code>?</strong><br>Mode evaluasi membuat layer seperti BatchNorm dan Dropout berperilaku deterministik saat inferensi.</div></section>
-  <section id="sec-ekstraksi"><h2><span class="sec-num">04</span> Preprocessing dan Feature Extraction</h2><p>Gunakan transformasi resmi dari weights model agar ukuran, normalisasi, dan urutan preprocessing konsisten dengan data saat pre-training. Langkah ini menghubungkan konsep transfer learning pada slide 23–25 dengan representasi yang dapat diamati.</p><div class="code-window"><div class="code-window-header">
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span>backbone<span class="token punctuation">.</span>fc<span class="token punctuation">)</span></span></span></code></pre></div><div class="note note-green"><span class="note-title">Mengapa <code>eval()</code>?</span>Mode evaluasi membuat layer seperti BatchNorm dan Dropout berperilaku deterministik saat inferensi.</div></section>
+  <section id="sec-ekstraksi"><h2><span class="sec-num">06</span> Preprocessing dan Feature Extraction</h2><p>Gunakan transformasi resmi dari weights model agar ukuran, normalisasi, dan urutan preprocessing konsisten dengan data saat pre-training. Langkah ini menghubungkan konsep transfer learning pada slide 23–25 dengan representasi yang dapat diamati.</p><div class="code-window"><div class="code-window-header">
       <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
       <span class="code-filename">feature_extraction.py</span>
       <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
@@ -698,7 +893,7 @@
       <div class="terminal-body"><span class="output-label">feature A:</span> (2048,)
 <span class="output-label">feature B:</span> (2048,)</div>
     </div><p>Jika dimensi berbeda, periksa apakah classifier benar-benar diganti dengan <code>torch.nn.Identity()</code>.</p></section>
-  <section id="sec-kemiripan"><h2><span class="sec-num">05</span> Kemiripan di Ruang Fitur</h2><p>Slide 30–32 mengarahkan kita untuk membandingkan fitur dari dua gambar. Cosine similarity membandingkan arah dua vektor; nilai lebih tinggi menunjukkan representasi yang lebih searah, tetapi bukan bukti bahwa dua gambar identik.</p><div class="code-window"><div class="code-window-header">
+  <section id="sec-kemiripan"><h2><span class="sec-num">07</span> Kemiripan di Ruang Fitur</h2><p>Slide 30–32 mengarahkan kita untuk membandingkan fitur dari dua gambar. Cosine similarity membandingkan arah dua vektor; nilai lebih tinggi menunjukkan representasi yang lebih searah, tetapi bukan bukti bahwa dua gambar identik.</p><div class="code-window"><div class="code-window-header">
       <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
       <span class="code-filename">feature_extraction.py</span>
       <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
@@ -711,7 +906,7 @@
 <span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc"><span class="token punctuation">)</span><span class="token punctuation">.</span>item<span class="token punctuation">(</span><span class="token punctuation">)</span></span></span>
 <span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc">&nbsp;</span></span>
 <span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"cosine similarity: </span><span class="token interpolation"><span class="token punctuation">{</span>similarity<span class="token punctuation">:</span><span class="token format-spec">.4f</span><span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span></span></span></code></pre></div><div class="grid-2"><div class="c-card"><h3>Eksperimen A</h3><p>Gunakan dua gambar dari kategori atau objek yang mirip. Catat nilai kemiripannya.</p></div><div class="c-card"><h3>Eksperimen B</h3><p>Ganti satu gambar dengan objek berbeda. Bandingkan perubahan nilainya.</p></div></div><div class="note"><strong>Interpretasi hati-hati:</strong> embedding mencerminkan bias dataset dan backbone. Nilai cosine bukan probabilitas kelas.</div></section>
-  <section><h2>Rangkuman</h2><div class="callout"><strong>Representasi visual</strong><br>CNN pre-trained mengubah piksel menjadi vektor fitur yang dapat dipakai untuk perbandingan, retrieval, atau classifier baru.</div><ul class="checklist"><li>Preprocessing harus konsisten dengan model.</li><li>Backbone digunakan dalam mode evaluasi.</li><li><code>torch.inference_mode()</code> menghindari graph gradien saat inferensi.</li><li>Feature extraction tidak sama dengan melatih ulang model.</li></ul><p style="margin-top:28px;color:var(--ctp-subtext0)">Gunakan hasil eksperimen ini sebagai bahan untuk Tugas Individu 03.</p></section>
+  <section><h2 id="sec-rangkuman">Rangkuman</h2><div class="note note-green"><span class="note-title">Representasi visual</span>CNN pre-trained mengubah piksel menjadi vektor fitur yang dapat dipakai untuk perbandingan, retrieval, atau classifier baru.</div><ul><li>Preprocessing harus konsisten dengan model.</li><li>Backbone digunakan dalam mode evaluasi.</li><li><code>torch.inference_mode()</code> menghindari graph gradien saat inferensi.</li><li>Feature extraction tidak sama dengan melatih ulang model.</li></ul><p style="margin-top:28px;color:var(--ctp-subtext0)">Gunakan hasil eksperimen ini sebagai bahan untuk Tugas Individu 03.</p></section>
   <section id="sec-referensi">
     <h2><span class="sec-num">⚑</span> Referensi Utama</h2>
     <ul class="reference-list">
