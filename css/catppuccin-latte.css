@@ -1673,3 +1673,110 @@ body.reveal-ready .deck-footer {
 .icon-green { color: var(--ctp-green); }
 .icon-peach { color: var(--ctp-peach); }
 .icon-maroon { color: var(--ctp-maroon); }
+
+/* =========================================================
+   Bridge slide — "Latihan Terbimbing" (D-030)
+   A pointer to the week's hands-on lab: numbered 2×2 steps plus two explicit
+   link buttons. Replaces the 4-column .pipeline-flow on these slides, whose
+   narrow columns forced 100+ char descriptions into ~220px-tall cards.
+   ========================================================= */
+.bridge-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 12px 0 0;
+}
+.bridge-step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: start;
+  background: var(--ctp-base);
+  border: 1px solid var(--ctp-surface1);
+  border-radius: 10px;
+  padding: 9px 13px;
+  font-size: 0.8em;
+  line-height: 1.45;
+  box-sizing: border-box;
+}
+.bridge-step h4 {
+  margin: 0 0 2px;
+  font-size: 1.05em;
+  line-height: 1.3;
+}
+.bridge-step p {
+  margin: 0;
+}
+
+/* Link buttons — a slide-scale version of the portal's .btn-action-* pair.
+   Sized in `em` so they scale with Teks Besar instead of overflowing.
+   Selectors carry a `.reveal` prefix on purpose: `.reveal a` (0,1,1) sets a
+   dashed `border-bottom` and a blue `color`, so the button rules need higher
+   specificity. Using `!important` instead would silently beat the
+   `.slide-btn-secondary` border shorthand — which is what hid its bottom edge. */
+.slide-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 14px;
+}
+.reveal .slide-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 15px;
+  border-radius: 9px;
+  font-size: 0.76em;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.reveal .slide-btn .material-symbols-outlined {
+  font-size: 1.05em;
+}
+.reveal .slide-btn-primary {
+  background: var(--ctp-blue);
+  color: #ffffff;
+  border-color: var(--ctp-blue);
+  box-shadow: 0 3px 10px rgba(30, 102, 245, 0.25);
+}
+.reveal .slide-btn-primary:hover {
+  background: #1455d9;
+  border-color: #1455d9;
+}
+.reveal .slide-btn-secondary {
+  background: var(--ctp-mantle);
+  color: var(--ctp-subtext0);
+  border-color: var(--ctp-surface1);
+}
+.reveal .slide-btn-secondary:hover {
+  color: var(--ctp-blue);
+  border-color: var(--ctp-blue);
+}
+
+/* Teks Besar (960×540): the tightest height budget — trim the step padding. */
+.aspect-text-large .bridge-grid {
+  gap: 8px;
+  margin-top: 10px;
+}
+.aspect-text-large .bridge-step {
+  padding: 8px 11px;
+  font-size: 0.82em;
+}
+.aspect-text-large .slide-links {
+  margin-top: 12px;
+}
+.aspect-text-large .slide-btn {
+  padding: 7px 14px;
+}
+
+/* Mobile stacks the grid; the buttons stay side by side and may wrap. */
+.aspect-mobile .bridge-grid {
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+.aspect-mobile .slide-links {
+  gap: 8px;
+}

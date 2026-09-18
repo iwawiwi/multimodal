@@ -487,7 +487,54 @@
       <div class="c-callout c-callout-success" style="margin-top: 2px;"><span class="material-symbols-outlined icon-green">auto_fix_high</span><div>Transformasi harus mempertahankan label tetap sesuai.</div></div>
       <aside class="notes">Tekankan bahwa augmentasi bukan sekadar memperbanyak data secara acak. Transformasi harus masuk akal untuk domain dan tidak mengubah label. Flip vertikal, misalnya, bisa tidak valid untuk citra medis tertentu.</aside>
     </section>
-    <!-- SLIDE 19: RANGKUMAN -->
+    <!-- SLIDE 19: LATIHAN TERBIMBING -->
+    <section>
+      <h2>Latihan Terbimbing: Mengekstrak Fitur Gambar</h2>
+      <p>Dari piksel mentah ke vektor fitur 2048 dimensi dengan model pra-latih.</p>
+
+      <div class="bridge-grid">
+        <div class="bridge-step">
+          <span class="c-num-circle c-num-blue">1</span>
+          <div>
+            <h4 style="color: var(--ctp-blue)">Gambar sebagai Data</h4>
+            <p>Amati bentuk tensor (tinggi &times; lebar &times; saluran) dan mengapa struktur spasial harus dipertahankan.</p>
+          </div>
+        </div>
+        <div class="bridge-step">
+          <span class="c-num-circle c-num-mauve">2</span>
+          <div>
+            <h4 style="color: var(--ctp-mauve)">Konvolusi &amp; CNN</h4>
+            <p>Hitung konvolusi 2D dan <em>pooling</em> pada contoh kecil, lalu pahami peran <em>residual connection</em> pada jaringan dalam.</p>
+          </div>
+        </div>
+        <div class="bridge-step">
+          <span class="c-num-circle c-num-teal">3</span>
+          <div>
+            <h4 style="color: var(--ctp-teal)">Preprocessing</h4>
+            <p>Ubah ukuran, normalkan, lalu ekstrak fitur dengan ResNet pra-latih tanpa kepala klasifikasi.</p>
+          </div>
+        </div>
+        <div class="bridge-step">
+          <span class="c-num-circle c-num-green">4</span>
+          <div>
+            <h4 style="color: var(--ctp-green)">Kemiripan Fitur</h4>
+            <p>Hitung cosine similarity antarfitur; bandingkan gambar mirip dan tidak mirip.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Tujuan: melihat bahwa lapisan konvolusi terakhir sudah menjadi <strong>representasi visual</strong> yang siap dipakai tugas lain &mdash; tanpa pelatihan ulang.</div></div>
+      <div class="slide-links">
+        <a href="hands-on/mgg03-hands-on.html" class="slide-btn slide-btn-primary"><span class="material-symbols-outlined">science</span> Buka Lembar Kerja</a>
+        <a href="pdf/mgg03-hands-on.pdf" class="slide-btn slide-btn-secondary"><span class="material-symbols-outlined">picture_as_pdf</span> Unduh PDF</a>
+      </div>
+
+      <aside class="notes">
+        Tunjukkan dua tombol di bawah. Tekankan bahwa ekstraksi fitur membekukan backbone: yang berubah hanya cara kita membaca keluarannya, bukan bobotnya.
+      </aside>
+    </section>
+
+    <!-- SLIDE 20: RANGKUMAN -->
     <section>
       <h2>Rangkuman &amp; Poin Kunci</h2>
       <p>Benang merah representasi gambar dari struktur piksel hingga embedding visual berbasis model pre-trained.</p>
@@ -525,7 +572,7 @@
         Rangkum alur dari piksel ke feature map, lalu ke embedding visual. Tekankan bahwa model pre-trained memungkinkan representasi gambar digunakan kembali dalam berbagai tugas multimodal.
       </aside>
     </section>
-    <!-- SLIDE 20: DISKUSI & REFLEKSI -->
+    <!-- SLIDE 21: DISKUSI & REFLEKSI -->
     <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Diskusi Kelas">
       <h2 style="text-align: center; margin-bottom: 24px;">Diskusi Kelas</h2>
       <p style="text-align: center; margin-bottom: 24px;">Diskusikan bersama rekan di samping Anda selama 3-5 menit:</p>
@@ -537,7 +584,7 @@
       <aside class="notes">Tiga pertanyaan diskusi untuk menghubungkan struktur gambar, pilihan arsitektur, dan penggunaan model pre-trained. Beri waktu 3–5 menit, lalu minta beberapa kelompok berbagi jawaban.</aside>
     </section>
 
-    <!-- SLIDE 21: REFERENSI -->
+    <!-- SLIDE 22: REFERENSI -->
     <section>
       <h2>Referensi Utama &amp; Bacaan Lanjutan</h2>
       <p style="margin-bottom: 20px;">Rekomendasi literatur akademik wajib dan bacaan lanjutan:</p>
@@ -551,7 +598,7 @@
       <aside class="notes">Lima referensi utama mencakup fondasi CNN, AlexNet, dan ResNet, serta dokumentasi implementasi model pre-trained.</aside>
     </section>
 
-    <!-- SLIDE 22: PENUTUP -->
+    <!-- SLIDE 23: PENUTUP -->
     <section>
       <div style="margin: auto 0; text-align: center;">
         <h2 style="font-size: 1.8em; font-weight: 800; color: var(--ctp-text); margin-bottom: 16px;">Terima Kasih</h2>
@@ -581,7 +628,7 @@
         <span class="material-symbols-outlined">chevron_left</span>
       </button>
       <button type="button" class="deck-counter-btn" onclick="Reveal.toggleOverview()" title="Klik untuk Matriks Seluruh Slide (Esc/O)">
-        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">22</span>
+        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">25</span>
       </button>
       <button type="button" class="deck-footer-btn" onclick="Reveal.next()" title="Slide Berikutnya (→ / Space / N)" aria-label="Slide Berikutnya">
         <span class="material-symbols-outlined">chevron_right</span>

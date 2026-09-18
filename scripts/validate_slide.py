@@ -231,6 +231,47 @@ def check_design_compliance(content, doc_type='slide', filename=''):
             )
             break
 
+    # 12. Bridge slide for hands-on weeks (D-030)
+    # A deck whose week ships a hands-on document must point to it from a
+    # "Latihan Terbimbing" slide placed BEFORE the summary slide, so the lecturer
+    # has something to show in class and the summary still closes the session.
+    if doc_type == 'slide':
+        _week = re.search(r'mgg(\d{2})', os.path.basename(filename))
+        if _week:
+            _hs = os.path.join(os.path.dirname(os.path.abspath(filename)),
+                               'hands-on', f'mgg{_week.group(1)}-hands-on.html')
+            if os.path.exists(_hs):
+                _heads = [
+                    re.sub(r'<[^>]+>', '', m.group(1)).strip()
+                    for m in re.finditer(r'<h[12][^>]*>(.*?)</h[12]>', content, re.DOTALL)
+                ]
+                _bridge = [i for i, h in enumerate(_heads) if 'Latihan Terbimbing' in h]
+                _summary = [i for i, h in enumerate(_heads) if 'Rangkuman' in h]
+                if not _bridge:
+                    violations.append(
+                        f'This week ships hands-on/mgg{_week.group(1)}-hands-on.html but the deck '
+                        'has no "Latihan Terbimbing" bridge slide — add one pointing to the lab (see D-030).'
+                    )
+                elif _summary and _bridge[0] > _summary[0]:
+                    violations.append(
+                        'The "Latihan Terbimbing" bridge slide must come BEFORE the Rangkuman slide, '
+                        'so the summary closes the session (see D-030).'
+                    )
+
+    # 13. Bridge slide must use the 2x2 grid, not a 4-column .pipeline-flow (D-030)
+    # Four 100+ char descriptions in narrow columns produced ~220px-tall cards
+    # and made links stretch oddly; .bridge-grid keeps them readable.
+    for sec_match in re.finditer(r'<section\b.*?</section>', content, re.DOTALL):
+        sec = sec_match.group(0)
+        head = re.search(r'<h[12][^>]*>(.*?)</h[12]>', sec, re.DOTALL)
+        title = re.sub(r'<[^>]+>', '', head.group(1)) if head else ''
+        if 'Latihan Terbimbing' in title and 'pipeline-flow' in sec:
+            violations.append(
+                'Bridge slide uses the 4-column .pipeline-flow; use the 2×2 .bridge-grid '
+                'with .slide-btn links instead (see D-030).'
+            )
+            break
+
     return violations
 
 

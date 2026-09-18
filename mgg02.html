@@ -954,7 +954,54 @@
            INVARIANT ANCHOR: CLOSING
            ============================================================ -->
 
-      <!-- SLIDE 26: RANGKUMAN -->
+    <!-- SLIDE 26: LATIHAN TERBIMBING -->
+    <section>
+      <h2>Latihan Terbimbing: Menjelajahi Ruang Vektor Kata</h2>
+      <p>Mengubah teks menjadi token, lalu mengukur makna lewat kedekatan vektor.</p>
+
+      <div class="bridge-grid">
+        <div class="bridge-step">
+          <span class="c-num-circle c-num-blue">1</span>
+          <div>
+            <h4 style="color: var(--ctp-blue)">Tokenization</h4>
+            <p>Pecah kalimat memakai NLTK/spaCy; bandingkan tokenisasi berbasis spasi dengan subword.</p>
+          </div>
+        </div>
+        <div class="bridge-step">
+          <span class="c-num-circle c-num-mauve">2</span>
+          <div>
+            <h4 style="color: var(--ctp-mauve)">One-Hot Encoding</h4>
+            <p>Bangun representasi one-hot, lalu tunjukkan bahwa semua pasangan kata sama ortogonalnya.</p>
+          </div>
+        </div>
+        <div class="bridge-step">
+          <span class="c-num-circle c-num-teal">3</span>
+          <div>
+            <h4 style="color: var(--ctp-teal)">Word Embeddings</h4>
+            <p>Muat Word2Vec/GloVe dengan Gensim, lalu hitung cosine similarity antarkata.</p>
+          </div>
+        </div>
+        <div class="bridge-step">
+          <span class="c-num-circle c-num-green">4</span>
+          <div>
+            <h4 style="color: var(--ctp-green)">Analogi Vektor</h4>
+            <p>Uji raja &minus; pria + wanita &asymp; ratu dan periksa limitasi polisemi.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Tujuan: mengalami langsung bahwa <strong>jarak</strong> di ruang vektor memuat makna, sedangkan one-hot tidak. Data dibangkitkan sendiri &mdash; tidak ada unduhan dataset wajib.</div></div>
+      <div class="slide-links">
+        <a href="hands-on/mgg02-hands-on.html" class="slide-btn slide-btn-primary"><span class="material-symbols-outlined">science</span> Buka Lembar Kerja</a>
+        <a href="pdf/mgg02-hands-on.pdf" class="slide-btn slide-btn-secondary"><span class="material-symbols-outlined">picture_as_pdf</span> Unduh PDF</a>
+      </div>
+
+      <aside class="notes">
+        Tunjukkan dua tombol di bawah. Latihan ini berjalan di CPU dan tidak butuh unduhan besar. Tekankan bahwa tujuannya bukan melatih model dari nol, melainkan memahami bagaimana teks direpresentasikan sebelum dipakai pada pertemuan fusi.
+      </aside>
+    </section>
+
+      <!-- SLIDE 27: RANGKUMAN -->
       <section>
         <h2>Rangkuman & Poin Kunci</h2>
         <p>Benang merah evolusi representasi teks dari one-hot encoding hingga Transformer.</p>
@@ -993,7 +1040,7 @@
         </aside>
       </section>
 
-      <!-- SLIDE 27: DISKUSI & REFLEKSI -->
+      <!-- SLIDE 28: DISKUSI & REFLEKSI -->
       <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Diskusi Kelas">
         <h2 style="text-align: center; margin-bottom: 24px;">Diskusi Kelas</h2>
         <p style="text-align: center; margin-bottom: 24px;">Diskusikan bersama rekan di samping Anda selama 3-5 menit:</p>
@@ -1028,7 +1075,7 @@
         </aside>
       </section>
 
-      <!-- SLIDE 28: REFERENSI -->
+      <!-- SLIDE 29: REFERENSI -->
       <section>
         <h2>Referensi Utama & Bacaan Lanjutan</h2>
         <p style="margin-bottom: 20px;">Rekomendasi literatur akademik wajib dan bacaan lanjutan:</p>
@@ -1083,7 +1130,7 @@
         </aside>
       </section>
 
-      <!-- SLIDE 29: PENUTUP -->
+      <!-- SLIDE 30: PENUTUP -->
       <section>
         <div style="margin: auto 0; text-align: center;">
 
@@ -1135,7 +1182,7 @@
         <span class="material-symbols-outlined">chevron_left</span>
       </button>
       <button type="button" class="deck-counter-btn" onclick="Reveal.toggleOverview()" title="Klik untuk Matriks Seluruh Slide (Esc/O)">
-        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">29</span>
+        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">30</span>
       </button>
       <button type="button" class="deck-footer-btn" onclick="Reveal.next()" title="Slide Berikutnya (→ / Space / N)" aria-label="Slide Berikutnya">
         <span class="material-symbols-outlined">chevron_right</span>
