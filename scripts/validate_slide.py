@@ -92,7 +92,7 @@ def _is_hands_on_doc(html_path):
     return ('hands-on' in html_path) or ('hands-on' in base)
 
 
-def check_design_compliance(content, doc_type='slide'):
+def check_design_compliance(content, doc_type='slide', filename=''):
     """Return a list of design-language violation strings (empty = compliant)."""
     violations = []
 
@@ -193,6 +193,85 @@ def check_design_compliance(content, doc_type='slide'):
                         f'({selector.strip()}). Content must fit without scrolling — split the slide instead.'
                     )
 
+    # 10. Literal math notation drawn as SVG <text> (D-029)
+    # Symbols inside a diagram must be KaTeX in a <foreignObject>; a literal
+    # <text>x_A</text> shows a raw underscore and drifts from the formula slides.
+    _math_in_text = re.compile(
+        r'<text\b[^>]*>([^<]*)</text>'
+    )
+    _looks_like_math = re.compile(
+        r'[A-Za-z]_[A-Za-z0-9]'      # x_A, f_B, p_A
+        r'|[_^]\{'                    # subscript/hat braces
+        r'|[\u03a3\u2211\u0177]'      # Sigma, sum, y-hat
+    )
+    # Decks still awaiting conversion get a grace period so the gate stays green.
+    # (Currently empty: mgg02–mgg06 are all converted to foreignObject + KaTeX.)
+    MATH_TEXT_GRANDFATHERED = set()
+    for svg_match in re.finditer(r'<svg\b.*?</svg>', content, re.DOTALL):
+        svg_body = svg_match.group(0)
+        bad_texts = [
+            t.strip()
+            for t in _math_in_text.findall(svg_body)
+            if _looks_like_math.search(t)
+        ]
+        if bad_texts and filename not in MATH_TEXT_GRANDFATHERED:
+            violations.append(
+                'Literal math in SVG <text>: '
+                + ', '.join(repr(b) for b in bad_texts[:4])
+                + ' — render symbols with KaTeX inside a <foreignObject> (see D-029).'
+            )
+            break
+
+    # 11. KaTeX delimiters placed directly in SVG <text> (renders invisibly, D-029)
+    for text_match in re.finditer(r'<text\b[^>]*>([^<]*)</text>', content):
+        if '\\(' in text_match.group(1) or '$$' in text_match.group(1):
+            violations.append(
+                'KaTeX delimiters inside SVG <text> render with a 0x0 box (invisible) — '
+                'wrap in <foreignObject> instead (see D-029).'
+            )
+            break
+
+    # 12. Bridge slide for hands-on weeks (D-030)
+    # A deck whose week ships a hands-on document must point to it from a
+    # "Latihan Terbimbing" slide placed BEFORE the summary slide, so the lecturer
+    # has something to show in class and the summary still closes the session.
+    if doc_type == 'slide':
+        _week = re.search(r'mgg(\d{2})', os.path.basename(filename))
+        if _week:
+            _hs = os.path.join(os.path.dirname(os.path.abspath(filename)),
+                               'hands-on', f'mgg{_week.group(1)}-hands-on.html')
+            if os.path.exists(_hs):
+                _heads = [
+                    re.sub(r'<[^>]+>', '', m.group(1)).strip()
+                    for m in re.finditer(r'<h[12][^>]*>(.*?)</h[12]>', content, re.DOTALL)
+                ]
+                _bridge = [i for i, h in enumerate(_heads) if 'Latihan Terbimbing' in h]
+                _summary = [i for i, h in enumerate(_heads) if 'Rangkuman' in h]
+                if not _bridge:
+                    violations.append(
+                        f'This week ships hands-on/mgg{_week.group(1)}-hands-on.html but the deck '
+                        'has no "Latihan Terbimbing" bridge slide — add one pointing to the lab (see D-030).'
+                    )
+                elif _summary and _bridge[0] > _summary[0]:
+                    violations.append(
+                        'The "Latihan Terbimbing" bridge slide must come BEFORE the Rangkuman slide, '
+                        'so the summary closes the session (see D-030).'
+                    )
+
+    # 13. Bridge slide must use the 2x2 grid, not a 4-column .pipeline-flow (D-030)
+    # Four 100+ char descriptions in narrow columns produced ~220px-tall cards
+    # and made links stretch oddly; .bridge-grid keeps them readable.
+    for sec_match in re.finditer(r'<section\b.*?</section>', content, re.DOTALL):
+        sec = sec_match.group(0)
+        head = re.search(r'<h[12][^>]*>(.*?)</h[12]>', sec, re.DOTALL)
+        title = re.sub(r'<[^>]+>', '', head.group(1)) if head else ''
+        if 'Latihan Terbimbing' in title and 'pipeline-flow' in sec:
+            violations.append(
+                'Bridge slide uses the 4-column .pipeline-flow; use the 2×2 .bridge-grid '
+                'with .slide-btn links instead (see D-030).'
+            )
+            break
+
     return violations
 
 
@@ -240,7 +319,9 @@ def validate_file(html_path):
 
     # Design-language compliance
     doc_type = 'hands-on' if _is_hands_on_doc(html_path) else 'slide'
-    violations = check_design_compliance(content, doc_type=doc_type)
+    violations = check_design_compliance(
+        content, doc_type=doc_type, filename=os.path.basename(html_path)
+    )
     if violations:
         has_error = True
         print("❌ Design-Language Violations:")

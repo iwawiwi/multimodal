@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pertemuan 06: Strategi Fusi Multimodal II — Intermediate &amp; Hybrid Fusion | ITERA</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <link rel="stylesheet" href="css/catppuccin-latte.css">
+</head>
+<body>
+  <header class="deck-header">
+    <div class="deck-header-left">
+      <a href="index.html" class="deck-brand-link" title="Kembali ke Portal Kuliah">
+        <img src="assets/img/logo_2.png" alt="Logo ITERA" class="deck-logo">
+        <img src="assets/img/dikti-saintek-berdampak-color.svg" alt="Logo Dikti Saintek Berdampak" class="deck-logo">
+      </a>
+    </div>
+
+    <div class="deck-header-right">
+      <!-- Aspect Ratio / Projector Switcher -->
+      <div class="nav-dropdown">
+        <button type="button" class="deck-ctrl-btn" id="aspect-btn" onclick="toggleAspectDropdown(event)" title="Sesuaikan Rasio Layar & Proyektor">
+          <span class="material-symbols-outlined">aspect_ratio</span>
+          <span id="aspect-label" class="deck-btn-label">Auto</span>
+          <span class="material-symbols-outlined" style="font-size: 14px;">arrow_drop_down</span>
+        </button>
+        <div class="nav-dropdown-menu" id="aspect-menu">
+          <button type="button" class="dropdown-item active" data-aspect="auto" onclick="setAspectMode('auto')">
+            <span class="item-title">Auto</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-9" onclick="setAspectMode('16-9')">
+            <span class="item-title">16:9</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-10" onclick="setAspectMode('16-10')">
+            <span class="item-title">16:10</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="4-3" onclick="setAspectMode('4-3')">
+            <span class="item-title">4:3</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="mobile" onclick="setAspectMode('mobile')">
+            <span class="item-title">Mobile</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="text-large" onclick="setAspectMode('text-large')">
+            <span class="item-title">Teks Besar</span>
+          </button>
+        </div>
+      </div>
+
+      <button type="button" class="deck-ctrl-btn" onclick="Reveal.toggleOverview()" title="Lihat Matriks Seluruh Slide (Esc/O)">
+        <span class="material-symbols-outlined">grid_view</span>
+        <span class="deck-btn-label">Overview</span>
+      </button>
+      <button type="button" class="deck-ctrl-btn" onclick="openShortcutsModal()" title="Panduan Pintasan Keyboard (?)">
+        <span class="material-symbols-outlined">keyboard</span>
+        <span class="deck-btn-label">Pintasan</span>
+      </button>
+      <a href="index.html" class="deck-ctrl-btn" title="Kembali ke Portal Kuliah">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span class="deck-btn-label">Portal</span>
+      </a>
+    </div>
+  </header>
+  <div class="deck-progress-track"><div class="deck-progress-bar" id="deck-progress-bar"></div></div>
+  <div id="shortcuts-modal" onclick="closeShortcutsModal(event)"><div class="modal-content" onclick="event.stopPropagation()"><div class="modal-header"><h4 style="margin:0;font-weight:800"><span class="material-symbols-outlined icon-blue">keyboard</span> Pintasan Navigasi Presentasi</h4><button class="modal-close" onclick="closeShortcutsModal()">&times;</button></div><div class="shortcut-row"><span>Slide berikutnya</span><span><span class="kbd-key">Space</span> / <span class="kbd-key">→</span></span></div><div class="shortcut-row"><span>Slide sebelumnya</span><span><span class="kbd-key">←</span></span></div><div class="shortcut-row"><span>Catatan dosen</span><span><span class="kbd-key">S</span></span></div></div></div>
+  <div class="reveal"><div class="slides">
+      <section id="deck-title">
+        <div style="margin: auto 0; text-align: left;">
+          <h1 style="font-size: 2.3em; line-height: 1.15; font-weight: 800; color: var(--ctp-text); margin-bottom: 12px; letter-spacing: -0.025em;">
+            Pembelajaran Mesin Multimodal
+          </h1>
+          <div style="font-size: 1.15em; font-weight: 600; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.4;">
+            Pertemuan 06 &bull; Strategi Fusi Multimodal II: Intermediate &amp; Hybrid Fusion
+          </div>
+          <div style="max-width: 620px; background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-left: 3.5px solid var(--ctp-blue); border-radius: 12px; padding: 18px 24px;">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">
+              Dosen Pengampu
+            </div>
+            <div style="font-size: 1.1em; font-weight: 800; color: var(--ctp-text); margin-bottom: 6px;">
+              I Wayan Wiprayoga Wisesa
+            </div>
+            <div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;">
+              Program Studi Teknik Informatika<br>
+              Jurusan Teknologi Produksi dan Industri<br>
+              Institut Teknologi Sumatera (ITERA)<br>
+              <span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Buka sesi Pertemuan 6. Sambungkan ke pertemuan sebelumnya: kita sudah punya dua kutub fusi — Early di input, Late di output. Sesi ini mengisi ruang di antaranya. Ingatkan bahwa deck ini murni tentang fusi; materi penyejajaran (alignment) dibahas pada Pertemuan 7.
+        </aside>
+      </section>
+
+    <!-- SLIDE 2: TUJUAN PEMBELAJARAN -->
+    <section>
+      <h2>Tujuan Pembelajaran Sesi Ini</h2>
+      <p style="margin-bottom: 24px;">Di akhir sesi kuliah ini, mahasiswa diharapkan mampu menguasai kompetensi dasar berikut:</p>
+
+      <div class="grid-4">
+        <div class="c-card c-card-accent-top c-card-blue">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-blue">01</span>
+            <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Intermediate</h4>
+          </div>
+          <p>Menjelaskan <em>Intermediate Fusion</em> dan posisinya di antara dua kutub fusi.</p>
+        </div>
+
+        <div class="c-card c-card-accent-top c-card-mauve">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-mauve">02</span>
+            <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Mekanisme</h4>
+          </div>
+          <p>Membedakan konkatenasi, operasi <em>element-wise</em>, <em>gating</em>, dan <em>attention</em>.</p>
+        </div>
+
+        <div class="c-card c-card-accent-top c-card-teal">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-teal">03</span>
+            <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Hybrid</h4>
+          </div>
+          <p>Menjelaskan prinsip <em>Hybrid Fusion</em> sebagai gabungan beberapa strategi.</p>
+        </div>
+
+        <div class="c-card c-card-accent-top c-card-peach">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-peach">04</span>
+            <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Pemilihan</h4>
+          </div>
+          <p>Merancang dan memilih skema fusi sesuai karakteristik tugas multimodal.</p>
+        </div>
+      </div>
+
+      <aside class="notes">
+        Bacakan keempat capaian. Tekankan bahwa capaian keempat adalah yang paling penting: sesi ini berakhir pada kemampuan merancang, bukan sekadar mengenali istilah.
+      </aside>
+    </section>
+
+    <!-- SLIDE 3: DIVIDER BAGIAN 1 -->
+    <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(30,102,245,0.06) 0%, transparent 100%);">
+      <div class="section-slide-content">
+        <span class="section-part-label section-part-blue">Bagian 1</span>
+        <h1>Menuju Titik Tengah</h1>
+        <p class="subtitle">
+          Mengapa dua kutub fusi belum cukup, dan celah apa yang ditinggalkan Early serta Late Fusion.
+        </p>
+      </div>
+      <aside class="notes">Bagian pertama menempatkan masalah: dua kutub sudah dikuasai, tetapi keduanya menggabungkan informasi di ujung pipeline. Muncul pertanyaan apakah penggabungan bisa dilakukan di tengah.</aside>
+    </section>
+
+    <!-- SLIDE 4: REKAP BATAS DUA KUTUB -->
+    <section>
+      <h2>Rekap: Batas Kedua Kutub</h2>
+      <p>Keduanya menempatkan penggabungan di <strong>ujung</strong> pipeline &mdash; input atau output.</p>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="c-card c-card-accent-top c-card-blue">
+          <h3 style="color: var(--ctp-blue)">Early Fusion</h3>
+          <p>Menggabungkan fitur mentah di awal. Interaksi antar modalitas dapat dipelajari secara mendalam.</p>
+          <p style="margin: 10px 0 0 0; font-size: 0.8em; color: var(--ctp-maroon); font-weight: 700;">Terlalu dini &mdash; dimensi membengkak, rapuh saat modalitas hilang, sensitif asinkronisitas.</p>
+        </div>
+        <div class="c-card c-card-accent-top c-card-teal">
+          <h3 style="color: var(--ctp-teal)">Late Fusion</h3>
+          <p>Menggabungkan keputusan di akhir. Modular, tangguh terhadap modalitas hilang, dan sederhana.</p>
+          <p style="margin: 10px 0 0 0; font-size: 0.8em; color: var(--ctp-maroon); font-weight: 700;">Terlalu terlambat &mdash; korelasi halus antar modalitas tidak pernah dipelajari.</p>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 18px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Keduanya menghadapi dilema yang sama: makin awal penggabungan, makin dalam interaksi tetapi makin rapuh; makin akhir, makin tangguh tetapi makin sedikit interaksi.</div></div>
+
+      <aside class="notes">
+        Minta mahasiswa menyebutkan satu kekurangan Early dan satu kekurangan Late dari ingatan. Arahkan pada kesimpulan bahwa keduanya adalah dua titik ekstrem pada satu spektrum — sehingga secara logis ada ruang di antara keduanya.
+      </aside>
+    </section>
+
+    <!-- SLIDE 5: BIG IDEA -->
+    <section style="display: flex; flex-direction: column; justify-content: center;">
+      <div class="big-idea-canvas">
+        <h2 class="big-idea-question">
+          Early Terlalu Dini, Late Terlalu Terlambat &mdash; Bisakah Informasi Digabungkan di Tengah?
+        </h2>
+        <p class="big-idea-takeaway">
+          <strong>Ya.</strong> <em>Intermediate Fusion</em> menggabungkan representasi pada <strong>lapisan tengah</strong>: setelah setiap modalitas membentuk fitur abstrak melalui encodernya sendiri, tetapi sebelum keputusan akhir diambil. Interaksi tetap dalam, sementara dimensi gabungan jauh lebih terkelola.
+        </p>
+      </div>
+      <aside class="notes">
+        Biarkan pertanyaan menggantung beberapa detik sebelum menampilkan takeaway. Tekankan kata kuncinya: "setelah encoder, sebelum kepala keputusan". Inilah gagasan inti yang membedakan Intermediate dari Early (yang menggabung sebelum encoder) dan Late (yang menggabung setelah keputusan).
+      </aside>
+    </section>
+
+    <!-- SLIDE 6: DIVIDER BAGIAN 2 -->
+    <section class="section-slide" style="background: radial-gradient(circle at 90% 80%, rgba(136,57,239,0.06) 0%, transparent 100%);">
+      <div class="section-slide-content">
+        <span class="section-part-label section-part-mauve">Bagian 2</span>
+        <h1>Intermediate Fusion</h1>
+        <p class="subtitle">
+          Menggabungkan representasi di lapisan tengah: kompromi antara kedalaman interaksi dan keterkelolaan dimensi.
+        </p>
+      </div>
+      <aside class="notes">Bagian inti sesi. Fokus pada dua hal: di mana penggabungan terjadi, dan mekanisme apa yang dipakai untuk menggabungkan.</aside>
+    </section>
+
+    <!-- SLIDE 7: KONSEP INTERMEDIATE -->
+    <section>
+      <h2>Intermediate Fusion: Konsep</h2>
+      <p>Setiap modalitas diproses encoder sendiri hingga lapisan menengah, lalu representasinya digabungkan.</p>
+
+      <div class="grid-3" style="margin-top: 16px;">
+        <div class="c-card c-card-blue c-card-accent-top">
+          <h3 style="color: var(--ctp-blue)">Encoder Unimodal</h3>
+          <p>Tiap modalitas memiliki encoder sendiri (CNN untuk visual, Transformer untuk teks) yang menghasilkan representasi vektor.</p>
+        </div>
+        <div class="c-card c-card-mauve c-card-accent-top">
+          <h3 style="color: var(--ctp-mauve)">Modul Fusi</h3>
+          <p>Vektor dari tiap modalitas digabungkan dengan konkatenasi, operasi <em>element-wise</em>, <em>gating</em>, atau <em>attention</em>.</p>
+        </div>
+        <div class="c-card c-card-teal c-card-accent-top">
+          <h3 style="color: var(--ctp-teal)">Lapisan Bersama</h3>
+          <p>Representasi gabungan diumpankan ke lapisan berikutnya untuk tugas akhir (klasifikasi atau generasi).</p>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 18px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Perbedaan kuncinya dengan Early Fusion: yang digabungkan sudah berupa <strong>fitur abstrak</strong> hasil encoder, bukan data mentah &mdash; sehingga dimensinya lebih kecil dan lebih bermakna.</div></div>
+
+      <aside class="notes">
+        Tekankan urutan tiga tahapnya. Kaitkan dengan slide rekap: Early menggabung SEBELUM encoder (data mentah), Intermediate menggabung SETELAH encoder (fitur abstrak), Late menggabung SETELAH kepala keputusan. Jadi posisi penggabungan bergeser satu tahap ke kanan dari Early.
+      </aside>
+    </section>
+
+    <!-- SLIDE 8: ARSITEKTUR INTERMEDIATE (SVG) -->
+    <section>
+      <h2>Arsitektur Intermediate Fusion</h2>
+      <p>Penggabungan terjadi setelah encoder, sebelum lapisan bersama.</p>
+
+      <div class="grid-2" style="margin-top: 16px;">
+                <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px; overflow: hidden;">
+          <svg viewBox="0 0 400 332" role="img" aria-label="Diagram Intermediate Fusion vertikal: modalitas visual dan audio masing-masing melewati encoder hingga lapisan ke-k dan menghasilkan fitur f_A serta f_B, kedua fitur digabungkan modul fusi di lapisan tengah, lalu diproses lapisan bersama untuk menghasilkan prediksi" style="width: 100%; height: auto;">
+            <defs>
+              <marker id="if-arr" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#1e66f5"/></marker>
+              <marker id="if-arr2" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#8839ef"/></marker>
+              <marker id="if-arr3" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#179299"/></marker>
+            </defs>
+
+            <!-- Baris 1: dua modalitas masukan -->
+            <rect x="26" y="20" width="156" height="48" rx="10" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+            <text x="104" y="43" text-anchor="middle" fill="#4c4f69" font-size="19" font-family="sans-serif" font-weight="700">Visual</text>
+            <foreignObject x="26" y="46" width="156" height="22">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#1e66f5;">\(\mathbf{x}_A\)</div>
+            </foreignObject>
+
+            <rect x="218" y="20" width="156" height="48" rx="10" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
+            <text x="296" y="43" text-anchor="middle" fill="#4c4f69" font-size="19" font-family="sans-serif" font-weight="700">Audio</text>
+            <foreignObject x="218" y="46" width="156" height="22">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#8839ef;">\(\mathbf{x}_B\)</div>
+            </foreignObject>
+
+            <!-- Baris 2: encoder hingga lapisan ke-k -->
+            <rect x="26" y="84" width="156" height="42" rx="10" fill="#eff1f5" stroke="#1e66f5" stroke-width="3"/>
+            <text x="104" y="111" text-anchor="middle" fill="#1e66f5" font-size="13" font-family="sans-serif" font-weight="700">Encoder Visual (1…k)</text>
+
+            <rect x="218" y="84" width="156" height="42" rx="10" fill="#eff1f5" stroke="#8839ef" stroke-width="3"/>
+            <text x="296" y="111" text-anchor="middle" fill="#8839ef" font-size="13" font-family="sans-serif" font-weight="700">Encoder Audio (1…k)</text>
+
+            <!-- Baris 3: fitur lapisan menengah -->
+            <rect x="26" y="142" width="156" height="42" rx="10" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+            <foreignObject x="26" y="142" width="156" height="42">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:18px;color:#1e66f5;">\(f_A\)</div>
+            </foreignObject>
+
+            <rect x="218" y="142" width="156" height="42" rx="10" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
+            <foreignObject x="218" y="142" width="156" height="42">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:18px;color:#8839ef;">\(f_B\)</div>
+            </foreignObject>
+
+            <!-- Baris 4: titik fusi di lapisan tengah -->
+            <rect x="108" y="200" width="184" height="50" rx="10" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
+            <text x="200" y="222" text-anchor="middle" fill="#179299" font-size="16" font-family="sans-serif" font-weight="700">Modul Fusi</text>
+            <text x="200" y="242" text-anchor="middle" fill="#4c4f69" font-size="12" font-family="sans-serif">concat · gate</text>
+
+            <!-- Baris 5: lapisan bersama dan prediksi -->
+            <rect x="108" y="264" width="184" height="52" rx="10" fill="#e6e9ef" stroke="#40a02b" stroke-width="3"/>
+            <text x="200" y="286" text-anchor="middle" fill="#40a02b" font-size="16" font-family="sans-serif" font-weight="700">Lapisan Bersama</text>
+            <foreignObject x="108" y="290" width="184" height="22">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#40a02b;">\(\hat{y}\)</div>
+            </foreignObject>
+
+            <!-- Alur: dua cabang encoder bertemu di titik fusi, lalu satu jalur ke prediksi -->
+            <path d="M104 68 V84" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#if-arr)"/>
+            <path d="M296 68 V84" fill="none" stroke="#8839ef" stroke-width="3" marker-end="url(#if-arr2)"/>
+            <path d="M104 126 V142" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#if-arr)"/>
+            <path d="M296 126 V142" fill="none" stroke="#8839ef" stroke-width="3" marker-end="url(#if-arr2)"/>
+            <path d="M104 184 C104 194 150 192 172 198" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#if-arr)"/>
+            <path d="M296 184 C296 194 250 192 228 198" fill="none" stroke="#8839ef" stroke-width="3" marker-end="url(#if-arr2)"/>
+            <path d="M200 250 V264" fill="none" stroke="#179299" stroke-width="3" marker-end="url(#if-arr3)"/>
+          </svg>
+        </div>
+        <div class="narrative-pane">
+          <div class="narrative-step"><strong>01. Encoder Terpisah</strong> Tiap modalitas melewati encoder-nya sendiri hingga lapisan ke-\(k\).</div>
+          <div class="narrative-step"><strong>02. Fitur Menengah</strong> Hasilnya \(f_A\) dan \(f_B\) &mdash; vektor fitur abstrak, bukan data mentah.</div>
+          <div class="narrative-step"><strong>03. Modul Fusi</strong> Kedua vektor digabungkan pada lapisan tengah, lalu diteruskan ke lapisan bersama.</div>
+        </div>
+      </div>
+
+      <aside class="notes">
+        Tunjukkan pada diagram bahwa dua jalur encoder tetap terpisah sampai titik fusi, baru kemudian menyatu. Bandingkan dengan diagram Early Fusion di Pertemuan 5, di mana penggabungan terjadi sebelum encoder. Perhatikan label \(f_A\) dan \(f_B\) yang akan dipakai kembali pada slide GMU.
+      </aside>
+    </section>
+
+    <!-- SLIDE 9: MEKANISME FUSI -->
+    <section>
+      <h2>Empat Mekanisme Penggabungan</h2>
+      <p>Bagaimana dua representasi fitur digabungkan pada lapisan tengah.</p>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="c-card c-card-accent-top c-card-blue">
+          <h3 style="color: var(--ctp-blue)">Concatenation</h3>
+          <p>Menyambung kedua vektor menjadi satu vektor panjang. Paling sederhana dan paling umum dipakai sebagai <em>baseline</em>.</p>
+        </div>
+        <div class="c-card c-card-accent-top c-card-mauve">
+          <h3 style="color: var(--ctp-mauve)">Element-wise Operations</h3>
+          <p>Penjumlahan atau perkalian (<em>Hadamard product</em>) antar elemen. Menjaga dimensi tetap kecil, tetapi menuntut vektor berdimensi sama.</p>
+        </div>
+        <div class="c-card c-card-accent-top c-card-teal">
+          <h3 style="color: var(--ctp-teal)">Gating Mechanisms</h3>
+          <p>Gerbang yang belajar mengatur seberapa besar tiap modalitas menyumbang, sehingga model dapat mengabaikan modalitas yang kurang relevan.</p>
+        </div>
+        <div class="c-card c-card-accent-top c-card-peach">
+          <h3 style="color: var(--ctp-peach)">Attention Mechanisms</h3>
+          <p>Model memilih bagian mana dari satu modalitas yang paling relevan bagi modalitas lain. Dibahas mendalam pada Pertemuan 7.</p>
+        </div>
+      </div>
+
+      <aside class="notes">
+        Keempatnya dapat dikombinasikan. Tekankan bahwa gating adalah jawaban atas masalah dominasi modalitas yang diperkenalkan di Pertemuan 5: alih-alih menggabungkan dengan bobot tetap, model belajar menimbang sendiri. Jangan masuk ke detail attention di sini — cukup sebutkan bahwa itu materi pertemuan berikutnya.
+      </aside>
+    </section>
+
+    <!-- SLIDE 10: GMU (FORMULA) -->
+    <section>
+      <h2>Contoh: Gated Multimodal Unit (GMU)</h2>
+      <p>Gerbang \(z\) menentukan porsi kontribusi tiap modalitas secara adaptif.</p>
+
+      <div class="formula-hero">
+        <div class="formula-label">Gated Multimodal Unit</div>
+        <div class="formula-math">
+          $$\begin{aligned} z &= \sigma\!\left(W_z\,[\,\mathbf{f}_A ; \mathbf{f}_B\,]\right) \\ \mathbf{h} &= z \odot \tanh(W_A \mathbf{f}_A) + (1 - z) \odot \tanh(W_B \mathbf{f}_B) \end{aligned}$$
+        </div>
+      </div>
+
+      <div class="formula-breakdown">
+        <div class="formula-term-box">
+          <strong>\(z\)</strong>
+          Vektor gerbang hasil sigmoid \(\sigma\). Nilai \(z \to 1\) berarti modalitas <em>A</em> mendominasi; \(z \to 0\) berarti <em>B</em> mendominasi.
+        </div>
+        <div class="formula-term-box">
+          <strong>\(\mathbf{f}_A, \mathbf{f}_B\)</strong>
+          Fitur lapisan menengah dari masing-masing encoder. Notasi \([\,;\,]\) adalah konkatenasi sebagai masukan gerbang.
+        </div>
+        <div class="formula-term-box">
+          <strong>\(W_z, W_A, W_B\)</strong>
+          Matriks bobot yang dipelajari. \(\odot\) menyatakan perkalian <em>element-wise</em> antar elemen vektor.
+        </div>
+      </div>
+
+      <aside class="notes">
+        Rumus ini konkretnya adalah gating pada slide sebelumnya. Jelaskan alurnya: kedua fitur dikonkatenasi, lalu dipetakan sigmoid menjadi gerbang z yang bernilai 0 sampai 1 per elemen. Output adalah campuran terbobot antara transformasi A dan transformasi B. Karena z dipelajari dari data, model sendiri yang memutuskan modalitas mana yang dipercaya pada tiap contoh — inilah keunggulannya dibanding konkatenasi biasa, dan ini juga jawaban untuk pertanyaan diskusi nanti.
+      </aside>
+    </section>
+
+    <!-- SLIDE 11: INTERMEDIATE — KELEBIHAN & KEKURANGAN -->
+    <section>
+      <h2>Intermediate Fusion: Kelebihan &amp; Kekurangan</h2>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="pro-box">
+          <h5><span class="material-symbols-outlined">check_circle</span>Kelebihan</h5>
+          <ul style="margin: 6px 0 0 0; padding-left: 16px;">
+            <li><strong>Interaksi pada fitur abstrak</strong> &mdash; lebih bermakna daripada mencampur data mentah.</li>
+            <li><strong>Dimensi lebih terkelola</strong> karena encoder unimodal sudah mereduksi fitur.</li>
+            <li><strong>Fleksibel</strong> &mdash; dapat dipasangkan dengan berbagai arsitektur encoder.</li>
+          </ul>
+        </div>
+
+        <div class="con-box">
+          <h5><span class="material-symbols-outlined">cancel</span>Kekurangan</h5>
+          <ul style="margin: 6px 0 0 0; padding-left: 16px;">
+            <li><strong>Desain arsitektur lebih rumit</strong> &mdash; harus menentukan lapisan pertemuan yang tepat.</li>
+            <li><strong>Masih sensitif terhadap penyelarasan</strong> bila ada ketergantungan temporal atau struktural.</li>
+            <li><strong>Lebih sulit di-<em>debug</em></strong> &mdash; sulit melacak modalitas mana penyebab kesalahan.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 18px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Kekurangan kedua inilah jembatan ke Pertemuan 7: begitu fitur digabungkan di tengah, keduanya <strong>harus membicarakan hal yang sama</strong> pada waktu atau lokasi yang sama.</div></div>
+
+      <aside class="notes">
+        Poin penting: kekurangan "sensitif penyelarasan" adalah alasan mengapa penyejajaran dibahas setelah fusi, bukan sebelumnya. Sebutkan bahwa pertanyaan "di lapisan ke berapa sebaiknya digabung?" tidak punya jawaban universal — biasanya ditentukan lewat eksperimen validasi.
+      </aside>
+    </section>
+
+    <!-- SLIDE 12: DIVIDER BAGIAN 3 -->
+    <section class="section-slide" style="background: radial-gradient(circle at 20% 70%, rgba(23,146,153,0.06) 0%, transparent 100%);">
+      <div class="section-slide-content">
+        <span class="section-part-label section-part-teal">Bagian 3</span>
+        <h1>Hybrid Fusion</h1>
+        <p class="subtitle">
+          Ketika satu strategi tidak cukup: menggabungkan beberapa titik fusi dalam satu arsitektur.
+        </p>
+      </div>
+      <aside class="notes">Bagian ketiga memperluas perspektif: alih-alih memilih satu titik fusi, kita bisa memakai beberapa sekaligus.</aside>
+    </section>
+
+    <!-- SLIDE 13: KONSEP HYBRID -->
+    <section>
+      <h2>Hybrid Fusion: Konsep</h2>
+      <p>Menggabungkan dua atau lebih strategi fusi (Early, Intermediate, Late) dalam <strong>satu</strong> arsitektur.</p>
+
+      <div class="grid-3" style="margin-top: 16px;">
+        <div class="c-card c-card-blue c-card-accent-top">
+          <h3 style="color: var(--ctp-blue)">Tujuan</h3>
+          <p>Mengambil kelebihan tiap strategi sekaligus menutup kekurangannya.</p>
+        </div>
+        <div class="c-card c-card-mauve c-card-accent-top">
+          <h3 style="color: var(--ctp-mauve)">Bentuk Umum</h3>
+          <p>Fitur digabungkan di awal untuk satu model, sekaligus model unimodal terpisah digabungkan keputusannya di akhir.</p>
+        </div>
+        <div class="c-card c-card-teal c-card-accent-top">
+          <h3 style="color: var(--ctp-teal)">Alasan</h3>
+          <p>Tidak ada satu strategi yang optimal untuk semua tugas; sebagian tugas butuh keduanya.</p>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 18px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Kata kuncinya adalah <strong>beberapa jalur pemrosesan</strong>: ada jalur yang berfusi awal, ada yang tetap unimodal, dan hasilnya digabungkan lagi di akhir.</div></div>
+
+      <aside class="notes">
+        Bedakan Hybrid dari Intermediate: Intermediate memilih SATU titik fusi di lapisan tengah; Hybrid memakai BEBERAPA titik fusi sekaligus. Konsekuensinya jelas: Hybrid lebih tangguh dan lebih ekspresif, tetapi paling mahal secara komputasi dan paling sulit dilatih.
+      </aside>
+    </section>
+
+    <!-- SLIDE 14: ARSITEKTUR HYBRID (SVG) -->
+    <section>
+      <h2>Arsitektur Hybrid Fusion (Contoh)</h2>
+      <p>Dua jalur: satu berfusi awal, satu tetap unimodal; keduanya digabungkan di akhir.</p>
+
+      <div class="grid-2" style="margin-top: 16px;">
+                <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px; overflow: hidden;">
+          <svg viewBox="0 0 400 332" role="img" aria-label="Diagram Hybrid Fusion vertikal: dari modalitas visual dan audio, jalur unimodal melatih Model A dan Model B terpisah, jalur fusi awal menggabungkan fitur mentah x_A dan x_B pada Model Awal, ketiga prediksi p_A, p_B, dan p_E lalu digabungkan pada fusi keputusan untuk menghasilkan prediksi akhir" style="width: 100%; height: auto;">
+            <defs>
+              <marker id="hf-arr" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#1e66f5"/></marker>
+              <marker id="hf-arr2" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#8839ef"/></marker>
+              <marker id="hf-arr3" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#179299"/></marker>
+              <marker id="hf-arr4" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#40a02b"/></marker>
+            </defs>
+
+            <!-- Baris 1: dua modalitas masukan -->
+            <rect x="26" y="6" width="156" height="48" rx="10" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+            <text x="104" y="29" text-anchor="middle" fill="#4c4f69" font-size="19" font-family="sans-serif" font-weight="700">Visual</text>
+            <foreignObject x="26" y="32" width="156" height="22">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#1e66f5;">\(\mathbf{x}_A\)</div>
+            </foreignObject>
+
+            <rect x="218" y="6" width="156" height="48" rx="10" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
+            <text x="296" y="29" text-anchor="middle" fill="#4c4f69" font-size="19" font-family="sans-serif" font-weight="700">Audio</text>
+            <foreignObject x="218" y="32" width="156" height="22">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#8839ef;">\(\mathbf{x}_B\)</div>
+            </foreignObject>
+
+            <!-- Baris 2: dua model unimodal di sisi, model fusi awal di tengah -->
+            <rect x="12" y="72" width="116" height="46" rx="10" fill="#eff1f5" stroke="#1e66f5" stroke-width="3"/>
+            <text x="70" y="100" text-anchor="middle" fill="#1e66f5" font-size="13" font-family="sans-serif" font-weight="700">Model A</text>
+
+            <rect x="142" y="72" width="116" height="46" rx="10" fill="#eff1f5" stroke="#179299" stroke-width="3"/>
+            <text x="200" y="90" text-anchor="middle" fill="#179299" font-size="13" font-family="sans-serif" font-weight="700">Model Awal</text>
+            <foreignObject x="142" y="94" width="116" height="20">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;color:#179299;">\([\,\mathbf{x}_A ; \mathbf{x}_B\,]\)</div>
+            </foreignObject>
+
+            <rect x="272" y="72" width="116" height="46" rx="10" fill="#eff1f5" stroke="#8839ef" stroke-width="3"/>
+            <text x="330" y="100" text-anchor="middle" fill="#8839ef" font-size="13" font-family="sans-serif" font-weight="700">Model B</text>
+
+            <!-- Baris 3: tiga prediksi, tetap terpisah -->
+            <rect x="12" y="136" width="116" height="44" rx="10" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+            <foreignObject x="12" y="136" width="116" height="44">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:15px;color:#1e66f5;">\(p_A\)</div>
+            </foreignObject>
+
+            <rect x="142" y="136" width="116" height="44" rx="10" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
+            <foreignObject x="142" y="136" width="116" height="44">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:15px;color:#179299;">\(p_E\)</div>
+            </foreignObject>
+
+            <rect x="272" y="136" width="116" height="44" rx="10" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
+            <foreignObject x="272" y="136" width="116" height="44">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:15px;color:#8839ef;">\(p_B\)</div>
+            </foreignObject>
+
+            <!-- Baris 4: fusi keputusan atas ketiga prediksi -->
+            <rect x="108" y="198" width="184" height="52" rx="10" fill="#e6e9ef" stroke="#40a02b" stroke-width="3"/>
+            <text x="200" y="220" text-anchor="middle" fill="#40a02b" font-size="16" font-family="sans-serif" font-weight="700">Fusi Keputusan</text>
+            <foreignObject x="108" y="224" width="184" height="22">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#4c4f69;">\(\textstyle\sum_m w_m\,p_m\)</div>
+            </foreignObject>
+
+            <!-- Baris 5: prediksi akhir -->
+            <foreignObject x="170" y="262" width="60" height="28">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:19px;color:#40a02b;">\(\hat{y}\)</div>
+            </foreignObject>
+
+            <!-- Alur: dua modalitas bercabang ke jalur unimodal dan jalur fusi awal -->
+            <path d="M104 54 C104 64 84 64 74 70" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#hf-arr)"/>
+            <path d="M104 54 C104 66 172 60 186 70" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#hf-arr)"/>
+            <path d="M296 54 C296 64 316 64 326 70" fill="none" stroke="#8839ef" stroke-width="3" marker-end="url(#hf-arr2)"/>
+            <path d="M296 54 C296 66 228 60 214 70" fill="none" stroke="#8839ef" stroke-width="3" marker-end="url(#hf-arr2)"/>
+
+            <!-- Alur: tiap model menghasilkan prediksinya -->
+            <path d="M70 118 V136" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#hf-arr)"/>
+            <path d="M200 118 V136" fill="none" stroke="#179299" stroke-width="3" marker-end="url(#hf-arr3)"/>
+            <path d="M330 118 V136" fill="none" stroke="#8839ef" stroke-width="3" marker-end="url(#hf-arr2)"/>
+
+            <!-- Alur: ketiga prediksi bertemu di fusi keputusan -->
+            <path d="M70 180 C70 194 150 192 172 196" fill="none" stroke="#179299" stroke-width="3" marker-end="url(#hf-arr3)"/>
+            <path d="M200 180 V198" fill="none" stroke="#179299" stroke-width="3" marker-end="url(#hf-arr3)"/>
+            <path d="M330 180 C330 194 250 192 228 196" fill="none" stroke="#179299" stroke-width="3" marker-end="url(#hf-arr3)"/>
+            <path d="M200 250 V262" fill="none" stroke="#40a02b" stroke-width="3" marker-end="url(#hf-arr4)"/>
+          </svg>
+        </div>
+        <div class="narrative-pane">
+          <div class="narrative-step"><strong>01. Jalur Unimodal</strong> Model A dan Model B tetap dilatih terpisah, menghasilkan \(p_A\) dan \(p_B\).</div>
+          <div class="narrative-step"><strong>02. Jalur Fusi Awal</strong> Fitur mentah \([\,x_A ; x_B\,]\) digabungkan lebih dulu untuk model tersendiri (<em>early fusion</em>), menghasilkan \(p_E\).</div>
+          <div class="narrative-step"><strong>03. Fusi Keputusan</strong> Seluruh prediksi \(p_A, p_B, p_E\) digabungkan terbobot menjadi keputusan akhir \(\hat{y}\) (<em>late fusion</em>).</div>
+        </div>
+      </div>
+
+      <aside class="notes">
+        Tunjukkan bahwa ada DUA jenis fusi sekaligus pada diagram ini: fusi awal (garis putus-putus menuju Model Awal) dan fusi keputusan di ujung kanan. Inilah arti "hybrid". Manfaat praktisnya: bila satu modalitas hilang saat inferensi, jalur unimodal yang tersisa tetap bisa memberi prediksi — sehingga sistem tidak mati total seperti pada Early Fusion murni.
+      </aside>
+    </section>
+
+    <!-- SLIDE 15: HYBRID — KELEBIHAN & KEKURANGAN -->
+    <section>
+      <h2>Hybrid Fusion: Kelebihan &amp; Kekurangan</h2>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="pro-box">
+          <h5><span class="material-symbols-outlined">check_circle</span>Kelebihan</h5>
+          <ul style="margin: 6px 0 0 0; padding-left: 16px;">
+            <li><strong>Interaksi dalam sekaligus tangguh</strong> &mdash; memadukan keunggulan Early dan Late.</li>
+            <li><strong>Bertahan saat modalitas hilang</strong> karena jalur unimodal tetap berjalan.</li>
+            <li><strong>Kinerja potensial tertinggi</strong> untuk tugas yang kompleks dan beragam.</li>
+          </ul>
+        </div>
+
+        <div class="con-box">
+          <h5><span class="material-symbols-outlined">cancel</span>Kekurangan</h5>
+          <ul style="margin: 6px 0 0 0; padding-left: 16px;">
+            <li><strong>Kompleksitas tertinggi</strong> &mdash; banyak jalur dan titik fusi yang harus dirancang.</li>
+            <li><strong>Biaya komputasi besar</strong> karena harus melatih beberapa model sekaligus.</li>
+            <li><strong>Paling sulit dilatih</strong> dan paling sulit dilacak saat terjadi kegagalan.</li>
+          </ul>
+        </div>
+      </div>
+
+      <aside class="notes">
+        Tekankan trade-off-nya: Hybrid adalah pilihan paling kuat, tetapi juga paling mahal. Dalam praktik, Hybrid dipilih hanya bila peningkatan kinerja benar-benar dibutuhkan dan sumber daya tersedia — misalnya pada sistem produksi berdampak tinggi. Untuk prototipe atau penelitian awal, Intermediate biasanya lebih masuk akal.
+      </aside>
+    </section>
+
+    <!-- SLIDE 16: DIVIDER BAGIAN 4 -->
+    <section class="section-slide" style="background: radial-gradient(circle at 50% 50%, rgba(254,100,11,0.06) 0%, transparent 100%);">
+      <div class="section-slide-content">
+        <span class="section-part-label section-part-peach">Bagian 4</span>
+        <h1>Perbandingan &amp; Studi Kasus</h1>
+        <p class="subtitle">
+          Menyandingkan empat strategi fusi, lalu menguji pemilihannya pada satu kasus nyata.
+        </p>
+      </div>
+      <aside class="notes">Bagian penutup menyatukan seluruh strategi menjadi satu kerangka pemilihan, lalu mengujinya pada kasus konkret.</aside>
+    </section>
+
+    <!-- SLIDE 17: PERBANDINGAN EMPAT STRATEGI -->
+    <section>
+      <h2>Perbandingan Empat Strategi Fusi</h2>
+
+      <table class="c-table">
+        <thead>
+          <tr>
+            <th style="width: 20%;">Kriteria Evaluasi</th>
+            <th style="width: 20%;">Early</th>
+            <th style="width: 20%;">Intermediate</th>
+            <th style="width: 20%;">Late</th>
+            <th style="width: 20%;">Hybrid</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="c-table-criteria">Titik Gabung</td>
+            <td>Input / fitur mentah</td>
+            <td>Lapisan tengah</td>
+            <td>Keputusan akhir</td>
+            <td>Beberapa titik</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Interaksi Modalitas</td>
+            <td>Paling dalam</td>
+            <td>Menengah &amp; abstrak</td>
+            <td>Terbatas</td>
+            <td>Bervariasi</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Dimensi Gabungan</td>
+            <td>Sangat tinggi</td>
+            <td>Terkelola</td>
+            <td>Rendah</td>
+            <td>Bervariasi</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Modalitas Hilang</td>
+            <td>Rentan</td>
+            <td>Cukup tangguh</td>
+            <td>Tangguh</td>
+            <td>Paling tangguh</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Kompleksitas Desain</td>
+            <td>Sedang</td>
+            <td>Tinggi</td>
+            <td>Rendah</td>
+            <td>Paling tinggi</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <aside class="notes">
+        Minta mahasiswa membaca tabel ini secara horizontal, bukan vertikal: tidak ada kolom yang unggul di semua baris. Early menang di interaksi tetapi kalah di ketangguhan; Late sebaliknya; Intermediate menyeimbangkan; Hybrid unggul di ketangguhan tetapi paling mahal. Inilah bukti bahwa pemilihan fusi selalu berupa trade-off.
+      </aside>
+    </section>
+
+    <!-- SLIDE 18: PANDUAN MEMILIH -->
+    <section>
+      <h2>Panduan Memilih Strategi Fusi</h2>
+      <p>Empat pertanyaan penentu sebelum menetapkan skema fusi.</p>
+
+      <table class="c-table">
+        <thead>
+          <tr>
+            <th style="width: 40%;">Pertanyaan Penentu</th>
+            <th style="width: 20%;">Early</th>
+            <th style="width: 20%;">Intermediate</th>
+            <th style="width: 20%;">Late</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="c-table-criteria">Apakah modalitas tersinkron dan lengkap?</td>
+            <td>Ya</td>
+            <td>Ya</td>
+            <td>Tidak</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Apakah interaksi halus antar modalitas penting?</td>
+            <td>Ya</td>
+            <td>Ya</td>
+            <td>Tidak</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Apakah dimensi fitur menjadi kendala?</td>
+            <td>Tidak</td>
+            <td>Ya</td>
+            <td>Ya</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Apakah anggaran komputasi terbatas?</td>
+            <td>Tidak</td>
+            <td>Sedang</td>
+            <td>Ya</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <aside class="notes">
+        Tabel ini adalah kelanjutan langsung dari panduan pemilihan di Pertemuan 5, kini diperluas dengan Intermediate. Contoh penerapan: bila modalitas selalu tersedia dan interaksi penting, Early atau Intermediate; bila modalitas sering hilang, Late. Ingatkan bahwa Hybrid tidak masuk tabel ini karena ia dipilih sebagai pengecualian — ketika anggaran bukan kendala dan kinerja maksimal dibutuhkan.
+      </aside>
+    </section>
+
+    <!-- SLIDE 19: STUDI KASUS — VERIFIKASI BIOMETRIK -->
+    <section>
+      <h2>Studi Kasus: Verifikasi Identitas Biometrik</h2>
+      <p style="margin-bottom: 10px;">Sistem memverifikasi identitas dari <strong>citra wajah</strong> dan <strong>rekaman suara</strong>. Rancang skema fusinya.</p>
+
+      <div class="case-showcase" style="margin: 10px 0;">
+        <div class="case-input-pane">
+          <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-mauve); text-transform: uppercase; margin-bottom: 8px;">
+            Masukan Sistem
+          </div>
+          <ul style="margin: 0; padding-left: 16px; font-size: 0.82em; line-height: 1.6;">
+            <li>Citra wajah (visual) &mdash; diproses CNN.</li>
+            <li>Rekaman suara (audio) &mdash; diproses CNN/RNN pada spektrogram.</li>
+            <li>Keduanya berasal dari sesi perekaman yang sama, sehingga <strong>tersinkron</strong>.</li>
+            <li>Keputusan akhir biner: <strong>cocok</strong> atau <strong>tidak cocok</strong>.</li>
+          </ul>
+        </div>
+        <div class="case-model-pane">
+          <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-teal); text-transform: uppercase; margin-bottom: 8px;">
+            Kendala Rekayasa
+          </div>
+          <ul style="margin: 0; padding-left: 16px; font-size: 0.82em; line-height: 1.6;">
+            <li>Verifikasi harus <strong>cepat</strong> (dipakai di gerbang akses).</li>
+            <li>Kadang hanya wajah <em>atau</em> suara yang tersedia.</li>
+            <li>Keamanan menuntut kesalahan positif sangat kecil.</li>
+            <li>Sumber daya komputasi perangkat terbatas.</li>
+          </ul>
+        </div>
+      </div>
+
+      <aside class="notes">
+        Bacakan kasus dan kendalanya, lalu minta mahasiswa merancang skema dalam kelompok kecil sebelum slide berikutnya ditampilkan. Kasus ini sengaja punya tarikan ke dua arah: kendala "sering hanya satu modalitas tersedia" mendorong ke Late atau Hybrid, sementara keamanan menuntut akurasi tinggi yang mendorong ke Early atau Intermediate. Ketegangan itulah inti latihannya.
+      </aside>
+    </section>
+
+    <!-- SLIDE 20: STUDI KASUS — ANALISIS -->
+    <section>
+      <h2>Studi Kasus: Analisis Tiap Strategi</h2>
+
+      <table class="c-table">
+        <thead>
+          <tr>
+            <th style="width: 20%;">Kriteria</th>
+            <th style="width: 26%;">Early</th>
+            <th style="width: 27%;">Intermediate</th>
+            <th style="width: 27%;">Late / Hybrid</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="c-table-criteria">Kesesuaian Tugas</td>
+            <td>Kuat &mdash; interaksi wajah&ndash;suara dipelajari bersama.</td>
+            <td>Kuat &mdash; fitur abstrak digabung, dimensi terkelola.</td>
+            <td>Sedang &mdash; interaksi lintas modalitas terbatas.</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Kendala Modalitas Hilang</td>
+            <td>Gagal bila salah satu tidak ada.</td>
+            <td>Perlu mekanisme cadangan tambahan.</td>
+            <td>Tangguh &mdash; jalur tersisa tetap berfungsi.</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Biaya Komputasi</td>
+            <td>Sedang &mdash; satu model besar.</td>
+            <td>Tinggi &mdash; dua encoder.</td>
+            <td>Rendah&ndash;tinggi sesuai varian.</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Rekomendasi</td>
+            <td>Bila data selalu lengkap.</td>
+            <td><strong>Pilihan utama</strong> untuk akurasi.</td>
+            <td><strong>Cadangan</strong> bila modalitas sering hilang.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <aside class="notes">
+        Tekankan bahwa rekomendasi akhirnya bersyarat. Untuk verifikasi biometrik di gerbang akses, jawaban paling pragmatis sering kali Hybrid: jalur Intermediate mengejar akurasi, jalur unimodal menjaga sistem tetap berjalan saat salah satu modalitas gagal. Bandingkan dengan studi kasus deteksi emosi di Pertemuan 5, yang condong ke Early karena interaksi simultan lebih penting daripada ketangguhan.
+      </aside>
+    </section>
+
+    <!-- SLIDE 21: LATIHAN TERBIMBING -->
+    <section>
+      <h2>Latihan Terbimbing: Merancang Skema Fusi</h2>
+      <p>Menerapkan ketiga strategi pada satu tugas, dengan encoder pra-latih yang dibekukan.</p>
+
+      <div class="bridge-grid">
+        <div class="bridge-step">
+          <span class="c-num-circle c-num-blue">1</span>
+          <div>
+            <h4 style="color: var(--ctp-blue)">Encoder Beku</h4>
+            <p>Encoder visual dan audio sudah pra-latih; keduanya <strong>tidak</strong> dilatih ulang.</p>
+          </div>
+        </div>
+        <div class="bridge-step">
+          <span class="c-num-circle c-num-mauve">2</span>
+          <div>
+            <h4 style="color: var(--ctp-mauve)">Tiga Jalur</h4>
+            <p>Early (konkatenasi fitur), Late (rata-rata skor), dan Intermediate (gerbang adaptif).</p>
+          </div>
+        </div>
+        <div class="bridge-step">
+          <span class="c-num-circle c-num-teal">3</span>
+          <div>
+            <h4 style="color: var(--ctp-teal)">Bandingkan</h4>
+            <p>Ukur akurasi tiap jalur, termasuk saat satu modalitas sengaja dihilangkan.</p>
+          </div>
+        </div>
+        <div class="bridge-step">
+          <span class="c-num-circle c-num-green">4</span>
+          <div>
+            <h4 style="color: var(--ctp-green)">Argumentasi</h4>
+            <p>Pilih satu strategi, lalu pertanggungjawabkan pilihan Anda atas dasar data.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Kode hanya dikerjakan pada <strong>lapisan fusi</strong> &mdash; encoder dibiarkan beku agar fokus pada perbandingan strategi, bukan pelatihan ulang backbone.</div></div>
+      <div class="slide-links">
+        <a href="hands-on/mgg06-hands-on.html" class="slide-btn slide-btn-primary"><span class="material-symbols-outlined">science</span> Buka Lembar Kerja</a>
+        <a href="pdf/mgg06-hands-on.pdf" class="slide-btn slide-btn-secondary"><span class="material-symbols-outlined">picture_as_pdf</span> Unduh PDF</a>
+      </div>
+
+      <aside class="notes">
+        Tunjukkan dua tombol di bawah. Latihan ini sekaligus bekal untuk tugas individu: keduanya memakai pola yang sama, yaitu encoder beku dengan fokus pada lapisan fusi. Tujuannya agar mahasiswa merasakan langsung trade-off yang tadi dibahas secara teoretis.
+      </aside>
+    </section>
+
+    <!-- SLIDE 22: RANGKUMAN -->
+    <section>
+      <h2>Rangkuman &amp; Poin Kunci</h2>
+      <p>Benang merah dari titik tengah fusi hingga pemilihan strategi:</p>
+
+      <div class="grid-2" style="margin-top: 10px;">
+        <div class="c-card" style="background: var(--ctp-mantle);">
+          <div class="c-card-header">
+            <h4 style="color: var(--ctp-blue);">Intermediate &amp; Mekanisme</h4>
+          </div>
+          <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.7;">
+            <li><strong>Intermediate</strong> &rarr; gabung di lapisan tengah, setelah encoder sebelum kepala keputusan.</li>
+            <li><strong>Empat mekanisme</strong> &rarr; konkatenasi, <em>element-wise</em>, <em>gating</em>, <em>attention</em>.</li>
+            <li><strong>GMU</strong> &rarr; gerbang belajar menimbang kontribusi tiap modalitas.</li>
+            <li><strong>Trade-off</strong> &rarr; interaksi abstrak, dimensi terkelola, desain lebih rumit.</li>
+          </ul>
+        </div>
+        <div class="c-card" style="background: var(--ctp-mantle);">
+          <div class="c-card-header">
+            <h4 style="color: var(--ctp-mauve);">Hybrid &amp; Pemilihan</h4>
+          </div>
+          <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.7;">
+            <li><strong>Hybrid</strong> &rarr; beberapa titik fusi sekaligus dalam satu arsitektur.</li>
+            <li><strong>Kekuatan</strong> &rarr; interaksi dalam sekaligus tangguh saat modalitas hilang.</li>
+            <li><strong>Biaya</strong> &rarr; kompleksitas dan komputasi paling tinggi.</li>
+            <li><strong>Pemilihan</strong> &rarr; bergantung pada data, tugas, dan sumber daya komputasi.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 10px;">
+        <span class="material-symbols-outlined icon-blue">lightbulb</span>
+        <div>
+          <p style="font-size: 0.82em; margin: 0;">
+            <strong>Kunci:</strong> seluruh strategi fusi bertumpu pada asumsi bahwa fitur yang digabungkan <em>membicarakan hal yang sama</em>. Memastikan hal itu adalah persoalan <strong>penyejajaran</strong> &mdash; topik Pertemuan 7.
+          </p>
+        </div>
+      </div>
+
+      <aside class="notes">
+        Review keempat strategi dalam satu tarikan napas: Early di input, Intermediate di tengah, Late di output, Hybrid di beberapa titik. Tekankan jembatan ke Pertemuan 7: kita sudah selesai membahas pilar Fusion, dan sekarang beralih ke pilar ketiga, yaitu Alignment. Kekurangan Intermediate yang sensitif penyelarasan tadi menjadi pemicunya.
+      </aside>
+    </section>
+
+    <!-- SLIDE 23: DISKUSI -->
+    <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Diskusi Kelas">
+      <h2 style="text-align: center; margin-bottom: 24px;">Diskusi Kelas</h2>
+      <p style="text-align: center; margin-bottom: 24px;">Diskusikan bersama rekan di samping Anda selama 3-5 menit:</p>
+      <div style="display: flex; flex-direction: column; gap: 14px; max-width: 860px; margin: 0 auto;">
+        <div class="c-callout c-callout-info"><span class="material-symbols-outlined icon-blue">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-blue);">Pertanyaan 1:</strong> Mengapa <em>gating mechanism</em> dapat meningkatkan kinerja Intermediate Fusion dibandingkan konkatenasi sederhana?</p></div></div>
+        <div class="c-callout c-callout-warning"><span class="material-symbols-outlined icon-mauve">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-mauve);">Pertanyaan 2:</strong> Dalam situasi apa <em>Hybrid Fusion</em> menjadi satu-satunya pilihan yang layak untuk mencapai kinerja optimal?</p></div></div>
+        <div class="c-callout c-callout-success"><span class="material-symbols-outlined icon-teal">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-teal);">Pertanyaan 3:</strong> Bagaimana masalah <em>sparse correspondence</em> &mdash; hanya sebagian kecil data antar modalitas yang benar-benar relevan &mdash; dapat mempengaruhi pilihan titik fusi?</p></div></div>
+      </div>
+      <aside class="notes">Tiga pertanyaan menghubungkan mekanisme (gating), batas kemampuan strategi (Hybrid), dan pemicu masuknya topik penyejajaran (sparse correspondence). Pertanyaan ketiga sengaja dibiarkan menggantung sebagai pintu masuk Pertemuan 7. Beri waktu 3–5 menit, lalu minta beberapa kelompok berbagi.</aside>
+    </section>
+
+    <!-- SLIDE 24: REFERENSI -->
+    <section>
+      <h2>Referensi Utama &amp; Bacaan Lanjutan</h2>
+      <p style="margin-bottom: 20px;">Rekomendasi literatur akademik wajib dan bacaan lanjutan:</p>
+      <ol style="list-style: none; padding: 0; margin: 0; counter-reset: ref-counter;">
+        <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[1]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Baltru&scaron;aitis, T., Ahuja, C., &amp; Morency, L.-P. (2018).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Multimodal Machine Learning: A Survey and Taxonomy</em>. IEEE TPAMI, 40(2), 421&ndash;443. &mdash; taksonomi lengkap early/intermediate/late fusion.</p></div></li>
+        <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[2]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Arevalo, J., Solorio, T., Montes-y-G&oacute;mez, M., &amp; Gonz&aacute;lez, F. A. (2017).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Gated Multimodal Units for Information Fusion</em>. ICLR Workshop. &mdash; sumber rumus GMU pada sesi ini.</p></div></li>
+        <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[3]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Ramachandram, D., &amp; Taylor, G. W. (2017).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Deep Multimodal Learning: A Survey on Recent Advances and New Challenges</em>. arXiv:1709.00242. &mdash; tinjauan arsitektur fusi termasuk hybrid.</p></div></li>
+        <li style="counter-increment: ref-counter; padding: 14px 0; display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[4]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Liang, P., Zadeh, A., &amp; Morency, L.-P. (2023).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Tutorial on Multimodal Machine Learning</em>. ICML. &mdash; bagian strategi fusi dan pemilihan titik gabung.</p></div></li>
+      </ol>
+      <aside class="notes">Empat referensi: taksonomi kanonik (Baltrusaitis), paper GMU (Arevalo) yang menjadi sumber rumus, tinjauan arsitektur fusi (Ramachandram), dan tutorial ICML terbaru (Liang dkk.).</aside>
+    </section>
+
+    <!-- SLIDE 25: PENUTUP -->
+    <section>
+      <div style="margin: auto 0; text-align: center;">
+        <h2 style="font-size: 1.8em; font-weight: 800; color: var(--ctp-text); margin-bottom: 16px;">Terima Kasih</h2>
+        <p style="font-size: 1.05em; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.6;">Pertemuan selanjutnya:<br><strong style="color: var(--ctp-blue);">Penyejajaran (Alignment): Temporal &amp; Structural</strong></p>
+        <div style="background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-radius: 12px; padding: 18px 24px; display: inline-block; max-width: 480px;"><div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">Pertanyaan &amp; Diskusi</div><div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;"><span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span></div></div>
+      </div>
+      <aside class="notes">Tutup sesi. Rangkum perjalanan pilar Fusion: Early di input, Intermediate di tengah, Late di output, Hybrid di beberapa titik. Ingatkan bahwa kekurangan Intermediate yang sensitif terhadap penyelarasan menjadi pintu masuk Pertemuan 7, yaitu pilar Alignment.</aside>
+    </section>
+  </div></div>
+  <!-- Persistent Edge-to-Edge Deck Footer -->
+  <footer class="deck-footer">
+    <div class="deck-footer-left">
+      <span class="deck-footer-code">IF25-40304</span>
+      <span class="deck-footer-sep">&bull;</span>
+      <span class="deck-footer-dept">Teknik Informatika ITERA</span>
+    </div>
+
+    <div class="deck-footer-center">
+      <button type="button" id="deck-footer-topic" class="deck-footer-topic" onclick="toggleTopicPopover(event)" title="Daftar Isi & Navigasi Cepat Slide (Klik)">
+        <span id="deck-footer-topic-text" class="deck-footer-topic-text">Pertemuan 06 &bull; Strategi Fusi Multimodal II: Intermediate &amp; Hybrid Fusion</span>
+        <span class="material-symbols-outlined deck-footer-topic-icon">expand_less</span>
+      </button>
+    </div>
+
+    <div class="deck-footer-right">
+      <button type="button" class="deck-footer-btn" onclick="Reveal.prev()" title="Slide Sebelumnya (← / P)" aria-label="Slide Sebelumnya">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <button type="button" class="deck-counter-btn" onclick="Reveal.toggleOverview()" title="Klik untuk Matriks Seluruh Slide (Esc/O)">
+        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">25</span>
+      </button>
+      <button type="button" class="deck-footer-btn" onclick="Reveal.next()" title="Slide Berikutnya (→ / Space / N)" aria-label="Slide Berikutnya">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </footer>
+  <div class="deck-topic-popover" id="deck-topic-popover"><div class="deck-popover-search-wrap"><input type="text" id="deck-topic-search" class="deck-popover-search" placeholder="Cari slide..." oninput="filterTopicList(this.value)"></div><div class="deck-topic-list" id="deck-topic-list"></div></div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+  <script>
+
+    let currentAspectMode = localStorage.getItem('reveal_aspect_mode') || 'auto';
+
+    function calculateResponsiveDimensions(mode) {
+      const winW = window.innerWidth;
+      const winH = window.innerHeight - 86.5;
+      const ratio = winW / winH;
+
+      if (mode === '16-9') return { width: 1280, height: 720, label: '16:9' };
+      if (mode === '16-10') return { width: 1280, height: 800, label: '16:10' };
+      if (mode === '4-3') return { width: 1024, height: 768, label: '4:3' };
+      if (mode === 'mobile') return { width: 750, height: 1000, label: 'Mobile' };
+      if (mode === 'text-large') return { width: 960, height: 540, label: 'Teks Besar' };
+
+      // Auto mode
+      if (winW <= 768 || ratio < 1.15) {
+        return { width: 750, height: Math.max(900, Math.round(750 / Math.max(0.5, ratio))), label: 'Auto' };
+      } else if (ratio >= 1.65) {
+        return { width: 1280, height: 720, label: 'Auto' };
+      } else if (ratio >= 1.45) {
+        return { width: 1280, height: 800, label: 'Auto' };
+      } else {
+        return { width: 1024, height: 768, label: 'Auto' };
+      }
+    }
+
+    const initialDim = calculateResponsiveDimensions(currentAspectMode);
+
+    Reveal.initialize({
+      width: initialDim.width,
+      height: initialDim.height,
+      margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2.0,
+      hash: true,
+      slideNumber: false,
+      controls: false,
+      progress: false,
+      center: true,
+      touch: true,
+      transition: 'slide',
+      backgroundTransition: 'none',
+      plugins: [ RevealNotes, RevealHighlight, RevealMath.KaTeX ]
+    });
+
+    function updateDeckState(event) {
+      const indices = event ? { h: event.indexh, v: event.indexv } : Reveal.getIndices();
+      const totalSlides = Reveal.getTotalSlides();
+      const currentIdx = indices ? indices.h : 0;
+
+      const progressBar = document.getElementById('deck-progress-bar');
+      if (progressBar) {
+        const progressPercent = totalSlides > 1 ? (currentIdx / (totalSlides - 1)) * 100 : 0;
+        progressBar.style.width = progressPercent + '%';
+      }
+
+      const currentEl = document.getElementById('deck-slide-current');
+      const totalEl = document.getElementById('deck-slide-total');
+      if (currentEl) currentEl.textContent = String(currentIdx + 1).padStart(2, '0');
+      if (totalEl) totalEl.textContent = String(totalSlides).padStart(2, '0');
+
+      const topicEl = document.getElementById('deck-footer-topic-text') || document.getElementById('deck-footer-topic');
+      if (topicEl) {
+        if (currentIdx === 0) {
+          topicEl.textContent = 'Pertemuan 06 \u2022 Strategi Fusi Multimodal II: Intermediate & Hybrid Fusion';
+        } else {
+          const currentSlide = Reveal.getCurrentSlide();
+          if (currentSlide) {
+            const topicAttr = currentSlide.getAttribute('data-topic');
+            if (topicAttr) {
+              topicEl.textContent = topicAttr;
+            } else {
+              const heading = currentSlide.querySelector('h2') || currentSlide.querySelector('h1');
+              if (heading) {
+                topicEl.textContent = heading.textContent.trim();
+              } else {
+                topicEl.textContent = 'Pertemuan 06 \u2022 Strategi Fusi Multimodal II: Intermediate & Hybrid Fusion';
+              }
+            }
+          }
+        }
+      }
+
+      updateActiveTopicItem(currentIdx);
+    }
+
+    Reveal.on('ready', event => {
+      document.body.classList.add('reveal-ready');
+      updateDeckState(event);
+      buildTopicIndex();
+    });
+    Reveal.on('slidechanged', updateDeckState);
+
+    // =========================================================
+    // Floating Slide Topic Navigation Popover (Daftar Isi)
+    // =========================================================
+    function buildTopicIndex() {
+      const listEl = document.getElementById('deck-topic-list');
+      if (!listEl) return;
+
+      const slides = document.querySelectorAll('.reveal .slides > section');
+      let html = '';
+
+      slides.forEach((slide, idx) => {
+        const topicAttr = slide.getAttribute('data-topic');
+        const h1 = slide.querySelector('h1');
+        const h2 = slide.querySelector('h2');
+        const partEl = slide.querySelector('.section-part-label');
+        const isSectionSlide = slide.classList.contains('section-slide') || !!slide.querySelector('.section-slide-content');
+        const partText = partEl ? partEl.textContent.trim().replace(/\s+/g, ' ') : '';
+
+        const h1Text = h1 ? h1.textContent.trim().replace(/\s+/g, ' ') : '';
+        const h2Text = h2 ? h2.textContent.trim().replace(/\s+/g, ' ') : '';
+        let title = '';
+
+        if (idx === 0) {
+          title = h1Text || 'Strategi Fusi Multimodal II: Intermediate & Hybrid Fusion';
+          html += '<div class="deck-topic-section">Pendahuluan & Identitas</div>';
+        } else if (isSectionSlide || partText.startsWith('Bagian')) {
+          const secTitle = h1Text || h2Text || 'Bagian ' + idx;
+          const sectionLabel = partText ? partText + ': ' + secTitle : secTitle;
+          title = secTitle;
+          html += '<div class="deck-topic-section">' + sectionLabel + '</div>';
+        } else if (topicAttr) {
+          title = topicAttr;
+        } else {
+          title = h2Text || h1Text || 'Slide ' + (idx + 1);
+        }
+
+        const numStr = String(idx + 1).padStart(2, '0');
+        html += '<div class="deck-topic-item" data-slide-index="' + idx + '" onclick="jumpToSlide(' + idx + ')"><span class="deck-topic-num">' + numStr + '</span><span class="deck-topic-name" title="' + title + '">' + title + '</span></div>';
+      });
+
+      listEl.innerHTML = html;
+      const currentIdx = Reveal.getIndices ? Reveal.getIndices().h : 0;
+      updateActiveTopicItem(currentIdx);
+    }
+
+    function updateActiveTopicItem(currentIdx) {
+      document.querySelectorAll('.deck-topic-item').forEach(item => {
+        const idx = parseInt(item.getAttribute('data-slide-index'), 10);
+        item.classList.toggle('active', idx === currentIdx);
+      });
+    }
+
+    function toggleTopicPopover(e) {
+      if (e) e.stopPropagation();
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (!popover) return;
+
+      const isActive = popover.classList.toggle('active');
+      if (btn) btn.classList.toggle('active', isActive);
+
+      if (isActive) {
+        const activeItem = popover.querySelector('.deck-topic-item.active');
+        if (activeItem) {
+          activeItem.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }
+        const searchInput = document.getElementById('deck-topic-search');
+        if (searchInput) {
+          searchInput.value = '';
+          filterTopicList('');
+          setTimeout(() => searchInput.focus(), 80);
+        }
+      }
+    }
+
+    function closeTopicPopover() {
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (popover) popover.classList.remove('active');
+      if (btn) btn.classList.remove('active');
+    }
+
+    function jumpToSlide(index) {
+      Reveal.slide(index);
+      closeTopicPopover();
+    }
+
+    function filterTopicList(query) {
+      const q = (query || '').toLowerCase().trim();
+      const items = document.querySelectorAll('.deck-topic-item');
+      const sections = document.querySelectorAll('.deck-topic-section');
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const num = (item.querySelector('.deck-topic-num') || {}).textContent || '';
+        const name = (item.querySelector('.deck-topic-name') || {}).textContent || '';
+        const matches = !q || num.toLowerCase().includes(q) || name.toLowerCase().includes(q);
+        item.style.display = matches ? 'grid' : 'none';
+        if (matches) visibleCount++;
+      });
+
+      sections.forEach(sec => {
+        let nextEl = sec.nextElementSibling;
+        let hasVisibleChild = false;
+        while (nextEl && !nextEl.classList.contains('deck-topic-section')) {
+          if (nextEl.classList.contains('deck-topic-item') && nextEl.style.display !== 'none') {
+            hasVisibleChild = true;
+            break;
+          }
+          nextEl = nextEl.nextElementSibling;
+        }
+        sec.style.display = hasVisibleChild ? 'block' : 'none';
+      });
+
+      const listEl = document.getElementById('deck-topic-list');
+      let emptyMsg = document.getElementById('deck-topic-empty-msg');
+      if (visibleCount === 0) {
+        if (!emptyMsg) {
+          emptyMsg = document.createElement('div');
+          emptyMsg.id = 'deck-topic-empty-msg';
+          emptyMsg.className = 'deck-topic-empty';
+          emptyMsg.textContent = 'Tidak ada slide yang cocok dengan pencarian.';
+          listEl.appendChild(emptyMsg);
+        }
+        emptyMsg.style.display = 'block';
+      } else if (emptyMsg) {
+        emptyMsg.style.display = 'none';
+      }
+    }
+
+    function setAspectMode(mode) {
+      currentAspectMode = mode;
+      localStorage.setItem('reveal_aspect_mode', mode);
+      const dim = calculateResponsiveDimensions(mode);
+
+      Reveal.configure({
+        width: dim.width,
+        height: dim.height,
+        margin: 0.04,
+        minScale: 0.2,
+        maxScale: 2.0
+      });
+
+      document.body.classList.remove('aspect-16-9', 'aspect-16-10', 'aspect-4-3', 'aspect-mobile');
+      if (mode === 'auto') {
+        if (window.innerWidth <= 768) document.body.classList.add('aspect-mobile');
+      } else {
+        document.body.classList.add('aspect-' + mode);
+      }
+
+      const labelEl = document.getElementById('aspect-label');
+      if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+
+      document.querySelectorAll('.dropdown-item').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-aspect') === mode);
+      });
+
+      closeAspectDropdown();
+      setTimeout(() => Reveal.layout(), 50);
+    }
+
+    function toggleAspectDropdown(e) {
+      if (e) e.stopPropagation();
+      document.getElementById('aspect-menu').classList.toggle('active');
+    }
+
+    function closeAspectDropdown() {
+      const menu = document.getElementById('aspect-menu');
+      if (menu) menu.classList.remove('active');
+    }
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-dropdown')) closeAspectDropdown();
+      if (!e.target.closest('#deck-topic-popover') && !e.target.closest('#deck-footer-topic')) closeTopicPopover();
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (currentAspectMode === 'auto') {
+          const dim = calculateResponsiveDimensions('auto');
+          const cfg = Reveal.getConfig();
+          if (cfg.width !== dim.width || cfg.height !== dim.height) {
+            Reveal.configure({ width: dim.width, height: dim.height });
+            const labelEl = document.getElementById('aspect-label');
+            if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+            Reveal.layout();
+          }
+        }
+      }, 200);
+    });
+
+    window.addEventListener('DOMContentLoaded', () => setAspectMode(currentAspectMode));
+
+    function openShortcutsModal() {
+      document.getElementById('shortcuts-modal').classList.add('active');
+    }
+
+    function closeShortcutsModal(event) {
+      if (!event || event.target.id === 'shortcuts-modal' || event.target.classList.contains('modal-close')) {
+        document.getElementById('shortcuts-modal').classList.remove('active');
+      }
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const popover = document.getElementById('deck-topic-popover');
+        if (popover && popover.classList.contains('active')) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeTopicPopover();
+          return;
+        }
+      }
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        document.getElementById('shortcuts-modal').classList.toggle('active');
+      }
+    });
+
+  </script>
+</body></html>

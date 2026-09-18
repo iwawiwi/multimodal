@@ -33,17 +33,27 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Dijalankan SEBELUM build PDF: langkah ini menerbitkan `base_url`, yang
+      # dipakai export_pdf.py untuk menulis anotasi tautan absolut ke PDF.
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
       - name: Setup Chrome (for slide PDF export)
         uses: browser-actions/setup-chrome@v1
         with:
           chrome-version: stable
 
       - name: Build slide PDFs (Reveal.js)
+        env:
+          PAGES_BASE_URL: ${{ steps.pages.outputs.base_url }}
         run: |
           python3 scripts/export_pdf.py mgg01.html
           python3 scripts/export_pdf.py mgg02.html
           python3 scripts/export_pdf.py mgg03.html
           python3 scripts/export_pdf.py mgg04.html
+          python3 scripts/export_pdf.py mgg05.html
+          python3 scripts/export_pdf.py mgg06.html
 
       - name: Build hands-on PDFs (Vivliostyle)
         run: |
@@ -53,6 +63,8 @@ jobs:
           HANDSON_WEEK=03 npm run build:pdf
           HANDSON_WEEK=04 npm run bake
           HANDSON_WEEK=04 npm run build:pdf
+          HANDSON_WEEK=06 npm run bake
+          HANDSON_WEEK=06 npm run build:pdf
 
       - name: Verify PDFs exist
         run: |
@@ -61,12 +73,12 @@ jobs:
           test -f pdf/mgg02.pdf
           test -f pdf/mgg03.pdf
           test -f pdf/mgg04.pdf
+          test -f pdf/mgg05.pdf
+          test -f pdf/mgg06.pdf
           test -f pdf/mgg02-hands-on.pdf
           test -f pdf/mgg03-hands-on.pdf
           test -f pdf/mgg04-hands-on.pdf
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+          test -f pdf/mgg06-hands-on.pdf
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

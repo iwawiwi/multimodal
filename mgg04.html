@@ -654,7 +654,54 @@
       <aside class="notes">Enam tantangan video. Sorot redundansi temporal (frame mirip) dan anotasi mahal — keduanya mempengaruhi pilihan arsitektur dan strategi pelatihan.</aside>
     </section>
 
-    <!-- SLIDE 26: RANGKUMAN -->
+    <!-- SLIDE 26: LATIHAN TERBIMBING -->
+    <section>
+      <h2>Latihan Terbimbing: Dari Gelombang Suara ke Spektrogram</h2>
+      <p>Membaca audio dan video sebagai sinyal temporal, bukan data statis.</p>
+
+      <div class="bridge-grid">
+        <div class="bridge-step">
+          <span class="c-num-circle c-num-blue">1</span>
+          <div>
+            <h4 style="color: var(--ctp-blue)">Raw Waveform</h4>
+            <p>Bangkitkan nada murni, lalu amati bentuk gelombang dan teorema sampling Nyquist&ndash;Shannon.</p>
+          </div>
+        </div>
+        <div class="bridge-step">
+          <span class="c-num-circle c-num-mauve">2</span>
+          <div>
+            <h4 style="color: var(--ctp-mauve)">Spektrogram (STFT)</h4>
+            <p>Iris sinyal menjadi jendela waktu dan hasilkan peta 2D waktu &times; frekuensi.</p>
+          </div>
+        </div>
+        <div class="bridge-step">
+          <span class="c-num-circle c-num-teal">3</span>
+          <div>
+            <h4 style="color: var(--ctp-teal)">MFCC</h4>
+            <p>Padatkan spektrum Mel menjadi vektor koefisien ringkas yang menangkap timbre.</p>
+          </div>
+        </div>
+        <div class="bridge-step">
+          <span class="c-num-circle c-num-green">4</span>
+          <div>
+            <h4 style="color: var(--ctp-green)">Video sebagai Sekuens</h4>
+            <p>Perlakukan video sebagai urutan frame, lalu tunjukkan mengapa pendekatan ini mengabaikan gerakan.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Tujuan: mengamati sendiri bahwa audio dan video membawa <strong>dimensi waktu</strong> yang tidak dimiliki teks maupun gambar statis.</div></div>
+      <div class="slide-links">
+        <a href="hands-on/mgg04-hands-on.html" class="slide-btn slide-btn-primary"><span class="material-symbols-outlined">science</span> Buka Lembar Kerja</a>
+        <a href="pdf/mgg04-hands-on.pdf" class="slide-btn slide-btn-secondary"><span class="material-symbols-outlined">picture_as_pdf</span> Unduh PDF</a>
+      </div>
+
+      <aside class="notes">
+        Tunjukkan dua tombol di bawah. Seluruh percobaan memakai sinyal sintetis NumPy, jadi tidak ada berkas audio/video yang wajib diunduh.
+      </aside>
+    </section>
+
+    <!-- SLIDE 27: RANGKUMAN -->
     <section>
       <h2>Rangkuman &amp; Poin Kunci</h2>
       <p>Benang merah representasi audio dan video dari sinyal mentah hingga embedding berbasis deep learning.</p>
@@ -688,7 +735,7 @@
       <aside class="notes">Rangkum dua jalur representasi. Tekankan pola umum: CNN untuk struktur (spektrogram/frame), RNN/Transformer untuk temporal. Dimensi waktu adalah pembeda dari teks dan gambar.</aside>
     </section>
 
-    <!-- SLIDE 27: DISKUSI & REFLEKSI -->
+    <!-- SLIDE 28: DISKUSI & REFLEKSI -->
     <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Diskusi Kelas">
       <h2 style="text-align: center; margin-bottom: 24px;">Diskusi Kelas</h2>
       <p style="text-align: center; margin-bottom: 24px;">Diskusikan bersama rekan di samping Anda selama 3-5 menit:</p>
@@ -700,7 +747,7 @@
       <aside class="notes">Tiga pertanyaan diskusi menghubungkan representasi (spektrogram), pilihan arsitektur (3D CNN vs hibrid), dan pengaruh kompresi. Beri waktu 3–5 menit, lalu minta beberapa kelompok berbagi.</aside>
     </section>
 
-    <!-- SLIDE 28: REFERENSI -->
+    <!-- SLIDE 29: REFERENSI -->
     <section>
       <h2>Referensi Utama &amp; Bacaan Lanjutan</h2>
       <p style="margin-bottom: 20px;">Rekomendasi literatur akademik wajib dan bacaan lanjutan:</p>
@@ -714,7 +761,7 @@
       <aside class="notes">Lima referensi mencakup fondasi deep learning, tutorial multimodal, klasifikasi video (Karpathy), 3D CNN (Tran), dan pengenalan ucapan (Jurafsky &amp; Martin).</aside>
     </section>
 
-    <!-- SLIDE 29: PENUTUP -->
+    <!-- SLIDE 30: PENUTUP -->
     <section>
       <div style="margin: auto 0; text-align: center;">
         <h2 style="font-size: 1.8em; font-weight: 800; color: var(--ctp-text); margin-bottom: 16px;">Terima Kasih</h2>
@@ -744,7 +791,7 @@
         <span class="material-symbols-outlined">chevron_left</span>
       </button>
       <button type="button" class="deck-counter-btn" onclick="Reveal.toggleOverview()" title="Klik untuk Matriks Seluruh Slide (Esc/O)">
-        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">29</span>
+        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">30</span>
       </button>
       <button type="button" class="deck-footer-btn" onclick="Reveal.next()" title="Slide Berikutnya (→ / Space / N)" aria-label="Slide Berikutnya">
         <span class="material-symbols-outlined">chevron_right</span>

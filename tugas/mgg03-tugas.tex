@@ -45,7 +45,7 @@ Setelah menyelesaikan tugas ini, mahasiswa mampu:
 \begin{bclogo}[couleur=ctpBase, arrondi=0.1, logo=\bccrayon, ombre=false, couleurBord=ctpSurface, epBord=0.6]{Perhatikan hal berikut:}
   \begin{coloredPen}
     \item Tugas ini bersifat \textbf{individu}; tidak diperkenankan bekerja sama atau menyalin jawaban.
-    \item Seluruh eksperimen memakai \textbf{inferensi} pada ResNet50 pra-latih --- jangan melakukan \code{fit()}, \code{backward()}, atau pelatihan ulang classifier.
+    \item Seluruh eksperimen memakai \textbf{inferensi} pada ResNet50 pra-latih --- jangan melakukan \code{fit()}, \code{backward()}, atau pelatihan ulang classifier. Pada Soal 2 Anda \textbf{menghitung konvolusi secara manual} dan memverifikasinya dengan \code{torch.nn.functional.conv2d}; keduanya operasi maju (\emph{forward}), bukan pelatihan.
     \item Fokus tugas adalah mengamati dan menganalisis representasi visual, bukan melatih model baru.
     \item Siapkan gambar lokal yang dapat dibandingkan secara visual; unduh weights ResNet50 lebih awal.
   \end{coloredPen}
@@ -55,12 +55,13 @@ Setelah menyelesaikan tugas ini, mahasiswa mampu:
 % =============================================================
 \section{Perangkat Lunak dan Peralatan yang Diperlukan}\label{sec:requiredsw}
 
+{\emergencystretch=2em
 \begin{itemize}[itemsep=2pt,parsep=0pt,topsep=2pt,partopsep=2pt]
   \item[\color{ctpBlue}\faPython] \textbf{Python} 3.8 atau lebih baru.
-  \item[\color{ctpBlue}\faFileCode] \textbf{Paket wajib:} \code{torch}, \code{torchvision}, \code{Pillow}, \code{matplotlib}, \code{scikit-learn}.
+  \item[\color{ctpBlue}\faFileCode] \textbf{Paket wajib:} \code{torch}, \code{torchvision}, \code{Pillow}, \code{matplotlib}, \code{scikit-learn}, \code{numpy}.
   \item[\color{ctpBlue}\faImage] \textbf{Gambar:} dua atau lebih gambar dengan isi yang dapat dibandingkan secara visual.
   \item[\color{ctpBlue}\faDownload] \textbf{Internet:} saat pertama kali mengunduh weights ResNet50.
-\end{itemize}
+\end{itemize}}
 
 \begin{codewindow}{setup.sh}
 \begin{lstlisting}[style=pycode]
@@ -71,17 +72,20 @@ pip install torch torchvision pillow matplotlib scikit-learn
 \begin{minipage}{\linewidth}
 \begin{bclogo}[couleur=ctpMantle, arrondi=0.1, logo=\bcinfo, ombre=false, couleurBord=ctpSurface, epBord=0.6]{Batasan Cakupan}
   Seluruh tugas menggunakan inferensi pada model ResNet50 pra-latih. Jangan melakukan
-  \code{fit()}, \code{backward()}, atau pelatihan ulang classifier. Fokus tugas adalah
-  mengamati dan menganalisis representasi visual.
+  \code{fit()}, \code{backward()}, atau pelatihan ulang classifier. Pada Soal 2 Anda
+  \textbf{menghitung konvolusi secara manual} dan memverifikasinya dengan
+  \code{torch.nn.functional.conv2d}; keduanya operasi maju (\emph{forward}), bukan
+  pelatihan. Fokus tugas adalah mengamati dan menganalisis representasi visual.
 \end{bclogo}
 \end{minipage}
 
 % =============================================================
 \section{Pernyataan Masalah}\label{sec:intro}
 
-Tugas ini melengkapi materi Pertemuan 03 tentang representasi gambar, CNN, ResNet, dan transfer learning. Anda akan melakukan eksperimen inferensi menggunakan model ResNet50 pra-latih untuk memverifikasi tiga gagasan utama:
+Tugas ini melengkapi materi Pertemuan 03 tentang representasi gambar, CNN, ResNet, dan transfer learning. Anda akan melakukan eksperimen inferensi menggunakan model ResNet50 pra-latih untuk memverifikasi empat gagasan utama:
 \begin{enumerate}
   \item Gambar memiliki struktur spasial dan tiga kanal warna RGB, bukan sekadar daftar angka independen.
+  \item Konvolusi dan pooling menyaring pola lokal (tepi, tekstur) dengan jumlah parameter yang jauh lebih sedikit daripada lapisan \emph{fully connected}.
   \item CNN membangun representasi hierarkis dari pola lokal menuju fitur visual yang lebih abstrak.
   \item Backbone pra-latih dapat digunakan sebagai ekstraktor fitur visual tanpa melatih ulang model.
 \end{enumerate}
@@ -148,14 +152,127 @@ plt.show()
 \end{codewindow}
 
 % ------------------------------------------------------------
+
+% ------------------------------------------------------------
 \clearpage
-\subsection{Soal 2 --- ResNet50 sebagai Feature Extractor}
+\subsection{Soal 2 --- Konvolusi 2D dan Pooling}
 \label{sec:soal2}
+
+Slide 8 menuliskan operasi konvolusi sebagai $y(i,j) = \sum_{u,v} x(i+u, j+v)\, k(u,v)$, sedangkan slide 9 menjelaskan \emph{stride} dan \emph{padding}. Keduanya sering dipahami sebagai rumus hafalan. Soal ini menuntutnya dihitung pada satu contoh kecil sehingga terlihat bahwa setiap nilai \emph{feature map} hanyalah penjumlahan hasil kali piksel lokal dengan kernel.
+
+Perhatikan tambalan (\emph{patch}) abu-abu $6 \times 6$ berikut. Baris atas bernilai 0 (gelap) dan baris bawah bernilai 1 (terang), sehingga terdapat satu \textbf{tepi horizontal} di antara baris ketiga dan keempat.
+
+\begin{center}
+\ttfamily
+\begin{tabular}{@{}l@{}}
+patch = \\
+{[}0 0 0 0 0 0{]} \\
+{[}0 0 0 0 0 0{]} \\
+{[}0 0 0 0 0 0{]} \\
+{[}1 1 1 1 1 1{]} \\
+{[}1 1 1 1 1 1{]} \\
+{[}1 1 1 1 1 1{]} \\
+\end{tabular}
+\end{center}
+
+Gunakan dua kernel Sobel $3 \times 3$:
+
+\begin{equation*}
+k_y = \begin{bmatrix} -1 & -2 & -1 \\ 0 & 0 & 0 \\ 1 & 2 & 1 \end{bmatrix},
+\qquad
+k_x = \begin{bmatrix} -1 & 0 & 1 \\ -2 & 0 & 2 \\ -1 & 0 & 1 \end{bmatrix}
+\end{equation*}
+
+\subsubsection{Instruksi}
+\label{sec:soal2-instruksi}
+
+\textbf{(a)} Hitung \textbf{satu} nilai keluaran $y(1,0)$ secara manual: ambil jendela $3 \times 3$ dari \code{patch[1:4, 0:3]}, kalikan elemen demi elemen dengan $k_y$, lalu jumlahkan. Tuliskan langkah aritmetikanya, bukan hanya hasil akhirnya.
+
+\textbf{(b)} Hitung seluruh \emph{feature map} untuk $k_y$ dengan perulangan bersarang (\code{for} ganda) memakai \code{numpy}, lalu bandingkan dengan hasil \code{torch.nn.functional.conv2d}. Tampilkan kedua matriks dan selisih maksimumnya.
+
+\textbf{(c)} Untuk masukan $6 \times 6$ dan kernel $3 \times 3$, hitung ukuran keluaran dengan rumus
+\begin{equation*}
+H_{out} = \left\lfloor \frac{H - K + 2P}{S} \right\rfloor + 1
+\end{equation*}
+untuk tiga konfigurasi: $(P{=}0, S{=}1)$, $(P{=}1, S{=}1)$, dan $(P{=}1, S{=}2)$. Verifikasi setiap nilai dengan memeriksa \code{.shape} hasil \code{conv2d}.
+
+\textbf{(d)} Terapkan max pooling $2 \times 2$ pada \emph{feature map} $k_y$. Laporkan bentuk sebelum dan sesudahnya, serta nilai yang bertahan.
+
+\textbf{(e)} Jalankan langkah (b) dengan $k_x$ sebagai ganti $k_y$. Jelaskan mengapa hasilnya nol di seluruh posisi, padahal pada (b) tidak demikian. Kaitkan jawaban Anda dengan gagasan bahwa kernel \textbf{memilih} pola tertentu.
+
+\textbf{(f)} Bandingkan jumlah parameter sebuah \emph{fully connected layer} yang memetakan masukan $64 \times 64 \times 3$ ke 64 unit dengan sebuah lapisan konvolusi yang memakai 64 filter $3 \times 3$ (abaikan bias). Jelaskan mengapa \emph{parameter sharing} membuat konvolusi lebih layak dipakai pada gambar.
+
+\subsubsection{Contoh Kerangka Kode}
+\label{sec:soal2-kode}
+
+\begin{codewindow}{soal2\_konvolusi.py}
+\begin{lstlisting}[style=pycode]
+import numpy as np
+import torch
+import torch.nn.functional as F
+
+patch = np.array([[0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0],
+                  [0, 0, 0, 0, 0, 0],
+                  [1, 1, 1, 1, 1, 1],
+                  [1, 1, 1, 1, 1, 1],
+                  [1, 1, 1, 1, 1, 1]], dtype=np.float32)
+
+kernel_y = np.array([[-1, -2, -1],
+                     [ 0,  0,  0],
+                     [ 1,  2,  1]], dtype=np.float32)
+
+# (a) satu nilai secara manual
+window = patch[1:4, 0:3]
+print(window)
+print("y(1,0) =", (window * kernel_y).sum())
+
+# (b) seluruh feature map + verifikasi
+H, W = patch.shape
+K = kernel_y.shape[0]
+feature = np.zeros((H - K + 1, W - K + 1), dtype=np.float32)
+
+for i in range(feature.shape[0]):
+    for j in range(feature.shape[1]):
+        feature[i, j] = (patch[i:i+K, j:j+K] * kernel_y).sum()
+
+tensor = torch.from_numpy(patch)[None, None]
+weight = torch.from_numpy(kernel_y)[None, None]
+library = F.conv2d(tensor, weight)[0, 0].numpy()
+
+print(feature)
+print(library)
+print("selisih maks:", np.abs(feature - library).max())
+\end{lstlisting}
+\end{codewindow}
+
+\subsubsection{Pemeriksaan Mandiri}
+\label{sec:soal2-hasil}
+
+Tiga nilai berikut hanya untuk memeriksa apakah kode Anda berjalan benar. \textbf{Ukuran keluaran pada (c) dan penjelasan pada (e) sengaja tidak dicantumkan} karena keduanya termasuk yang dinilai.
+
+\begin{center}
+\small
+\begin{tabular}{@{}L{4.2cm} L{8.5cm}@{}}
+  \toprule \textbf{Pemeriksaan} & \textbf{Nilai yang benar} \\
+  \midrule
+  Hasil (a) & $y(1,0) = 4$ \\
+  \emph{Feature map} $k_y$ & bernilai $4$ pada dua baris tengah; nol pada baris teratas dan terbawah \\
+  Hasil (d) & $4 \times 4$ menjadi $2 \times 2$, seluruh nilainya $4$ \\
+  Selisih manual vs \code{conv2d} & $0.0$ \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+Jika selisih maksimum pada (b) tidak nol, periksa urutan indeks jendela (\code{patch[i:i+K, j:j+K]}) dan pastikan kernel tidak dibalik secara tidak sengaja.
+
+\subsection{Soal 3 --- ResNet50 sebagai Feature Extractor}
+\label{sec:soal2-resnet}
 
 ResNet50 yang telah dilatih pada ImageNet dapat digunakan sebagai backbone untuk menghasilkan embedding visual. Classifier terakhir dilepas sehingga keluaran model berupa vektor fitur berdimensi 2048.
 
 \subsubsection{Instruksi}
-\label{sec:soal2-instruksi}
+\label{sec:soal2resnet-instruksi}
 
 \textbf{(a)} Muat weights ResNet50 dan ubah classifier terakhir menjadi \code{torch.nn.Identity()}.
 
@@ -193,8 +310,8 @@ with torch.inference_mode():
 \end{itemize}
 
 % ------------------------------------------------------------
-\subsection{Soal 3 --- Kemiripan Kosinus Antar-Gambar}
-\label{sec:soal3}
+\subsection{Soal 4 --- Kemiripan Kosinus Antar-Gambar}
+\label{sec:soal3-kosinus}
 
 Dua gambar dapat dibandingkan melalui arah vektor embedding. Kemiripan kosinus dihitung dengan:
 \[
@@ -244,8 +361,8 @@ print(f"cosine similarity: {similarity:.4f}")
 
 % ------------------------------------------------------------
 \clearpage
-\subsection{Soal 4 --- Visualisasi Embedding Gambar}
-\label{sec:soal4}
+\subsection{Soal 5 --- Visualisasi Embedding Gambar}
+\label{sec:soal4-visual}
 
 Embedding 2048 dimensi sulit diamati secara langsung. Gunakan PCA untuk memproyeksikan beberapa embedding ke ruang dua dimensi.
 
@@ -254,7 +371,7 @@ Embedding 2048 dimensi sulit diamati secara langsung. Gunakan PCA untuk memproye
 
 \textbf{(a)} Siapkan minimal \textbf{6 gambar} yang terbagi ke dalam \textbf{2 atau 3 kelompok visual}. Contoh kelompok: hewan, kendaraan, makanan, atau pemandangan.
 
-\textbf{(b)} Ekstrak embedding setiap gambar menggunakan pipeline pada Soal 2.
+\textbf{(b)} Ekstrak embedding setiap gambar menggunakan pipeline pada Soal 3.
 
 \textbf{(c)} Reduksi embedding ke dua dimensi menggunakan PCA dan buat scatter plot berlabel.
 
@@ -291,8 +408,8 @@ plt.show()
 \end{itemize}
 
 % ------------------------------------------------------------
-\subsection{Soal 5 --- Analisis Kritis Representasi Visual}
-\label{sec:soal5}
+\subsection{Soal 6 --- Analisis Kritis Representasi Visual}
+\label{sec:soal5-analisis}
 
 Jawab pertanyaan berikut dalam bentuk paragraf singkat (masing-masing 5--8 kalimat):
 
@@ -356,8 +473,8 @@ Setiap berkas menggunakan awalan \code{mgg03\_tugas\_NIM} yang sama, dengan \cod
 \begin{callout}[ctpBlue]
 \textbf{\color{ctpBlue}Catatan Pengerjaan}
 \begin{itemize}
-  \item \textbf{Soal 1--4:} Wajib dikerjakan oleh semua mahasiswa.
-  \item \textbf{Soal 5:} Wajib dikerjakan sebagai analisis konseptual tanpa pelatihan model.
+  \item \textbf{Soal 1--5:} Wajib dikerjakan oleh semua mahasiswa.
+  \item \textbf{Soal 6:} Wajib dikerjakan sebagai analisis konseptual tanpa pelatihan model.
   \item \textbf{Estimasi waktu:} 2--3 jam.
 \end{itemize}
 \end{callout}

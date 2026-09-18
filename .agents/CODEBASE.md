@@ -21,7 +21,7 @@ Portal terdiri dari:
 ```
 multimodal-v2/
 ├── index.html                          # Portal perkuliahan (sticky hero + week cards grid)
-├── mgg01.html                          # Slide Pertemuan 01 (24 slide Reveal.js, ~78KB)
+├── mgg01.html                          # Slide Pertemuan 01 (25 slide Reveal.js)
 ├── css/
 │   ├── portal.css                      # Styling portal (header, cards, footer, responsive)
 │   └── catppuccin-latte.css            # Tema Reveal.js (full component system, ~600 baris)
@@ -244,12 +244,21 @@ git update-index --no-skip-worktree pdf/mggXX.pdf  # Unskip saat release
 
 | Item | Status |
 |:---|:---|
-| `index.html` (portal) | ✅ Selesai, 16 kartu minggu, 1 aktif |
-| `mgg01.html` (Pertemuan 01) | ✅ Selesai, 24 slide |
-| `mgg02.html` – `mgg15.html` | ❌ Belum dibuat |
-| PDF `mgg01.pdf` | ✅ Ada di `pdf/` |
+| `index.html` (portal) | ✅ Selesai, kartu minggu + milestone UTS/UAS |
+| `mgg01.html` | ✅ Selesai, 25 slide |
+| `mgg02.html` | ✅ Selesai, 30 slide |
+| `mgg03.html` | ✅ Selesai, 25 slide |
+| `mgg04.html` | ✅ Selesai, 30 slide |
+| `mgg05.html` | ✅ Selesai, 28 slide |
+| `mgg06.html` | ✅ Selesai, 25 slide |
+| `mgg07.html` – `mgg15.html` | ❌ Belum dibuat |
+| Hands-on 02/03/04/06 | ✅ `hands-on/mggNN-hands-on.html` |
+| Tugas 02/03/04/06 | ✅ `.md` + `.tex` (LaTeX, `tugas-style.sty`) — didistribusikan via LMS, tidak lewat portal (D-A11) |
 | Skill & design system | ✅ Lengkap (SKILL.md, tokens, template, scripts) |
-| Git commits | 2 commit (inisialisasi + fitur header-footer) |
+| CI (GitHub Pages) | ✅ Export PDF slide + hands-on |
+
+> Status mutakhir, keputusan aktif, dan aturan kerja ada di **`AGENTS.md`**
+> (dimuat otomatis oleh pi). Dokumen ini menjelaskan arsitektur, bukan status.
 
 ---
 

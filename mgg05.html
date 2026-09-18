@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pertemuan 05: Strategi Fusi Multimodal I — Early &amp; Late Fusion | ITERA</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <link rel="stylesheet" href="css/catppuccin-latte.css">
+</head>
+<body>
+  <header class="deck-header">
+    <div class="deck-header-left">
+      <a href="index.html" class="deck-brand-link" title="Kembali ke Portal Kuliah">
+        <img src="assets/img/logo_2.png" alt="Logo ITERA" class="deck-logo">
+        <img src="assets/img/dikti-saintek-berdampak-color.svg" alt="Logo Dikti Saintek Berdampak" class="deck-logo">
+      </a>
+    </div>
+
+    <div class="deck-header-right">
+      <!-- Aspect Ratio / Projector Switcher -->
+      <div class="nav-dropdown">
+        <button type="button" class="deck-ctrl-btn" id="aspect-btn" onclick="toggleAspectDropdown(event)" title="Sesuaikan Rasio Layar & Proyektor">
+          <span class="material-symbols-outlined">aspect_ratio</span>
+          <span id="aspect-label" class="deck-btn-label">Auto</span>
+          <span class="material-symbols-outlined" style="font-size: 14px;">arrow_drop_down</span>
+        </button>
+        <div class="nav-dropdown-menu" id="aspect-menu">
+          <button type="button" class="dropdown-item active" data-aspect="auto" onclick="setAspectMode('auto')">
+            <span class="item-title">Auto</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-9" onclick="setAspectMode('16-9')">
+            <span class="item-title">16:9</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-10" onclick="setAspectMode('16-10')">
+            <span class="item-title">16:10</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="4-3" onclick="setAspectMode('4-3')">
+            <span class="item-title">4:3</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="mobile" onclick="setAspectMode('mobile')">
+            <span class="item-title">Mobile</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="text-large" onclick="setAspectMode('text-large')">
+            <span class="item-title">Teks Besar</span>
+          </button>
+        </div>
+      </div>
+
+      <button type="button" class="deck-ctrl-btn" onclick="Reveal.toggleOverview()" title="Lihat Matriks Seluruh Slide (Esc/O)">
+        <span class="material-symbols-outlined">grid_view</span>
+        <span class="deck-btn-label">Overview</span>
+      </button>
+      <button type="button" class="deck-ctrl-btn" onclick="openShortcutsModal()" title="Panduan Pintasan Keyboard (?)">
+        <span class="material-symbols-outlined">keyboard</span>
+        <span class="deck-btn-label">Pintasan</span>
+      </button>
+      <a href="index.html" class="deck-ctrl-btn" title="Kembali ke Portal Kuliah">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span class="deck-btn-label">Portal</span>
+      </a>
+    </div>
+  </header>
+  <div class="deck-progress-track"><div class="deck-progress-bar" id="deck-progress-bar"></div></div>
+  <div id="shortcuts-modal" onclick="closeShortcutsModal(event)"><div class="modal-content" onclick="event.stopPropagation()"><div class="modal-header"><h4 style="margin:0;font-weight:800"><span class="material-symbols-outlined icon-blue">keyboard</span> Pintasan Navigasi Presentasi</h4><button class="modal-close" onclick="closeShortcutsModal()">&times;</button></div><div class="shortcut-row"><span>Slide berikutnya</span><span><span class="kbd-key">Space</span> / <span class="kbd-key">→</span></span></div><div class="shortcut-row"><span>Slide sebelumnya</span><span><span class="kbd-key">←</span></span></div><div class="shortcut-row"><span>Catatan dosen</span><span><span class="kbd-key">S</span></span></div></div></div>
+  <div class="reveal"><div class="slides">
+      <section id="deck-title">
+        <div style="margin: auto 0; text-align: left;">
+          <h1 style="font-size: 2.3em; line-height: 1.15; font-weight: 800; color: var(--ctp-text); margin-bottom: 12px; letter-spacing: -0.025em;">
+            Pembelajaran Mesin Multimodal
+          </h1>
+          <div style="font-size: 1.15em; font-weight: 600; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.4;">
+            Pertemuan 05 &bull; Strategi Fusi Multimodal I: Early &amp; Late Fusion
+          </div>
+          <div style="max-width: 620px; background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-left: 3.5px solid var(--ctp-blue); border-radius: 12px; padding: 18px 24px;">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">
+              Dosen Pengampu
+            </div>
+            <div style="font-size: 1.1em; font-weight: 800; color: var(--ctp-text); margin-bottom: 6px;">
+              I Wayan Wiprayoga Wisesa
+            </div>
+            <div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;">
+              Program Studi Teknik Informatika<br>
+              Jurusan Teknologi Produksi dan Industri<br>
+              Institut Teknologi Sumatera (ITERA)<br>
+              <span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Buka sesi Pertemuan 5. Ingatkan bahwa tiga pertemuan sebelumnya menuntaskan pilar pertama — representasi. Kini kita masuk ke pilar kedua: bagaimana informasi dari modalitas yang sudah direpresentasikan digabungkan menjadi satu keputusan.
+        </aside>
+      </section>
+
+    <!-- SLIDE 2: TUJUAN PEMBELAJARAN -->
+    <section>
+      <h2>Tujuan Pembelajaran Sesi Ini</h2>
+      <p style="margin-bottom: 24px;">Di akhir sesi kuliah ini, mahasiswa diharapkan mampu menguasai kompetensi dasar berikut:</p>
+
+      <div class="grid-4">
+        <div class="c-card c-card-accent-top c-card-blue">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-blue">01</span>
+            <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Peran Fusi</h4>
+          </div>
+          <p>Menjelaskan peran fusi dalam arsitektur multimodal beserta tiga masalah klasiknya.</p>
+        </div>
+
+        <div class="c-card c-card-accent-top c-card-mauve">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-mauve">02</span>
+            <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Early Fusion</h4>
+          </div>
+          <p>Menjelaskan mekanisme <em>Early Fusion</em> dan kapan ia menjadi pilihan tepat.</p>
+        </div>
+
+        <div class="c-card c-card-accent-top c-card-teal">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-teal">03</span>
+            <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Late Fusion</h4>
+          </div>
+          <p>Menjelaskan mekanisme <em>Late Fusion</em> dan keunggulan modularitasnya.</p>
+        </div>
+
+        <div class="c-card c-card-accent-top c-card-peach">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-peach">04</span>
+            <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Trade-off</h4>
+          </div>
+          <p>Mengevaluasi <em>trade-off</em> kedua strategi dan memilihnya sesuai karakteristik tugas.</p>
+        </div>
+      </div>
+
+      <aside class="notes">
+        Bacakan keempat capaian. Tekankan bahwa sesi ini bukan tentang menghafal dua nama strategi, melainkan tentang mengaitkan pilihan arsitektur dengan karakteristik data dan sumber daya komputasi.
+      </aside>
+    </section>
+
+    <!-- SLIDE 3: DIVIDER BAGIAN 1 -->
+    <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(30,102,245,0.06) 0%, transparent 100%);">
+      <div class="section-slide-content">
+        <span class="section-part-label section-part-blue">Bagian 1</span>
+        <h1>Dari Representasi ke Fusi</h1>
+        <p class="subtitle">
+          Mengapa menggabungkan informasi bukan sekadar menempelkan dua vektor, dan apa yang bisa gagal di dalamnya.
+        </p>
+      </div>
+      <aside class="notes">Bagian pertama bersifat konseptual: menempatkan fusi sebagai pilar kedua dan mengenalkan masalah-masalah yang harus dipecahkan sebelum bicara arsitektur.</aside>
+    </section>
+
+    <!-- SLIDE 4: TIGA PILAR — POSISI FUSI -->
+    <section>
+      <h2>Posisi Fusi dalam Peta Tantangan Multimodal</h2>
+      <p>Pertemuan 2&ndash;4 menuntaskan pilar <strong>Representasi</strong>. Sesi ini membuka pilar <strong>Fusi</strong>.</p>
+
+      <div class="grid-3" style="margin-top: 16px;">
+        <div class="c-card c-card-accent-top c-card-blue">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-blue">1</span>
+            <h3 style="color: var(--ctp-blue); margin: 0;">Representasi</h3>
+          </div>
+          <p>Memetakan data heterogen ke vektor yang saling kompatibel.</p>
+          <p style="margin: 10px 0 0 0; font-size: 0.78em; color: var(--ctp-green); font-weight: 700;"><span class="material-symbols-outlined icon-green" style="font-size: 15px; vertical-align: -3px;">check_circle</span> Sudah dibahas</p>
+        </div>
+
+        <div class="c-card c-card-accent-top c-card-mauve">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-mauve">2</span>
+            <h3 style="color: var(--ctp-mauve); margin: 0;">Penyejajaran</h3>
+          </div>
+          <p>Menghubungkan bagian yang berkorespondensi antar modalitas.</p>
+          <p style="margin: 10px 0 0 0; font-size: 0.78em; color: var(--ctp-peach); font-weight: 700;"><span class="material-symbols-outlined icon-peach" style="font-size: 15px; vertical-align: -3px;">arrow_forward</span> Pertemuan mendatang</p>
+        </div>
+
+        <div class="c-card c-card-accent-top c-card-teal">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-teal">3</span>
+            <h3 style="color: var(--ctp-teal); margin: 0;">Fusi</h3>
+          </div>
+          <p>Menggabungkan informasi yang telah disejajarkan menjadi satu keputusan.</p>
+          <p style="margin: 10px 0 0 0; font-size: 0.78em; color: var(--ctp-blue); font-weight: 700;"><span class="material-symbols-outlined icon-blue" style="font-size: 15px; vertical-align: -3px;">my_location</span> Fokus sesi ini</p>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 18px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Fusi beroperasi pada <em>output</em> representasi. Karena itu kualitas representasi masing-masing modalitas menjadi batas atas kinerja sistem multimodal.</div></div>
+
+      <aside class="notes">
+        Kaitkan kembali ke mgg01 slide 10. Tekankan urutan logisnya: representasi dulu, lalu penyejajaran, baru fusi. Fusi tidak bisa memperbaiki representasi yang buruk — ia hanya menggabungkan apa yang tersedia.
+      </aside>
+    </section>
+
+    <!-- SLIDE 5: MASALAH KLASIK DALAM FUSI -->
+    <section>
+      <h2>Masalah Klasik dalam Fusi</h2>
+      <p>Sebelum memilih arsitektur, ada empat masalah yang harus diantisipasi:</p>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="c-card c-card-accent-top c-card-blue">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-blue">1</span>
+            <h3 style="color: var(--ctp-blue); margin: 0;">Redundansi</h3>
+          </div>
+          <p>Informasi yang sama muncul di beberapa modalitas. Model harus belajar tidak menghitungnya dua kali.</p>
+        </div>
+
+        <div class="c-card c-card-accent-top c-card-peach">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-peach">2</span>
+            <h3 style="color: var(--ctp-peach); margin: 0;">Konflik</h3>
+          </div>
+          <p>Dua modalitas memberi sinyal yang bertentangan — misalnya wajah tampak tenang tetapi suara bergetar.</p>
+        </div>
+
+        <div class="c-card c-card-accent-top c-card-mauve">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-mauve">3</span>
+            <h3 style="color: var(--ctp-mauve); margin: 0;">Dominasi</h3>
+          </div>
+          <p>Satu modalitas lebih mudah dipelajari sehingga menenggelamkan sinyal dari modalitas lain.</p>
+        </div>
+
+        <div class="c-card c-card-accent-top c-card-teal">
+          <div class="c-card-header">
+            <span class="c-num-circle c-num-teal">4</span>
+            <h3 style="color: var(--ctp-teal); margin: 0;">Titik Gabung</h3>
+          </div>
+          <p>Di tahap mana informasi sebaiknya digabungkan? Keputusan ini menentukan seluruh arsitektur.</p>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Kerangka empat masalah ini akan dipakai kembali untuk menilai setiap strategi fusi &mdash; termasuk pada studi kasus di akhir sesi.</div></div>
+
+      <aside class="notes">
+        Empat masalah ini akan menjadi kriteria penilaian saat kita membandingkan Early dan Late Fusion. Minta mahasiswa mengaitkan tiap masalah dengan pengalaman mereka di Pertemuan 2–4 (misalnya redundansi antara caption dan gambar). Pertanyaan "titik gabung" inilah yang langsung menuju taksonomi tiga kategori. Ingatkan bahwa kita akan kembali ke kerangka ini pada akhir sesi.
+      </aside>
+    </section>
+
+    <!-- SLIDE 6: TAKSONOMI — KAPAN INFORMASI DIGABUNGKAN -->
+    <section>
+      <h2>Tiga Kategori Berdasarkan Titik Gabung</h2>
+      <p>Strategi fusi diklasifikasikan menurut <strong>tahap arsitektur</strong> tempat informasi modalitas digabungkan.</p>
+
+      <div class="pipeline-flow" style="grid-template-columns: repeat(3, 1fr); margin-top: 22px;">
+        <div class="pipeline-step">
+          <span class="material-symbols-outlined icon-blue">input</span>
+          <h3 style="color: var(--ctp-blue)">Early Fusion</h3>
+          <p>Gabung di <strong>input</strong> / fitur tingkat rendah</p>
+        </div>
+        <div class="pipeline-step">
+          <span class="material-symbols-outlined icon-mauve">layers</span>
+          <h3 style="color: var(--ctp-mauve)">Intermediate</h3>
+          <p>Gabung di <strong>lapisan tengah</strong> encoder</p>
+        </div>
+        <div class="pipeline-step">
+          <span class="material-symbols-outlined icon-teal">output</span>
+          <h3 style="color: var(--ctp-teal)">Late Fusion</h3>
+          <p>Gabung di <strong>keputusan</strong> / tingkat output</p>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 20px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Sesi ini membahas dua kutub: <strong>Early</strong> dan <strong>Late</strong>. Titik tengah &mdash; <em>Intermediate</em> dan <em>Hybrid</em> &mdash; dibahas di Pertemuan 6.</div></div>
+
+      <aside class="notes">
+        Gambarkan spektrum: makin awal penggabungan, makin dalam interaksi yang bisa dipelajari tetapi makin sulit menangani ketidaksinkronan. Makin akhir penggabungan, makin sederhana dan modular tetapi makin sedikit interaksi antar modalitas yang tertangkap. Tekankan bahwa tidak ada posisi yang unggul secara universal — akan dibuktikan pada slide studi kasus nanti.
+      </aside>
+    </section>
+
+    <!-- SLIDE 7: STRATEGI 1 — EARLY FUSION, MEKANISME -->
+    <section>
+      <h2>Early Fusion: Menggabungkan Sejak Awal</h2>
+      <p>Fitur dari semua modalitas digabungkan sebelum masuk ke satu model tunggal.</p>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px; overflow: hidden;">
+          <svg viewBox="0 0 400 332" role="img" aria-label="Diagram Early Fusion vertikal: modalitas visual dan audio masing-masing melewati encoder, kedua vektor fitur bertemu pada konkatenasi, lalu diproses oleh satu model bersama untuk menghasilkan prediksi" style="width: 100%; height: auto;">
+            <defs>
+              <marker id="ef-arr" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#1e66f5"/></marker>
+              <marker id="ef-arr2" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#8839ef"/></marker>
+              <marker id="ef-arr3" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#179299"/></marker>
+              <marker id="ef-arr4" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#40a02b"/></marker>
+            </defs>
+
+            <!-- Baris 1: dua modalitas masukan -->
+            <rect x="26" y="6" width="156" height="48" rx="10" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+            <text x="104" y="29" text-anchor="middle" fill="#4c4f69" font-size="19" font-family="sans-serif" font-weight="700">Visual</text>
+            <foreignObject x="26" y="32" width="156" height="22">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#1e66f5;">\(\mathbf{x}_A\)</div>
+            </foreignObject>
+
+            <rect x="218" y="6" width="156" height="48" rx="10" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
+            <text x="296" y="29" text-anchor="middle" fill="#4c4f69" font-size="19" font-family="sans-serif" font-weight="700">Audio</text>
+            <foreignObject x="218" y="32" width="156" height="22">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#8839ef;">\(\mathbf{x}_B\)</div>
+            </foreignObject>
+
+            <!-- Baris 2: encoder unimodal (fitur belum digabung) -->
+            <rect x="26" y="72" width="156" height="42" rx="10" fill="#eff1f5" stroke="#1e66f5" stroke-width="3"/>
+            <foreignObject x="26" y="72" width="156" height="42">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:18px;color:#1e66f5;">\(f_A\)</div>
+            </foreignObject>
+
+            <rect x="218" y="72" width="156" height="42" rx="10" fill="#eff1f5" stroke="#8839ef" stroke-width="3"/>
+            <foreignObject x="218" y="72" width="156" height="42">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:18px;color:#8839ef;">\(f_B\)</div>
+            </foreignObject>
+
+            <!-- Baris 3: titik fusi awal -->
+            <rect x="108" y="150" width="184" height="50" rx="10" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
+            <text x="200" y="172" text-anchor="middle" fill="#179299" font-size="17" font-family="sans-serif" font-weight="700">Konkatenasi</text>
+            <foreignObject x="108" y="174" width="184" height="26">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#4c4f69;">\([\,\mathbf{z}\,]\)</div>
+            </foreignObject>
+
+            <!-- Baris 4: satu model bersama -->
+            <rect x="108" y="224" width="184" height="48" rx="10" fill="#e6e9ef" stroke="#40a02b" stroke-width="3"/>
+            <text x="200" y="246" text-anchor="middle" fill="#40a02b" font-size="17" font-family="sans-serif" font-weight="700">Model Bersama</text>
+            <foreignObject x="108" y="248" width="184" height="24">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:17px;color:#40a02b;">\(g\)</div>
+            </foreignObject>
+
+            <!-- Alur: dua cabang bertemu, lalu satu jalur ke prediksi -->
+            <path d="M104 54 V72" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#ef-arr)"/>
+            <path d="M296 54 V72" fill="none" stroke="#8839ef" stroke-width="3" marker-end="url(#ef-arr2)"/>
+            <path d="M104 114 C104 133 150 131 172 148" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#ef-arr)"/>
+            <path d="M296 114 C296 133 250 131 228 148" fill="none" stroke="#8839ef" stroke-width="3" marker-end="url(#ef-arr2)"/>
+            <path d="M200 200 V224" fill="none" stroke="#179299" stroke-width="3" marker-end="url(#ef-arr3)"/>
+            <path d="M200 272 V300" fill="none" stroke="#40a02b" stroke-width="3" marker-end="url(#ef-arr4)"/>
+
+            <foreignObject x="170" y="300" width="60" height="30">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:20px;color:#40a02b;">\(\hat{y}\)</div>
+            </foreignObject>
+          </svg>
+        </div>
+        <div class="narrative-pane">
+          <div class="narrative-step"><strong>01. Praproses &amp; Ekstraksi Fitur</strong> Tiap modalitas dinormalisasi terpisah, lalu fitur tingkat rendahnya diambil: piksel, MFCC audio, atau <em>word embedding</em>.</div>
+          <div class="narrative-step"><strong>02. Konkatenasi</strong> Vektor fitur dari semua modalitas disambung menjadi satu vektor panjang.</div>
+          <div class="narrative-step"><strong>03. Model Bersama</strong> Vektor gabungan diumpankan ke satu model tunggal (MLP, CNN, atau Transformer).</div>
+        </div>
+      </div>
+
+      <aside class="notes">
+        Early Fusion juga disebut feature-level fusion. Kata kuncinya "satu model tunggal": hanya ada satu jalur pembelajaran, sehingga model dapat mempelajari korelasi antar modalitas sejak lapisan pertama. Diagram dibuat untuk memperlihatkan bahwa penggabungan terjadi SEBELUM pemrosesan mendalam — inilah yang membedakannya dari Intermediate Fusion di pertemuan berikutnya.
+      </aside>
+    </section>
+
+    <!-- SLIDE 8: EARLY FUSION — MATEMATIS -->
+    <section>
+      <h2>Early Fusion: Alur Matematis</h2>
+      <p>Konkatenasi fitur menghasilkan satu vektor yang diproses model bersama.</p>
+
+      <div class="formula-hero">
+        <div class="formula-label">Konkatenasi Fitur Tingkat Rendah</div>
+        <div class="formula-math">
+          $$\mathbf{z} = \left[\, f_A(\mathbf{x}_A) \;;\; f_B(\mathbf{x}_B) \,\right] \qquad \hat{y} = g(\mathbf{z})$$
+        </div>
+      </div>
+
+      <div class="formula-breakdown">
+        <div class="formula-term-box">
+          <strong>\(\mathbf{x}_A, \mathbf{x}_B\)</strong>
+          Data mentah dari dua modalitas, misalnya gambar <em>A</em> dan audio <em>B</em>.
+        </div>
+        <div class="formula-term-box">
+          <strong>\(f_A, f_B\)</strong>
+          Ekstraktor fitur unimodal. Pada varian paling awal, \(f\) bahkan berupa fungsi identitas sehingga data mentah langsung ditempel.
+        </div>
+        <div class="formula-term-box">
+          <strong>\(g(\cdot)\)</strong>
+          Satu model bersama yang memetakan vektor gabungan \(\mathbf{z}\) menjadi prediksi \(\hat{y}\).
+        </div>
+      </div>
+
+      <aside class="notes">
+        Simbol \([\;;\;]\) menyatakan konkatenasi, bukan penjumlahan. Tekankan konsekuensi dimensinya: jika \(f_A\) menghasilkan vektor 512-d dan \(f_B\) 256-d, maka \(\mathbf{z}\) berdimensi 768. Dimensi inilah yang tumbuh cepat ketika modalitas bertambah dan menjadi sumber risiko overfitting. Kaitkan kembali ke slide masalah klasik: redundansi membuat separuh dimensi \(\mathbf{z}\) mungkin berisi informasi yang sama.
+      </aside>
+    </section>
+
+    <!-- SLIDE 9: EARLY FUSION — KELEBIHAN & KEKURANGAN -->
+    <section>
+      <h2>Early Fusion: Kelebihan &amp; Kekurangan</h2>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="pro-box">
+          <h5><span class="material-symbols-outlined">check_circle</span>Kelebihan</h5>
+          <ul style="margin: 6px 0 0 0; padding-left: 16px;">
+            <li>Model dapat mempelajari <strong>interaksi antar modalitas sejak awal</strong>.</li>
+            <li>Konteks gabungan lebih kaya karena informasi tersedia bersamaan.</li>
+            <li>Hanya <strong>satu model</strong> yang perlu dilatih dan dipelihara.</li>
+          </ul>
+        </div>
+
+        <div class="con-box">
+          <h5><span class="material-symbols-outlined">cancel</span>Kekurangan</h5>
+          <ul style="margin: 6px 0 0 0; padding-left: 16px;">
+            <li><strong>Sensitif terhadap asinkronisitas</strong> — modalitas dengan laju berbeda sulit diselaraskan.</li>
+            <li><strong>Dimensi vektor membengkak</strong> sehingga komputasi berat dan rawan <em>overfitting</em>.</li>
+            <li><strong>Tidak robust terhadap modalitas hilang</strong> — input tidak lengkap membuat model gagal berfungsi.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 18px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Kekurangan terbesar Early Fusion bersifat <em>struktural</em>: karena hanya ada satu jalur, hilangnya satu modalitas berarti hilangnya seluruh input.</div></div>
+
+      <aside class="notes">
+        Hubungkan keempat kekurangan dengan empat masalah klasik. Asinkronisitas adalah wajah konkret dari masalah "titik gabung" — menggabungkan terlalu awal memaksa penyelarasan presisi sebelum sempat dipelajari. Poin modalitas hilang sangat penting untuk kasus nyata: sistem produksi sering menerima input tidak lengkap, dan Early Fusion tidak punya mekanisme mundur.
+      </aside>
+    </section>
+
+    <!-- SLIDE 10: ASINKRONISITAS -->
+    <section>
+      <h2>Asinkronisitas: Titik Rapuh Early Fusion</h2>
+      <p>Konkatenasi per langkah waktu menuntut kedua modalitas berbicara pada skala waktu yang sama.</p>
+
+      <div class="grid-3" style="margin-top: 16px;">
+        <div class="c-card c-card-accent-top c-card-blue">
+          <h3 style="color: var(--ctp-blue)">Audio: \(44.1\) kHz</h3>
+          <p>44.100 sampel per detik. Klip 2 detik mengandung <strong>88.200</strong> nilai.</p>
+        </div>
+        <div class="c-card c-card-accent-top c-card-mauve">
+          <h3 style="color: var(--ctp-mauve)">Video: \(30\) fps</h3>
+          <p>30 <em>frame</em> per detik. Klip 2 detik hanya mengandung <strong>60</strong> gambar.</p>
+        </div>
+        <div class="c-card c-card-accent-top c-card-teal">
+          <h3 style="color: var(--ctp-teal)">Rasio Data \(\frac{1}{1470}\)</h3>
+          <p>Satu <em>frame</em> video mencakup sekitar 1.470 sampel audio &mdash; tidak ada korespondensi satu-ke-satu.</p>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-warning" style="margin-top: 18px;"><span class="material-symbols-outlined icon-peach">warning</span><div>Early Fusion harus memilih <strong>satu basis waktu</strong> &mdash; umumnya menurunkan laju audio ke laju <em>frame</em>. Pemetaan yang salah langsung merusak vektor gabungan, sementara Late Fusion tidak pernah menghadapi masalah ini.</div></div>
+
+      <aside class="notes">
+        Angka nyata ini membuat abstraksi "asinkronisitas" menjadi konkret. Tekankan bahwa rasio 1:1.470 berarti Early Fusion terpaksa memilih representasi mana yang dikorbankan: menurunkan audio (kehilangan detail akustik) atau mengulang frame (menggandakan informasi visual). Late Fusion tidak pernah menghadapi dilema ini karena kedua model bekerja di laju aslinya masing-masing. Penanganan penyelarasan secara mendalam adalah materi minggu penyejajaran.
+      </aside>
+    </section>
+
+    <!-- SLIDE 11: DIVIDER BAGIAN 2 -->
+    <section class="section-slide" style="background: radial-gradient(circle at 90% 80%, rgba(23,146,153,0.06) 0%, transparent 100%);">
+      <div class="section-slide-content">
+        <span class="section-part-label section-part-teal">Bagian 2</span>
+        <h1>Late Fusion</h1>
+        <p class="subtitle">
+          Melatih model terpisah untuk setiap modalitas, lalu menggabungkan keputusannya di ujung pipeline.
+        </p>
+      </div>
+      <aside class="notes">Bagian kedua membahas kutub yang berlawanan. Tekankan bahwa perubahan titik gabung mengubah hampir semua sifat sistem, termasuk cara sistem gagal.</aside>
+    </section>
+
+    <!-- SLIDE 12: LATE FUSION — MEKANISME -->
+    <section>
+      <h2>Late Fusion: Menggabungkan di Ujung</h2>
+      <p>Setiap modalitas memiliki modelnya sendiri; yang digabungkan adalah <strong>keputusan</strong>, bukan fitur.</p>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px; overflow: hidden;">
+          <svg viewBox="0 0 400 332" role="img" aria-label="Diagram Late Fusion vertikal: modalitas visual dan audio masing-masing memiliki model sendiri, keduanya tetap terpisah sampai menghasilkan skor keyakinan p_A(c) dan p_B(c), baru kemudian keputusannya digabungkan oleh modul fusi untuk menghasilkan prediksi" style="width: 100%; height: auto;">
+            <defs>
+              <marker id="lf-arr" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#1e66f5"/></marker>
+              <marker id="lf-arr2" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#8839ef"/></marker>
+              <marker id="lf-arr3" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#179299"/></marker>
+              <marker id="lf-arr4" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#40a02b"/></marker>
+            </defs>
+
+            <!-- Baris 1: dua modalitas masukan -->
+            <rect x="26" y="6" width="156" height="48" rx="10" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+            <text x="104" y="29" text-anchor="middle" fill="#4c4f69" font-size="19" font-family="sans-serif" font-weight="700">Visual</text>
+            <foreignObject x="26" y="32" width="156" height="22">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#1e66f5;">\(\mathbf{x}_A\)</div>
+            </foreignObject>
+
+            <rect x="218" y="6" width="156" height="48" rx="10" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
+            <text x="296" y="29" text-anchor="middle" fill="#4c4f69" font-size="19" font-family="sans-serif" font-weight="700">Audio</text>
+            <foreignObject x="218" y="32" width="156" height="22">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#8839ef;">\(\mathbf{x}_B\)</div>
+            </foreignObject>
+
+            <!-- Baris 2: dua model unimodal, tetap terpisah -->
+            <rect x="26" y="72" width="156" height="42" rx="10" fill="#eff1f5" stroke="#1e66f5" stroke-width="3"/>
+            <text x="104" y="99" text-anchor="middle" fill="#1e66f5" font-size="18" font-family="sans-serif" font-weight="700">Model A</text>
+
+            <rect x="218" y="72" width="156" height="42" rx="10" fill="#eff1f5" stroke="#8839ef" stroke-width="3"/>
+            <text x="296" y="99" text-anchor="middle" fill="#8839ef" font-size="18" font-family="sans-serif" font-weight="700">Model B</text>
+
+            <!-- Baris 3: skor keyakinan, MASIH terpisah per modalitas -->
+            <rect x="26" y="150" width="156" height="50" rx="10" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
+            <foreignObject x="26" y="150" width="156" height="50">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#179299;">\(p_A(c \mid \mathbf{x}_A)\)</div>
+            </foreignObject>
+
+            <rect x="218" y="150" width="156" height="50" rx="10" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
+            <foreignObject x="218" y="150" width="156" height="50">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#179299;">\(p_B(c \mid \mathbf{x}_B)\)</div>
+            </foreignObject>
+
+            <!-- Baris 4: baru di sini keputusan digabung -->
+            <rect x="108" y="224" width="184" height="48" rx="10" fill="#e6e9ef" stroke="#40a02b" stroke-width="3"/>
+            <text x="200" y="244" text-anchor="middle" fill="#40a02b" font-size="16" font-family="sans-serif" font-weight="700">Fusi Keputusan</text>
+            <foreignObject x="108" y="247" width="184" height="24">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:15px;color:#4c4f69;">\(\sum_m w_m\,p_m\)</div>
+            </foreignObject>
+
+            <!-- Alur: dua jalur sejajar, bertemu hanya di akhir -->
+            <path d="M104 54 V72" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#lf-arr)"/>
+            <path d="M296 54 V72" fill="none" stroke="#8839ef" stroke-width="3" marker-end="url(#lf-arr2)"/>
+            <path d="M104 114 V150" fill="none" stroke="#179299" stroke-width="3" marker-end="url(#lf-arr3)"/>
+            <path d="M296 114 V150" fill="none" stroke="#179299" stroke-width="3" marker-end="url(#lf-arr3)"/>
+            <path d="M104 200 C104 216 150 214 172 222" fill="none" stroke="#179299" stroke-width="3" marker-end="url(#lf-arr3)"/>
+            <path d="M296 200 C296 216 250 214 228 222" fill="none" stroke="#179299" stroke-width="3" marker-end="url(#lf-arr3)"/>
+            <path d="M200 272 V300" fill="none" stroke="#40a02b" stroke-width="3" marker-end="url(#lf-arr4)"/>
+
+            <foreignObject x="170" y="300" width="60" height="30">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:20px;color:#40a02b;">\(\hat{y}\)</div>
+            </foreignObject>
+          </svg>
+        </div>
+        <div class="narrative-pane">
+          <div class="narrative-step"><strong>01. Model Terpisah</strong> Tiap modalitas dilatih modelnya sendiri: CNN untuk gambar, Transformer untuk teks.</div>
+          <div class="narrative-step"><strong>02. Prediksi Unimodal</strong> Setiap model menghasilkan kelas atau skor keyakinan secara independen.</div>
+          <div class="narrative-step"><strong>03. Fusi Keputusan</strong> Skor digabungkan melalui <em>voting</em>, rata-rata terbobot, atau <em>stacked classifier</em>.</div>
+        </div>
+      </div>
+
+      <aside class="notes">
+        Late Fusion juga dikenal sebagai decision-level fusion. Perhatikan bahwa kedua model bisa dilatih pada waktu berbeda, bahkan oleh tim berbeda — sifat inilah yang membuatnya populer di sistem produksi. Titik gabungnya sangat tipis: sering hanya berupa rata-rata empat baris kode, berbeda total dari Early Fusion yang menggabungkan data berdimensi besar.
+      </aside>
+    </section>
+
+    <!-- SLIDE 13: LATE FUSION — MATEMATIS -->
+    <section>
+      <h2>Late Fusion: Alur Matematis</h2>
+      <p>Yang digabungkan adalah skor keyakinan, bukan vektor fitur.</p>
+
+      <div class="formula-hero">
+        <div class="formula-label">Gabungan Skor Keyakinan</div>
+        <div class="formula-math">
+          $$\hat{y} = \operatorname*{arg\,max}_{c \in \mathcal{C}} \sum_{m} w_m \, p_m(c \mid \mathbf{x}_m)$$
+        </div>
+      </div>
+
+      <div class="formula-breakdown">
+        <div class="formula-term-box">
+          <strong>\(p_m(c \mid \mathbf{x}_m)\)</strong>
+          Skor keyakinan kelas \(c\) dari model unimodal ke-\(m\) terhadap input modalitasnya sendiri.
+        </div>
+        <div class="formula-term-box">
+          <strong>\(w_m\)</strong>
+          Bobot modalitas. Bila semua \(w_m = 1\) rumus menyusut menjadi <em>voting</em> atau rata-rata sederhana.
+        </div>
+        <div class="formula-term-box">
+          <strong>\(\mathcal{C}\)</strong>
+          Himpunan kelas keluaran. Argmax dipilih setelah skor seluruh modalitas dijumlahkan.
+        </div>
+      </div>
+
+      <aside class="notes">
+        Bandingkan dengan rumus Early Fusion di slide 8: di sana konkatenasi terjadi pada fitur, di sini penjumlahan terjadi pada distribusi probabilitas. Konsekuensinya, tiap model unimodal harus sudah mampu memprediksi kelas akhir sendiri. Bobot \(w_m\) biasanya ditentukan lewat validasi atau dilatih dengan stacked classifier. Jika satu modalitas hilang, cukup nolkan bobotnya — inilah sumber robustness-nya.
+      </aside>
+    </section>
+
+    <!-- SLIDE 14: MEKANISME FUSI KEPUTUSAN -->
+    <section>
+      <h2>Mekanisme Fusi Keputusan</h2>
+      <p>Empat cara menggabungkan skor keyakinan antar model unimodal pada Late Fusion.</p>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="c-card c-card-accent-top c-card-blue">
+          <h3 style="color: var(--ctp-blue)">Voting</h3>
+          <p>Pilih kelas yang paling banyak dipilih model. Sederhana dan kuat, tetapi mengabaikan besarnya keyakinan tiap model.</p>
+        </div>
+        <div class="c-card c-card-accent-top c-card-mauve">
+          <h3 style="color: var(--ctp-mauve)">Weighted Sum</h3>
+          <p>Jumlahkan skor dengan bobot \(w_m\) per modalitas. Bobot ditentukan melalui data validasi.</p>
+        </div>
+        <div class="c-card c-card-accent-top c-card-teal">
+          <h3 style="color: var(--ctp-teal)">Averaging</h3>
+          <p>Rata-ratakan seluruh skor keyakinan. Bentuk khusus <em>weighted sum</em> ketika semua bobot bernilai sama.</p>
+        </div>
+        <div class="c-card c-card-accent-top c-card-peach">
+          <h3 style="color: var(--ctp-peach)">Stacked Classifier</h3>
+          <p>Latih model kedua di atas vektor skor unimodal, sehingga cara penggabungan ikut dipelajari dari data.</p>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 18px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Keempat mekanisme ini bekerja pada <strong>ruang keputusan</strong> yang berdimensi kecil &mdash; itulah sebabnya Late Fusion murah secara komputasi.</div></div>
+
+      <aside class="notes">
+        Keempatnya berada di rumus yang sama pada slide sebelumnya: \(w_m\) membedakan weighted sum dari averaging, sedangkan stacked classifier mempelajari fungsi gabungannya alih-alih menetapkannya. Tekankan bahwa ruang kerjanya adalah distribusi probabilitas berukuran sekecil jumlah kelas, bukan vektor fitur — inilah sumber efisiensi komputasi Late Fusion.
+      </aside>
+    </section>
+
+    <!-- SLIDE 15: LATE FUSION — KELEBIHAN & KEKURANGAN -->
+    <section>
+      <h2>Late Fusion: Kelebihan &amp; Kekurangan</h2>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="pro-box">
+          <h5><span class="material-symbols-outlined">check_circle</span>Kelebihan</h5>
+          <ul style="margin: 6px 0 0 0; padding-left: 16px;">
+            <li><strong>Sederhana dan mudah di-<em>debug</em></strong> karena setiap model dapat diuji terpisah.</li>
+            <li><strong>Robust terhadap modalitas hilang</strong> — sistem tetap berjalan dengan modalitas yang tersisa.</li>
+            <li><strong>Modular</strong> — model unimodal dapat dilatih ulang atau diganti tanpa menyentuh yang lain.</li>
+            <li><strong>Toleran asinkronisitas</strong> karena hanya keputusan akhir yang perlu digabungkan.</li>
+          </ul>
+        </div>
+
+        <div class="con-box">
+          <h5><span class="material-symbols-outlined">cancel</span>Kekurangan</h5>
+          <ul style="margin: 6px 0 0 0; padding-left: 16px;">
+            <li><strong>Interaksi tingkat rendah terlewat</strong> — korelasi halus antar modalitas tidak pernah dipelajari.</li>
+            <li><strong>Konteks kurang kaya</strong> karena yang digabungkan hanya puncak keputusan.</li>
+            <li><strong>Bergantung pada model unimodal yang kuat</strong> — kualitas akhir dibatasi kualitas tiap komponen.</li>
+          </ul>
+        </div>
+      </div>
+
+      <aside class="notes">
+        Point penting: kekurangan Late Fusion adalah cerminan langsung kelebihan Early Fusion, dan sebaliknya. Inilah alasan Intermediate Fusion ada (Pertemuan 6) — ia berusaha mengambil keduanya. Tanyakan ke kelas: pada sistem produksi nyata, mana yang lebih sering Anda temui? Biasanya jawabannya Late Fusion karena kemudahan operasionalnya.
+      </aside>
+    </section>
+
+    <!-- SLIDE 16: DIVIDER BAGIAN 3 -->
+    <section class="section-slide" style="background: radial-gradient(circle at 50% 50%, rgba(136,57,239,0.06) 0%, transparent 100%);">
+      <div class="section-slide-content">
+        <span class="section-part-label section-part-mauve">Bagian 3</span>
+        <h1>Perbandingan &amp; Studi Kasus</h1>
+        <p class="subtitle">
+          Membandingkan kedua strategi secara sistematis, lalu menerapkannya pada satu kasus nyata.
+        </p>
+      </div>
+      <aside class="notes">Bagian ketiga menyatukan dua kutub dan mengujinya pada satu kasus konkret agar abstraksi taksonomi menjadi keputusan rekayasa yang bisa dipertanggungjawabkan.</aside>
+    </section>
+
+    <!-- SLIDE 17: PERBANDINGAN EARLY VS LATE -->
+    <section>
+      <h2>Perbandingan Early vs. Late Fusion</h2>
+
+      <table class="c-table">
+        <thead>
+          <tr>
+            <th style="width: 24%;">Kriteria Evaluasi</th>
+            <th style="width: 38%;">Early Fusion</th>
+            <th style="width: 38%;">Late Fusion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="c-table-criteria">Tahap Fusi</td>
+            <td>Input &amp; fitur tingkat rendah</td>
+            <td>Keputusan tingkat tinggi</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Interaksi Modalitas</td>
+            <td>Awal &amp; mendalam</td>
+            <td>Akhir &amp; terbatas</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Kompleksitas</td>
+            <td>Satu model besar, input berdimensi tinggi</td>
+            <td>Beberapa model kecil, fusi sederhana</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Modalitas Hilang</td>
+            <td>Rentan &mdash; model tidak berfungsi</td>
+            <td>Tangguh &mdash; model tetap berfungsi</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Asinkronisitas</td>
+            <td>Sulit ditangani</td>
+            <td>Lebih toleran</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Risiko Overfitting</td>
+            <td>Lebih tinggi (dimensi besar)</td>
+            <td>Lebih rendah (model kecil)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <aside class="notes">
+        Minta mahasiswa membaca tabel ini bukan sebagai daftar hafalan, tetapi sebagai daftar pertanyaan desain. Setiap baris mewakili satu keputusan yang harus diambil sebelum menulis kode. Perhatikan bahwa "Interaksi Modalitas" adalah satu-satunya baris yang menguntungkan Early Fusion — inilah trade-off sesungguhnya.
+      </aside>
+    </section>
+
+    <!-- SLIDE 18: PANDUAN MEMILIH STRATEGI -->
+    <section>
+      <h2>Panduan Memilih Strategi</h2>
+      <p>Empat pertanyaan penentu sebelum menetapkan titik gabung.</p>
+
+      <table class="c-table">
+        <thead>
+          <tr>
+            <th style="width: 46%;">Pertanyaan Penentu</th>
+            <th style="width: 27%;">Condong Early</th>
+            <th style="width: 27%;">Condong Late</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="c-table-criteria">Apakah modalitas tersinkron dan lengkap?</td>
+            <td>Ya</td>
+            <td>Tidak</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Apakah interaksi halus antar modalitas penting?</td>
+            <td>Ya</td>
+            <td>Tidak</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Apakah satu modalitas sering hilang saat inferensi?</td>
+            <td>Tidak</td>
+            <td>Ya</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Apakah anggaran komputasi terbatas?</td>
+            <td>Tidak</td>
+            <td>Ya</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <aside class="notes">
+        Tabel ini adalah rangkuman operasional dari seluruh sesi. Minta mahasiswa menerapkannya pada kasus deteksi emosi: modalitasnya tersinkron (video+audio satu rekaman) dan interaksinya penting, sehingga jawabannya condong Early — sejalan dengan analisis studi kasus. Namun bila rekaman sering tidak lengkap, jawabannya berbalik. Tekankan bahwa panduan ini adalah titik awal penalaran, bukan algoritma keputusan.
+      </aside>
+    </section>
+
+    <!-- SLIDE 19: TIDAK ADA YANG TERBAIK SECARA UNIVERSAL -->
+    <section style="display: flex; flex-direction: column; justify-content: center;">
+      <div class="big-idea-canvas">
+        <h2 class="big-idea-question">
+          Jika Early Fusion Menangkap Interaksi Lebih Dalam, Mengapa Tidak Selalu Dipakai?
+        </h2>
+        <p class="big-idea-takeaway">
+          <strong>Tidak ada strategi fusi yang terbaik secara universal.</strong> Pilihan bergantung pada karakteristik dataset, sifat tugas, tingkat sinkronisasi antar modalitas, dan sumber daya komputasi yang tersedia. Kedalaman interaksi adalah salah satu faktor &mdash; bukan satu-satunya.
+        </p>
+      </div>
+      <aside class="notes">
+        Ini slide kunci sesi. Biarkan pertanyaan menggantung beberapa detik sebelum menampilkan takeaway. Tekankan bahwa mahasiswa yang menjawab "Early Fusion selalu lebih baik" telah melewatkan pertimbangan operasional: data tidak sinkron, modalitas sering hilang, dan anggaran komputasi terbatas adalah kenyataan lapangan.
+      </aside>
+    </section>
+
+    <!-- SLIDE 20: STUDI KASUS — RUMUSAN MASALAH -->
+    <section>
+      <h2>Studi Kasus: Rumusan Masalah</h2>
+      <p style="margin-bottom: 12px;">Sistem mendeteksi emosi dari video dengan dua modalitas: <strong>ekspresi wajah</strong> (visual) dan <strong>intonasi suara</strong> (audio).</p>
+
+      <div class="grid-2">
+        <div class="c-card c-card-accent-top c-card-blue">
+          <h3 style="color: var(--ctp-blue)">Tugas</h3>
+          <p>Memetakan tiap rekaman ke satu kelas emosi (misalnya senang, sedih, marah, netral) untuk analisis umpan balik pengguna. Padanan publiknya antara lain CMU-MOSEI dan IEMOCAP.</p>
+        </div>
+        <div class="c-card c-card-accent-top c-card-peach">
+          <h3 style="color: var(--ctp-peach)">Kendala Nyata</h3>
+          <p>Rekaman sering bising; wajah kadang tidak terlihat karena menunduk atau terhalang; laju audio dan video tidak selalu presisi; data berlabel terbatas.</p>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-warning" style="margin-top: 14px;">
+        <span class="material-symbols-outlined icon-peach">help</span>
+        <div>
+          <p style="margin: 0 0 6px 0; font-size: 0.84em;"><strong>Tiga pertanyaan yang harus dijawab sebelum menulis kode</strong> &mdash; diskusikan 3 menit dengan rekan di samping Anda:</p>
+          <ol style="margin: 0; padding-left: 18px; font-size: 0.8em; line-height: 1.55;">
+            <li>Bagaimana <em>Early Fusion</em> diterapkan pada tugas ini?</li>
+            <li>Bagaimana <em>Late Fusion</em> diterapkan pada tugas ini?</li>
+            <li>Strategi mana yang lebih tepat, dan atas dasar apa?</li>
+          </ol>
+        </div>
+      </div>
+
+      <aside class="notes">
+        Jangan buru-buru menampilkan jawaban. Slide ini sengaja hanya merumuskan masalah; solusinya baru muncul pada dua slide berikutnya. Beri waktu 3 menit untuk diskusi berpasangan, lalu tampung dua atau tiga dugaan sebelum lanjut. Tekankan bahwa kendala nyata inilah yang membuat pemilihan strategi menjadi persoalan rekayasa, bukan sekadar preferensi. Sebutkan bahwa CMU-MOSEI dan IEMOCAP adalah dataset publik yang biasa dipakai untuk tugas semacam ini.
+      </aside>
+    </section>
+
+    <!-- SLIDE 21: STUDI KASUS — DETEKSI EMOSI -->
+    <section>
+      <h2>Studi Kasus: Deteksi Emosi dari Video</h2>
+      <p style="margin-bottom: 8px;">Sistem menerima dua modalitas: <strong>ekspresi wajah</strong> (visual) dan <strong>intonasi suara</strong> (audio). Bagaimana kedua strategi diterapkan?</p>
+
+      <div class="case-showcase" style="margin: 8px 0;">
+        <div class="case-input-pane">
+          <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-mauve); text-transform: uppercase; margin-bottom: 8px;">
+            Alur Early Fusion
+          </div>
+          <ul style="margin: 0; padding-left: 16px; font-size: 0.82em; line-height: 1.6;">
+            <li>Visual: CNN (mis. ResNet) mengekstrak fitur tiap <em>frame</em>.</li>
+            <li>Audio: CNN/RNN mengekstrak fitur dari spektrogram.</li>
+            <li>Fitur visual &amp; audio <strong>dikonkatenasi</strong> per langkah waktu.</li>
+            <li>Vektor gabungan &rarr; LSTM/Transformer &rarr; prediksi emosi.</li>
+          </ul>
+        </div>
+        <div class="case-model-pane">
+          <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-teal); text-transform: uppercase; margin-bottom: 8px;">
+            Alur Late Fusion
+          </div>
+          <ul style="margin: 0; padding-left: 16px; font-size: 0.82em; line-height: 1.6;">
+            <li>Model visual: memprediksi emosi <strong>hanya</strong> dari gambar.</li>
+            <li>Model audio: memprediksi emosi <strong>hanya</strong> dari suara.</li>
+            <li>Ambil skor probabilitas kedua model.</li>
+            <li>Gabungkan dengan rata-rata terbobot &rarr; prediksi emosi.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 8px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Emosi lahir dari <strong>interaksi simultan</strong> antara wajah dan suara. Karena itu Early Fusion berpotensi lebih kuat &mdash; asalkan sinkronisasi temporalnya ditangani dengan hati-hati.</div></div>
+
+      <aside class="notes">
+        Kasus ini dipilih karena emosi adalah fenomena yang secara alami multimodal: senyum yang disertai intonasi tertentu bermakna berbeda dari senyum tanpa intonasi itu. Perhatikan bahwa pada Early Fusion, konkatenasi dilakukan per langkah waktu sehingga butuh penyelarasan temporal yang presisi — inilah titik rapuhnya. Late Fusion tidak butuh penyelarasan karena tidak pernah mencampur fitur.
+      </aside>
+    </section>
+
+    <!-- SLIDE 22: STUDI KASUS — ANALISIS PILIHAN -->
+    <section>
+      <h2>Studi Kasus: Analisis Pilihan Strategi</h2>
+
+      <table class="c-table">
+        <thead>
+          <tr>
+            <th style="width: 26%;">Pertimbangan</th>
+            <th style="width: 37%;">Early Fusion</th>
+            <th style="width: 37%;">Late Fusion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="c-table-criteria">Kesesuaian dengan tugas</td>
+            <td>Kuat &mdash; menangkap interaksi wajah&ndash;suara secara simultan.</td>
+            <td>Terbatas &mdash; korelasi lintas modalitas tidak dipelajari.</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Syarat teknis</td>
+            <td>Wajib menyelaraskan <em>frame</em> video dengan bingkai audio.</td>
+            <td>Tidak perlu penyelarasan sama sekali.</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Risiko utama</td>
+            <td>Rekaman dengan laju gagal sinkron menurunkan kinerja.</td>
+            <td>Kehilangan sinyal emosi yang hanya tampak dari kombinasi.</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Jika satu modalitas hilang</td>
+            <td>Sistem tidak dapat digunakan.</td>
+            <td>Turun ke mode unimodal secara otomatis.</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Rekomendasi</td>
+            <td><strong>Pilihan utama</strong> bila data tersinkron dan lengkap.</td>
+            <td><strong>Cadangan</strong> bila data sering tidak lengkap atau asinkron.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <aside class="notes">
+        Tekankan bahwa rekomendasi akhirnya bersyarat, bukan mutlak: Early Fusion dipilih bila kualitas data mendukung, Late Fusion sebagai cadangan operasional. Dalam praktik, arsitektur hybrid yang menggabungkan keduanya justru sering dipakai — dan itulah materi Pertemuan 6. Ini juga contoh nyata mengapa "titik gabung" adalah keputusan rekayasa, bukan sekadar preferensi.
+      </aside>
+    </section>
+
+    <!-- SLIDE 23: EMPAT MASALAH KLASIK VS STRATEGI FUSI -->
+    <section>
+      <h2>Empat Masalah Klasik vs Strategi Fusi</h2>
+      <p>Menutup kerangka dari awal sesi: bagaimana Early dan Late menghadapi tiap masalah.</p>
+
+      <table class="c-table">
+        <thead>
+          <tr>
+            <th style="width: 20%;">Masalah</th>
+            <th style="width: 40%;">Early Fusion</th>
+            <th style="width: 40%;">Late Fusion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="c-table-criteria">Redundansi</td>
+            <td>Informasi ganda ikut tereplikasi di vektor gabungan, sehingga model harus belajar mengabaikannya.</td>
+            <td>Tidak menjadi masalah &mdash; tiap model unimodal berdiri sendiri.</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Konflik</td>
+            <td>Sinyal yang bertentangan bercampur dalam satu vektor, lalu harus diselesaikan di dalam model.</td>
+            <td>Konflik tampak sebagai selisih skor, dapat ditangani lewat bobot atau <em>stacked classifier</em>.</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Dominasi</td>
+            <td>Modalitas berdimensi besar cenderung menenggelamkan modalitas lain.</td>
+            <td>Bobot tiap modalitas dapat diatur secara eksplisit.</td>
+          </tr>
+          <tr>
+            <td class="c-table-criteria">Titik Gabung</td>
+            <td>Di input &mdash; wajib selaras sebelum digabungkan.</td>
+            <td>Di output &mdash; bebas dari urusan penyelarasan.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <aside class="notes">
+        Kembalikan mahasiswa ke slide 5, tempat keempat masalah ini diperkenalkan. Tunjukkan bahwa Early dan Late bukan jawaban yang sama untuk masalah yang sama: pada redundansi dan konflik, Late justru lebih menguntungkan, sedangkan Early menang pada kedalaman interaksi. Inilah dasar mengapa pemilihan strategi selalu berupa trade-off. Sebutkan bahwa Intermediate dan Hybrid akan menawarkan cara penanganan lain pada pertemuan berikutnya.
+      </aside>
+    </section>
+
+    <!-- SLIDE 24: KETIKA FUSI TIDAK MENGALAHKAN UNIMODAL -->
+    <section>
+      <h2>Ketika Fusi Tidak Mengalahkan Unimodal</h2>
+      <p>Menambahkan modalitas <strong>tidak otomatis</strong> meningkatkan kinerja. Tiga penyebab utamanya:</p>
+
+      <div class="grid-3" style="margin-top: 16px;">
+        <div class="c-card c-card-blue c-card-accent-top">
+          <h3 style="color: var(--ctp-blue)">Dominasi Modalitas</h3>
+          <p>Satu modalitas membawa hampir seluruh sinyal; yang lain hanya menambah derau sehingga fusi justru memperburuk prediksi.</p>
+        </div>
+        <div class="c-card c-card-mauve c-card-accent-top">
+          <h3 style="color: var(--ctp-mauve)">Overfitting pada Data Kecil</h3>
+          <p>Parameter tambahan dari lapisan fusi tidak terbayar bila jumlah data berlabel terbatas.</p>
+        </div>
+        <div class="c-card c-card-teal c-card-accent-top">
+          <h3 style="color: var(--ctp-teal)">Penyelarasan yang Salah</h3>
+          <p>Fitur yang tidak benar-benar berkorespondensi digabungkan, sehingga fusi menyuntikkan derau alih-alih informasi.</p>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-warning" style="margin-top: 16px;">
+        <span class="material-symbols-outlined icon-maroon">warning</span>
+        <div><strong>Aturan diagnostik:</strong> selalu laporkan <strong>baseline unimodal</strong> pada metrik yang sama (akurasi atau F1). Bila fusi tidak mengalahkan model unimodal terbaik, fusi itu belum menambah nilai &mdash; periksa ketiga penyebab di atas sebelum menambah kompleksitas.</div>
+      </div>
+
+      <aside class="notes">
+        Ini pesan kritis yang sering dilewatkan: sistem multimodal tidak dijamin lebih baik daripada model unimodal terbaik. Mintalah mahasiswa membayangkan kasus deteksi emosi ketika wajah selalu tertutup masker — sinyal audio menjadi dominan, dan memaksakan fusi visual justru menurunkan kinerja. Tekankan praktik baiknya: laporkan selalu baseline unimodal, karena tanpa pembanding angka akurasi fusi tidak bermakna. Ini juga alasan mengapa pengukuran per-modalitas diperlukan di pertemuan evaluasi nanti.
+      </aside>
+    </section>
+
+    <!-- SLIDE 25: RANGKUMAN -->
+    <section>
+      <h2>Rangkuman &amp; Poin Kunci</h2>
+      <p>Benang merah dari peran fusi hingga pemilihan strategi:</p>
+
+      <div class="grid-2" style="margin-top: 10px;">
+        <div class="c-card" style="background: var(--ctp-mantle);">
+          <div class="c-card-header">
+            <h4 style="color: var(--ctp-blue);">Konsep &amp; Masalah</h4>
+          </div>
+          <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.7;">
+            <li><strong>Fusi</strong> &rarr; menggabungkan informasi untuk keputusan yang lebih baik.</li>
+            <li><strong>Empat masalah</strong> &rarr; redundansi, konflik, dominasi, titik gabung.</li>
+            <li><strong>Titik gabung</strong> &rarr; penentu utama taksonomi strategi fusi.</li>
+            <li><strong>Tidak otomatis lebih baik</strong> &rarr; fusi harus mengalahkan baseline unimodal.</li>
+          </ul>
+        </div>
+        <div class="c-card" style="background: var(--ctp-mantle);">
+          <div class="c-card-header">
+            <h4 style="color: var(--ctp-mauve);">Dua Strategi</h4>
+          </div>
+          <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.7;">
+            <li><strong>Early Fusion</strong> &rarr; konkatenasi fitur di awal; interaksi kaya, rapuh saat modalitas hilang.</li>
+            <li><strong>Late Fusion</strong> &rarr; gabung keputusan di akhir; modular dan tangguh, interaksi terbatas.</li>
+            <li><strong>Pemilihan</strong> &rarr; bergantung pada data, tugas, dan sumber daya komputasi.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 10px;">
+        <span class="material-symbols-outlined icon-blue">lightbulb</span>
+        <div>
+          <p style="font-size: 0.82em; margin: 0;">
+            <strong>Kunci:</strong> Early dan Late Fusion adalah dua kutub spektrum. Pertemuan 6 membahas titik tengahnya &mdash; <em>Intermediate</em> dan <em>Hybrid Fusion</em> &mdash; yang berusaha mengambil kelebihan keduanya.
+          </p>
+        </div>
+      </div>
+
+      <aside class="notes">
+        Review kembali poin-poin. Minta mahasiswa menjelaskan dengan kalimat sendiri perbedaan Early dan Late Fusion, lalu sebutkan satu kelebihan dan satu kekurangan masing-masing. Tekankan jembatan ke pertemuan berikutnya: Intermediate Fusion menggabungkan di lapisan tengah sehingga dimensi lebih terkelola tetapi interaksi tetap dalam.
+      </aside>
+    </section>
+
+    <!-- SLIDE 26: DISKUSI & REFLEKSI -->
+    <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Diskusi Kelas">
+      <h2 style="text-align: center; margin-bottom: 24px;">Diskusi Kelas</h2>
+      <p style="text-align: center; margin-bottom: 24px;">Diskusikan bersama rekan di samping Anda selama 3-5 menit:</p>
+      <div style="display: flex; flex-direction: column; gap: 14px; max-width: 860px; margin: 0 auto;">
+        <div class="c-callout c-callout-info"><span class="material-symbols-outlined icon-blue">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-blue);">Pertanyaan 1:</strong> Dalam kasus apa <em>Late Fusion</em> lebih disukai daripada <em>Early Fusion</em>, bahkan ketika ada potensi interaksi antar modalitas?</p></div></div>
+        <div class="c-callout c-callout-warning"><span class="material-symbols-outlined icon-mauve">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-mauve);">Pertanyaan 2:</strong> Bagaimana Anda menangani asinkronisitas data video dan audio jika terpaksa memakai <em>Early Fusion</em>? Langkah teknis apa yang diperlukan?</p></div></div>
+        <div class="c-callout c-callout-success"><span class="material-symbols-outlined icon-teal">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-teal);">Pertanyaan 3:</strong> Selain <em>voting</em> dan rata-rata, bagaimana cara lain menggabungkan keputusan pada <em>Late Fusion</em>? Pertimbangkan <em>stacked classifier</em>.</p></div></div>
+      </div>
+      <aside class="notes">Tiga pertanyaan diskusi menghubungkan trade-off strategi (Pertanyaan 1), aspek teknis penyelarasan (Pertanyaan 2), dan perluasan mekanisme fusi keputusan (Pertanyaan 3). Beri waktu 3–5 menit, lalu minta beberapa kelompok berbagi.</aside>
+    </section>
+
+    <!-- SLIDE 27: REFERENSI -->
+    <section>
+      <h2>Referensi Utama &amp; Bacaan Lanjutan</h2>
+      <p style="margin-bottom: 20px;">Rekomendasi literatur akademik wajib dan bacaan lanjutan:</p>
+      <ol style="list-style: none; padding: 0; margin: 0; counter-reset: ref-counter;">
+        <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[1]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Baltru&scaron;aitis, T., Ahuja, C., &amp; Morency, L.-P. (2018).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Multimodal Machine Learning: A Survey and Taxonomy</em>. IEEE TPAMI, 40(2), 421&ndash;443. &mdash; bagian <em>Fusion</em>: taksonomi early/late/intermediate.</p></div></li>
+        <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[2]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Liang, P., Zadeh, A., &amp; Morency, L.-P. (2023).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Tutorial on Multimodal Machine Learning</em>. ICML. &mdash; bagian strategi fusi dan pemilihan titik gabung.</p></div></li>
+        <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[3]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Ramachandram, D., &amp; Taylor, G. W. (2017).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Deep Multimodal Learning: A Survey on Recent Advances and New Challenges</em>. arXiv:1709.00242. &mdash; tinjauan arsitektur fusi.</p></div></li>
+        <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[4]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Goodfellow, I., Bengio, Y., &amp; Courville, A. (2016).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Deep Learning</em>. MIT Press. &mdash; dasar arsitektur jaringan yang dipakai pada model fusi.</p></div></li>
+        <li style="counter-increment: ref-counter; padding: 14px 0; display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[5]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Zadeh, A., et al. (2018).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Multimodal Language Analysis in the Wild: CMU-MOSEI Dataset and Interpretable Dynamic Fusion Graph</em>. ACL. &mdash; dataset rujukan untuk studi kasus deteksi emosi.</p></div></li>
+      </ol>
+      <aside class="notes">Lima referensi: taksonomi kanonik multimodal (Baltrusaitis), tutorial ICML terbaru (Liang dkk.), tinjauan arsitektur fusion (Ramachandram), fondasi deep learning (Goodfellow), dan dataset CMU-MOSEI (Zadeh dkk.) yang menjadi rujukan studi kasus deteksi emosi.</aside>
+    </section>
+
+    <!-- SLIDE 28: PENUTUP -->
+    <section>
+      <div style="margin: auto 0; text-align: center;">
+        <h2 style="font-size: 1.8em; font-weight: 800; color: var(--ctp-text); margin-bottom: 16px;">Terima Kasih</h2>
+        <p style="font-size: 1.05em; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.6;">Pertemuan selanjutnya:<br><strong style="color: var(--ctp-blue);">Strategi Fusi Multimodal II: Intermediate &amp; Hybrid Fusion</strong></p>
+        <div style="background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-radius: 12px; padding: 18px 24px; display: inline-block; max-width: 480px;"><div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">Pertanyaan &amp; Diskusi</div><div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;"><span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span></div></div>
+      </div>
+      <aside class="notes">Tutup sesi. Ingatkan bahwa Early dan Late Fusion adalah dua kutub spektrum. Pertemuan berikutnya membahas titik tengahnya, yaitu Intermediate dan Hybrid Fusion, yang berusaha menggabungkan kelebihan keduanya.</aside>
+    </section>
+  </div></div>
+  <!-- Persistent Edge-to-Edge Deck Footer -->
+  <footer class="deck-footer">
+    <div class="deck-footer-left">
+      <span class="deck-footer-code">IF25-40304</span>
+      <span class="deck-footer-sep">&bull;</span>
+      <span class="deck-footer-dept">Teknik Informatika ITERA</span>
+    </div>
+
+    <div class="deck-footer-center">
+      <button type="button" id="deck-footer-topic" class="deck-footer-topic" onclick="toggleTopicPopover(event)" title="Daftar Isi & Navigasi Cepat Slide (Klik)">
+        <span id="deck-footer-topic-text" class="deck-footer-topic-text">Pertemuan 05 &bull; Strategi Fusi Multimodal I: Early &amp; Late Fusion</span>
+        <span class="material-symbols-outlined deck-footer-topic-icon">expand_less</span>
+      </button>
+    </div>
+
+    <div class="deck-footer-right">
+      <button type="button" class="deck-footer-btn" onclick="Reveal.prev()" title="Slide Sebelumnya (← / P)" aria-label="Slide Sebelumnya">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <button type="button" class="deck-counter-btn" onclick="Reveal.toggleOverview()" title="Klik untuk Matriks Seluruh Slide (Esc/O)">
+        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">28</span>
+      </button>
+      <button type="button" class="deck-footer-btn" onclick="Reveal.next()" title="Slide Berikutnya (→ / Space / N)" aria-label="Slide Berikutnya">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </footer>
+  <div class="deck-topic-popover" id="deck-topic-popover"><div class="deck-popover-search-wrap"><input type="text" id="deck-topic-search" class="deck-popover-search" placeholder="Cari slide..." oninput="filterTopicList(this.value)"></div><div class="deck-topic-list" id="deck-topic-list"></div></div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+  <script>
+
+    let currentAspectMode = localStorage.getItem('reveal_aspect_mode') || 'auto';
+
+    function calculateResponsiveDimensions(mode) {
+      const winW = window.innerWidth;
+      const winH = window.innerHeight - 86.5;
+      const ratio = winW / winH;
+
+      if (mode === '16-9') return { width: 1280, height: 720, label: '16:9' };
+      if (mode === '16-10') return { width: 1280, height: 800, label: '16:10' };
+      if (mode === '4-3') return { width: 1024, height: 768, label: '4:3' };
+      if (mode === 'mobile') return { width: 750, height: 1000, label: 'Mobile' };
+      if (mode === 'text-large') return { width: 960, height: 540, label: 'Teks Besar' };
+
+      // Auto mode
+      if (winW <= 768 || ratio < 1.15) {
+        return { width: 750, height: Math.max(900, Math.round(750 / Math.max(0.5, ratio))), label: 'Auto' };
+      } else if (ratio >= 1.65) {
+        return { width: 1280, height: 720, label: 'Auto' };
+      } else if (ratio >= 1.45) {
+        return { width: 1280, height: 800, label: 'Auto' };
+      } else {
+        return { width: 1024, height: 768, label: 'Auto' };
+      }
+    }
+
+    const initialDim = calculateResponsiveDimensions(currentAspectMode);
+
+    Reveal.initialize({
+      width: initialDim.width,
+      height: initialDim.height,
+      margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2.0,
+      hash: true,
+      slideNumber: false,
+      controls: false,
+      progress: false,
+      center: true,
+      touch: true,
+      transition: 'slide',
+      backgroundTransition: 'none',
+      plugins: [ RevealNotes, RevealHighlight, RevealMath.KaTeX ]
+    });
+
+    function updateDeckState(event) {
+      const indices = event ? { h: event.indexh, v: event.indexv } : Reveal.getIndices();
+      const totalSlides = Reveal.getTotalSlides();
+      const currentIdx = indices ? indices.h : 0;
+
+      const progressBar = document.getElementById('deck-progress-bar');
+      if (progressBar) {
+        const progressPercent = totalSlides > 1 ? (currentIdx / (totalSlides - 1)) * 100 : 0;
+        progressBar.style.width = progressPercent + '%';
+      }
+
+      const currentEl = document.getElementById('deck-slide-current');
+      const totalEl = document.getElementById('deck-slide-total');
+      if (currentEl) currentEl.textContent = String(currentIdx + 1).padStart(2, '0');
+      if (totalEl) totalEl.textContent = String(totalSlides).padStart(2, '0');
+
+      const topicEl = document.getElementById('deck-footer-topic-text') || document.getElementById('deck-footer-topic');
+      if (topicEl) {
+        if (currentIdx === 0) {
+          topicEl.textContent = 'Pertemuan 05 \u2022 Strategi Fusi Multimodal I: Early & Late Fusion';
+        } else {
+          const currentSlide = Reveal.getCurrentSlide();
+          if (currentSlide) {
+            const topicAttr = currentSlide.getAttribute('data-topic');
+            if (topicAttr) {
+              topicEl.textContent = topicAttr;
+            } else {
+              const heading = currentSlide.querySelector('h2') || currentSlide.querySelector('h1');
+              if (heading) {
+                topicEl.textContent = heading.textContent.trim();
+              } else {
+                topicEl.textContent = 'Pertemuan 05 \u2022 Strategi Fusi Multimodal I: Early & Late Fusion';
+              }
+            }
+          }
+        }
+      }
+
+      updateActiveTopicItem(currentIdx);
+    }
+
+    Reveal.on('ready', event => {
+      document.body.classList.add('reveal-ready');
+      updateDeckState(event);
+      buildTopicIndex();
+    });
+    Reveal.on('slidechanged', updateDeckState);
+
+    // =========================================================
+    // Floating Slide Topic Navigation Popover (Daftar Isi)
+    // =========================================================
+    function buildTopicIndex() {
+      const listEl = document.getElementById('deck-topic-list');
+      if (!listEl) return;
+
+      const slides = document.querySelectorAll('.reveal .slides > section');
+      let html = '';
+
+      slides.forEach((slide, idx) => {
+        const topicAttr = slide.getAttribute('data-topic');
+        const h1 = slide.querySelector('h1');
+        const h2 = slide.querySelector('h2');
+        const partEl = slide.querySelector('.section-part-label');
+        const isSectionSlide = slide.classList.contains('section-slide') || !!slide.querySelector('.section-slide-content');
+        const partText = partEl ? partEl.textContent.trim().replace(/\s+/g, ' ') : '';
+
+        const h1Text = h1 ? h1.textContent.trim().replace(/\s+/g, ' ') : '';
+        const h2Text = h2 ? h2.textContent.trim().replace(/\s+/g, ' ') : '';
+        let title = '';
+
+        if (idx === 0) {
+          title = h1Text || 'Strategi Fusi Multimodal I: Early & Late Fusion';
+          html += '<div class="deck-topic-section">Pendahuluan & Identitas</div>';
+        } else if (isSectionSlide || partText.startsWith('Bagian')) {
+          const secTitle = h1Text || h2Text || 'Bagian ' + idx;
+          const sectionLabel = partText ? partText + ': ' + secTitle : secTitle;
+          title = secTitle;
+          html += '<div class="deck-topic-section">' + sectionLabel + '</div>';
+        } else if (topicAttr) {
+          title = topicAttr;
+        } else {
+          title = h2Text || h1Text || 'Slide ' + (idx + 1);
+        }
+
+        const numStr = String(idx + 1).padStart(2, '0');
+        html += '<div class="deck-topic-item" data-slide-index="' + idx + '" onclick="jumpToSlide(' + idx + ')"><span class="deck-topic-num">' + numStr + '</span><span class="deck-topic-name" title="' + title + '">' + title + '</span></div>';
+      });
+
+      listEl.innerHTML = html;
+      const currentIdx = Reveal.getIndices ? Reveal.getIndices().h : 0;
+      updateActiveTopicItem(currentIdx);
+    }
+
+    function updateActiveTopicItem(currentIdx) {
+      document.querySelectorAll('.deck-topic-item').forEach(item => {
+        const idx = parseInt(item.getAttribute('data-slide-index'), 10);
+        item.classList.toggle('active', idx === currentIdx);
+      });
+    }
+
+    function toggleTopicPopover(e) {
+      if (e) e.stopPropagation();
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (!popover) return;
+
+      const isActive = popover.classList.toggle('active');
+      if (btn) btn.classList.toggle('active', isActive);
+
+      if (isActive) {
+        const activeItem = popover.querySelector('.deck-topic-item.active');
+        if (activeItem) {
+          activeItem.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }
+        const searchInput = document.getElementById('deck-topic-search');
+        if (searchInput) {
+          searchInput.value = '';
+          filterTopicList('');
+          setTimeout(() => searchInput.focus(), 80);
+        }
+      }
+    }
+
+    function closeTopicPopover() {
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (popover) popover.classList.remove('active');
+      if (btn) btn.classList.remove('active');
+    }
+
+    function jumpToSlide(index) {
+      Reveal.slide(index);
+      closeTopicPopover();
+    }
+
+    function filterTopicList(query) {
+      const q = (query || '').toLowerCase().trim();
+      const items = document.querySelectorAll('.deck-topic-item');
+      const sections = document.querySelectorAll('.deck-topic-section');
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const num = (item.querySelector('.deck-topic-num') || {}).textContent || '';
+        const name = (item.querySelector('.deck-topic-name') || {}).textContent || '';
+        const matches = !q || num.toLowerCase().includes(q) || name.toLowerCase().includes(q);
+        item.style.display = matches ? 'grid' : 'none';
+        if (matches) visibleCount++;
+      });
+
+      sections.forEach(sec => {
+        let nextEl = sec.nextElementSibling;
+        let hasVisibleChild = false;
+        while (nextEl && !nextEl.classList.contains('deck-topic-section')) {
+          if (nextEl.classList.contains('deck-topic-item') && nextEl.style.display !== 'none') {
+            hasVisibleChild = true;
+            break;
+          }
+          nextEl = nextEl.nextElementSibling;
+        }
+        sec.style.display = hasVisibleChild ? 'block' : 'none';
+      });
+
+      const listEl = document.getElementById('deck-topic-list');
+      let emptyMsg = document.getElementById('deck-topic-empty-msg');
+      if (visibleCount === 0) {
+        if (!emptyMsg) {
+          emptyMsg = document.createElement('div');
+          emptyMsg.id = 'deck-topic-empty-msg';
+          emptyMsg.className = 'deck-topic-empty';
+          emptyMsg.textContent = 'Tidak ada slide yang cocok dengan pencarian.';
+          listEl.appendChild(emptyMsg);
+        }
+        emptyMsg.style.display = 'block';
+      } else if (emptyMsg) {
+        emptyMsg.style.display = 'none';
+      }
+    }
+
+    function setAspectMode(mode) {
+      currentAspectMode = mode;
+      localStorage.setItem('reveal_aspect_mode', mode);
+      const dim = calculateResponsiveDimensions(mode);
+
+      Reveal.configure({
+        width: dim.width,
+        height: dim.height,
+        margin: 0.04,
+        minScale: 0.2,
+        maxScale: 2.0
+      });
+
+      document.body.classList.remove('aspect-16-9', 'aspect-16-10', 'aspect-4-3', 'aspect-mobile');
+      if (mode === 'auto') {
+        if (window.innerWidth <= 768) document.body.classList.add('aspect-mobile');
+      } else {
+        document.body.classList.add('aspect-' + mode);
+      }
+
+      const labelEl = document.getElementById('aspect-label');
+      if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+
+      document.querySelectorAll('.dropdown-item').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-aspect') === mode);
+      });
+
+      closeAspectDropdown();
+      setTimeout(() => Reveal.layout(), 50);
+    }
+
+    function toggleAspectDropdown(e) {
+      if (e) e.stopPropagation();
+      document.getElementById('aspect-menu').classList.toggle('active');
+    }
+
+    function closeAspectDropdown() {
+      const menu = document.getElementById('aspect-menu');
+      if (menu) menu.classList.remove('active');
+    }
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-dropdown')) closeAspectDropdown();
+      if (!e.target.closest('#deck-topic-popover') && !e.target.closest('#deck-footer-topic')) closeTopicPopover();
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (currentAspectMode === 'auto') {
+          const dim = calculateResponsiveDimensions('auto');
+          const cfg = Reveal.getConfig();
+          if (cfg.width !== dim.width || cfg.height !== dim.height) {
+            Reveal.configure({ width: dim.width, height: dim.height });
+            const labelEl = document.getElementById('aspect-label');
+            if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+            Reveal.layout();
+          }
+        }
+      }, 200);
+    });
+
+    window.addEventListener('DOMContentLoaded', () => setAspectMode(currentAspectMode));
+
+    function openShortcutsModal() {
+      document.getElementById('shortcuts-modal').classList.add('active');
+    }
+
+    function closeShortcutsModal(event) {
+      if (!event || event.target.id === 'shortcuts-modal' || event.target.classList.contains('modal-close')) {
+        document.getElementById('shortcuts-modal').classList.remove('active');
+      }
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const popover = document.getElementById('deck-topic-popover');
+        if (popover && popover.classList.contains('active')) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeTopicPopover();
+          return;
+        }
+      }
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        document.getElementById('shortcuts-modal').classList.toggle('active');
+      }
+    });
+
+  </script>
+</body></html>
