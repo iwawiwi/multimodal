@@ -33,12 +33,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Dijalankan SEBELUM build PDF: langkah ini menerbitkan `base_url`, yang
+      # dipakai export_pdf.py untuk menulis anotasi tautan absolut ke PDF.
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
       - name: Setup Chrome (for slide PDF export)
         uses: browser-actions/setup-chrome@v1
         with:
           chrome-version: stable
 
       - name: Build slide PDFs (Reveal.js)
+        env:
+          PAGES_BASE_URL: ${{ steps.pages.outputs.base_url }}
         run: |
           python3 scripts/export_pdf.py mgg01.html
           python3 scripts/export_pdf.py mgg02.html
@@ -71,9 +79,6 @@ jobs:
           test -f pdf/mgg03-hands-on.pdf
           test -f pdf/mgg04-hands-on.pdf
           test -f pdf/mgg06-hands-on.pdf
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

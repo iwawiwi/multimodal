@@ -47,6 +47,36 @@ def get_chrome_path():
     return None
 
 
+def resolve_site_base_url():
+    """Base URL absolut untuk anotasi tautan di PDF.
+
+    Chrome membekukan URL server sementara (http://127.0.0.1:8765/...) ke dalam
+    anotasi PDF, sehingga tautan hands-on mati bagi mahasiswa. Tulis ulang target
+    tautan menjadi URL produksi.
+
+    Urutan sumber (tidak ada yang di-hardcode ke repo tertentu, agar repo ini
+    tetap benar setelah ditransfer ke organisasi lain):
+      1. SITE_BASE_URL           — override eksplisit
+      2. PAGES_BASE_URL          — output `actions/configure-pages` (base_url)
+      3. https://<owner>.github.io/<repo>  — dari GITHUB_REPOSITORY
+      4. kosong                  — render lokal tetap memakai path relatif
+    """
+    explicit = os.environ.get("SITE_BASE_URL", "").strip()
+    if explicit:
+        return explicit.rstrip("/")
+
+    pages_base = os.environ.get("PAGES_BASE_URL", "").strip()
+    if pages_base:
+        return pages_base.rstrip("/")
+
+    slug = os.environ.get("GITHUB_REPOSITORY", "").strip()
+    if slug and "/" in slug:
+        owner, repo = slug.split("/", 1)
+        return f"https://{owner}.github.io/{repo}"
+
+    return ""
+
+
 def inject_print_css(html_path):
     """Inject @page CSS for 16:9 landscape into HTML <head>. Returns temp file path."""
     with open(html_path, "r", encoding="utf-8") as f:
@@ -55,6 +85,26 @@ def inject_print_css(html_path):
     page_css = "@page { size: 1920px 1080px; margin: 0; }"
     style_tag = f"<style>\n{page_css}\n</style>\n</head>"
     html_modified = html.replace("</head>", style_tag, 1)
+
+    # Hanya target tautan yang diabsolutkan; path aset (CSS, gambar) tetap
+    # relatif supaya render lokal di server sementara tetap berfungsi.
+    base = resolve_site_base_url()
+    if base:
+        html_modified = re.sub(
+            r'href="((?:hands-on|pdf)/[^"]+)"',
+            lambda m: f'href="{base}/{m.group(1)}"',
+            html_modified,
+        )
+    else:
+        # Di lokal, tautan ke server sementara itu wajar (PDF tidak dipublikasikan).
+        # Di CI, base URL yang hilang berarti PDF terbit dengan tautan mati.
+        if os.environ.get('GITHUB_ACTIONS') == 'true':
+            print(
+                '  ⚠️  Base URL tidak diketahui (SITE_BASE_URL / PAGES_BASE_URL / '
+                'GITHUB_REPOSITORY kosong). Tautan hands-on di PDF akan menunjuk '
+                'server lokal dan mati setelah dipublikasikan.',
+                file=sys.stderr,
+            )
 
     tmp_dir = os.path.dirname(os.path.abspath(html_path))
     tmp_fd, tmp_path = tempfile.mkstemp(suffix=".html", dir=tmp_dir)
