@@ -53,6 +53,24 @@ Setelah menyelesaikan tugas ini, mahasiswa mampu:
 \end{bclogo}
 \end{minipage}
 
+\begin{minipage}{\linewidth}
+\begin{bclogo}[couleur=ctpMantle, arrondi=0.1, logo=\bcinfo, ombre=false, couleurBord=ctpSurface, epBord=0.6]{Ekspektasi Hasil}
+  Dengan encoder \code{tanh} yang beku, hasil yang wajar adalah: kedua model unimodal
+  sekitar \textbf{50\%}, \emph{Early Fusion} di atas \textbf{95\%},
+  \emph{Intermediate Fusion} sedikit di bawahnya, dan \emph{Late Fusion}
+  sekitar \textbf{85--90\%}.
+
+  Urutan ini berlaku untuk label yang bersifat \textbf{aditif} (seperti pada tugas
+  ini). Untuk label yang menuntut \textbf{interaksi} antar modalitas (misalnya
+  paritas/XOR), \emph{Late Fusion} akan jatuh ke sekitar 50\% sementara
+  \emph{Early} dan \emph{Intermediate} tetap tinggi.
+
+  Bila hasil Anda menyimpang jauh (misalnya Early di bawah 80\%), periksa: encoder
+  memakai \code{ReLU} sehingga dimensi informatif mati (gunakan \code{Tanh});
+  label salah digabung; atau encoder tanpa sengaja ikut terlatih.
+\end{bclogo}
+\end{minipage}
+
 % =============================================================
 \section{Perangkat Lunak dan Peralatan yang Diperlukan}\label{sec:requiredsw}
 
@@ -236,9 +254,10 @@ menghasilkan skor keyakinan untuk keempat kelas.
 
 \textbf{(b)} Gabungkan kedua skor dengan rata-rata terbobot, lalu laporkan akurasinya.
 
-\textbf{(c)} Jawab dalam 3--5 kalimat: mengapa strategi ini tidak dapat melampaui
-sekitar 50\%, padahal Early Fusion berhasil? Kaitkan jawaban Anda dengan fakta bahwa
-\textbf{encoder tidak boleh dilatih}.
+\textbf{(c)} Jawab dalam 3--5 kalimat: mengapa strategi ini \textbf{masih dapat
+melampaui baseline unimodal} ($\sim$50\%) meskipun encoder tidak boleh dilatih?
+Jelaskan peran rata-rata terbobot, lalu sebutkan satu kondisi di mana Late Fusion
+\textbf{akan gagal}.
 
 \begin{codewindow}{soal3\_late.py}
 \begin{lstlisting}[style=pycode]

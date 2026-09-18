@@ -55,6 +55,8 @@ jobs:
           HANDSON_WEEK=03 npm run build:pdf
           HANDSON_WEEK=04 npm run bake
           HANDSON_WEEK=04 npm run build:pdf
+          HANDSON_WEEK=06 npm run bake
+          HANDSON_WEEK=06 npm run build:pdf
 
       - name: Verify PDFs exist
         run: |
@@ -68,6 +70,7 @@ jobs:
           test -f pdf/mgg02-hands-on.pdf
           test -f pdf/mgg03-hands-on.pdf
           test -f pdf/mgg04-hands-on.pdf
+          test -f pdf/mgg06-hands-on.pdf
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

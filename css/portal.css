@@ -334,10 +334,23 @@ body {
   color: var(--ctp-peach);
 }
 
-/* Hands-on Lab Chip (green — "terapkan/kerjakan", distinct from slide & PDF) */
+/* Hands-on Lab Chip (green — "terapkan/kerjakan", distinct from slide & PDF)
+   Full-width on purpose: the chip sits directly above the .week-card-actions grid,
+   whose buttons are also full-width. A content-sized chip made the four cards
+   ragged (measured 286 / 290 / 299 / 319px — the width tracked the label length),
+   which read as unintentional next to the aligned buttons below.
+   Content is left-aligned, NOT centered: centering each label independently made
+   the leading icon drift per card (measured x = 76 / 82 / 80 / 66 → 16px jitter),
+   because every label has a different length. Left-aligning pins the icon to the
+   same line in all four cards (x = 37) and puts the label on the card's own left
+   text edge, which is what the eye follows when scanning the grid.
+   `min-height` keeps single-line chips at a uniform 33px; longer labels wrap
+   instead of overflowing on narrow viewports (the old `white-space: nowrap`
+   pushed the chip 53–100px past the card at 820px / 390px / 360px). */
 .hands-on-chip {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 6px;
   background: var(--ctp-green);
   color: #ffffff;
@@ -345,11 +358,13 @@ body {
   border-radius: 8px;
   font-size: 12px;
   font-weight: 700;
+  line-height: 1.35;
+  text-align: left;
   text-decoration: none;
+  width: 100%;
+  min-height: 33px;
   margin-bottom: 14px;
   transition: all 0.2s ease;
-  white-space: nowrap;
-  align-self: flex-start;
 }
 
 .hands-on-chip:hover {
@@ -360,6 +375,7 @@ body {
 
 .hands-on-chip .material-symbols-outlined {
   font-size: 16px;
+  flex-shrink: 0;
 }
 
 /* Card Header (Clean typographic number, no badge pill) */

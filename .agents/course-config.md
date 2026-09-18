@@ -55,7 +55,7 @@ These placeholders in `resources/slide-template.html` are substituted from this 
 | 03 | Representasi Modalitas II: Gambar | lecture | `Feature Extraction Gambar` (`pdf/mgg03-hands-on.pdf`) |
 | 04 | Representasi Modalitas III: Audio & Video | lecture | `Representasi Audio & Video` (`pdf/mgg04-hands-on.pdf`) |
 | 05 | Strategi Fusi Multimodal I: Early & Late Fusion | lecture | — |
-| 06 | Strategi Fusi Multimodal II: Intermediate & Hybrid Fusion | lecture | — |
+| 06 | Strategi Fusi Multimodal II: Intermediate & Hybrid Fusion | lecture | `Early, Late & Intermediate Fusion` (`pdf/mgg06-hands-on.pdf`) |
 | 07 | Penyejajaran (Alignment): Temporal & Structural | lecture | — |
 | 08 | UTS | milestone | — |
 | 09 | Arsitektur Transformer Multimodal | lecture | — |

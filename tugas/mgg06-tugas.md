@@ -59,9 +59,9 @@ pip install numpy torch scikit-learn matplotlib
 
 ### Ekspektasi Hasil
 
-Dengan encoder `tanh` yang beku, hasil yang wajar adalah: kedua model unimodal sekitar **50%**, *Early Fusion* di atas **95%**, *Intermediate Fusion* sedikit di bawahnya, dan *Late Fusion* sekitar **55–65%**.
+Dengan encoder `tanh` yang beku, hasil yang wajar adalah: kedua model unimodal sekitar **50%**, *Early Fusion* di atas **95%**, *Intermediate Fusion* sedikit di bawahnya, dan *Late Fusion* sekitar **85–90%**.
 
-Bila hasil Anda menyimpang jauh (misalnya Early di bawah 80%), periksa hal berikut sebelum menyimpulkan:
+Perhatikan bahwa urutan ini berlaku untuk label yang bersifat **aditif** (seperti pada tugas ini). Untuk label yang menuntut **interaksi** antar modalitas (misalnya paritas/XOR), *Late Fusion* akan jatuh ke sekitar 50% sementara *Early* dan *Intermediate* tetap tinggi — inilah inti Soal 5. Bila hasil Anda menyimpang jauh (misalnya Early di bawah 80%), periksa hal berikut sebelum menyimpulkan:
 
 - encoder memakai `ReLU` sehingga dimensi informatif mati (gunakan `Tanh`);
 - label salah digabung;
@@ -198,7 +198,7 @@ Late Fusion melatih model terpisah per modalitas, lalu menggabungkan *keputusan*
 
 **(b)** Gabungkan kedua skor dengan rata-rata terbobot, lalu laporkan akurasinya.
 
-**(c)** Jawab dalam 3–5 kalimat: mengapa strategi ini tidak dapat melampaui sekitar 50%, padahal Early Fusion berhasil? Kaitkan jawaban Anda dengan fakta bahwa **encoder tidak boleh dilatih**.
+**(c)** Jawab dalam 3–5 kalimat: mengapa strategi ini **masih dapat melampaui baseline unimodal** (~50%) meskipun encoder tidak boleh dilatih? Jelaskan peran rata-rata terbobot, lalu sebutkan satu kondisi di mana Late Fusion **akan gagal**.
 
 ```{.python .numberLines startFrom=1}
 class LateFusion(nn.Module):

@@ -764,7 +764,54 @@
       </aside>
     </section>
 
-    <!-- SLIDE 21: RANGKUMAN -->
+    <!-- SLIDE 21: LATIHAN TERBIMBING -->
+    <section>
+      <h2>Latihan Terbimbing: Merancang Skema Fusi</h2>
+      <p>Menerapkan ketiga strategi pada satu tugas, dengan encoder pra-latih yang dibekukan.</p>
+
+      <div class="bridge-grid">
+        <div class="bridge-step">
+          <span class="c-num-circle c-num-blue">1</span>
+          <div>
+            <h4 style="color: var(--ctp-blue)">Encoder Beku</h4>
+            <p>Encoder visual dan audio sudah pra-latih; keduanya <strong>tidak</strong> dilatih ulang.</p>
+          </div>
+        </div>
+        <div class="bridge-step">
+          <span class="c-num-circle c-num-mauve">2</span>
+          <div>
+            <h4 style="color: var(--ctp-mauve)">Tiga Jalur</h4>
+            <p>Early (konkatenasi fitur), Late (rata-rata skor), dan Intermediate (gerbang adaptif).</p>
+          </div>
+        </div>
+        <div class="bridge-step">
+          <span class="c-num-circle c-num-teal">3</span>
+          <div>
+            <h4 style="color: var(--ctp-teal)">Bandingkan</h4>
+            <p>Ukur akurasi tiap jalur, termasuk saat satu modalitas sengaja dihilangkan.</p>
+          </div>
+        </div>
+        <div class="bridge-step">
+          <span class="c-num-circle c-num-green">4</span>
+          <div>
+            <h4 style="color: var(--ctp-green)">Argumentasi</h4>
+            <p>Pilih satu strategi, lalu pertanggungjawabkan pilihan Anda atas dasar data.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Kode hanya dikerjakan pada <strong>lapisan fusi</strong> &mdash; encoder dibiarkan beku agar fokus pada perbandingan strategi, bukan pelatihan ulang backbone.</div></div>
+      <div class="slide-links">
+        <a href="hands-on/mgg06-hands-on.html" class="slide-btn slide-btn-primary"><span class="material-symbols-outlined">science</span> Buka Lembar Kerja</a>
+        <a href="pdf/mgg06-hands-on.pdf" class="slide-btn slide-btn-secondary"><span class="material-symbols-outlined">picture_as_pdf</span> Unduh PDF</a>
+      </div>
+
+      <aside class="notes">
+        Tunjukkan dua tombol di bawah. Latihan ini sekaligus bekal untuk tugas individu: keduanya memakai pola yang sama, yaitu encoder beku dengan fokus pada lapisan fusi. Tujuannya agar mahasiswa merasakan langsung trade-off yang tadi dibahas secara teoretis.
+      </aside>
+    </section>
+
+    <!-- SLIDE 22: RANGKUMAN -->
     <section>
       <h2>Rangkuman &amp; Poin Kunci</h2>
       <p>Benang merah dari titik tengah fusi hingga pemilihan strategi:</p>
@@ -805,25 +852,6 @@
 
       <aside class="notes">
         Review keempat strategi dalam satu tarikan napas: Early di input, Intermediate di tengah, Late di output, Hybrid di beberapa titik. Tekankan jembatan ke Pertemuan 7: kita sudah selesai membahas pilar Fusion, dan sekarang beralih ke pilar ketiga, yaitu Alignment. Kekurangan Intermediate yang sensitif penyelarasan tadi menjadi pemicunya.
-      </aside>
-    </section>
-
-    <!-- SLIDE 22: LATIHAN TERBIMBING -->
-    <section>
-      <h2>Latihan Terbimbing: Merancang Skema Fusi</h2>
-      <p>Menerapkan seluruh strategi pada satu tugas, dengan encoder pra-latih yang dibekukan.</p>
-
-      <div class="pipeline-flow" style="margin-top: 18px;">
-        <div class="pipeline-step"><span class="material-symbols-outlined icon-blue">lock</span><h3 style="color: var(--ctp-blue)">Encoder Beku</h3><p>Encoder visual &amp; audio pra-latih, tidak dilatih ulang</p></div>
-        <div class="pipeline-step"><span class="material-symbols-outlined icon-mauve">join_inner</span><h3 style="color: var(--ctp-mauve)">Tiga Jalur</h3><p>Early (konkatenasi fitur), Intermediate (fusi lapisan tengah), Late (rata-rata skor)</p></div>
-        <div class="pipeline-step"><span class="material-symbols-outlined icon-teal">compare_arrows</span><h3 style="color: var(--ctp-teal)">Bandingkan</h3><p>Akurasi tiap jalur, termasuk saat satu modalitas dihilangkan</p></div>
-        <div class="pipeline-step"><span class="material-symbols-outlined icon-green">rule</span><h3 style="color: var(--ctp-green)">Argumentasi</h3><p>Pilih satu strategi dan pertanggungjawabkan pilihanmu</p></div>
-      </div>
-
-      <div class="c-callout c-callout-info" style="margin-top: 18px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Kode hanya dikerjakan pada <strong>lapisan fusi</strong> &mdash; encoder dibiarkan beku agar fokus pada perbandingan strategi, bukan pelatihan ulang backbone.</div></div>
-
-      <aside class="notes">
-        Jelaskan bahwa latihan ini sekaligus menjadi bekal untuk tugas individu: keduanya memakai pola yang sama, yaitu encoder beku dengan fokus pada lapisan fusi. Tujuannya agar mahasiswa merasakan langsung trade-off yang tadi dibahas secara teoretis — khususnya perbedaan kinerja saat satu modalitas dihilangkan. Detail teknis lengkap ada pada lembar kerja.
       </aside>
     </section>
 
