@@ -638,6 +638,7 @@
         <li><a href="#sec-pretrained" onclick="gotoSection(this)"><span class="toc-num">05</span><span class="toc-label">Model Pra-Latih (Opsional)</span></a></li>
         <li><a href="#sec-visualisasi" onclick="gotoSection(this)"><span class="toc-num">06</span><span class="toc-label">Visualisasi: Kedekatan di Ruang Vektor</span></a></li>
         <li><a href="#sec-limitasi" onclick="gotoSection(this)"><span class="toc-num">07</span><span class="toc-label">Limitasi: Polisemi &amp; Konteks</span></a></li>
+        <li><a href="#sec-rangkuman" onclick="gotoSection(this)"><span class="toc-num"></span><span class="toc-label">Rangkuman</span></a></li>
         <li><a href="#sec-referensi" onclick="gotoSection(this)"><span class="toc-num">&#9873;</span><span class="toc-label">Referensi</span></a></li>
       </ul>
     </aside>
@@ -678,8 +679,6 @@
       </div>
       <pre class="code-baked language-bash"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc">pip <span class="token function">install</span> numpy matplotlib gensim</span></span></code></pre>
     </div>
-
-    <hr>
 
     <!-- SECTION 1 -->
     <h2 id="sec-tokenization"><span class="sec-num">01</span> Tokenization: Dari Teks Menjadi Token</h2>
@@ -726,8 +725,6 @@ Token per karakter: ['P', 'e', 'm', 'b', 'e', 'l', 'a', 'j', 'a', 'r', 'a', 'n',
       satu token), sedangkan tokenisasi per karakter menghasilkan <strong>kosakata kecil</strong>
       tetapi sekuens menjadi lebih panjang dan kehilangan makna kata.
     </div>
-
-    <hr>
 
     <!-- SECTION 2 -->
     <h2 id="sec-one-hot"><span class="sec-num">02</span> One-Hot Encoding &amp; Ortogonalitas</h2>
@@ -815,8 +812,6 @@ sim(apel, apel)   = 1.0</div>
       relasi makna antarkata yang terwakili.
     </div>
 
-    <hr>
-
     <!-- SECTION 3 -->
     <h2 id="sec-embeddings"><span class="sec-num">03</span> Word Embeddings: Vektor Dense yang Semantik</h2>
     <p>
@@ -863,8 +858,6 @@ sim(raja, mobil) = 0.3682</div>
       sedangkan <code>sim(raja, mobil)</code> jauh lebih kecil. Di sinilah keunggulan embeddings:
       <strong>jarak vektor mencerminkan kemiripan makna</strong>.
     </div>
-
-    <hr>
 
     <!-- SECTION 4 -->
     <h2 id="sec-analogi"><span class="sec-num">04</span> Analogi Vektor: raja &minus; pria + wanita &asymp; ratu</h2>
@@ -916,8 +909,6 @@ sim(hasil, mobil) = 0.3952</div>
       (0.99), bukan raja maupun mobil. Hal ini menunjukkan embeddings merepresentasikan relasi
       gender dan peran secara geometris.
     </div>
-
-    <hr>
 
     <!-- SECTION 5 -->
     <h2 id="sec-pretrained"><span class="sec-num">05</span> Model Pra-Latih (Opsional)</h2>
@@ -1005,8 +996,6 @@ Analogi king - man + woman:
       <a href="https://github.com/piskvorky/gensim-data">gensim-data</a>.
     </div>
 
-    <hr>
-
     <!-- SECTION 6 -->
     <h2 id="sec-visualisasi"><span class="sec-num">06</span> Visualisasi: Kedekatan di Ruang Vektor</h2>
     <p>
@@ -1054,8 +1043,6 @@ Analogi king - man + woman:
       terpencil. Hal ini merupakan visualisasi langsung dari konsep &ldquo;kata bermakna mirip
       berdekatan&rdquo;.
     </p>
-
-    <hr>
 
     <!-- SECTION 7 -->
     <h2 id="sec-limitasi"><span class="sec-num">07</span> Limitasi: Polisemi &amp; Konteks</h2>
@@ -1136,7 +1123,26 @@ Nilai < 1 menunjukkan vektor kontekstual berbeda.</div>
       embeddings statis yang selalu memberikan <strong>satu vektor tetap</strong> per kata.
     </div>
 
-    <hr>
+    <!-- ================= SECTION 08: RANGKUMAN ================= -->
+
+    <h2 id="sec-rangkuman">Rangkuman</h2>
+
+    <div class="note note-blue">
+      <span class="note-title">Representasi teks: dari token ke vektor bermakna</span>
+      Teks diubah menjadi token, lalu menjadi vektor. <strong>One-hot</strong> hanya menandai
+      identitas token, sedangkan <strong>word embeddings</strong> menempatkan kata yang bermakna
+      mirip pada posisi yang berdekatan dalam ruang vektor.
+    </div>
+
+    <ul>
+      <li>Tokenisasi memecah teks menjadi token; per kata menghasilkan kosakata besar, per karakter menghasilkan urutan panjang.</li>
+      <li>One-hot bersifat <strong>ortogonal</strong>: <code>sim(apel, pisang) = 0.0</code> dan <code>sim(apel, apel) = 1.0</code> &mdash; tidak ada informasi kemiripan makna.</li>
+      <li>Embedding dense menangkap makna: <code>sim(raja, ratu) = 0.9951</code> jauh di atas <code>sim(raja, mobil) = 0.3682</code>.</li>
+      <li>Relasi semantik dapat dihitung: hasil <code>raja &minus; pria + wanita</code> lebih dekat ke <em>ratu</em> (<code>0.9922</code>) daripada ke <em>raja</em> (<code>0.9305</code>).</li>
+      <li>Embedding statis tetap memberi <strong>satu vektor per kata</strong>. Kata bermakna ganda (&ldquo;apel&rdquo;) hanya terbedakan oleh model kontekstual: kemiripan antar dua konteks turun ke <code>&asymp; 0.21</code>.</li>
+    </ul>
+
+    <p style="margin-top:28px;color:var(--ctp-subtext0)">Gunakan hasil eksperimen ini sebagai bahan untuk Tugas Individu 02.</p>
 
     <!-- References -->
     <h2 id="sec-referensi"><span class="sec-num">&#9873;</span> Referensi</h2>
