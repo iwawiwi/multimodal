@@ -53,6 +53,20 @@ Keputusan yang sudah disetujui pengguna dan **berlaku sampai diubah eksplisit**:
 - **D-A04 — Tugas mingguan punya dua artefak.** `tugas/mggNN-tugas.md` (brief)
   **dan** `tugas/mggNN-tugas.tex` (dokumen LaTeX). `.md` tidak boleh dilewatkan.
   Hands-on: `hands-on/mggNN-hands-on.html` + entri CI (`HANDSON_WEEK=NN`).
+- **D-A11 — Tugas didistribusikan lewat LMS, BUKAN lewat portal repo.**
+  `index.html`, `README.md`, dan deck **tidak** menautkan berkas tugas, dan PDF
+  tugas **tidak** dibangun CI (tetap di-`.gitignore`).
+  - **Alasan:** repositori ini publik. Bila tugas diterbitkan lewat portal, berkas
+    terbuka untuk angkatan berikutnya (bocor), padahal contoh dan instruksi tugas
+    **diperbarui setiap tahun** — versi lama yang beredar merusak penilaian dan
+    membuang kerja pembaruan itu.
+  - `tugas/` tetap disimpan di repo untuk pelacakan versi dan riwayat revisi;
+    hanya *jalur terbit*-nya yang sengaja tidak ada.
+  - ❌ Jangan "memperbaiki" ini dengan menambah chip tugas di `index.html`,
+    tautan di `README.md`, atau langkah `lualatex` di CI — itu justru meniadakan
+    alasan di atas.
+  - Saat audit melaporkan "tugas tidak bisa ditemukan", itu **perilaku yang
+    diharapkan**, bukan gap.
 - **D-A05 — Pola desain yang dipakai sejak mgg04** (detail di `design-decisions.md`):
   - Slide "kategori/karakteristik" → `grid-3` 3 kartu
     (`c-card c-card-{blue,mauve,teal} c-card-accent-top` + `<h3 style="color:...">`),
@@ -97,26 +111,58 @@ Keputusan yang sudah disetujui pengguna dan **berlaku sampai diubah eksplisit**:
   - Ditegakkan linter (check #10 & #11). Semua deck **sudah patuh** — daftar
     pengecualian `MATH_TEXT_GRANDFATHERED` di `scripts/validate_slide.py` kosong;
     jangan isi ulang kecuali ada deck warisan baru.
+- **D-A09 — Setiap minggu ber-hands-on punya satu slide jembatan**
+  ("Latihan Terbimbing") **tepat SEBELUM** slide Rangkuman, dengan tautan ke
+  `hands-on/mggNN-hands-on.html` dan PDF-nya. Isinya ringkas: tujuan + 3–4 langkah;
+  slide ini **menunjuk** ke lab, bukan menggandakannya. Markup: **2×2 `.bridge-grid`**
+  berisi `.bridge-step` bernomor + `.c-callout-info` + baris `.slide-links` dengan
+  dua tombol (`.slide-btn-primary` "Buka Lembar Kerja", `.slide-btn-secondary`
+  "Unduh PDF").
+  - ❌ Jangan memakai `.pipeline-flow` 4 kolom di sini: deskripsi 100+ karakter
+    terpecah di kolom sempit (kartu ~220px) dan tautan melebar 832px di mode 4:3.
+    Grid 2×2 memangkas tinggi kartu menjadi ~95px.
+  - ❌ Jangan menaruh path mentah (`hands-on/mggNN-…`) sebagai teks isi.
+  - ❌ Jangan menaruhnya setelah Rangkuman: ringkasan harus menutup sesi.
+  - Bila PPTX sumber punya slide hands-on, isinya **dipulihkan** — bukan dikarang.
+    Bila tidak ada (mis. W04), slide boleh baru tetapi wajib mencerminkan isi
+    hands-on yang sebenarnya.
+  - Anggaran slide D-A02 dinaikkan menjadi **24–30** untuk minggu ber-hands-on.
+  - Ditegakkan linter (check #12 & #13); rincian di D-030 `design-decisions.md`.
+- **D-A10 — Tautan di PDF harus absolut ke host produksi.** Chrome membekukan
+  URL server sementara (`http://127.0.0.1:8765/…`) ke anotasi PDF, sehingga PDF
+  yang terbit memuat tautan mati. `scripts/export_pdf.py` menulis ulang **hanya
+  target tautan** `hands-on/` dan `pdf/` menjadi absolut; path aset tetap relatif.
+  Base URL diresolusi berurutan: `SITE_BASE_URL` → `PAGES_BASE_URL` (output
+  `actions/configure-pages`, di-wire di CI) → `https://<owner>.github.io/<repo>`
+  dari `GITHUB_REPOSITORY` → kosong.
+  - ❌ **Jangan hardcode** URL repo. Repo ini akan ditransfer ke organisasi lain;
+    resolusi dari env membuat tautan tetap benar tanpa sunting manual.
+  - CI menjalankan `configure-pages` **sebelum** build PDF agar `base_url` tersedia.
+  - HTML sumber tetap memakai path relatif (agar situs jalan di host mana pun).
 
 ## 3. Status Deck (perbarui saat menyelesaikan deck)
 
 | Deck | Topik | Slide | Status |
 | :--- | :--- | :---: | :--- |
 | `mgg01.html` | Pengantar Pembelajaran Mesin Multimodal | 25 | ✅ selesai |
-| `mgg02.html` | Representasi Modalitas I: Teks | 29 | ✅ selesai |
-| `mgg03.html` | Representasi Modalitas II: Gambar | 24 | ✅ selesai |
-| `mgg04.html` | Representasi Modalitas III: Audio & Video | 29 | ✅ selesai |
+| `mgg02.html` | Representasi Modalitas I: Teks | 30 | ✅ selesai |
+| `mgg03.html` | Representasi Modalitas II: Gambar | 25 | ✅ selesai |
+| `mgg04.html` | Representasi Modalitas III: Audio & Video | 30 | ✅ selesai |
 | `mgg05.html` | Strategi Fusi I: Early & Late Fusion | 28 | ✅ selesai |
 | `mgg06.html` | Strategi Fusi II: Intermediate & Hybrid Fusion | 25 | ✅ selesai |
 | `mgg07.html` … `mgg15.html` | — | — | ❌ belum dibuat |
+
+  > Angka slide di atas diverifikasi terhadap `<section>` tiap berkas. Perbarui
+  > tabel ini setiap kali deck berubah — `CODEBASE.md` §10 pernah tertinggal
+  > dan melaporkan angka yang salah.
 
 Artefak pendukung:
 
 | Artefak | Ada |
 | :--- | :--- |
-| `hands-on/mgg02,03,04-hands-on.html` | ✅ |
-| `tugas/mgg02,03,04,06-tugas.md` + `.tex` | ✅ |
-| CI export `mgg01`–`mgg06` + hands-on 02/03/04 | ✅ |
+| `hands-on/mgg02,03,04,06-hands-on.html` | ✅ |
+| `tugas/mgg02,03,04,06-tugas.md` + `.tex` | ✅ (via LMS — lihat D-A11) |
+| CI export `mgg01`–`mgg06` + hands-on 02/03/04/06 | ✅ |
 
 > Setiap minggu yang punya hands-on **wajib** lengkap: file hands-on, entri
 > `HANDSON_WEEK` di CI, judul di `vivliostyle.config.js`, kolom hands-on di

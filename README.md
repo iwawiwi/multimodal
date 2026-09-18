@@ -25,7 +25,7 @@ Portal perkuliahan **Pembelajaran Mesin Multimodal (IF25-40304)** — Institut T
 | 03 | Representasi Modalitas II: Gambar | Kuliah | Feature Extraction Gambar |
 | 04 | Representasi Modalitas III: Audio & Video | Kuliah | Representasi Audio & Video |
 | 05 | Strategi Fusi Multimodal I: Early & Late Fusion | Kuliah | — |
-| 06 | Strategi Fusi Multimodal II: Intermediate & Hybrid Fusion | Kuliah | — |
+| 06 | Strategi Fusi Multimodal II: Intermediate & Hybrid Fusion | Kuliah | Early, Late & Intermediate Fusion |
 | 07 | Penyejajaran (Alignment): Temporal & Structural | Kuliah | — |
 | 08 | **Ujian Tengah Semester (UTS)** | Evaluasi | — |
 | 09 | Arsitektur Transformer Multimodal | Kuliah | — |
@@ -46,7 +46,7 @@ Portal perkuliahan **Pembelajaran Mesin Multimodal (IF25-40304)** — Institut T
 | 03 | [mgg03.html](mgg03.html) | [pdf/mgg03.pdf](pdf/mgg03.pdf) | [hands-on/mgg03-hands-on.html](hands-on/mgg03-hands-on.html) |
 | 04 | [mgg04.html](mgg04.html) | [pdf/mgg04.pdf](pdf/mgg04.pdf) | [hands-on/mgg04-hands-on.html](hands-on/mgg04-hands-on.html) |
 | 05 | [mgg05.html](mgg05.html) | [pdf/mgg05.pdf](pdf/mgg05.pdf) | — |
-| 06 | [mgg06.html](mgg06.html) | [pdf/mgg06.pdf](pdf/mgg06.pdf) | — |
+| 06 | [mgg06.html](mgg06.html) | [pdf/mgg06.pdf](pdf/mgg06.pdf) | [hands-on/mgg06-hands-on.html](hands-on/mgg06-hands-on.html) |
 
 > PDF dirender otomatis oleh CI saat push — tidak disimpan di repositori.
 

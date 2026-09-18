@@ -246,13 +246,14 @@ git update-index --no-skip-worktree pdf/mggXX.pdf  # Unskip saat release
 |:---|:---|
 | `index.html` (portal) | ✅ Selesai, kartu minggu + milestone UTS/UAS |
 | `mgg01.html` | ✅ Selesai, 25 slide |
-| `mgg02.html` | ✅ Selesai, 29 slide |
-| `mgg03.html` | ✅ Selesai, 24 slide |
-| `mgg04.html` | ✅ Selesai, 29 slide |
-| `mgg05.html` | 🟡 Tertulis (25 slide), belum di-commit |
-| `mgg06.html` – `mgg15.html` | ❌ Belum dibuat |
-| Hands-on 02/03/04 | ✅ `hands-on/mggNN-hands-on.html` |
-| Tugas 02/03 | ✅ `.md` + `.tex` (LaTeX, `tugas-style.sty`) |
+| `mgg02.html` | ✅ Selesai, 30 slide |
+| `mgg03.html` | ✅ Selesai, 25 slide |
+| `mgg04.html` | ✅ Selesai, 30 slide |
+| `mgg05.html` | ✅ Selesai, 28 slide |
+| `mgg06.html` | ✅ Selesai, 25 slide |
+| `mgg07.html` – `mgg15.html` | ❌ Belum dibuat |
+| Hands-on 02/03/04/06 | ✅ `hands-on/mggNN-hands-on.html` |
+| Tugas 02/03/04/06 | ✅ `.md` + `.tex` (LaTeX, `tugas-style.sty`) — didistribusikan via LMS, tidak lewat portal (D-A11) |
 | Skill & design system | ✅ Lengkap (SKILL.md, tokens, template, scripts) |
 | CI (GitHub Pages) | ✅ Export PDF slide + hands-on |
 
