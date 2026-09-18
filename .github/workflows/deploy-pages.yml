@@ -44,6 +44,8 @@ jobs:
           python3 scripts/export_pdf.py mgg02.html
           python3 scripts/export_pdf.py mgg03.html
           python3 scripts/export_pdf.py mgg04.html
+          python3 scripts/export_pdf.py mgg05.html
+          python3 scripts/export_pdf.py mgg06.html
 
       - name: Build hands-on PDFs (Vivliostyle)
         run: |
@@ -61,6 +63,8 @@ jobs:
           test -f pdf/mgg02.pdf
           test -f pdf/mgg03.pdf
           test -f pdf/mgg04.pdf
+          test -f pdf/mgg05.pdf
+          test -f pdf/mgg06.pdf
           test -f pdf/mgg02-hands-on.pdf
           test -f pdf/mgg03-hands-on.pdf
           test -f pdf/mgg04-hands-on.pdf

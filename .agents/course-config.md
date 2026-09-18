@@ -51,18 +51,18 @@ These placeholders in `resources/slide-template.html` are substituted from this 
 | Week | Topic | Kind | Hands-on |
 | :--- | :--- | :--- | :--- |
 | 01 | Pengantar Pembelajaran Mesin Multimodal | lecture | — |
-| 02 | Representasi Modalitas I: Teks | lecture | `Word Embeddings Lab` (`pdf/mgg02-hands-on.pdf`) |
-| 03 | Representasi Modalitas II: Gambar | lecture | — |
+| 02 | Representasi Modalitas I: Teks | lecture | `Eksplorasi Word Embeddings` (`pdf/mgg02-hands-on.pdf`) |
+| 03 | Representasi Modalitas II: Gambar | lecture | `Feature Extraction Gambar` (`pdf/mgg03-hands-on.pdf`) |
 | 04 | Representasi Modalitas III: Audio & Video | lecture | `Representasi Audio & Video` (`pdf/mgg04-hands-on.pdf`) |
-| 05 | Fusion Strategies I: Early & Late Fusion | lecture | — |
-| 06 | Fusion Strategies II: Intermediate & Cross-Attention | lecture | — |
-| 07 | Alignment: Temporal & Structural | lecture | — |
+| 05 | Strategi Fusi Multimodal I: Early & Late Fusion | lecture | — |
+| 06 | Strategi Fusi Multimodal II: Intermediate & Hybrid Fusion | lecture | — |
+| 07 | Penyejajaran (Alignment): Temporal & Structural | lecture | — |
 | 08 | UTS | milestone | — |
-| 09 | Vision-Language Models: CLIP & Contrastive Learning | lecture | — |
-| 10 | Visual Question Answering (VQA) | lecture | — |
-| 11 | Image Captioning & Text-to-Image Generation | lecture | — |
-| 12 | Audio-Visual Learning & Speech-Vision | lecture | — |
-| 13 | Multimodal Transformers & Cross-Attention | lecture | — |
-| 14 | Bias, Hallucination & Ethical Paradigms | lecture | — |
-| 15 | Green AI & Missing Modality Fallback | lecture | — |
+| 09 | Arsitektur Transformer Multimodal | lecture | — |
+| 10 | Aplikasi 1: Image Captioning | lecture | — |
+| 11 | Aplikasi 2: VQA & Analisis Sentimen Multimodal | lecture | — |
+| 12 | Topik Lanjutan: Generasi Multimodal & Etika | lecture | — |
+| 13 | Evaluasi Model Multimodal | lecture | — |
+| 14 | Studi Kasus Terpadu | lecture | — |
+| 15 | Review Materi | lecture | — |
 | 16 | UAS | milestone | — |

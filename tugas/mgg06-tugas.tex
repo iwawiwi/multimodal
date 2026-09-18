@@ -1,0 +1,414 @@
+% =============================================================
+%  Tugas Individu 06 — Strategi Fusi Multimodal
+%  IF25-40304 · Pembelajaran Mesin Multimodal · ITERA
+% =============================================================
+\documentclass[12pt, a4paper]{article}
+
+\usepackage{tugas-style}
+
+\renewcommand{\assignmentnumber}{06}
+\renewcommand{\doctitle}{Tugas Individu 06}
+\renewcommand{\duedate}{\color{ctpBlue}\faCalendarCheck\ \ Tenggat: sesuai jadwal kelas \faCalendarCheck}
+
+\begin{document}
+
+% ── HEADER ──────────────────────────────────────────────────
+\makeassignmentheader
+
+\hrule width0.3\textwidth
+\revisioninfo{%
+  \vhEntry{0.1}{16 September 2026}{I.W.W.}{Draf inisial tugas.}
+}
+\hrule
+\vskip .3in
+
+\tableofcontents
+\clearpage
+
+% =============================================================
+\section{Tujuan Pembelajaran}\label{sec:objectives}
+
+Setelah menyelesaikan tugas ini, mahasiswa mampu:
+\begin{objectives}
+  \item Membuktikan secara empiris bahwa satu modalitas saja tidak cukup, melalui pengukuran \emph{baseline} unimodal.
+  \item Mengimplementasikan \emph{Early Fusion} pada tingkat fitur hasil encoder.
+  \item Mengimplementasikan \emph{Late Fusion} pada tingkat keputusan.
+  \item Mengimplementasikan \emph{Intermediate Fusion} pada lapisan tengah.
+  \item Membandingkan kinerja dan ketangguhan ketiga strategi, lalu memilih serta mempertanggungjawabkan pilihannya.
+\end{objectives}
+
+% =============================================================
+\section{Catatan dan Batasan}\label{sec:notes}
+\vspace{-.1cm}
+
+\begin{minipage}{\linewidth}
+\begin{bclogo}[couleur=ctpBase, arrondi=0.1, logo=\bccrayon, ombre=false, couleurBord=ctpSurface, epBord=0.6]{Perhatikan hal berikut:}
+  \begin{coloredPen}
+    \item Tugas ini bersifat \textbf{individu}; tidak diperkenankan bekerja sama atau menyalin jawaban.
+    \item \textbf{Encoder dibekukan.} Seluruh encoder modalitas sudah disediakan dan \textbf{tidak boleh dilatih}. Fokus tugas adalah lapisan fusi.
+    \item Data bersifat \textbf{sintetis} dan dibangkitkan secara programatik dengan \emph{seed} tetap, sehingga hasil dapat direproduksi tanpa mengunduh dataset.
+    \item Laporkan selalu \textbf{baseline unimodal} pada metrik yang sama. Angka akurasi fusi tidak bermakna tanpa pembanding.
+    \item Gunakan \code{torch} untuk model dan \code{scikit-learn} untuk pembagian data serta metrik.
+  \end{coloredPen}
+\end{bclogo}
+\end{minipage}
+
+% =============================================================
+\section{Perangkat Lunak dan Peralatan yang Diperlukan}\label{sec:requiredsw}
+
+\begin{itemize}[itemsep=2pt,parsep=0pt,topsep=2pt,partopsep=2pt]
+  \item[\color{ctpBlue}\faPython] \textbf{Python} 3.8 atau lebih baru.
+  \item[\color{ctpBlue}\faFileCode] \textbf{Paket wajib:} \code{numpy}, \code{torch}, \code{scikit-learn}, \code{matplotlib}.
+  \item[\color{ctpBlue}\faDownload] \textbf{Data:} dibangkitkan sendiri (sintetis) --- tidak ada unduhan dataset.
+  \item[\color{ctpBlue}\faFileCode] \textbf{Perangkat:} CPU sudah memadai; GPU tidak diperlukan.
+\end{itemize}
+
+\begin{codewindow}{setup.sh}
+\begin{lstlisting}[style=pycode]
+pip install numpy torch scikit-learn matplotlib
+\end{lstlisting}
+\end{codewindow}
+
+\begin{minipage}{\linewidth}
+\begin{bclogo}[couleur=ctpMantle, arrondi=0.1, logo=\bcinfo, ombre=false, couleurBord=ctpSurface, epBord=0.6]{Batasan Cakupan}
+  Tugas ini memakai data multimodal \textbf{sintetis} yang dirancang agar setiap modalitas
+  hanya membawa \textbf{separuh} informasi. Akibatnya, satu modalitas saja tidak pernah
+  melampaui akurasi kebetulan, sedangkan penggabungan yang tepat dapat mencapainya.
+  Konstruksi ini membuat perbedaan Early, Late, dan Intermediate Fusion terlihat jelas,
+  tanpa memerlukan dataset eksternal.
+\end{bclogo}
+\end{minipage}
+
+% =============================================================
+\section{Pernyataan Masalah}\label{sec:intro}
+
+Sebuah sistem diminta memprediksi \textbf{empat kelas emosi} dari dua modalitas: fitur
+visual (wajah) dan fitur audio (suara). Setiap modalitas hanya membawa satu dari dua
+faktor laten yang menentukan kelas, sehingga:
+
+\begin{enumerate}
+  \item Model unimodal visual paling tinggi mencapai akurasi sekitar 50\% --- ia tahu separuh jawaban.
+  \item Model unimodal audio juga paling tinggi sekitar 50\%.
+  \item Hanya penggabungan yang tepat dapat melampaui 95\%.
+\end{enumerate}
+
+Anda akan menguji ketiga strategi fusi pada kondisi ini, kemudian memilih yang paling
+tepat beserta alasannya. Rincian pengerjaan diberikan pada bagian berikutnya.
+
+% =============================================================
+\section{Persyaratan}\label{sec:requirements}
+
+Perhatikan setiap persyaratan pada soal-soal berikut.
+
+% ------------------------------------------------------------
+\subsection{Soal 1 --- Data Sintetis dan Baseline Unimodal}
+\label{sec:soal1}
+
+Sebelum menggabungkan apa pun, kita harus tahu seberapa jauh satu modalitas saja mampu
+menjangkau. Inilah \emph{baseline} yang akan dibandingkan sepanjang tugas.
+
+\subsubsection{Instruksi}
+\label{sec:soal1-instruksi}
+
+\textbf{(a)} Bangkitkan data sintetis dengan dua faktor laten biner (valensi dari wajah,
+gairah dari suara). Label adalah gabungan keduanya sehingga menghasilkan empat kelas.
+
+\textbf{(b)} Tampilkan distribusi kelas pada data. Pastikan keempat kelas berimbang.
+
+\textbf{(c)} Latih dua model unimodal terpisah: satu hanya menerima fitur visual, satu
+hanya menerima fitur audio. Laporkan akurasi masing-masing di data uji.
+
+\textbf{(d)} Jawab dalam 3--5 kalimat: mengapa akurasi kedua model unimodal berhenti di
+sekitar 50\% dan tidak dapat melampauinya?
+\subsubsection{Kerangka Kode}
+\label{sec:soal1-kode}
+
+\begin{codewindow}{soal1\_data.py}
+\begin{lstlisting}[style=pycode]
+import numpy as np
+import torch
+import torch.nn as nn
+
+SEED, N, DIM = 42, 4000, 16
+rng = np.random.default_rng(SEED)
+
+def buat_data(n=N):
+    """Dua faktor laten: visual (valensi) dan audio (gairah)."""
+    z_visual = rng.integers(0, 2, size=n)   # separuh jawaban
+    z_audio  = rng.integers(0, 2, size=n)   # separuh jawaban
+
+    visual = rng.normal(0, 1.0, size=(n, DIM)).astype(np.float32)
+    audio  = rng.normal(0, 1.0, size=(n, DIM)).astype(np.float32)
+
+    # Dimensi 0 menandai faktor laten; sisanya derau tak informatif
+    visual[:, 0] = z_visual * 2.0 - 1.0
+    audio[:, 0]  = z_audio  * 2.0 - 1.0
+
+    label = z_visual * 2 + z_audio          # 4 kelas gabungan
+    return visual, audio, label
+
+visual, audio, label = buat_data()
+print("visual:", visual.shape, "| audio:", audio.shape)
+print("distribusi kelas:", np.bincount(label))
+
+def buat_encoder(fan_in=DIM, fan_out=32, seed=0):
+    """Encoder BEKU dengan aktivasi tanh.
+
+    Catatan: gunakan tanh, bukan ReLU. ReLU dapat mematikan
+    dimensi yang membawa faktor laten, sehingga informasi hilang
+    sebelum sempat digabungkan.
+    """
+    g = torch.Generator().manual_seed(seed)
+    enc = nn.Sequential(
+        nn.Linear(fan_in, fan_out), nn.Tanh(),
+        nn.Linear(fan_out, fan_out), nn.Tanh(),
+    )
+    with torch.no_grad():                   # inisialisasi terkendali
+        for p in enc.parameters():
+            if p.dim() > 1:
+                p.copy_(torch.randn(p.shape, generator=g) / p.shape[1] ** 0.5)
+            else:
+                p.zero_()
+    enc.eval()
+    for p in enc.parameters():
+        p.requires_grad_(False)             # bekukan
+    return enc
+
+ENC_VISUAL = buat_encoder(seed=1)
+ENC_AUDIO  = buat_encoder(seed=2)
+print("parameter encoder visual:", sum(p.numel() for p in ENC_VISUAL.parameters()))
+\end{lstlisting}
+\end{codewindow}
+
+% ------------------------------------------------------------
+\subsection{Soal 2 --- Early Fusion}
+\label{sec:soal2}
+
+Early Fusion menggabungkan fitur tepat setelah encoder, lalu meneruskannya ke satu model
+bersama. Semua pembelajaran terjadi pada model gabungan tersebut.
+
+\subsubsection{Instruksi}
+\label{sec:soal2-instruksi}
+
+\textbf{(a)} Bentuk vektor gabungan $\mathbf{z} = [\,f_A(\mathbf{x}_A) ; f_B(\mathbf{x}_B)\,]$
+dari keluaran kedua encoder beku.
+
+\textbf{(b)} Latih satu model bersama (MLP) di atas $\mathbf{z}$, lalu laporkan akurasinya.
+
+\textbf{(c)} Bandingkan dengan baseline unimodal Soal 1. Apakah fusi menambah nilai?
+
+\begin{codewindow}{soal2\_early.py}
+\begin{lstlisting}[style=pycode]
+class EarlyFusion(nn.Module):
+    """Gabungkan fitur hasil encoder, lalu satu model bersama."""
+    def __init__(self, dim_enc=32, n_kelas=4):
+        super().__init__()
+        self.head = nn.Sequential(
+            nn.Linear(dim_enc * 2, 64), nn.Tanh(),
+            nn.Linear(64, n_kelas),
+        )
+
+    def forward(self, x_visual, x_audio):
+        with torch.no_grad():               # encoder beku
+            f_a = ENC_VISUAL(x_visual)
+            f_b = ENC_AUDIO(x_audio)
+        z = torch.cat([f_a, f_b], dim=1)    # konkatenasi di lapisan awal
+        return self.head(z)
+
+model = EarlyFusion()
+akurasi = latih_dan_uji(model, visual, audio, label)
+print(f"Early Fusion accuracy: {akurasi:.4f}")
+\end{lstlisting}
+\end{codewindow}
+
+% ------------------------------------------------------------
+\subsection{Soal 3 --- Late Fusion}
+\label{sec:soal3}
+
+Late Fusion melatih model terpisah per modalitas, lalu menggabungkan \emph{keputusan}
+masing-masing, bukan fiturnya.
+
+\subsubsection{Instruksi}
+\label{sec:soal3-instruksi}
+
+\textbf{(a)} Latih dua model unimodal terpisah di atas fitur encoder, masing-masing
+menghasilkan skor keyakinan untuk keempat kelas.
+
+\textbf{(b)} Gabungkan kedua skor dengan rata-rata terbobot, lalu laporkan akurasinya.
+
+\textbf{(c)} Jawab dalam 3--5 kalimat: mengapa strategi ini tidak dapat melampaui
+sekitar 50\%, padahal Early Fusion berhasil? Kaitkan jawaban Anda dengan fakta bahwa
+\textbf{encoder tidak boleh dilatih}.
+
+\begin{codewindow}{soal3\_late.py}
+\begin{lstlisting}[style=pycode]
+class LateFusion(nn.Module):
+    """Dua kepala unimodal; keputusan digabung di akhir."""
+    def __init__(self, dim_enc=32, n_kelas=4):
+        super().__init__()
+        self.head_a = nn.Sequential(nn.Linear(dim_enc, n_kelas))
+        self.head_b = nn.Sequential(nn.Linear(dim_enc, n_kelas))
+        self.w_a = nn.Parameter(torch.tensor(0.5))   # bobot modalitas
+        self.w_b = nn.Parameter(torch.tensor(0.5))
+
+    def forward(self, x_visual, x_audio):
+        with torch.no_grad():
+            f_a = ENC_VISUAL(x_visual)
+            f_b = ENC_AUDIO(x_audio)
+        p_a = torch.softmax(self.head_a(f_a), dim=1)
+        p_b = torch.softmax(self.head_b(f_b), dim=1)
+        return self.w_a * p_a + self.w_b * p_b      # fusi keputusan
+\end{lstlisting}
+\end{codewindow}
+
+% ------------------------------------------------------------
+\clearpage
+\subsection{Soal 4 --- Intermediate Fusion}
+\label{sec:soal4}
+
+Intermediate Fusion menggabungkan representasi pada lapisan tengah: setelah tiap modalitas
+ditransformasi sedikit, tetapi sebelum keputusan akhir diambil.
+
+\subsubsection{Instruksi}
+\label{sec:soal4-instruksi}
+
+\textbf{(a)} Tambahkan transformasi kecil per modalitas (lapisan tengah), lalu gabungkan
+hasilnya. Anda boleh memakai konkatenasi atau \emph{gating}.
+
+\textbf{(b)} Latih dan laporkan akurasinya.
+
+\textbf{(c)} Bandingkan dengan Early dan Late Fusion. Anda akan melihat Intermediate
+sedikit \emph{di bawah} Early karena encoder bersifat beku: lapisan tengah tambahan hanya
+menambah transformasi sebelum informasi dari kedua modalitas bertemu. Tuliskan analisis
+Anda dalam 4--6 kalimat, dan sebutkan bagaimana hasilnya akan berbeda bila encoder boleh
+ikut dilatih (\emph{fine-tuning}).
+
+\begin{codewindow}{soal4\_intermediate.py}
+\begin{lstlisting}[style=pycode]
+class IntermediateFusion(nn.Module):
+    """Fusi pada lapisan tengah, setelah transformasi per modalitas."""
+    def __init__(self, dim_enc=32, dim_mid=32, n_kelas=4):
+        super().__init__()
+        self.mid_a = nn.Sequential(nn.Linear(dim_enc, dim_mid), nn.Tanh())
+        self.mid_b = nn.Sequential(nn.Linear(dim_enc, dim_mid), nn.Tanh())
+        self.gate = nn.Sequential(nn.Linear(dim_mid * 2, dim_mid), nn.Sigmoid())
+        self.head = nn.Sequential(
+            nn.Linear(dim_mid, 64), nn.ReLU(),
+            nn.Linear(64, n_kelas),
+        )
+
+    def forward(self, x_visual, x_audio):
+        with torch.no_grad():
+            f_a = ENC_VISUAL(x_visual)
+            f_b = ENC_AUDIO(x_audio)
+        h_a, h_b = self.mid_a(f_a), self.mid_b(f_b)
+        g = self.gate(torch.cat([h_a, h_b], dim=1))
+        h = g * h_a + (1 - g) * h_b          # gerbang adaptif
+        return self.head(h)
+\end{lstlisting}
+\end{codewindow}
+
+% ------------------------------------------------------------
+\subsection{Soal 5 --- Analisis Kritis dan Uji Modalitas Hilang}
+\label{sec:soal5}
+
+Jawab pertanyaan berikut dalam bentuk paragraf singkat (masing-masing 5--8 kalimat).
+
+\textbf{(a) Perbandingan dan Pemilihan}
+
+Sajikan akurasi ketiga strategi beserta baseline unimodal dalam satu tabel. Pilih satu
+strategi untuk sistem ini dan pertanggungjawabkan pilihan Anda berdasarkan akurasi,
+kompleksitas, dan kemudahan implementasi.
+
+\textbf{(b) Uji Modalitas Hilang}
+
+Ulangi pengujian dengan salah satu modalitas dinolkan (misalkan fitur audio diisi nol).
+Catat penurunan akurasi tiap strategi. Strategi mana yang paling tangguh, dan mengapa?
+
+\begin{codewindow}{soal5\_hilang.py}
+\begin{lstlisting}[style=pycode]
+# Nolkan satu modalitas -> ukur ketangguhan tiap strategi
+audio_kosong = torch.zeros_like(torch.as_tensor(audio))
+
+for nama, model in [("Early", m_early),
+                    ("Late", m_late),
+                    ("Intermediate", m_inter)]:
+    akurasi_normal = uji(model, visual, audio, label)
+    akurasi_hilang = uji(model, visual, audio_kosong, label)
+    print(f"{nama:14s} normal={akurasi_normal:.3f} "
+          f"audio-hilang={akurasi_hilang:.3f}")
+\end{lstlisting}
+\end{codewindow}
+
+\textbf{(c) Kaitan dengan Teori}
+
+Hubungkan hasil Anda dengan dua gagasan dari perkuliahan: (i) masalah \emph{redundansi},
+\emph{konflik}, dan \emph{dominasi modalitas}; serta (ii) peringatan bahwa penambahan
+modalitas \textbf{tidak otomatis} meningkatkan kinerja. Apakah data sintetis pada tugas
+ini termasuk kasus yang menguntungkan bagi fusi? Jelaskan.
+
+% =============================================================
+\clearpage
+\section{Kriteria Penilaian}\label{sec:evaluation}
+
+Tugas Anda akan dinilai berdasarkan kriteria berikut:
+
+\renewcommand{\arraystretch}{1.5}
+\begin{center}\small
+\begin{tabular}{|p{11.5cm}|c|}
+  \hline
+  \thead{\color{ctpBlue} Kriteria} & \thead{\color{ctpBlue}Bobot} \\
+  \hline
+  Kebenaran teknis --- encoder tetap beku, kode berjalan tanpa error, ketiga strategi diimplementasikan dengan tepat. & 35\% \\
+  \hline
+  Kedalaman analisis --- penjelasan menghubungkan hasil dengan konsep fusi, baseline unimodal, dan masalah klasik fusi. & 30\% \\
+  \hline
+  Eksperimen --- pengukuran baseline, perbandingan ketiga strategi, dan uji modalitas hilang. & 20\% \\
+  \hline
+  Kualitas presentasi --- tabel hasil rapi, laporan terstruktur, dan interpretasi jelas. & 15\% \\
+  \hline
+  \textbf{Total} & \textbf{100\%} \\
+  \hline
+\end{tabular}
+\end{center}
+
+% =============================================================
+\section{Apa yang Dikumpulkan}\label{sec:submit}
+
+Seluruh artefak tugas dikemas ke dalam \textbf{satu berkas arsip} dengan format penamaan:
+\begin{center}
+  \code{mgg06\_tugas\_nim.zip}
+\end{center}
+
+dengan \code{nim} diganti oleh Nomor Induk Mahasiswa (NIM) masing-masing tanpa spasi.
+
+\textbf{Artefak yang dapat disertakan di dalam arsip} (dapat lebih dari satu jenis berkas, disesuaikan dengan bentuk penyelesaian Anda):
+\begin{borderedsquare}
+  \item \code{mgg06\_tugas\_NIM.ipynb} --- apabila penyelesaian dikerjakan menggunakan Jupyter Notebook (termasuk Google Colab). Notebook \textbf{wajib telah dijalankan} sehingga seluruh \emph{output} sel tersimpan di dalam berkas.
+  \item \code{mgg06\_tugas\_NIM.py} --- apabila penyelesaian dikerjakan dalam bentuk skrip Python.
+  \item \code{mgg06\_tugas\_NIM.pdf} --- apabila analisis ditulis dalam dokumen teks terpisah.
+  \item \code{mgg06\_tugas\_xx.jpg} --- apabila terdapat plot atau gambar pendukung tambahan; \code{xx} merupakan nomor urut visualisasi (misalnya \code{01}, \code{02}, dan seterusnya).
+\end{borderedsquare}
+
+Setiap berkas menggunakan awalan \code{mgg06\_tugas\_NIM} yang sama, dengan \code{NIM} ditulis secara konsisten (huruf besar/kecil mengikuti NIM resmi). Pastikan seluruh berkas berada tepat di dalam satu arsip \code{.zip} tanpa struktur folder bertingkat yang tidak perlu.
+
+\begin{callout}[ctpBlue]
+\textbf{\color{ctpBlue}Catatan Pengerjaan}
+\begin{itemize}
+  \item \textbf{Soal 1--4:} Wajib dikerjakan oleh semua mahasiswa. Soal 1 wajib dilaporkan lebih dulu sebagai baseline.
+  \item \textbf{Soal 5:} Wajib dikerjakan; bagian (b) memerlukan kode, bagian (a) dan (c) bersifat analitis.
+  \item \textbf{Encoder beku:} pengurangan akurasi akibat melatih encoder akan dinilai sebagai kesalahan prosedur.
+  \item \textbf{Estimasi waktu:} 3--4 jam.
+\end{itemize}
+\end{callout}
+
+\section*{Referensi}
+{\small\color{ctpSubtext}
+\begin{enumerate}[label={[\arabic*]}, leftmargin=2em]
+  \item Baltrusaitis, T., Ahuja, C., \& Morency, L.-P. (2018). \emph{Multimodal Machine Learning: A Survey and Taxonomy}. IEEE TPAMI, 40(2), 421--443. --- taksonomi early/intermediate/late fusion.
+  \item Arevalo, J., Solorio, T., Montes-y-Gomez, M., \& Gonzalez, F. A. (2017). \emph{Gated Multimodal Units for Information Fusion}. ICLR Workshop. --- dasar mekanisme \emph{gating}.
+  \item Liang, P., Zadeh, A., \& Morency, L.-P. (2023). \emph{Tutorial on Multimodal Machine Learning}. ICML. --- bagian strategi fusi.
+  \item Goodfellow, I., Bengio, Y., \& Courville, A. (2016). \emph{Deep Learning}, Bab 6--7: Deep Feedforward Networks. MIT Press.
+\end{enumerate}}
+
+\end{document}
