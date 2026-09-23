@@ -56,3 +56,16 @@ Portal perkuliahan **Pembelajaran Mesin Multimodal (IF25-40304)** — Institut T
 Situs ini di-deploy ke GitHub Pages dan dapat diakses melalui:
 
 **https://iwawiwi.github.io/multimodal/**
+
+### Menjalankan secara lokal
+
+Seluruh berkas HTML memakai path relatif, jadi harus disajikan lewat HTTP
+(bukan `file://`) agar CSS, font, dan KaTeX termuat dengan benar:
+
+```bash
+npm start          # http://127.0.0.1:8080/index.html
+```
+
+Setara dengan `python3 -m http.server 8080 --bind 127.0.0.1`. Tekan `Ctrl+C`
+untuk berhenti. Tidak ada dependensi tambahan yang perlu dipasang — server ini
+memakai modul `http.server` bawaan Python 3.

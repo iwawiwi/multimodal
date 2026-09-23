@@ -66,7 +66,7 @@ multimodal-v2/
 | Speaker Notes | RevealNotes plugin (tekan `S`) |
 | PDF Export | Headless Chrome + local HTTP server (`export_pdf.py`) |
 
-**Zero npm / Zero bundler** — seluruh dependensi dimuat dari CDN. Tidak ada `package.json`, `node_modules`, atau build step.
+**Zero npm / Zero bundler** — seluruh dependensi dimuat dari CDN. `package.json` hanya dipakai untuk pipeline PDF hands-on (Vivliostyle) dan linter; situs sendiri tidak punya build step.
 
 ---
 
@@ -232,7 +232,16 @@ python3 .agents/skills/lecture-slide-designer/scripts/export_pdf.py mggXX.html
 ```
 Menggunakan headless Chrome → render `?print-pdf` → simpan ke `pdf/mggXX.pdf`.
 
-### 9.4 Git PDF Management
+### 9.4 Pratinjau Lokal
+```bash
+npm start          # http://127.0.0.1:8080/index.html
+```
+Setara dengan `python3 -m http.server 8080 --bind 127.0.0.1`. Path di semua HTML
+relatif, jadi harus lewat HTTP (bukan `file://`) agar CSS/font/KaTeX termuat.
+Port 8080 sengaja dipilih agar tidak bentrok dengan server sementara di
+`export_pdf.py` (8765/8766).
+
+### 9.5 Git PDF Management
 ```bash
 git update-index --skip-worktree pdf/mggXX.pdf    # Hindari bloat repo
 git update-index --no-skip-worktree pdf/mggXX.pdf  # Unskip saat release
