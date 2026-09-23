@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pertemuan 07: Penyejajaran (Alignment) — Temporal &amp; Structural | ITERA</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <link rel="stylesheet" href="css/catppuccin-latte.css">
+</head>
+<body>
+  <header class="deck-header">
+    <div class="deck-header-left">
+      <a href="index.html" class="deck-brand-link" title="Kembali ke Portal Kuliah">
+        <img src="assets/img/logo_2.png" alt="Logo ITERA" class="deck-logo">
+        <img src="assets/img/dikti-saintek-berdampak-color.svg" alt="Logo Dikti Saintek Berdampak" class="deck-logo">
+      </a>
+    </div>
+
+    <div class="deck-header-right">
+      <!-- Aspect Ratio / Projector Switcher -->
+      <div class="nav-dropdown">
+        <button type="button" class="deck-ctrl-btn" id="aspect-btn" onclick="toggleAspectDropdown(event)" title="Sesuaikan Rasio Layar & Proyektor">
+          <span class="material-symbols-outlined">aspect_ratio</span>
+          <span id="aspect-label" class="deck-btn-label">Auto</span>
+          <span class="material-symbols-outlined" style="font-size: 14px;">arrow_drop_down</span>
+        </button>
+        <div class="nav-dropdown-menu" id="aspect-menu">
+          <button type="button" class="dropdown-item active" data-aspect="auto" onclick="setAspectMode('auto')">
+            <span class="item-title">Auto</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-9" onclick="setAspectMode('16-9')">
+            <span class="item-title">16:9</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-10" onclick="setAspectMode('16-10')">
+            <span class="item-title">16:10</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="4-3" onclick="setAspectMode('4-3')">
+            <span class="item-title">4:3</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="mobile" onclick="setAspectMode('mobile')">
+            <span class="item-title">Mobile</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="text-large" onclick="setAspectMode('text-large')">
+            <span class="item-title">Teks Besar</span>
+          </button>
+        </div>
+      </div>
+
+      <button type="button" class="deck-ctrl-btn" onclick="Reveal.toggleOverview()" title="Lihat Matriks Seluruh Slide (Esc/O)">
+        <span class="material-symbols-outlined">grid_view</span>
+        <span class="deck-btn-label">Overview</span>
+      </button>
+      <button type="button" class="deck-ctrl-btn" onclick="openShortcutsModal()" title="Panduan Pintasan Keyboard (?)">
+        <span class="material-symbols-outlined">keyboard</span>
+        <span class="deck-btn-label">Pintasan</span>
+      </button>
+      <a href="index.html" class="deck-ctrl-btn" title="Kembali ke Portal Kuliah">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span class="deck-btn-label">Portal</span>
+      </a>
+    </div>
+  </header>
+  <div class="deck-progress-track"><div class="deck-progress-bar" id="deck-progress-bar"></div></div>
+  <div id="shortcuts-modal" onclick="closeShortcutsModal(event)"><div class="modal-content" onclick="event.stopPropagation()"><div class="modal-header"><h4 style="margin:0;font-weight:800"><span class="material-symbols-outlined icon-blue">keyboard</span> Pintasan Navigasi Presentasi</h4><button class="modal-close" onclick="closeShortcutsModal()">&times;</button></div><div class="shortcut-row"><span>Slide berikutnya</span><span><span class="kbd-key">Space</span> / <span class="kbd-key">→</span></span></div><div class="shortcut-row"><span>Slide sebelumnya</span><span><span class="kbd-key">←</span></span></div><div class="shortcut-row"><span>Catatan dosen</span><span><span class="kbd-key">S</span></span></div></div></div>
+  <div class="reveal"><div class="slides">
+
+      <!-- SLIDE 1: COVER -->
+      <section id="deck-title">
+        <div style="margin: auto 0; text-align: left;">
+          <h1 style="font-size: 2.3em; line-height: 1.15; font-weight: 800; color: var(--ctp-text); margin-bottom: 12px; letter-spacing: -0.025em;">
+            Pembelajaran Mesin Multimodal
+          </h1>
+          <div style="font-size: 1.15em; font-weight: 600; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.4;">
+            Pertemuan 07 &bull; Penyejajaran (Alignment): Temporal &amp; Structural
+          </div>
+          <div style="max-width: 620px; background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-left: 3.5px solid var(--ctp-mauve); border-radius: 12px; padding: 18px 24px;">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-mauve); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">
+              Dosen Pengampu
+            </div>
+            <div style="font-size: 1.1em; font-weight: 800; color: var(--ctp-text); margin-bottom: 6px;">
+              I Wayan Wiprayoga Wisesa
+            </div>
+            <div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;">
+              Program Studi Teknik Informatika<br>
+              Fakultas Teknologi Industri<br>
+              Institut Teknologi Sumatera (ITERA)<br>
+              <span style="font-family: var(--font-mono); color: var(--ctp-mauve);">wayan.wisesa@if.itera.ac.id</span>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Buka sesi Pertemuan 7. Sambungkan ke Pertemuan 6: di sana kita menutup pilar Fusi dengan catatan bahwa seluruh strategi fusi bertumpu pada asumsi fitur yang digabungkan &ldquo;membicarakan hal yang sama&rdquo;. Asumsi itulah yang harus dibuktikan, dan sesi ini membahas cara membuktikannya. Ingatkan bahwa ini pilar ketiga dari tiga pilar, dan setelah sesi ini mahasiswa menempuh UTS.
+        </aside>
+      </section>
+
+      <!-- SLIDE 2: TUJUAN PEMBELAJARAN -->
+      <section>
+        <h2>Tujuan Pembelajaran Sesi Ini</h2>
+        <p style="margin-bottom: 24px;">Di akhir sesi kuliah ini, mahasiswa diharapkan mampu menguasai kompetensi dasar berikut:</p>
+
+        <div class="grid-4">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-blue">01</span>
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Masalah</h4>
+            </div>
+            <p>Menjelaskan tiga masalah penyejajaran: asinkronisitas temporal, ketidaksesuaian struktural, dan korespondensi jarang.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-mauve">02</span>
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Klasik</h4>
+            </div>
+            <p>Menjelaskan cara kerja DTW dan HMM, serta batas keduanya sebagai mekanisme penyejajaran.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-teal">03</span>
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Attention</h4>
+            </div>
+            <p>Membedakan <em>Self-Attention</em> dan <em>Cross-Attention</em> serta perannya sebagai penyejajaran adaptif.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-peach">04</span>
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Analisis</h4>
+            </div>
+            <p>Memilih mekanisme penyejajaran yang tepat untuk karakteristik tugas multimodal tertentu.</p>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Bacakan keempat capaian. Tekankan urutan logisnya: sesi bergerak dari masalah, ke solusi klasik, lalu ke solusi modern, dan berakhir pada kemampuan memilih. Capaian keempat adalah muara seluruh sesi.
+        </aside>
+      </section>
+
+      <!-- SLIDE 3: DIVIDER BAGIAN 1 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(30,102,245,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-blue">Bagian 1</span>
+          <h1>Mengapa Modalitas Perlu Disejajarkan</h1>
+          <p class="subtitle">
+            Menghubungkan sub-komponen yang berkorespondensi &mdash; dan apa yang terjadi bila hubungan itu salah.
+          </p>
+        </div>
+        <aside class="notes">Bagian pembuka menempatkan masalah. Ingatkan bahwa fusi tanpa penyejajaran yang benar berarti menggabungkan derau, bukan informasi.</aside>
+      </section>
+
+      <!-- SLIDE 4: TIGA PILAR — POSISI PENYEJAJARAN -->
+      <section>
+        <h2>Posisi Penyejajaran dalam Peta Tantangan Multimodal</h2>
+        <p>Pertemuan 5&ndash;6 menuntaskan pilar <strong>Fusi</strong>. Sesi ini membuka pilar <strong>Penyejajaran</strong>.</p>
+
+        <div class="grid-3" style="margin-top: 16px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-blue">1</span>
+              <h3 style="color: var(--ctp-blue); margin: 0;">Representasi</h3>
+            </div>
+            <p>Memetakan data heterogen ke vektor yang saling kompatibel.</p>
+            <p style="margin: 10px 0 0 0; font-size: 0.78em; color: var(--ctp-green); font-weight: 700;"><span class="material-symbols-outlined icon-green" style="font-size: 15px; vertical-align: -3px;">check_circle</span> Sudah dibahas</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-mauve">2</span>
+              <h3 style="color: var(--ctp-mauve); margin: 0;">Penyejajaran</h3>
+            </div>
+            <p>Menghubungkan bagian yang berkorespondensi antar modalitas.</p>
+            <p style="margin: 10px 0 0 0; font-size: 0.78em; color: var(--ctp-blue); font-weight: 700;"><span class="material-symbols-outlined icon-blue" style="font-size: 15px; vertical-align: -3px;">my_location</span> Fokus sesi ini</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-teal">3</span>
+              <h3 style="color: var(--ctp-teal); margin: 0;">Fusi</h3>
+            </div>
+            <p>Menggabungkan informasi yang telah disejajarkan menjadi satu keputusan.</p>
+            <p style="margin: 10px 0 0 0; font-size: 0.78em; color: var(--ctp-green); font-weight: 700;"><span class="material-symbols-outlined icon-green" style="font-size: 15px; vertical-align: -3px;">check_circle</span> Sudah dibahas</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 18px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Urutannya tidak dapat dibalik: <strong>representasi</strong> menghasilkan vektor, <strong>penyejajaran</strong> menentukan vektor mana yang setara, dan <strong>fusi</strong> baru boleh menggabungkannya. Menggabungkan sebelum menyelaraskan berarti mencampur hal yang tidak sepadan.</div></div>
+
+        <aside class="notes">
+          Kembalikan mahasiswa ke Pertemuan 5 slide 4, tempat Penyejajaran ditandai &ldquo;pertemuan mendatang&rdquo;. Kini janji itu dituntaskan. Tekankan urutan logisnya: fusi tidak dapat memperbaiki penyejajaran yang salah. Sebutkan bahwa pada Pertemuan 6 kita sudah menutup pilar Fusi dengan mengakui kekurangan Intermediate Fusion yang &ldquo;sensitif penyelarasan&rdquo; &mdash; itulah pemicu sesi ini.
+        </aside>
+      </section>
+
+      <!-- SLIDE 5: TIGA MASALAH KUNCI -->
+      <section>
+        <h2>Tiga Masalah Kunci Penyejajaran</h2>
+        <p>Korespondensi antar modalitas jarang eksplisit. Tiga hambatan berikut yang paling sering muncul:</p>
+
+        <div class="grid-3" style="margin-top: 16px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-blue">1</span>
+              <h3 style="color: var(--ctp-blue); margin: 0;">Temporal Asynchrony</h3>
+            </div>
+            <p>Modalitas bergerak pada laju atau durasi berbeda. Audio direkam pada \(44{,}1\) kHz sementara video hanya \(30\) <em>frame</em> per detik &mdash; rasionya sekitar \(1 : 1470\).</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-mauve">2</span>
+              <h3 style="color: var(--ctp-mauve); margin: 0;">Structural Mismatch</h3>
+            </div>
+            <p>Struktur datanya berbeda jenis. Teks adalah urutan kata, gambar adalah kisi spasial, audio adalah gelombang waktu &mdash; tidak ada indeks yang secara alami bertemu.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-peach">3</span>
+              <h3 style="color: var(--ctp-peach); margin: 0;">Sparse Correspondence</h3>
+            </div>
+            <p>Hanya sebagian kecil data yang benar-benar relevan. Satu kata dalam kalimat mungkin hanya bersesuaian dengan satu region kecil dari keseluruhan gambar.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 18px;"><span class="material-symbols-outlined icon-maroon">warning</span><div>Ketiganya menjelaskan mengapa penyejajaran <strong>tidak dapat diasumsikan</strong>. Pada data nyata, korespondensi harus ditemukan &mdash; entah oleh algoritma eksplisit atau dipelajari oleh model.</div></div>
+
+        <aside class="notes">
+          Ketiga masalah ini akan muncul kembali di ketiga bagian sesi. Asinkronisitas adalah wajah temporal; ketidaksesuaian struktural adalah wajah spasial/representasional; korespondensi jarang adalah wajah statistik. Tekankan bahwa korespondensi jarang adalah yang paling sulit, karena menuntut model memilih, bukan sekadar menyelaraskan seluruh sekuens.
+        </aside>
+      </section>
+
+      <!-- SLIDE 6: BIG IDEA -->
+      <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Big Idea: Definisi Selaras">
+        <div class="big-idea-canvas">
+          <h2 class="big-idea-question">
+            Kapan Dua Modalitas Boleh Disebut &ldquo;Berbicara Tentang Hal yang Sama&rdquo;?
+          </h2>
+          <p class="big-idea-takeaway">
+            <strong>Ketika kita dapat menunjuk pasangan sub-komponen yang berkorespondensi.</strong> Penyejajaran adalah persoalan membangun fungsi korespondensi antar bagian &mdash; kata ke region gambar, <em>frame</em> ke sampel audio, fonem ke gerakan bibir. Tanpa fungsi itu, &ldquo;fusi&rdquo; hanyalah penggabungan vektor yang kebetulan berdampingan.
+          </p>
+        </div>
+        <aside class="notes">
+          Ini slide konseptual kunci. Biarkan pertanyaan menggantung beberapa detik. Tekankan bahwa definisi ini operasional: penyejajaran baru bermakna bila kita dapat menunjukkan pasangannya. Mahasiswa sering menganggap penyejajaran sebagai hal otomatis, padahal ia adalah keputusan desain yang eksplisit.
+        </aside>
+      </section>
+
+      <!-- SLIDE 7: DIVIDER BAGIAN 2 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 90% 80%, rgba(136,57,239,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-mauve">Bagian 2</span>
+          <h1>Mekanisme Klasik: DTW &amp; HMM</h1>
+          <p class="subtitle">
+            Menemukan korespondensi secara eksplisit, sebelum era pembelajaran end-to-end.
+          </p>
+        </div>
+        <aside class="notes">Bagian ini menyajikan pendekatan pra-deep-learning. Tujuannya bukan agar mahasiswa mengimplementasikannya, melainkan memahami gagasan &ldquo;jalur korespondensi&rdquo; yang nanti dipelajari ulang secara adaptif oleh attention.</aside>
+      </section>
+
+      <!-- SLIDE 8: DTW — KONSEP -->
+      <section>
+        <h2>Dynamic Time Warping: Menyelaraskan Laju yang Berbeda</h2>
+        <p>Dua sekuens yang isinya sama dapat bergerak pada kecepatan berbeda.</p>
+
+        <div class="grid-2" style="margin-top: 16px;">
+          <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px; overflow: hidden;">
+            <svg viewBox="0 0 400 332" role="img" aria-label="Diagram penyejajaran DTW: baris atas berisi empat token teks, baris bawah berisi enam frame audio, garis putus-putus menunjukkan jalur warping yang memetakan satu token ke satu atau beberapa frame secara tidak seragam" style="width: 100%; height: auto;">
+              <text x="200" y="26" text-anchor="middle" fill="#1e66f5" font-size="15" font-family="sans-serif" font-weight="700">Teks &mdash; 4 token</text>
+
+              <rect x="20" y="40" width="84" height="44" rx="9" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+              <text x="62" y="69" text-anchor="middle" fill="#4c4f69" font-size="17" font-family="sans-serif" font-weight="700">1</text>
+              <rect x="114" y="40" width="84" height="44" rx="9" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+              <text x="156" y="69" text-anchor="middle" fill="#4c4f69" font-size="17" font-family="sans-serif" font-weight="700">2</text>
+              <rect x="208" y="40" width="84" height="44" rx="9" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+              <text x="250" y="69" text-anchor="middle" fill="#4c4f69" font-size="17" font-family="sans-serif" font-weight="700">3</text>
+              <rect x="302" y="40" width="84" height="44" rx="9" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+              <text x="344" y="69" text-anchor="middle" fill="#4c4f69" font-size="17" font-family="sans-serif" font-weight="700">4</text>
+
+              <text x="200" y="182" text-anchor="middle" fill="#8839ef" font-size="15" font-family="sans-serif" font-weight="700">Audio &mdash; 6 frame</text>
+
+              <rect x="18" y="196" width="54" height="44" rx="9" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
+              <text x="45" y="225" text-anchor="middle" fill="#4c4f69" font-size="15" font-family="sans-serif" font-weight="700">1</text>
+              <rect x="80" y="196" width="54" height="44" rx="9" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
+              <text x="107" y="225" text-anchor="middle" fill="#4c4f69" font-size="15" font-family="sans-serif" font-weight="700">2</text>
+              <rect x="142" y="196" width="54" height="44" rx="9" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
+              <text x="169" y="225" text-anchor="middle" fill="#4c4f69" font-size="15" font-family="sans-serif" font-weight="700">3</text>
+              <rect x="204" y="196" width="54" height="44" rx="9" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
+              <text x="231" y="225" text-anchor="middle" fill="#4c4f69" font-size="15" font-family="sans-serif" font-weight="700">4</text>
+              <rect x="266" y="196" width="54" height="44" rx="9" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
+              <text x="293" y="225" text-anchor="middle" fill="#4c4f69" font-size="15" font-family="sans-serif" font-weight="700">5</text>
+              <rect x="328" y="196" width="54" height="44" rx="9" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
+              <text x="355" y="225" text-anchor="middle" fill="#4c4f69" font-size="15" font-family="sans-serif" font-weight="700">6</text>
+
+              <path d="M62 84 L45 196" fill="none" stroke="#179299" stroke-width="2.5" stroke-dasharray="6 5"/>
+              <path d="M62 84 L107 196" fill="none" stroke="#179299" stroke-width="2.5" stroke-dasharray="6 5"/>
+              <path d="M156 84 L169 196" fill="none" stroke="#179299" stroke-width="2.5" stroke-dasharray="6 5"/>
+              <path d="M250 84 L231 196" fill="none" stroke="#179299" stroke-width="2.5" stroke-dasharray="6 5"/>
+              <path d="M250 84 L293 196" fill="none" stroke="#179299" stroke-width="2.5" stroke-dasharray="6 5"/>
+              <path d="M344 84 L355 196" fill="none" stroke="#179299" stroke-width="2.5" stroke-dasharray="6 5"/>
+
+              <text x="200" y="300" text-anchor="middle" fill="#179299" font-size="12" font-family="sans-serif">Jalur warping: satu token dapat selaras dengan beberapa frame</text>
+            </svg>
+          </div>
+          <div class="narrative-pane">
+            <div class="narrative-step"><strong>01. Laju Berbeda</strong> Token teks dan <em>frame</em> audio bergerak pada kecepatan berbeda, sehingga tidak ada korespondensi satu-ke-satu.</div>
+            <div class="narrative-step"><strong>02. Jalur Optimal</strong> DTW mencari jalur monoton dengan biaya total minimum antara kedua sekuens.</div>
+            <div class="narrative-step"><strong>03. Hasil</strong> Diperoleh pemetaan token ke <em>frame</em>, termasuk hubungan banyak-ke-satu.</div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Tunjukkan pada diagram bahwa token 1 menyebar ke frame 1 dan 2, sedangkan token 2 cukup ke frame 3 &mdash; inilah &ldquo;warping&rdquo;: sumbu waktu diregangkan dan dimampatkan agar kedua sekuens beradu. Tekankan bahwa jalur harus monoton dan tidak boleh melompat mundur, karena waktu berjalan satu arah. Sebutkan penerapan klasiknya: pengenalan ucapan dengan kecepatan bicara berbeda.
+        </aside>
+      </section>
+
+      <!-- SLIDE 9: DTW — ALUR MATEMATIS -->
+      <section>
+        <h2>DTW: Alur Matematis</h2>
+        <p>Biaya kumulatif dihitung sel per sel; jalur terbaik adalah akumulasi minimum dari tiga langkah yang diizinkan.</p>
+
+        <div class="formula-hero">
+          <div class="formula-label">Rekurens Biaya Kumulatif</div>
+          <div class="formula-math">
+            $$D(i,j) = d(i,j) + \min\big\{\, D(i{-}1,\,j),\; D(i,\,j{-}1),\; D(i{-}1,\,j{-}1) \,\big\}$$
+          </div>
+        </div>
+
+        <div class="formula-breakdown">
+          <div class="formula-term-box">
+            <strong>\(D(i,j)\)</strong>
+            Biaya kumulatif jalur terbaik dari titik awal hingga sel \((i,j)\) &mdash; inilah nilai yang diminimalkan.
+          </div>
+          <div class="formula-term-box">
+            <strong>\(d(i,j)\)</strong>
+            Jarak lokal antara titik ke-\(i\) pada sekuens pertama dan titik ke-\(j\) pada sekuens kedua, misalnya jarak Euclidean antarfitur.
+          </div>
+          <div class="formula-term-box">
+            <strong>\(\min\{\cdot\}\)</strong>
+            Tiga langkah yang diizinkan: maju di sekuens pertama, maju di sekuens kedua, atau maju di keduanya sekaligus.
+          </div>
+        </div>
+
+        <aside class="notes">
+          Jelaskan tiap simbol; tidak perlu perhitungan manual. Tekankan tiga hal. Pertama, matriks \(D\) berukuran \(N \times M\) sehingga biaya komputasinya kuadratik. Kedua, \(\min\) di atas tiga langkah itulah yang menjaga jalur tetap monoton dan kontinu. Ketiga, yang dipakai sebagai jarak akhir adalah \(D(N,M)\), bukan jalur itu sendiri. Sebutkan bahwa sifat kuadratik inilah salah satu alasan DTW sulit dipakai pada sekuens panjang.
+        </aside>
+      </section>
+
+      <!-- SLIDE 10: HMM — KONSEP -->
+      <section>
+        <h2>HMM: Penyejajaran Lewat Keadaan Tersembunyi</h2>
+        <p>HMM memodelkan sekuens melalui keadaan tersembunyi yang tidak teramati langsung.</p>
+
+        <div class="grid-2" style="margin-top: 14px;">
+          <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 12px; overflow: hidden; max-height: 250px;">
+            <svg viewBox="0 0 400 212" role="img" aria-label="Diagram Hidden Markov Model sebagai rantai keadaan: keadaan satu, dua, dan tiga tersusun mendatar dengan panah transisi berlabel a satu dua dan a dua tiga, masing-masing keadaan memancarkan panah emisi ke bawah menuju pengamatan y satu, y dua, dan y tiga" style="width: 100%; height: auto;">
+              <defs>
+                <marker id="hmm-tr" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#1e66f5"/></marker>
+                <marker id="hmm-em" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#179299"/></marker>
+              </defs>
+
+              <text x="200" y="16" text-anchor="middle" fill="#1e66f5" font-size="13" font-family="sans-serif" font-weight="700">Keadaan Tersembunyi</text>
+
+              <rect x="14" y="30" width="102" height="44" rx="9" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+              <foreignObject x="14" y="30" width="102" height="44">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#4c4f69;">\(h_1\)</div>
+              </foreignObject>
+
+              <rect x="149" y="30" width="102" height="44" rx="9" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+              <foreignObject x="149" y="30" width="102" height="44">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#4c4f69;">\(h_2\)</div>
+              </foreignObject>
+
+              <rect x="284" y="30" width="102" height="44" rx="9" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+              <foreignObject x="284" y="30" width="102" height="44">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#4c4f69;">\(h_3\)</div>
+              </foreignObject>
+
+              <path d="M116 52 H143" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#hmm-tr)"/>
+              <path d="M251 52 H278" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#hmm-tr)"/>
+
+              <foreignObject x="110" y="4" width="42" height="20">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:13px;color:#1e66f5;">\(a_{12}\)</div>
+              </foreignObject>
+              <foreignObject x="245" y="4" width="42" height="20">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:13px;color:#1e66f5;">\(a_{23}\)</div>
+              </foreignObject>
+
+              <path d="M65 74 V126" fill="none" stroke="#179299" stroke-width="2.5" marker-end="url(#hmm-em)"/>
+              <path d="M200 74 V126" fill="none" stroke="#179299" stroke-width="2.5" marker-end="url(#hmm-em)"/>
+              <path d="M335 74 V126" fill="none" stroke="#179299" stroke-width="2.5" marker-end="url(#hmm-em)"/>
+
+              <rect x="14" y="132" width="102" height="42" rx="9" fill="#eff1f5" stroke="#179299" stroke-width="3"/>
+              <foreignObject x="14" y="132" width="102" height="42">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#179299;">\(y_1\)</div>
+              </foreignObject>
+
+              <rect x="149" y="132" width="102" height="42" rx="9" fill="#eff1f5" stroke="#179299" stroke-width="3"/>
+              <foreignObject x="149" y="132" width="102" height="42">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#179299;">\(y_2\)</div>
+              </foreignObject>
+
+              <rect x="284" y="132" width="102" height="42" rx="9" fill="#eff1f5" stroke="#179299" stroke-width="3"/>
+              <foreignObject x="284" y="132" width="102" height="42">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#179299;">\(y_3\)</div>
+              </foreignObject>
+
+              <foreignObject x="90" y="188" width="220" height="20">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:13px;color:#4c4f69;">Emisi \(h_t \rightarrow y_t\), transisi \(h_t \rightarrow h_{t+1}\)</div>
+              </foreignObject>
+            </svg>
+          </div>
+          <div class="narrative-pane">
+            <div class="narrative-step"><strong>01. Keadaan Tersembunyi</strong> Keadaan internal yang tidak teramati langsung &mdash; misalnya fonem.</div>
+            <div class="narrative-step"><strong>02. Transisi \(a_{ij}\)</strong> Peluang berpindah antar keadaan; inilah sumber sifat sekuensial HMM.</div>
+            <div class="narrative-step"><strong>03. Emisi</strong> Peluang keadaan menghasilkan pengamatan \(y_t\) &mdash; jembatan ke data teramati.</div>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Penyejajaran HMM = <strong>urutan keadaan paling mungkin</strong> yang menjelaskan pengamatan, dicari lewat Viterbi. Yang diselaraskan adalah pengamatan ke keadaan, bukan titik ke titik.</div></div>
+
+        <aside class="notes">
+          Bandingkan dengan DTW untuk memperjelas: DTW menyelaraskan dua sekuens yang keduanya teramati, sedangkan HMM menyelaraskan pengamatan dengan keadaan tersembunyi yang harus disimpulkan. Tekankan bahwa Viterbi adalah algoritma yang menemukan urutan keadaan paling mungkin. HMM lama menjadi tulang punggung pengenalan ucapan sebelum era deep learning.
+        </aside>
+      </section>
+
+      <!-- SLIDE 11: BATAS DTW & HMM -->
+      <section>
+        <h2>Batas DTW dan HMM</h2>
+        <p>Keduanya bekerja, tetapi keduanya berhenti pada batas yang sama.</p>
+
+        <table class="c-table" style="margin-top: 14px;">
+          <thead>
+            <tr>
+              <th style="width: 24%;">Batas</th>
+              <th style="width: 38%;">Dynamic Time Warping</th>
+              <th style="width: 38%;">Hidden Markov Models</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Biaya komputasi</td>
+              <td>\(O(NM)\) &mdash; berat untuk sekuens panjang.</td>
+              <td>Pelatihan EM terpisah dari jaringan saraf.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Cakupan struktur</td>
+              <td>Hanya temporal dan <strong>selalu monoton</strong>; hubungan spasial tidak tertangani.</td>
+              <td>Hanya temporal; sifat Markov membatasi ketergantungan panjang.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Siapa menentukan korespondensi</td>
+              <td>Jarak lokal \(d(i,j)\) dipilih manusia, bukan dipelajari.</td>
+              <td>Jumlah dan makna keadaan dirancang manual per ranah.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Integrasi pelatihan</td>
+              <td>Tidak dapat didiferensiasi, sehingga tidak menyatu dengan jaringan.</td>
+              <td>Dilatih terpisah, bukan bersama model multimodal.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 18px;"><span class="material-symbols-outlined icon-maroon">warning</span><div>Keduanya menuntut korespondensi <strong>dirancang lebih dulu</strong>, padahal pada data multimodal korespondensi itu sendiri yang tidak diketahui. Diperlukan mekanisme yang dapat <em>menemukan</em> korespondensi sekaligus <em>belajar</em> dari data.</div></div>
+
+        <aside class="notes">
+          Tekankan dua kata kunci pada callout: menemukan dan belajar. DTW dan HMM mampu menemukan, tetapi tidak belajar secara end-to-end; keduanya berdiri di luar jaringan saraf. Jarak pada DTW dipilih manusia, dan jumlah keadaan pada HMM dirancang manual. Inilah pintu masuk ke attention, yang melakukan keduanya sekaligus di dalam satu jaringan yang dilatih bersama.
+        </aside>
+      </section>
+
+      <!-- SLIDE 12: DIVIDER BAGIAN 3 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 20% 70%, rgba(23,146,153,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-teal">Bagian 3</span>
+          <h1>Penyejajaran Adaptif dengan Attention</h1>
+          <p class="subtitle">
+            Membiarkan model menemukan korespondensi sendiri, lalu menyelaraskannya tanpa dipisahkan dari pelatihan.
+          </p>
+        </div>
+        <aside class="notes">Bagian inti sesi. Tekankan kata &ldquo;adaptif&rdquo;: korespondensi tidak lagi ditentukan rumus, melainkan dihitung dari data pada setiap contoh.</aside>
+      </section>
+
+      <!-- SLIDE 13: IDE ATTENTION -->
+      <section>
+        <h2>Mekanisme Attention: Query, Key, Value</h2>
+        <p>Alih-alih mengambil seluruh input, model <em>memilih</em> bagian yang paling relevan.</p>
+
+        <div class="grid-3" style="margin-top: 16px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-blue">Q</span>
+              <h3 style="color: var(--ctp-blue); margin: 0;">Query</h3>
+            </div>
+            <p>Elemen yang sedang diproses dan mengajukan pertanyaan: &ldquo;informasi mana yang saya butuhkan?&rdquo;</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-mauve">K</span>
+              <h3 style="color: var(--ctp-mauve); margin: 0;">Key</h3>
+            </div>
+            <p>Elemen lain yang menawarkan diri sebagai kandidat jawaban, masing-masing dengan ciri pembedanya.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-teal">V</span>
+              <h3 style="color: var(--ctp-teal); margin: 0;">Value</h3>
+            </div>
+            <p>Isi informasi yang sebenarnya dibawa tiap elemen, yang akan dicampur sesuai bobot relevance.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 16px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Perhatikan padanannya dengan penyejajaran: <strong>Query</strong> adalah elemen yang ingin disejajarkan, <strong>Key</strong> adalah kandidat pasangannya, dan <strong>bobot attention</strong> adalah derajat korespondensinya. Itulah sebabnya attention sekaligus menjadi mekanisme penyejajaran.</div></div>
+
+        <aside class="notes">
+          Analogi yang berguna: query seperti pertanyaan pencarian, key seperti indeks dokumen, dan value seperti isi dokumen. Tekankan bahwa ketiganya tidak ditentukan manusia &mdash; ketiganya dipelajari sebagai proyeksi linear dari input yang sama. Bobot perhatian inilah yang nanti dapat divisualisasikan untuk menunjukkan bagian mana yang dianggap berkorespondensi.
+        </aside>
+      </section>
+
+      <!-- SLIDE 14: FORMULA ATTENTION -->
+      <section>
+        <h2>Scaled Dot-Product Attention</h2>
+        <p>Bobot korespondensi dihitung dari kemiripan Query dengan setiap Key, lalu dipakai untuk mencampur Value.</p>
+
+        <div class="formula-hero">
+          <div class="formula-label">Perhitungan Attention</div>
+          <div class="formula-math">
+            $$\text{Attention}(Q,K,V) = \text{softmax}\!\left(\frac{QK^{\top}}{\sqrt{d_k}}\right) V$$
+          </div>
+        </div>
+
+        <div class="formula-breakdown">
+          <div class="formula-term-box">
+            <strong>\(Q, K, V\)</strong>
+            Matriks query, key, dan value hasil proyeksi linear dari representasi input. Ketiganya dipelajari, bukan ditentukan manual.
+          </div>
+          <div class="formula-term-box">
+            <strong>\(QK^{\top}\)</strong>
+            Perkalian titik antara setiap query dan setiap key, menghasilkan skor kemiripan antar-pasangan elemen.
+          </div>
+          <div class="formula-term-box">
+            <strong>\(\sqrt{d_k}\)</strong>
+            Faktor skala dengan \(d_k\) menyatakan dimensi key. Tanpa pembagi ini, skor membesar dan <em>softmax</em> menjadi terlalu tajam untuk dilatih.
+          </div>
+        </div>
+
+        <aside class="notes">
+          Tekankan alur pembacaannya: skor kemiripan &rarr; normalisasi &rarr; pencampuran. \(\text{softmax}\) menormalkan skor menjadi bobot yang berjumlah satu, sehingga hasilnya adalah rata-rata terbobot dari value. Sebutkan bahwa \(\text{softmax}\) yang terlalu tajam membuat gradien hampir nol, dan itulah alasan pembagi \(\sqrt{d_k}\) ada. Tampilkan kembali bahwa bobot inilah yang menjadi derajat korespondensi pada slide sebelumnya.
+        </aside>
+      </section>
+
+      <!-- SLIDE 15: SELF vs CROSS ATTENTION -->
+      <section>
+        <h2>Self-Attention vs Cross-Attention</h2>
+        <p>Perbedaannya tunggal tetapi menentukan: dari mana Query, Key, dan Value berasal.</p>
+
+        <div class="case-showcase" style="margin: 12px 0;">
+          <div class="case-input-pane">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-mauve); text-transform: uppercase; margin-bottom: 8px;">
+              Self-Attention &mdash; Intra-Modal
+            </div>
+            <ul style="margin: 0; padding-left: 16px; font-size: 0.8em; line-height: 1.5;">
+              <li>\(Q\), \(K\), \(V\) berasal dari modalitas yang <strong>sama</strong>.</li>
+              <li>Membangun konteks internal: kata memahami kata lain dalam kalimat yang sama.</li>
+              <li>Contoh: Transformer encoder (BERT), Vision Transformer (<em>patch</em> saling memperhatikan).</li>
+              <li>Menjawab: apa hubungan <em>di dalam</em> satu modalitas?</li>
+            </ul>
+          </div>
+          <div class="case-model-pane">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-teal); text-transform: uppercase; margin-bottom: 8px;">
+              Cross-Attention &mdash; Inter-Modal
+            </div>
+            <ul style="margin: 0; padding-left: 16px; font-size: 0.8em; line-height: 1.5;">
+              <li>\(Q\) dari <strong>satu</strong> modalitas, \(K\) dan \(V\) dari modalitas <strong>lain</strong>.</li>
+              <li>Menemukan korespondensi antar modalitas secara langsung.</li>
+              <li>Contoh: <em>image captioning</em>, VQA, analisis sentimen multimodal.</li>
+              <li>Menjawab: bagian modalitas lain mana yang relevan <em>bagi saya</em>?</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 8px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Self-attention <strong>menguatkan</strong> representasi tiap modalitas; cross-attention <strong>menyejajarkan</strong> satu modalitas dengan modalitas lain. Di sinilah pilar Penyejajaran benar-benar dijalankan.</div></div>
+
+        <aside class="notes">
+          Ini slide pembeda paling penting di sesi ini. Minta mahasiswa mengucapkan ulang aturannya dengan kalimat sendiri: kalau ketiganya dari modalitas yang sama, itu self-attention; kalau Query dari satu modalitas sementara Key dan Value dari modalitas lain, itu cross-attention. Ingatkan bahwa self-attention sudah disinggung pada Pertemuan 2 sampai 4 untuk teks, gambar, dan audio &mdash; jadi yang baru di sesi ini adalah cross-attention.
+        </aside>
+      </section>
+
+      <!-- SLIDE 16: DIAGRAM CROSS-ATTENTION -->
+      <section>
+        <h2>Cara Kerja Cross-Attention</h2>
+        <p>Satu query teks menghampiri seluruh region visual untuk membentuk representasi terfokus.</p>
+
+        <div class="grid-2" style="margin-top: 16px;">
+          <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px; overflow: hidden;">
+            <svg viewBox="0 0 400 332" role="img" aria-label="Diagram cross-attention: satu query dari teks dibandingkan dengan tiga patch visual, menghasilkan bobot perhatian alfa satu sampai tiga, lalu bobot itu mencampur nilai visual menjadi satu representasi terkontekstual" style="width: 100%; height: auto;">
+              <defs>
+                <marker id="ca-arr" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#1e66f5"/></marker>
+                <marker id="ca-arr2" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#8839ef"/></marker>
+                <marker id="ca-arr3" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#179299"/></marker>
+                <marker id="ca-arr4" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#40a02b"/></marker>
+              </defs>
+
+              <rect x="100" y="16" width="200" height="54" rx="10" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+              <text x="200" y="38" text-anchor="middle" fill="#4c4f69" font-size="15" font-family="sans-serif" font-weight="700">Teks &mdash; Query</text>
+              <foreignObject x="100" y="44" width="200" height="22">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#1e66f5;">\(\mathbf{q}_t\)</div>
+              </foreignObject>
+
+              <rect x="30" y="122" width="104" height="66" rx="10" fill="#eff1f5" stroke="#8839ef" stroke-width="3"/>
+              <text x="82" y="145" text-anchor="middle" fill="#8839ef" font-size="13" font-family="sans-serif" font-weight="700">Patch 1</text>
+              <foreignObject x="30" y="150" width="104" height="24">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:15px;color:#8839ef;">\(\alpha_1 = 0{,}1\)</div>
+              </foreignObject>
+
+              <rect x="148" y="122" width="104" height="66" rx="10" fill="#eff1f5" stroke="#8839ef" stroke-width="3"/>
+              <text x="200" y="145" text-anchor="middle" fill="#8839ef" font-size="13" font-family="sans-serif" font-weight="700">Patch 2</text>
+              <foreignObject x="148" y="150" width="104" height="24">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:15px;color:#8839ef;">\(\alpha_2 = 0{,}3\)</div>
+              </foreignObject>
+
+              <rect x="266" y="122" width="104" height="66" rx="10" fill="#eff1f5" stroke="#8839ef" stroke-width="3"/>
+              <text x="318" y="145" text-anchor="middle" fill="#8839ef" font-size="13" font-family="sans-serif" font-weight="700">Patch 3</text>
+              <foreignObject x="266" y="150" width="104" height="24">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:15px;color:#8839ef;">\(\alpha_3 = 0{,}6\)</div>
+              </foreignObject>
+
+              <rect x="100" y="248" width="200" height="58" rx="10" fill="#e6e9ef" stroke="#40a02b" stroke-width="3"/>
+              <text x="200" y="272" text-anchor="middle" fill="#40a02b" font-size="14" font-family="sans-serif" font-weight="700">Representasi Terkontekstual</text>
+              <foreignObject x="100" y="278" width="200" height="22">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:15px;color:#40a02b;">\(\mathbf{h}_t\)</div>
+              </foreignObject>
+
+              <path d="M200 70 C200 104 82 100 82 116" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#ca-arr)"/>
+              <path d="M200 70 V116" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#ca-arr)"/>
+              <path d="M200 70 C200 104 318 100 318 116" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#ca-arr)"/>
+
+              <path d="M82 188 C82 218 200 218 200 242" fill="none" stroke="#179299" stroke-width="3" marker-end="url(#ca-arr3)"/>
+              <path d="M200 188 V242" fill="none" stroke="#179299" stroke-width="3" marker-end="url(#ca-arr3)"/>
+              <path d="M318 188 C318 218 200 218 200 242" fill="none" stroke="#179299" stroke-width="3" marker-end="url(#ca-arr3)"/>
+            </svg>
+          </div>
+          <div class="narrative-pane">
+            <div class="narrative-step"><strong>01. Query</strong> Setiap langkah decoder mengajukan satu query dari representasi teks.</div>
+            <div class="narrative-step"><strong>02. Bobot</strong> Query dibandingkan dengan seluruh <em>patch</em> visual; <em>softmax</em> menghasilkan bobot \(\alpha_1 \dots \alpha_3\).</div>
+            <div class="narrative-step"><strong>03. Konteks</strong> Output adalah campuran terbobot nilai visual &mdash; representasi yang terfokus pada bagian relevan.</div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Tunjukkan bahwa bobot terbesar jatuh pada patch 3, sehingga representasi terkontekstual didominasi oleh region itu. Tekankan bahwa bobot ini dihitung ulang untuk setiap query, sehingga kata yang berbeda dapat memfokuskan region yang berbeda dalam satu gambar yang sama. Inilah yang membuat penyejajaran bersifat adaptif: tidak ada tabel korespondensi tetap, semuanya dihitung saat itu juga. Sebutkan bahwa bobot \(\alpha\) inilah yang biasanya divisualisasikan sebagai peta panas pada makalah <em>image captioning</em>.
+        </aside>
+      </section>
+
+      <!-- SLIDE 17: ARSITEKTUR SELF + CROSS -->
+      <section>
+        <h2>Arsitektur: Self-Attention lalu Cross-Attention</h2>
+        <p>Pada praktiknya keduanya dipakai berurutan, bukan saling menggantikan.</p>
+
+        <div class="grid-2" style="margin-top: 16px;">
+          <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px; overflow: hidden;">
+            <svg viewBox="0 0 400 332" role="img" aria-label="Diagram arsitektur dua tahap: masukan teks dan visual masing-masing melewati encoder self-attention, lalu keduanya bertemu di lapisan cross-attention dengan query dari teks serta key dan value dari visual, dan akhirnya diteruskan ke modul fusi dan prediksi" style="width: 100%; height: auto;">
+              <defs>
+                <marker id="mm-arr" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#1e66f5"/></marker>
+                <marker id="mm-arr2" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#8839ef"/></marker>
+                <marker id="mm-arr3" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#179299"/></marker>
+                <marker id="mm-arr4" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#40a02b"/></marker>
+              </defs>
+
+              <rect x="26" y="14" width="156" height="46" rx="10" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+              <text x="104" y="43" text-anchor="middle" fill="#4c4f69" font-size="17" font-family="sans-serif" font-weight="700">Teks</text>
+
+              <rect x="218" y="14" width="156" height="46" rx="10" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
+              <text x="296" y="43" text-anchor="middle" fill="#4c4f69" font-size="17" font-family="sans-serif" font-weight="700">Visual</text>
+
+              <rect x="26" y="90" width="156" height="52" rx="10" fill="#eff1f5" stroke="#1e66f5" stroke-width="3"/>
+              <text x="104" y="112" text-anchor="middle" fill="#1e66f5" font-size="13" font-family="sans-serif" font-weight="700">Encoder Teks</text>
+              <text x="104" y="131" text-anchor="middle" fill="#4c4f69" font-size="11" font-family="sans-serif">Self-Attention</text>
+
+              <rect x="218" y="90" width="156" height="52" rx="10" fill="#eff1f5" stroke="#8839ef" stroke-width="3"/>
+              <text x="296" y="112" text-anchor="middle" fill="#8839ef" font-size="13" font-family="sans-serif" font-weight="700">Encoder Visual</text>
+              <text x="296" y="131" text-anchor="middle" fill="#4c4f69" font-size="11" font-family="sans-serif">Self-Attention</text>
+
+              <rect x="88" y="176" width="224" height="56" rx="10" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
+              <text x="200" y="199" text-anchor="middle" fill="#179299" font-size="15" font-family="sans-serif" font-weight="700">Cross-Attention</text>
+              <foreignObject x="88" y="204" width="224" height="22">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:13px;color:#4c4f69;">\(Q \leftarrow \text{Teks},\;\; K,V \leftarrow \text{Visual}\)</div>
+              </foreignObject>
+
+              <rect x="88" y="266" width="224" height="52" rx="10" fill="#e6e9ef" stroke="#40a02b" stroke-width="3"/>
+              <text x="200" y="288" text-anchor="middle" fill="#40a02b" font-size="15" font-family="sans-serif" font-weight="700">Fusi &amp; Prediksi</text>
+              <foreignObject x="88" y="292" width="224" height="22">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:15px;color:#40a02b;">\(\hat{y}\)</div>
+              </foreignObject>
+
+              <path d="M104 60 V84" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#mm-arr)"/>
+              <path d="M296 60 V84" fill="none" stroke="#8839ef" stroke-width="3" marker-end="url(#mm-arr2)"/>
+              <path d="M104 142 C104 162 160 158 180 172" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#mm-arr)"/>
+              <path d="M296 142 C296 162 240 158 220 172" fill="none" stroke="#8839ef" stroke-width="3" marker-end="url(#mm-arr2)"/>
+              <path d="M200 232 V260" fill="none" stroke="#179299" stroke-width="3" marker-end="url(#mm-arr3)"/>
+            </svg>
+          </div>
+          <div class="narrative-pane">
+            <div class="narrative-step"><strong>01. Encoder Self-Attention</strong> Tiap modalitas membentuk representasi kontekstual internalnya sendiri, tanpa menyentuh modalitas lain.</div>
+            <div class="narrative-step"><strong>02. Cross-Attention</strong> Query dari satu modalitas menghampiri Key dan Value modalitas lain &mdash; di sinilah penyejajaran terjadi.</div>
+            <div class="narrative-step"><strong>03. Fusi &amp; Prediksi</strong> Representasi yang sudah disejajarkan digabungkan untuk keputusan akhir.</div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Tekankan pembagian tugasnya: self-attention membangun konteks internal, cross-attention membangun jembatan antar modalitas. Tunjukkan bahwa cross-attention hanya punya satu arah pada diagram ini &mdash; query dari teks, key dan value dari visual &mdash; padahal pada praktiknya dapat dipasang dua arah. Sebutkan bahwa arsitektur inilah pola umum yang dipakai pada Pertemuan 9 hingga 11, sehingga mahasiswa akan melihatnya lagi.
+        </aside>
+      </section>
+
+      <!-- SLIDE 18: KLASIK vs ATTENTION -->
+      <section>
+        <h2>Penyejajaran Klasik vs Attention</h2>
+
+        <table class="c-table">
+          <thead>
+            <tr>
+              <th style="width: 22%;">Kriteria</th>
+              <th style="width: 39%;">Klasik &mdash; DTW &amp; HMM</th>
+              <th style="width: 39%;">Attention</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Korespondensi</td>
+              <td>Monoton temporal (DTW) atau pengamatan ke keadaan tersembunyi (HMM).</td>
+              <td>Bebas dan adaptif; dapat menangani hubungan spasial maupun temporal.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Cara memperoleh</td>
+              <td>Dirancang lebih dulu: jarak lokal dan jumlah keadaan ditentukan manusia.</td>
+              <td>Dipelajari dari data bersama seluruh jaringan secara <em>end-to-end</em>.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Biaya komputasi</td>
+              <td>\(O(NM)\) pada CPU; sulit diparalelkan.</td>
+              <td>Kuadratik terhadap panjang sekuens, tetapi sangat terparalelisasi di GPU.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Ketergantungan panjang</td>
+              <td>DTW tumbuh cepat seiring panjang sekuens.</td>
+              <td>Menangani sekuens bervariasi panjang dengan <em>masking</em>.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Interpretasi</td>
+              <td>Jalur warping atau urutan keadaan dapat diperiksa langsung.</td>
+              <td>Bobot perhatian dapat divisualisasikan sebagai peta korespondensi.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <aside class="notes">
+          Tunjukkan bahwa attention menang bukan karena selalu lebih murah &mdash; biayanya juga kuadratik &mdash; melainkan karena ia dipelajari bersama seluruh jaringan. Tekankan baris &ldquo;cara memperoleh&rdquo; sebagai pembeda paling mendasar: pada DTW dan HMM manusia merancang korespondensinya, pada attention model yang menemukannya. Sebutkan juga bahwa keduanya tetap dapat dipakai bersama, misalnya DTW sebagai penyelaras awal sebelum fitur masuk jaringan.
+        </aside>
+      </section>
+
+      <!-- SLIDE 19: DIVIDER BAGIAN 4 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 80% 30%, rgba(254,100,11,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-peach">Bagian 4</span>
+          <h1>Studi Kasus &amp; Keterbatasan</h1>
+          <p class="subtitle">
+            Menerapkan penyejajaran pada satu tugas nyata, lalu memeriksa kapan ia gagal.
+          </p>
+        </div>
+        <aside class="notes">Bagian penutup menuntut mahasiswa memilih mekanisme secara beralasan. Sajikan masalahnya lebih dulu tanpa jawaban.</aside>
+      </section>
+
+      <!-- SLIDE 20: STUDI KASUS — RUMUSAN MASALAH -->
+      <section>
+        <h2>Studi Kasus: Rumusan Masalah</h2>
+        <p style="margin-bottom: 12px;">Sistem menerjemahkan bahasa isyarat: <strong>gerakan tangan</strong> (visual) dan <strong>rekaman suara penutur</strong> (audio) yang tidak selalu sejalan.</p>
+
+        <div class="grid-2">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <h3 style="color: var(--ctp-blue)">Tugas</h3>
+            <p>Memetakan setiap klip ke satu kata pada kamus bahasa isyarat. Padanan publiknya antara lain RWTH-PHOENIX-Weather 2014T dan How2Sign.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <h3 style="color: var(--ctp-peach)">Kendala Nyata</h3>
+            <p>Penutur sering berhenti untuk berpikir sehingga ada jeda tanpa gerakan; gerakan tangan jauh lebih cepat daripada pengucapan; sebagian gerakan tidak punya padanan kata tunggal.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;">
+          <span class="material-symbols-outlined icon-peach">help</span>
+          <div>
+            <p style="margin: 0 0 6px 0; font-size: 0.84em;"><strong>Tiga pertanyaan yang harus dijawab sebelum menulis kode</strong> &mdash; diskusikan 3 menit dengan rekan di samping Anda:</p>
+            <ol style="margin: 0; padding-left: 18px; font-size: 0.8em; line-height: 1.55;">
+              <li>Bagaimana <em>DTW</em> akan menyelaraskan gerakan dan suara pada tugas ini?</li>
+              <li>Bagaimana <em>cross-attention</em> menyelaraskannya &mdash; dan apa bedanya dengan DTW?</li>
+              <li>Manakah yang lebih tepat, dan atas dasar apa?</li>
+            </ol>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Jangan buru-buru menampilkan jawaban. Slide ini sengaja hanya merumuskan masalah; penerapannya baru muncul pada slide berikutnya. Beri waktu 3 menit untuk diskusi berpasangan, lalu tampung dua atau tiga dugaan. Arahkan mereka menyadari bahwa jeda tanpa gerakan adalah bentuk korespondensi jarang, dan bahwa kecepatan yang berbeda adalah asinkronisitas temporal &mdash; dua dari tiga masalah pada bagian pertama. Sebutkan RWTH-PHOENIX-Weather 2014T dan How2Sign sebagai dataset publik yang biasa dipakai.
+        </aside>
+      </section>
+
+      <!-- SLIDE 21: STUDI KASUS — PENERAPAN -->
+      <section>
+        <h2>Studi Kasus: Penerapan Kedua Mekanisme</h2>
+        <p style="margin-bottom: 8px;">Tugas yang sama, dua cara menyelaraskan. Perhatikan apa yang berbeda pada keduanya.</p>
+
+        <div class="case-showcase" style="margin: 8px 0;">
+          <div class="case-input-pane">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-mauve); text-transform: uppercase; margin-bottom: 8px;">
+              Jalur DTW
+            </div>
+            <ul style="margin: 0; padding-left: 16px; font-size: 0.82em; line-height: 1.6;">
+              <li>Ekstraksi fitur tangan per <em>frame</em> dan fitur akustik per <em>frame</em>.</li>
+              <li>Hitung jarak lokal antarfitur, lalu cari jalur warping monoton termurah.</li>
+              <li>Jalur memberi pasangan <em>frame</em>&ndash;<em>frame</em> yang dianggap setara.</li>
+              <li>Pasangan itu digabungkan dan diteruskan ke pengklasifikasi.</li>
+            </ul>
+          </div>
+          <div class="case-model-pane">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-teal); text-transform: uppercase; margin-bottom: 8px;">
+              Jalur Cross-Attention
+            </div>
+            <ul style="margin: 0; padding-left: 16px; font-size: 0.82em; line-height: 1.6;">
+              <li>Setiap modalitas melewati encoder self-attention lebih dulu.</li>
+              <li>Query dari fitur gerakan menghampiri Key dan Value fitur suara.</li>
+              <li>Bobot attention dihitung ulang untuk tiap klip, bukan ditetapkan sekali.</li>
+              <li>Representasi terfokus diteruskan ke modul fusi dan prediksi.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 8px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Perbedaan pokoknya: DTW mencari <strong>satu</strong> jalur bagi seluruh sekuens dengan jarak yang ditentukan manusia; cross-attention menghitung <strong>bobot baru untuk setiap query</strong> dengan kemiripan yang dipelajari.</div></div>
+
+        <aside class="notes">
+          Tunjukkan pada kolom DTW bahwa jalur warping bersifat global &mdash; satu jalur untuk seluruh klip &mdash; sehingga jeda panjang memaksa peregangan yang menyeluruh. Pada kolom cross-attention, bobot dihitung per query, sehingga jeda tanpa gerakan cukup diberi bobot kecil tanpa merusak bagian lain. Tekankan bahwa keduanya berbagi gagasan yang sama: membangun korespondensi. Yang berubah adalah siapa yang menentukannya.
+        </aside>
+      </section>
+
+      <!-- SLIDE 22: STUDI KASUS — ANALISIS -->
+      <section>
+        <h2>Studi Kasus: Analisis Pilihan</h2>
+
+        <table class="c-table">
+          <thead>
+            <tr>
+              <th style="width: 26%;">Pertimbangan</th>
+              <th style="width: 37%;">DTW</th>
+              <th style="width: 37%;">Cross-Attention</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Kesesuaian tugas</td>
+              <td>Terbatas &mdash; hanya menyelaraskan waktu, tidak menangkap makna.</td>
+              <td>Kuat &mdash; bobot perhatian menangkap korespondensi yang bermakna.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Syarat teknis</td>
+              <td>Tidak butuh pelatihan tambahan; cukup jarak lokal yang masuk akal.</td>
+              <td>Butuh data berpasangan yang cukup untuk melatih proyeksi \(Q\), \(K\), \(V\).</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Risiko utama</td>
+              <td>Jeda panjang dan gerakan tanpa padanan memaksa peregangan yang salah.</td>
+              <td>Bobot dapat terpusat pada satu region bila data pelatihan tidak seimbang.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Interpretasi</td>
+              <td>Jalur warping mudah diperiksa dan dijelaskan.</td>
+              <td>Bobot perhatian dapat dipetakan sebagai peta korespondensi.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Rekomendasi</td>
+              <td><strong>Baseline</strong> yang murah dan cepat untuk memeriksa kualitas korespondensi.</td>
+              <td><strong>Pilihan utama</strong> bila data berpasangan mencukupi dan korespondensi bersifat longgar.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <aside class="notes">
+          Tekankan bahwa rekomendasinya bersyarat: DTW tetap berguna sebagai baseline dan alat diagnosis, terutama ketika data berpasangan sedikit. Cross-attention dipilih ketika korespondensinya tidak kaku dan datanya memadai. Sebutkan bahwa dalam praktik keduanya sering dipakai bersama &mdash; DTW untuk pra-penyelarasan kasar, lalu cross-attention untuk penyejajaran halus yang dipelajari. Ini juga contoh bahwa mekanisme lama tidak selalu ditinggalkan.
+        </aside>
+      </section>
+
+      <!-- SLIDE 23: KAPAN PENYEJAJARAN GAGAL -->
+      <section>
+        <h2>Ketika Penyejajaran Tidak Membantu</h2>
+        <p>Menambahkan mekanisme penyejajaran <strong>tidak otomatis</strong> meningkatkan kinerja. Tiga penyebab utamanya:</p>
+
+        <div class="grid-3" style="margin-top: 16px;">
+          <div class="c-card c-card-blue c-card-accent-top">
+            <h3 style="color: var(--ctp-blue)">Tidak Ada Korespondensi Nyata</h3>
+            <p>Bila kedua modalitas benar-benar independen, memaksakan penyejajaran hanya menyuntikkan derau dan menurunkan kinerja.</p>
+          </div>
+          <div class="c-card c-card-mauve c-card-accent-top">
+            <h3 style="color: var(--ctp-mauve)">Bobot Ditarik Pencilan</h3>
+            <p>Satu region atau <em>frame</em> yang mencolok dapat menyerap hampir seluruh bobot perhatian, sehingga informasi lain terabaikan.</p>
+          </div>
+          <div class="c-card c-card-teal c-card-accent-top">
+            <h3 style="color: var(--ctp-teal)">Data Berpasangan Terlalu Sedikit</h3>
+            <p>Proyeksi \(Q\), \(K\), \(V\) tidak terlatih dengan baik, sehingga bobot korespondensi menjadi sembarang.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 16px;">
+          <span class="material-symbols-outlined icon-maroon">warning</span>
+          <div><strong>Aturan diagnostik:</strong> selalu laporkan <strong>baseline unimodal</strong> pada metrik yang sama, lalu bandingkan dengan sistem yang <em>tidak</em> melakukan penyejajaran eksplisit. Bila penyejajaran tidak mengalahkan keduanya, mekanisme itu belum menambah nilai &mdash; periksa ketiga penyebab di atas sebelum menambah kompleksitas.</div>
+        </div>
+
+        <aside class="notes">
+          Ini pesan kritis yang sering dilewatkan: penyejajaran bukan jaminan perbaikan. Mintalah mahasiswa membayangkan dua modalitas yang memang tidak berkaitan, misalnya tinggi badan dan warna sepatu; memaksakan attention di antara keduanya hanya menambah parameter tanpa sinyal. Tekankan praktik baiknya: laporkan baseline unimodal dan bandingkan dengan sistem tanpa penyejajaran, karena tanpa pembanding angka kinerja tidak bermakna. Ini juga menyiapkan Pertemuan 13 tentang evaluasi.
+        </aside>
+      </section>
+
+      <!-- SLIDE 24: RANGKUMAN -->
+      <section>
+        <h2>Rangkuman &amp; Poin Kunci</h2>
+        <p>Benang merah dari masalah penyejajaran hingga pemilihan mekanisme:</p>
+
+        <div class="grid-2" style="margin-top: 10px;">
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue);">Masalah &amp; Mekanisme Klasik</h4>
+            </div>
+            <ul style="font-size: 0.76em; margin: 0; padding-left: 16px; line-height: 1.55;">
+              <li><strong>Tiga masalah</strong> &rarr; asinkronisitas temporal, ketidaksesuaian struktural, korespondensi jarang.</li>
+              <li><strong>DTW</strong> &rarr; jalur warping monoton termurah; jarak ditentukan manusia.</li>
+              <li><strong>HMM</strong> &rarr; menyelaraskan pengamatan ke keadaan tersembunyi lewat Viterbi.</li>
+              <li><strong>Batas bersama</strong> &rarr; korespondensi dirancang, bukan dipelajari.</li>
+            </ul>
+          </div>
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve);">Penyejajaran Adaptif</h4>
+            </div>
+            <ul style="font-size: 0.76em; margin: 0; padding-left: 16px; line-height: 1.55;">
+              <li><strong>Self-Attention</strong> &rarr; \(Q\), \(K\), \(V\) dari modalitas sama; membangun konteks internal.</li>
+              <li><strong>Cross-Attention</strong> &rarr; \(Q\) dari satu modalitas, \(K\) dan \(V\) dari modalitas lain; inti penyejajaran.</li>
+              <li><strong>Bobot perhatian</strong> &rarr; derajat korespondensi yang dipelajari, bukan ditentukan.</li>
+              <li><strong>Pemilihan</strong> &rarr; bergantung pada ada-tidaknya korespondensi nyata dan ketersediaan data berpasangan.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 10px;">
+          <span class="material-symbols-outlined icon-blue">lightbulb</span>
+          <div>
+            <p style="font-size: 0.82em; margin: 0;">
+              <strong>Kunci:</strong> penyejajaran adalah jembatan yang membuat fusi bermakna. Dengan sesi ini, ketiga pilar &mdash; <em>representasi</em>, <em>penyejajaran</em>, dan <em>fusi</em> &mdash; telah lengkap sebagai bekal UTS.
+            </p>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Review kembali poin-poin. Minta mahasiswa menjelaskan dengan kalimat sendiri perbedaan self-attention dan cross-attention, lalu menyebutkan satu alasan mengapa DTW masih berguna. Tekankan bahwa kita baru saja menutup pilar terakhir sebelum UTS. Ingatkan bahwa Pertemuan 9 akan memakai pola arsitektur dari sesi ini sebagai fondasinya.
+        </aside>
+      </section>
+
+      <!-- SLIDE 25: DISKUSI -->
+      <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Diskusi Kelas">
+        <h2 style="text-align: center; margin-bottom: 24px;">Diskusi Kelas</h2>
+        <p style="text-align: center; margin-bottom: 24px;">Diskusikan bersama rekan di samping Anda selama 3-5 menit:</p>
+        <div style="display: flex; flex-direction: column; gap: 14px; max-width: 860px; margin: 0 auto;">
+          <div class="c-callout c-callout-info"><span class="material-symbols-outlined icon-blue">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-blue);">Pertanyaan 1:</strong> Bagaimana mekanisme attention dapat mengatasi masalah <em>dominasi modalitas</em> yang kita bahas pada pertemuan fusi?</p></div></div>
+          <div class="c-callout c-callout-warning"><span class="material-symbols-outlined icon-mauve">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-mauve);">Pertanyaan 2:</strong> Dalam situasi apa <em>DTW</em> masih lebih tepat daripada <em>cross-attention</em>, meskipun attention lebih modern?</p></div></div>
+          <div class="c-callout c-callout-success"><span class="material-symbols-outlined icon-teal">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-teal);">Pertanyaan 3:</strong> Bagaimana Anda mengetahui bahwa bobot perhatian benar-benar menangkap korespondensi yang bermakna, bukan sekadar pola kebetulan pada data latih?</p></div></div>
+        </div>
+        <aside class="notes">Tiga pertanyaan menghubungkan penyejajaran dengan masalah fusi (Pertanyaan 1), menuntut penilaian kritis terhadap mekanisme lama versus baru (Pertanyaan 2), dan menyentuh validasi interpretasi (Pertanyaan 3). Pertanyaan ketiga adalah yang paling dalam &mdash; biarkan mahasiswa bergulat dengannya. Beri waktu 3&ndash;5 menit, lalu minta beberapa kelompok berbagi.</aside>
+      </section>
+
+      <!-- SLIDE 26: REFERENSI -->
+      <section>
+        <h2>Referensi Utama &amp; Bacaan Lanjutan</h2>
+        <p style="margin-bottom: 20px;">Rekomendasi literatur akademik wajib dan bacaan lanjutan:</p>
+        <ol style="list-style: none; padding: 0; margin: 0; counter-reset: ref-counter;">
+          <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[1]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Bahdanau, D., Cho, K., &amp; Bengio, Y. (2015).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Neural Machine Translation by Jointly Learning to Align and Translate</em>. ICLR. &mdash; paper pertama yang menjadikan attention sebagai mekanisme penyejajaran.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[2]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Vaswani, A., et al. (2017).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Attention Is All You Need</em>. NeurIPS. &mdash; sumber rumus <em>scaled dot-product attention</em> pada sesi ini.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[3]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Xu, K., et al. (2015).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Show, Attend and Tell: Neural Image Caption Generation with Visual Attention</em>. ICML. &mdash; contoh klasik cross-attention dan visualisasi bobotnya.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[4]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Sakoe, H., &amp; Chiba, S. (1978).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Dynamic Programming Algorithm Optimization for Spoken Word Recognition</em>. IEEE ASSP. &mdash; sumber asli algoritma DTW.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 14px 0; display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[5]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Baltru&scaron;aitis, T., Ahuja, C., &amp; Morency, L.-P. (2018).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Multimodal Machine Learning: A Survey and Taxonomy</em>. IEEE TPAMI, 40(2), 421&ndash;443. &mdash; taksonomi lengkap pilar <em>alignment</em>.</p></div></li>
+        </ol>
+        <aside class="notes">Lima referensi: paper attention pertama (Bahdanau dkk.), paper Transformer yang menjadi sumber rumus (Vaswani dkk.), contoh klasik cross-attention pada <em>image captioning</em> (Xu dkk.), algoritma DTW asli (Sakoe &amp; Chiba), dan taksonomi kanonik multimodal (Baltrusaitis) yang menjadi rujukan pilar penyejajaran.</aside>
+      </section>
+
+      <!-- SLIDE 27: PENUTUP -->
+      <section>
+        <div style="margin: auto 0; text-align: center;">
+          <h2 style="font-size: 1.8em; font-weight: 800; color: var(--ctp-text); margin-bottom: 16px;">Terima Kasih</h2>
+          <p style="font-size: 1.05em; color: var(--ctp-subtext0); margin-bottom: 24px; line-height: 1.6;">Pertemuan berikutnya:<br><strong style="color: var(--ctp-mauve);">Ujian Tengah Semester (UTS) &mdash; Materi Pertemuan 1&ndash;7</strong></p>
+          <div style="background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-radius: 12px; padding: 18px 24px; display: inline-block; max-width: 520px;">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">Selamat Menempuh UTS</div>
+            <div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;">Ketiga pilar telah tuntas: representasi, penyejajaran, dan fusi.<br><span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span></div>
+          </div>
+        </div>
+        <aside class="notes">Tutup sesi sekaligus menutup paruh pertama kuliah. Rangkum bahwa ketiga pilar sudah lengkap: representasi pada Pertemuan 2 sampai 4, fusi pada Pertemuan 5 dan 6, penyejajaran pada Pertemuan 7. Sampaikan bahwa UTS mencakup materi Pertemuan 1 sampai 7 dan menuntut kemampuan menganalisis, bukan menghafal. Setelah UTS, kuliah beralih ke arsitektur transformer multimodal pada Pertemuan 9.</aside>
+      </section>
+  </div></div>
+  <!-- Persistent Edge-to-Edge Deck Footer -->
+  <footer class="deck-footer">
+    <div class="deck-footer-left">
+      <span class="deck-footer-code">IF25-40304</span>
+      <span class="deck-footer-sep">&bull;</span>
+      <span class="deck-footer-dept">Teknik Informatika ITERA</span>
+    </div>
+
+    <div class="deck-footer-center">
+      <button type="button" id="deck-footer-topic" class="deck-footer-topic" onclick="toggleTopicPopover(event)" title="Daftar Isi & Navigasi Cepat Slide (Klik)">
+        <span id="deck-footer-topic-text" class="deck-footer-topic-text">Pertemuan 07 &bull; Penyejajaran (Alignment): Temporal &amp; Structural</span>
+        <span class="material-symbols-outlined deck-footer-topic-icon">expand_less</span>
+      </button>
+    </div>
+
+    <div class="deck-footer-right">
+      <button type="button" class="deck-footer-btn" onclick="Reveal.prev()" title="Slide Sebelumnya (← / P)" aria-label="Slide Sebelumnya">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <button type="button" class="deck-counter-btn" onclick="Reveal.toggleOverview()" title="Klik untuk Matriks Seluruh Slide (Esc/O)">
+        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">27</span>
+      </button>
+      <button type="button" class="deck-footer-btn" onclick="Reveal.next()" title="Slide Berikutnya (→ / Space / N)" aria-label="Slide Berikutnya">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </footer>
+  <div class="deck-topic-popover" id="deck-topic-popover"><div class="deck-popover-search-wrap"><input type="text" id="deck-topic-search" class="deck-popover-search" placeholder="Cari slide..." oninput="filterTopicList(this.value)"></div><div class="deck-topic-list" id="deck-topic-list"></div></div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+  <script>
+
+    let currentAspectMode = localStorage.getItem('reveal_aspect_mode') || 'auto';
+
+    function calculateResponsiveDimensions(mode) {
+      const winW = window.innerWidth;
+      const winH = window.innerHeight - 86.5;
+      const ratio = winW / winH;
+
+      if (mode === '16-9') return { width: 1280, height: 720, label: '16:9' };
+      if (mode === '16-10') return { width: 1280, height: 800, label: '16:10' };
+      if (mode === '4-3') return { width: 1024, height: 768, label: '4:3' };
+      if (mode === 'mobile') return { width: 750, height: 1000, label: 'Mobile' };
+      if (mode === 'text-large') return { width: 960, height: 540, label: 'Teks Besar' };
+
+      // Auto mode
+      if (winW <= 768 || ratio < 1.15) {
+        return { width: 750, height: Math.max(900, Math.round(750 / Math.max(0.5, ratio))), label: 'Auto' };
+      } else if (ratio >= 1.65) {
+        return { width: 1280, height: 720, label: 'Auto' };
+      } else if (ratio >= 1.45) {
+        return { width: 1280, height: 800, label: 'Auto' };
+      } else {
+        return { width: 1024, height: 768, label: 'Auto' };
+      }
+    }
+
+    const initialDim = calculateResponsiveDimensions(currentAspectMode);
+
+    Reveal.initialize({
+      width: initialDim.width,
+      height: initialDim.height,
+      margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2.0,
+      hash: true,
+      slideNumber: false,
+      controls: false,
+      progress: false,
+      center: true,
+      touch: true,
+      transition: 'slide',
+      backgroundTransition: 'none',
+      plugins: [ RevealNotes, RevealHighlight, RevealMath.KaTeX ]
+    });
+
+    function updateDeckState(event) {
+      const indices = event ? { h: event.indexh, v: event.indexv } : Reveal.getIndices();
+      const totalSlides = Reveal.getTotalSlides();
+      const currentIdx = indices ? indices.h : 0;
+
+      const progressBar = document.getElementById('deck-progress-bar');
+      if (progressBar) {
+        const progressPercent = totalSlides > 1 ? (currentIdx / (totalSlides - 1)) * 100 : 0;
+        progressBar.style.width = progressPercent + '%';
+      }
+
+      const currentEl = document.getElementById('deck-slide-current');
+      const totalEl = document.getElementById('deck-slide-total');
+      if (currentEl) currentEl.textContent = String(currentIdx + 1).padStart(2, '0');
+      if (totalEl) totalEl.textContent = String(totalSlides).padStart(2, '0');
+
+      const topicEl = document.getElementById('deck-footer-topic-text') || document.getElementById('deck-footer-topic');
+      if (topicEl) {
+        if (currentIdx === 0) {
+          topicEl.textContent = 'Pertemuan 07 \u2022 Penyejajaran (Alignment): Temporal &amp; Structural';
+        } else {
+          const currentSlide = Reveal.getCurrentSlide();
+          if (currentSlide) {
+            const topicAttr = currentSlide.getAttribute('data-topic');
+            if (topicAttr) {
+              topicEl.textContent = topicAttr;
+            } else {
+              const heading = currentSlide.querySelector('h2') || currentSlide.querySelector('h1');
+              if (heading) {
+                topicEl.textContent = heading.textContent.trim();
+              } else {
+                topicEl.textContent = 'Pertemuan 07 \u2022 Penyejajaran (Alignment): Temporal &amp; Structural';
+              }
+            }
+          }
+        }
+      }
+
+      updateActiveTopicItem(currentIdx);
+    }
+
+    Reveal.on('ready', event => {
+      document.body.classList.add('reveal-ready');
+      updateDeckState(event);
+      buildTopicIndex();
+    });
+    Reveal.on('slidechanged', updateDeckState);
+
+    // =========================================================
+    // Floating Slide Topic Navigation Popover (Daftar Isi)
+    // =========================================================
+    function buildTopicIndex() {
+      const listEl = document.getElementById('deck-topic-list');
+      if (!listEl) return;
+
+      const slides = document.querySelectorAll('.reveal .slides > section');
+      let html = '';
+
+      slides.forEach((slide, idx) => {
+        const topicAttr = slide.getAttribute('data-topic');
+        const h1 = slide.querySelector('h1');
+        const h2 = slide.querySelector('h2');
+        const partEl = slide.querySelector('.section-part-label');
+        const isSectionSlide = slide.classList.contains('section-slide') || !!slide.querySelector('.section-slide-content');
+        const partText = partEl ? partEl.textContent.trim().replace(/\s+/g, ' ') : '';
+
+        const h1Text = h1 ? h1.textContent.trim().replace(/\s+/g, ' ') : '';
+        const h2Text = h2 ? h2.textContent.trim().replace(/\s+/g, ' ') : '';
+        let title = '';
+
+        if (idx === 0) {
+          title = h1Text || 'Strategi Fusi Multimodal II: Intermediate & Hybrid Fusion';
+          html += '<div class="deck-topic-section">Pendahuluan & Identitas</div>';
+        } else if (isSectionSlide || partText.startsWith('Bagian')) {
+          const secTitle = h1Text || h2Text || 'Bagian ' + idx;
+          const sectionLabel = partText ? partText + ': ' + secTitle : secTitle;
+          title = secTitle;
+          html += '<div class="deck-topic-section">' + sectionLabel + '</div>';
+        } else if (topicAttr) {
+          title = topicAttr;
+        } else {
+          title = h2Text || h1Text || 'Slide ' + (idx + 1);
+        }
+
+        const numStr = String(idx + 1).padStart(2, '0');
+        html += '<div class="deck-topic-item" data-slide-index="' + idx + '" onclick="jumpToSlide(' + idx + ')"><span class="deck-topic-num">' + numStr + '</span><span class="deck-topic-name" title="' + title + '">' + title + '</span></div>';
+      });
+
+      listEl.innerHTML = html;
+      const currentIdx = Reveal.getIndices ? Reveal.getIndices().h : 0;
+      updateActiveTopicItem(currentIdx);
+    }
+
+    function updateActiveTopicItem(currentIdx) {
+      document.querySelectorAll('.deck-topic-item').forEach(item => {
+        const idx = parseInt(item.getAttribute('data-slide-index'), 10);
+        item.classList.toggle('active', idx === currentIdx);
+      });
+    }
+
+    function toggleTopicPopover(e) {
+      if (e) e.stopPropagation();
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (!popover) return;
+
+      const isActive = popover.classList.toggle('active');
+      if (btn) btn.classList.toggle('active', isActive);
+
+      if (isActive) {
+        const activeItem = popover.querySelector('.deck-topic-item.active');
+        if (activeItem) {
+          activeItem.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }
+        const searchInput = document.getElementById('deck-topic-search');
+        if (searchInput) {
+          searchInput.value = '';
+          filterTopicList('');
+          setTimeout(() => searchInput.focus(), 80);
+        }
+      }
+    }
+
+    function closeTopicPopover() {
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (popover) popover.classList.remove('active');
+      if (btn) btn.classList.remove('active');
+    }
+
+    function jumpToSlide(index) {
+      Reveal.slide(index);
+      closeTopicPopover();
+    }
+
+    function filterTopicList(query) {
+      const q = (query || '').toLowerCase().trim();
+      const items = document.querySelectorAll('.deck-topic-item');
+      const sections = document.querySelectorAll('.deck-topic-section');
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const num = (item.querySelector('.deck-topic-num') || {}).textContent || '';
+        const name = (item.querySelector('.deck-topic-name') || {}).textContent || '';
+        const matches = !q || num.toLowerCase().includes(q) || name.toLowerCase().includes(q);
+        item.style.display = matches ? 'grid' : 'none';
+        if (matches) visibleCount++;
+      });
+
+      sections.forEach(sec => {
+        let nextEl = sec.nextElementSibling;
+        let hasVisibleChild = false;
+        while (nextEl && !nextEl.classList.contains('deck-topic-section')) {
+          if (nextEl.classList.contains('deck-topic-item') && nextEl.style.display !== 'none') {
+            hasVisibleChild = true;
+            break;
+          }
+          nextEl = nextEl.nextElementSibling;
+        }
+        sec.style.display = hasVisibleChild ? 'block' : 'none';
+      });
+
+      const listEl = document.getElementById('deck-topic-list');
+      let emptyMsg = document.getElementById('deck-topic-empty-msg');
+      if (visibleCount === 0) {
+        if (!emptyMsg) {
+          emptyMsg = document.createElement('div');
+          emptyMsg.id = 'deck-topic-empty-msg';
+          emptyMsg.className = 'deck-topic-empty';
+          emptyMsg.textContent = 'Tidak ada slide yang cocok dengan pencarian.';
+          listEl.appendChild(emptyMsg);
+        }
+        emptyMsg.style.display = 'block';
+      } else if (emptyMsg) {
+        emptyMsg.style.display = 'none';
+      }
+    }
+
+    function setAspectMode(mode) {
+      currentAspectMode = mode;
+      localStorage.setItem('reveal_aspect_mode', mode);
+      const dim = calculateResponsiveDimensions(mode);
+
+      Reveal.configure({
+        width: dim.width,
+        height: dim.height,
+        margin: 0.04,
+        minScale: 0.2,
+        maxScale: 2.0
+      });
+
+      document.body.classList.remove('aspect-16-9', 'aspect-16-10', 'aspect-4-3', 'aspect-mobile');
+      if (mode === 'auto') {
+        if (window.innerWidth <= 768) document.body.classList.add('aspect-mobile');
+      } else {
+        document.body.classList.add('aspect-' + mode);
+      }
+
+      const labelEl = document.getElementById('aspect-label');
+      if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+
+      document.querySelectorAll('.dropdown-item').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-aspect') === mode);
+      });
+
+      closeAspectDropdown();
+      setTimeout(() => Reveal.layout(), 50);
+    }
+
+    function toggleAspectDropdown(e) {
+      if (e) e.stopPropagation();
+      document.getElementById('aspect-menu').classList.toggle('active');
+    }
+
+    function closeAspectDropdown() {
+      const menu = document.getElementById('aspect-menu');
+      if (menu) menu.classList.remove('active');
+    }
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-dropdown')) closeAspectDropdown();
+      if (!e.target.closest('#deck-topic-popover') && !e.target.closest('#deck-footer-topic')) closeTopicPopover();
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (currentAspectMode === 'auto') {
+          const dim = calculateResponsiveDimensions('auto');
+          const cfg = Reveal.getConfig();
+          if (cfg.width !== dim.width || cfg.height !== dim.height) {
+            Reveal.configure({ width: dim.width, height: dim.height });
+            const labelEl = document.getElementById('aspect-label');
+            if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+            Reveal.layout();
+          }
+        }
+      }, 200);
+    });
+
+    window.addEventListener('DOMContentLoaded', () => setAspectMode(currentAspectMode));
+
+    function openShortcutsModal() {
+      document.getElementById('shortcuts-modal').classList.add('active');
+    }
+
+    function closeShortcutsModal(event) {
+      if (!event || event.target.id === 'shortcuts-modal' || event.target.classList.contains('modal-close')) {
+        document.getElementById('shortcuts-modal').classList.remove('active');
+      }
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const popover = document.getElementById('deck-topic-popover');
+        if (popover && popover.classList.contains('active')) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeTopicPopover();
+          return;
+        }
+      }
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        document.getElementById('shortcuts-modal').classList.toggle('active');
+      }
+    });
+
+  </script>
+</body></html>

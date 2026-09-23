@@ -47,6 +47,7 @@ Portal perkuliahan **Pembelajaran Mesin Multimodal (IF25-40304)** — Institut T
 | 04 | [mgg04.html](mgg04.html) | [pdf/mgg04.pdf](pdf/mgg04.pdf) | [hands-on/mgg04-hands-on.html](hands-on/mgg04-hands-on.html) |
 | 05 | [mgg05.html](mgg05.html) | [pdf/mgg05.pdf](pdf/mgg05.pdf) | — |
 | 06 | [mgg06.html](mgg06.html) | [pdf/mgg06.pdf](pdf/mgg06.pdf) | [hands-on/mgg06-hands-on.html](hands-on/mgg06-hands-on.html) |
+| 07 | [mgg07.html](mgg07.html) | [pdf/mgg07.pdf](pdf/mgg07.pdf) | — |
 
 > PDF dirender otomatis oleh CI saat push — tidak disimpan di repositori.
 
