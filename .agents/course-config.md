@@ -18,6 +18,7 @@ generating decks.
 | Course title | `Pembelajaran Mesin Multimodal` |
 | SKS | `3 SKS` |
 | Program study | `Program Studi Teknik Informatika` |
+| Faculty | `Fakultas Teknologi Industri` |
 | Department | `Teknik Informatika ITERA` |
 | Institution | `Institut Teknologi Sumatera (ITERA)` |
 | Lecturer name | `I Wayan Wiprayoga Wisesa` |
@@ -36,6 +37,7 @@ These placeholders in `resources/slide-template.html` are substituted from this 
 | `{{DEPT}}` | `Teknik Informatika ITERA` |
 | `{{INSTITUTION}}` | `Institut Teknologi Sumatera (ITERA)` |
 | `{{PROGRAM_STUDY}}` | `Program Studi Teknik Informatika` |
+| `{{FACULTY}}` | `Fakultas Teknologi Industri` |
 | `{{LECTURER_NAME}}` | `I Wayan Wiprayoga Wisesa` |
 | `{{LECTURER_EMAIL}}` | `wayan.wisesa@if.itera.ac.id` |
 | `{{LOGO_CAMPUS}}` | `assets/img/logo_2.png` |

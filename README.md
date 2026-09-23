@@ -10,7 +10,7 @@ Portal perkuliahan **Pembelajaran Mesin Multimodal (IF25-40304)** — Institut T
 | Nama Mata Kuliah | Pembelajaran Mesin Multimodal |
 | Beban Studi | 3 SKS |
 | Program Studi | Teknik Informatika |
-| Jurusan | Teknologi Produksi dan Industri |
+| Fakultas | Teknologi Industri |
 | Institusi | Institut Teknologi Sumatera (ITERA) |
 | Tahun Akademik | 2026 |
 | Dosen Pengampu | I Wayan Wiprayoga Wisesa |
