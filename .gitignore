@@ -43,3 +43,7 @@ tugas/*.html
 
 # Source PPTX decks (not part of the published site)
 origin/
+
+# Capstone project dataset (regenerable via proyek/scripts/build_dataset.py)
+# The private test split lives here too -- it must never be committed.
+proyek/data/

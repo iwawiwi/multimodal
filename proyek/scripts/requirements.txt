@@ -1,0 +1,8 @@
+# Dependencies for proyek/scripts/build_dataset.py
+# Install:  pip install -r proyek/scripts/requirements.txt
+
+pyarrow>=14
+Pillow>=10
+
+# Optional: only needed for --lang-check
+langdetect>=1.0.9
