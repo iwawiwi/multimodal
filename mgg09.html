@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pertemuan 09: Arsitektur Transformer Multimodal | ITERA</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <link rel="stylesheet" href="css/catppuccin-latte.css">
+</head>
+<body>
+  <header class="deck-header">
+    <div class="deck-header-left">
+      <a href="index.html" class="deck-brand-link" title="Kembali ke Portal Kuliah">
+        <img src="assets/img/logo_2.png" alt="Logo ITERA" class="deck-logo">
+        <img src="assets/img/dikti-saintek-berdampak-color.svg" alt="Logo Dikti Saintek Berdampak" class="deck-logo">
+      </a>
+    </div>
+
+    <div class="deck-header-right">
+      <!-- Aspect Ratio / Projector Switcher -->
+      <div class="nav-dropdown">
+        <button type="button" class="deck-ctrl-btn" id="aspect-btn" onclick="toggleAspectDropdown(event)" title="Sesuaikan Rasio Layar & Proyektor">
+          <span class="material-symbols-outlined">aspect_ratio</span>
+          <span id="aspect-label" class="deck-btn-label">Auto</span>
+          <span class="material-symbols-outlined" style="font-size: 14px;">arrow_drop_down</span>
+        </button>
+        <div class="nav-dropdown-menu" id="aspect-menu">
+          <button type="button" class="dropdown-item active" data-aspect="auto" onclick="setAspectMode('auto')">
+            <span class="item-title">Auto</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-9" onclick="setAspectMode('16-9')">
+            <span class="item-title">16:9</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-10" onclick="setAspectMode('16-10')">
+            <span class="item-title">16:10</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="4-3" onclick="setAspectMode('4-3')">
+            <span class="item-title">4:3</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="mobile" onclick="setAspectMode('mobile')">
+            <span class="item-title">Mobile</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="text-large" onclick="setAspectMode('text-large')">
+            <span class="item-title">Teks Besar</span>
+          </button>
+        </div>
+      </div>
+
+      <button type="button" class="deck-ctrl-btn" onclick="Reveal.toggleOverview()" title="Lihat Matriks Seluruh Slide (Esc/O)">
+        <span class="material-symbols-outlined">grid_view</span>
+        <span class="deck-btn-label">Overview</span>
+      </button>
+      <button type="button" class="deck-ctrl-btn" onclick="openShortcutsModal()" title="Panduan Pintasan Keyboard (?)">
+        <span class="material-symbols-outlined">keyboard</span>
+        <span class="deck-btn-label">Pintasan</span>
+      </button>
+      <a href="index.html" class="deck-ctrl-btn" title="Kembali ke Portal Kuliah">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span class="deck-btn-label">Portal</span>
+      </a>
+    </div>
+  </header>
+  <div class="deck-progress-track"><div class="deck-progress-bar" id="deck-progress-bar"></div></div>
+  <div id="shortcuts-modal" onclick="closeShortcutsModal(event)"><div class="modal-content" onclick="event.stopPropagation()"><div class="modal-header"><h4 style="margin:0;font-weight:800"><span class="material-symbols-outlined icon-blue">keyboard</span> Pintasan Navigasi Presentasi</h4><button class="modal-close" onclick="closeShortcutsModal()">&times;</button></div><div class="shortcut-row"><span>Slide berikutnya</span><span><span class="kbd-key">Space</span> / <span class="kbd-key">→</span></span></div><div class="shortcut-row"><span>Slide sebelumnya</span><span><span class="kbd-key">←</span></span></div><div class="shortcut-row"><span>Catatan dosen</span><span><span class="kbd-key">S</span></span></div></div></div>
+  <div class="reveal"><div class="slides">
+
+      <!-- SLIDE 1: COVER -->
+      <section id="deck-title">
+        <div style="margin: auto 0; text-align: left;">
+          <h1 style="font-size: 2.3em; line-height: 1.15; font-weight: 800; color: var(--ctp-text); margin-bottom: 12px; letter-spacing: -0.025em;">
+            Pembelajaran Mesin Multimodal
+          </h1>
+          <div style="font-size: 1.15em; font-weight: 600; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.4;">
+            Pertemuan 09 &bull; Arsitektur Transformer Multimodal
+          </div>
+          <div style="max-width: 620px; background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-left: 3.5px solid var(--ctp-blue); border-radius: 12px; padding: 18px 24px;">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">
+              Dosen Pengampu
+            </div>
+            <div style="font-size: 1.1em; font-weight: 800; color: var(--ctp-text); margin-bottom: 6px;">
+              I Wayan Wiprayoga Wisesa
+            </div>
+            <div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;">
+              Program Studi Teknik Informatika<br>
+              Fakultas Teknologi Industri<br>
+              Institut Teknologi Sumatera (ITERA)<br>
+              <span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Buka paruh kedua kuliah. Setelah UTS menutup tiga pilar (representasi, fusi, penyejajaran), sesi ini memasuki bagian arsitektur. Ingatkan bahwa Pertemuan 7 sudah membahas mekanisme attention sebagai alat penyejajaran &mdash; sekarang kita menyusun mekanisme itu menjadi arsitektur utuh, mulai dari Transformer dasar, Vision Transformer, sampai model multimodal pra-latih seperti CLIP. Tekankan bahwa sesi ini bukan mengulang attention, melainkan menyusun komponen.
+        </aside>
+      </section>
+
+      <!-- SLIDE 2: TUJUAN PEMBELAJARAN -->
+      <section>
+        <h2>Tujuan Pembelajaran Sesi Ini</h2>
+        <p style="margin-bottom: 24px;">Di akhir sesi ini, mahasiswa diharapkan mampu:</p>
+
+        <div class="grid-4">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-blue">01</span>
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Encoder&ndash;Decoder</h4>
+            </div>
+            <p>Menjelaskan arsitektur dasar Transformer dan alasan ia lebih efektif daripada RNN untuk sekuens.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-mauve">02</span>
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Vision Transformer</h4>
+            </div>
+            <p>Menjelaskan bagaimana ViT mengadaptasi Transformer untuk gambar dengan memperlakukan gambar sebagai sekuens <em>patch</em>.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-teal">03</span>
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Multimodal Transformer</h4>
+            </div>
+            <p>Menganalisis arsitektur ViLBERT, LXMERT, dan CLIP serta peran <em>cross-attention</em> di dalamnya.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-peach">04</span>
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Pra-latih Lintas Modal</h4>
+            </div>
+            <p>Mengidentifikasi manfaat dan tantangan <em>cross-modal pre-training</em> pada skala data besar.</p>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Bacakan keempat capaian. Tekankan urutan logisnya: dari satu modalitas (Transformer), ke gambar tunggal (ViT), lalu ke banyak modalitas (ViLBERT/LXMERT/CLIP). Capaian ketiga adalah inti sesi; capaian keempat memberi konteks mengapa model-model ini mahal tetapi kuat.
+        </aside>
+      </section>
+
+      <!-- SLIDE 3: DIVIDER BAGIAN 1 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(30,102,245,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-blue">Bagian 1</span>
+          <h1>Dari Attention ke Arsitektur</h1>
+          <p class="subtitle">
+            Menyusun mekanisme penyejajaran dari Pertemuan 7 menjadi blok bangunan arsitektur yang utuh.
+          </p>
+        </div>
+        <aside class="notes">Bagian pembuka menyambungkan sesi ini dengan UTS. Ingatkan bahwa attention sudah dibahas sebagai mekanisme; yang belum dibahas adalah bagaimana mekanisme itu dirangkai menjadi encoder, decoder, dan tumpukan lapisan yang dilatih pada skala besar.</aside>
+      </section>
+
+      <!-- SLIDE 4: REKAP ATTENTION SEBAGAI PENYEJAJARAN -->
+      <section>
+        <h2>Rekap: Tiga Peran Attention</h2>
+        <p>Mekanismenya sudah kita bahas; sekarang kita lihat perannya di dalam arsitektur.</p>
+
+        <div class="grid-3" style="margin-top: 16px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Self-Attention</h4>
+            </div>
+            <p>Menghubungkan token <strong>di dalam satu modalitas</strong>. Menjadi sumber <em>contextual embedding</em> &mdash; makna sebuah token ditentukan oleh konteksnya.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Cross-Attention</h4>
+            </div>
+            <p>Menghubungkan token <strong>antar modalitas</strong>: <em>query</em> dari satu sisi, <em>key</em> dan <em>value</em> dari sisi lain. Inilah sambungan yang membuat arsitektur menjadi multimodal.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Multi-Head</h4>
+            </div>
+            <p>Menjalankan beberapa attention secara paralel sehingga model dapat mempelajari <strong>beberapa jenis relasi sekaligus</strong> &mdash; sintaksis, posisi, maupun korespondensi lintas modal.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 16px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Rangkaian sesi ini sederhana: <strong>satu blok attention</strong> &rarr; <strong>tumpukan encoder&ndash;decoder</strong> &rarr; <strong>gambar sebagai sekuens</strong> &rarr; <strong>beberapa modalitas sekaligus</strong>. Setiap langkah menambah satu gagasan baru saja.</div></div>
+
+        <aside class="notes">
+          Slide ini sengaja cepat &mdash; hanya mengaktifkan kembali memori dari Pertemuan 7 sebelum istilah-istilah itu dipakai sebagai bahan bangunan. Jangan mengulang penurunan rumus Q/K/V; cukup pastikan mahasiswa ingat bahwa cross-attention adalah operasi penyejajaran, dan multi-head berarti beberapa relasi sekaligus.
+        </aside>
+      </section>
+
+      <!-- SLIDE 5: TRANSFORMER ENCODER-DECODER -->
+      <section>
+        <h2>Transformer Encoder&ndash;Decoder</h2>
+        <p>Diperkenalkan lewat <em>&ldquo;Attention Is All You Need&rdquo;</em> (2017) untuk penerjemahan mesin.</p>
+
+        <div class="grid-2" style="margin-top: 14px;">
+          <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 12px; overflow: hidden; max-height: 250px;">
+            <svg viewBox="0 0 400 212" role="img" aria-label="Diagram encoder-decoder Transformer: blok encoder di kiri berisi self-attention dan feed-forward, blok decoder di kanan berisi masked self-attention, cross-attention, dan feed-forward, dengan panah dari encoder menuju cross-attention decoder" style="width: 100%; height: auto;">
+              <defs>
+                <marker id="w09-ed" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#1e66f5"/></marker>
+                <marker id="w09-ed-teal" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#179299"/></marker>
+              </defs>
+
+              <text x="88" y="20" text-anchor="middle" fill="#1e66f5" font-size="13" font-family="sans-serif" font-weight="700">Encoder &times; N</text>
+              <text x="306" y="20" text-anchor="middle" fill="#179299" font-size="13" font-family="sans-serif" font-weight="700">Decoder &times; N</text>
+
+              <rect x="16" y="30" width="144" height="78" rx="9" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+              <text x="88" y="60" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif" font-weight="700">Self-Attention</text>
+              <text x="88" y="86" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif">Feed-Forward</text>
+
+              <rect x="228" y="30" width="156" height="112" rx="9" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
+              <text x="306" y="56" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif" font-weight="700">Masked Self-Attn</text>
+              <text x="306" y="84" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif" font-weight="700">Cross-Attention</text>
+              <text x="306" y="116" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif">Feed-Forward</text>
+
+              <path d="M160 84 H222" fill="none" stroke="#179299" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w09-ed-teal)"/>
+
+              <path d="M88 108 V152" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#w09-ed)"/>
+              <path d="M306 142 V152" fill="none" stroke="#179299" stroke-width="3" marker-end="url(#w09-ed-teal)"/>
+
+              <foreignObject x="16" y="156" width="144" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:12px;color:#4c4f69;">Input \(\mathbf{x}\)</div></foreignObject>
+              <foreignObject x="228" y="156" width="156" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:12px;color:#4c4f69;">Output \(\mathbf{y}\)</div></foreignObject>
+
+              <text x="200" y="202" text-anchor="middle" fill="#179299" font-size="11.5" font-family="sans-serif">Garis putus-putus = cross-attention dari encoder ke decoder</text>
+            </svg>
+          </div>
+          <div class="narrative-pane">
+            <div class="narrative-step"><strong>01. Encoder</strong> Membaca seluruh sekuens sekaligus lalu menghasilkan representasi kontekstual yang kaya.</div>
+            <div class="narrative-step"><strong>02. Decoder</strong> Menghasilkan output token demi token; <em>masked</em> self-attention mencegahnya mengintip token yang belum dihasilkan.</div>
+            <div class="narrative-step"><strong>03. Cross-Attention</strong> Jembatan dari encoder ke decoder &mdash; titik yang nanti kita pakai untuk menyambung antar modalitas.</div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Tekankan tiga hal. Pertama, di sini tidak ada RNN: seluruh posisi diproses paralel, sehingga pelatihan jauh lebih cepat dan ketergantungan jarak jauh tidak lagi melemah. Kedua, decoder bersifat autoregresif, karena itu self-attention-nya harus di-<em>mask</em>. Ketiga, cross-attention di lapisan tengah decoder adalah pintu masuk bagi modalitas kedua &mdash; di sinilah arsitektur bahasa berubah menjadi arsitektur multimodal. Sebutkan bahwa representasi encoder inilah yang disimpan BERT.
+        </aside>
+      </section>
+
+      <!-- SLIDE 6: MENGAPA TRANSFORMER UNTUK MULTIMODAL -->
+      <section>
+        <h2>Mengapa Transformer Cocok untuk Multimodal?</h2>
+        <p>Tiga sifat yang membuatnya menjadi tulang punggung model multimodal modern.</p>
+
+        <div class="grid-3" style="margin-top: 16px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Ketergantungan Jarak Jauh</h4>
+            </div>
+            <p>Satu langkah attention menghubungkan token berapa pun jaraknya. RNN harus menempuh sekuens secara bertahap, sehingga sinyal melemah.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Fleksibilitas Cross-Attention</h4>
+            </div>
+            <p>Satu mekanisme yang sama dapat menyambungkan modalitas apa pun, asalkan semuanya sudah menjadi sekuens vektor.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Skalabilitas</h4>
+            </div>
+            <p>Pelatihan paralel dan arsitektur seragam membuat model dapat diperbesar bersama data dalam jumlah besar.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 16px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div><strong>Kunci penyatunya:</strong> apa pun modalitasnya, Transformer hanya menerima <em>sekuens vektor</em>. Tugas perancang adalah mengubah setiap modalitas menjadi sekuens semacam itu.</div></div>
+
+        <aside class="notes">
+          Poin ketiga sering diremehkan padahal justru itu alasan historis keberhasilan Transformer: arsitekturnya tidak bergantung pada struktur lokal data, sehingga dapat diskalakan. Bandingkan dengan CNN yang terikat pada kisi piksel, atau RNN yang terikat pada urutan waktu. Callout di bawah adalah benang merah seluruh sesi &mdash; setiap modalitas harus terlebih dahulu &ldquo;disekuenskan&rdquo;.
+        </aside>
+      </section>
+
+      <!-- SLIDE 7: DIVIDER BAGIAN 2 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(136,57,239,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-mauve">Bagian 2</span>
+          <h1>Vision Transformer: Gambar sebagai Sekuens</h1>
+          <p class="subtitle">
+            Membuang konvolusi, menggantinya dengan <em>patch</em> &mdash; dan mengapa itu berhasil.
+          </p>
+        </div>
+        <aside class="notes">Bagian ini menjawab pertanyaan yang wajar muncul: jika Transformer hanya menerima sekuens vektor, bagaimana gambar &mdash; yang berbentuk kisi dua dimensi &mdash; bisa masuk? Jawabannya adalah ide patch.</aside>
+      </section>
+
+      <!-- SLIDE 8: ViT — GAMBAR SEBAGAI SEKUENS PATCH -->
+      <section>
+        <h2>ViT: Memperlakukan Gambar sebagai Sekuens Patch</h2>
+        <p>Vision Transformer (2020) memotong gambar menjadi potongan tetap.</p>
+
+        <div class="grid-2" style="margin-top: 6px;">
+          <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 10px; overflow: hidden;">
+            <svg viewBox="0 0 400 332" role="img" aria-label="Diagram Vision Transformer: gambar dipotong menjadi enam patch, satu patch dicontohkan, lalu patch diratakan dan diproyeksikan menjadi embedding, ditambah embedding posisi, dan diumpankan ke Transformer Encoder" style="width: 100%; height: auto;">
+              <defs>
+                <marker id="w09-vit" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#8839ef"/></marker>
+              </defs>
+
+              <text x="200" y="20" text-anchor="middle" fill="#8839ef" font-size="14" font-family="sans-serif" font-weight="700">Gambar (H &times; W &times; C)</text>
+
+              <rect x="117" y="32" width="50" height="50" rx="6" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
+              <rect x="175" y="32" width="50" height="50" rx="6" fill="#e6e9ef" stroke="#1e66f5" stroke-width="2"/>
+              <rect x="233" y="32" width="50" height="50" rx="6" fill="#e6e9ef" stroke="#1e66f5" stroke-width="2"/>
+              <rect x="117" y="90" width="50" height="50" rx="6" fill="#e6e9ef" stroke="#1e66f5" stroke-width="2"/>
+              <rect x="175" y="90" width="50" height="50" rx="6" fill="#e6e9ef" stroke="#1e66f5" stroke-width="2"/>
+              <rect x="233" y="90" width="50" height="50" rx="6" fill="#e6e9ef" stroke="#1e66f5" stroke-width="2"/>
+
+              <path d="M142 144 V178" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w09-vit)"/>
+
+              <rect x="80" y="182" width="240" height="46" rx="9" fill="#eff1f5" stroke="#8839ef" stroke-width="3"/>
+              <text x="200" y="203" text-anchor="middle" fill="#4c4f69" font-size="12.5" font-family="sans-serif" font-weight="700">Proyeksi Linear + Embedding Posisi</text>
+              <foreignObject x="80" y="207" width="240" height="20"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:12px;color:#8839ef;">\(\mathbf{z}_p = E\mathbf{x}_p + \mathbf{e}_p\)</div></foreignObject>
+
+              <path d="M200 232 V262" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w09-vit)"/>
+
+              <rect x="100" y="266" width="200" height="44" rx="9" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+              <text x="200" y="294" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif" font-weight="700">Transformer Encoder</text>
+
+              <text x="200" y="326" text-anchor="middle" fill="#179299" font-size="11.5" font-family="sans-serif">Patch bertepi tebal = patch yang dicontohkan</text>
+            </svg>
+          </div>
+          <div class="narrative-pane">
+            <div class="narrative-step"><strong>01. Patching</strong> Gambar dipotong menjadi <em>patch</em> berukuran tetap (mis. 16&times;16 piksel), lalu tiap patch diratakan menjadi vektor.</div>
+            <div class="narrative-step"><strong>02. Proyeksi + Posisi</strong> Tiap vektor diproyeksikan ke dimensi embedding, lalu ditambah <em>embedding</em> posisi agar urutan ruang tidak hilang.</div>
+            <div class="narrative-step"><strong>03. Encoder</strong> Sekuens embedding masuk ke Transformer Encoder biasa &mdash; sama persis seperti pada teks.</div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Tekankan bahwa tidak ada konvolusi sama sekali dalam langkah ini: gambar cukup diubah menjadi urutan vektor. <em>Embedding</em> posisi menjadi krusial karena self-attention bersifat <em>permutation-invariant</em> &mdash; tanpa informasi posisi, model tidak tahu patch mana berada di sebelah mana. Pada rumus di diagram, <em>E</em> adalah matriks proyeksi yang dipelajari, <em>x-p</em> adalah patch yang diratakan, dan <em>e-p</em> menyatakan <em>embedding</em> posisi.
+        </aside>
+      </section>
+
+      <!-- SLIDE 9: ViT vs CNN -->
+      <section>
+        <h2>ViT dan CNN: Perbedaan Asumsi</h2>
+        <p>Pertukarannya bukan sekadar soal akurasi, melainkan soal asumsi bawaan dan kebutuhan data.</p>
+
+        <table class="c-table" style="margin-top: 14px;">
+          <thead>
+            <tr>
+              <th style="width: 24%;">Aspek</th>
+              <th style="width: 38%;">CNN</th>
+              <th style="width: 38%;">Vision Transformer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Asumsi bawaan</td>
+              <td>Terikat pada kisi piksel: <em>locality</em> dan <em>translation equivariance</em> sudah tertanam.</td>
+              <td>Tidak ada asumsi lokal; setiap patch dapat berhubungan dengan patch mana pun sejak lapisan pertama.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Cakupan hubungan</td>
+              <td>Reseptif field bertambah perlahan; butuh banyak lapisan untuk menghubungkan bagian jauh.</td>
+              <td>Ketergantungan global tercapai dalam satu langkah <em>self-attention</em>.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Kebutuhan data</td>
+              <td>Bekerja baik pada dataset sedang karena asumsi lokalnya berfungsi sebagai <em>prior</em>.</td>
+              <td>Butuh data besar atau <em>pre-training</em>; pada dataset kecil cenderung kalah dari CNN.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Biaya komputasi</td>
+              <td>Kenaikan biaya mengikuti ukuran kernel dan kedalaman.</td>
+              <td>Biaya <em>self-attention</em> naik kuadratik terhadap jumlah <em>patch</em>.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <aside class="notes">
+          Baris keempat penting dan sering ditanyakan: bila jumlah patch bertambah, biaya attention naik kuadratik. Karena itu ViT memakai patch relatif besar (mis. 16&times;16) &mdash; mengecilkan patch berarti menambah token dan memperbesar biaya. Baris ketiga menjelaskan mengapa ViT butuh pra-latih berskala besar, yang akan menyambung ke bagian pra-latih lintas modal.
+        </aside>
+      </section>
+
+      <!-- SLIDE 10: DIVIDER BAGIAN 3 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(23,146,153,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-teal">Bagian 3</span>
+          <h1>Multimodal Transformer</h1>
+          <p class="subtitle">
+            Ketika satu arsitektur harus menampung beberapa modalitas sekaligus.
+          </p>
+        </div>
+        <aside class="notes">Transisi dari satu modalitas ke banyak modalitas. Katakan bahwa sekarang muncul tiga pertanyaan baru: bagaimana menyamakan format representasi, bagaimana menghubungkannya, dan bagaimana melatihnya pada skala yang cukup.</aside>
+      </section>
+
+      <!-- SLIDE 11: TANTANGAN REPRESENTASI HETEROGEN -->
+      <section>
+        <h2>Tantangan Ketika Modalitas Berbeda Harus Bertemu</h2>
+        <p>Transformer menuntut format yang seragam; kenyataannya setiap modalitas punya bentuk berbeda.</p>
+
+        <div class="grid-3" style="margin-top: 8px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Representasi Heterogen</h4>
+            </div>
+            <p>Piksel, token kata, dan sampel audio memiliki satuan yang berbeda. Solusinya: <strong>encoder unimodal khusus</strong> yang mengubah setiap modalitas menjadi sekuens vektor.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Penyejajaran &amp; Fusi</h4>
+            </div>
+            <p>Setelah formatnya seragam, bagian mana yang bersesuaian dan bagaimana digabung? Solusinya: <strong>cross-attention</strong>.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Skalabilitas</h4>
+            </div>
+            <p>Melatih model multimodal menuntut data berpasangan dan komputasi yang jauh lebih besar daripada model unimodal.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 16px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Perhatikan bahwa dua dari tiga tantangan sudah punya jawaban di arsitektur: <strong>encoder unimodal</strong> menyelesaikan heterogenitas, <strong>cross-attention</strong> menyelesaikan penyejajaran. Yang tersisa &mdash; skalabilitas &mdash; diselesaikan lewat strategi pra-latih, bukan lewat arsitektur.</div></div>
+
+        <aside class="notes">
+          Slide ini adalah peta bagian ketiga. Tekankan pembagian tugas: heterogenitas diselesaikan oleh encoder yang berbeda per modalitas, penyejajaran oleh cross-attention, dan biaya oleh strategi pra-latih. Sambungkan tantangan kedua dengan Pertemuan 7 &mdash; cross-attention di sini adalah mekanisme penyejajaran yang sama, hanya kini menjadi komponen arsitektur.
+        </aside>
+      </section>
+
+      <!-- SLIDE 12: TIGA POLA ARSITEKTUR -->
+      <section>
+        <h2>Tiga Pola Arsitektur Multimodal Transformer</h2>
+        <p>Kebanyakan model besar dapat dipetakan ke salah satu dari tiga pola berikut.</p>
+
+        <div class="grid-3" style="margin-top: 16px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Dual-Stream</h4>
+            </div>
+            <p>Dua jalur terpisah yang bertukar informasi lewat <em>co-attention</em>. Setiap modalitas mempertahankan representasinya sendiri. Contoh: <strong>ViLBERT</strong>.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Multi-Encoder</h4>
+            </div>
+            <p>Encoder unimodal untuk tiap modalitas, lalu satu <em>encoder lintas modal</em> yang menggabungkannya. Contoh: <strong>LXMERT</strong>.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Dual-Encoder</h4>
+            </div>
+            <p>Dua encoder yang <strong>tidak pernah bertemu</strong>; keselarasan dibangun di ruang embedding lewat <em>contrastive learning</em>. Contoh: <strong>CLIP</strong>.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 16px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Bedanya terletak pada <strong>di mana modalitas bertemu</strong>: di dalam lapisan (<em>dual-stream</em>), di lapisan khusus (<em>multi-encoder</em>), atau tidak bertemu sama sekali &mdash; hanya <em>embedding</em>-nya dipertemukan (<em>dual-encoder</em>).</div></div>
+
+        <aside class="notes">
+          Tiga pola ini menjadi kerangka untuk tiga model yang dibahas berikutnya. Ajukan pertanyaan pancingan: manakah yang paling murah untuk <em>retrieval</em> skala besar, dan manakah yang paling kuat untuk tugas yang menuntut penalaran halus antar modalitas? Jawaban singkatnya: dual-encoder unggul untuk pencarian karena embedding dapat diindeks lebih dulu, sedangkan dual-stream dan multi-encoder lebih kuat untuk tugas yang butuh interaksi mendalam.
+        </aside>
+      </section>
+
+      <!-- SLIDE 13: ViLBERT -->
+      <section>
+        <h2>ViLBERT: Dua Jalur yang Bertukar Informasi</h2>
+        <p>Arsitektur <em>dual-stream</em>: dua jalur yang bertukar informasi.</p>
+
+        <div class="grid-2" style="margin-top: 6px;">
+          <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 12px; overflow: hidden; max-height: 250px;">
+            <svg viewBox="0 0 400 212" role="img" aria-label="Diagram ViLBERT: dua jalur Transformer terpisah untuk visual dan teks, masing-masing berisi self-attention dan co-attention, dengan panah dua arah antar lapisan co-attention" style="width: 100%; height: auto;">
+              <defs>
+                <marker id="w09-vl" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#8839ef"/></marker>
+                <marker id="w09-vl-rev" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="1" refY="4" orient="auto"><path d="M9 0 L0 4 L9 8 Z" fill="#8839ef"/></marker>
+              </defs>
+
+              <text x="96" y="22" text-anchor="middle" fill="#1e66f5" font-size="13" font-family="sans-serif" font-weight="700">Jalur Visual</text>
+              <text x="304" y="22" text-anchor="middle" fill="#179299" font-size="13" font-family="sans-serif" font-weight="700">Jalur Teks</text>
+
+              <rect x="18" y="34" width="156" height="118" rx="9" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+              <text x="96" y="62" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif" font-weight="700">Self-Attention</text>
+              <text x="96" y="98" text-anchor="middle" fill="#8839ef" font-size="13" font-family="sans-serif" font-weight="700">Co-Attention</text>
+              <text x="96" y="134" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif">Feed-Forward</text>
+
+              <rect x="226" y="34" width="156" height="118" rx="9" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
+              <text x="304" y="62" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif" font-weight="700">Self-Attention</text>
+              <text x="304" y="98" text-anchor="middle" fill="#8839ef" font-size="13" font-family="sans-serif" font-weight="700">Co-Attention</text>
+              <text x="304" y="134" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif">Feed-Forward</text>
+
+              <path d="M176 88 H224" fill="none" stroke="#8839ef" stroke-width="2.5" marker-end="url(#w09-vl)"/>
+              <path d="M224 106 H176" fill="none" stroke="#8839ef" stroke-width="2.5" marker-end="url(#w09-vl)"/>
+
+              <text x="200" y="186" text-anchor="middle" fill="#8839ef" font-size="11.5" font-family="sans-serif">Co-Attention bertukar arah dua kali tiap lapisan</text>
+            </svg>
+          </div>
+          <div class="narrative-pane">
+            <div class="narrative-step"><strong>01. Dua Jalur</strong> Gambar dan teks diproses oleh jalur Transformer yang terpisah, masing-masing dengan encoder unimodalnya.</div>
+            <div class="narrative-step"><strong>02. Co-Attention</strong> Tiap beberapa lapisan, kedua jalur bertukar informasi dua arah &mdash; visual memakai teks sebagai konteks, dan sebaliknya.</div>
+            <div class="narrative-step"><strong>03. Hasil</strong> Representasi gabungan dipakai untuk tugas <em>vision-and-language</em>, mis. menjawab pertanyaan tentang gambar.</div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Bandingkan dengan Transformer asli: di sana cross-attention hanya searah dari encoder ke decoder, sedangkan di sini pertukarannya dua arah dan berulang. Tekankan keunggulan dual-stream: setiap modalitas punya kapasitas sendiri sehingga tidak saling menggeser, dengan biaya komputasi yang lebih besar karena dua jalur penuh. LXMERT mengubah pola ini dengan memakai encoder khusus untuk interaksi.
+        </aside>
+      </section>
+
+      <!-- SLIDE 14: PERBANDINGAN ViLBERT / LXMERT / CLIP -->
+      <section>
+        <h2>ViLBERT, LXMERT, CLIP: Satu Tabel Perbandingan</h2>
+        <p>Tiga model, tiga jawaban berbeda atas pertanyaan &ldquo;di mana modalitas bertemu&rdquo;.</p>
+
+        <table class="c-table" style="margin-top: 14px;">
+          <thead>
+            <tr>
+              <th style="width: 20%;">Aspek</th>
+              <th style="width: 27%;">ViLBERT (2019)</th>
+              <th style="width: 27%;">LXMERT (2019)</th>
+              <th style="width: 26%;">CLIP (2021)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Tempat bertemu</td>
+              <td><em>Co-attention</em> di dalam dua jalur paralel.</td>
+              <td>Satu <em>encoder</em> lintas modal setelah dua <em>encoder</em> unimodal.</td>
+              <td>Tidak bertemu &mdash; hanya di ruang <em>embedding</em>.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Masukan visual</td>
+              <td>Fitur region (Faster R-CNN).</td>
+              <td>Fitur region (Faster R-CNN).</td>
+              <td>Piksel mentah lewat ViT atau ResNet.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Tugas pra-latih</td>
+              <td>MLM + MRM, serta prediksi kesesuaian.</td>
+              <td>MLM + MRM + <em>image-text matching</em>.</td>
+              <td><em>Contrastive</em> murni pada 400 juta pasangan.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Kekuatan utama</td>
+              <td>Penalaran visual-linguistik yang halus.</td>
+              <td>Sangat kuat untuk VQA.</td>
+              <td><em>Zero-shot</em> dan pencarian lintas modal berskala besar.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <aside class="notes">
+          Bimbing mahasiswa membaca tabel dari baris pertama: pola arsitektur ditentukan oleh keputusan &ldquo;di mana modalitas bertemu&rdquo;, dan keputusan itu menurunkan konsekuensi pada tugas pra-latih serta kegunaan akhir. CLIP adalah puncak penyederhanaan &mdash; menyingkirkan interaksi antar lapisan sepenuhnya dan menggantinya dengan tujuan kontrastif. Justru karena itulah CLIP sangat efisien untuk pencarian, meskipun lemah untuk penalaran komposisional yang halus.
+        </aside>
+      </section>
+
+      <!-- SLIDE 15: CLIP -->
+      <section>
+        <h2>CLIP: Menyelaraskan Tanpa Pernah Menyatukan</h2>
+        <p>Dua <em>encoder</em> terpisah yang dilatih agar pasangan benar berdekatan.</p>
+
+        <div class="grid-2" style="margin-top: 6px;">
+          <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 12px; overflow: hidden; max-height: 250px;">
+            <svg viewBox="0 0 400 212" role="img" aria-label="Diagram CLIP: encoder gambar dan encoder teks yang terpisah, masing-masing menghasilkan vektor embedding, dihubungkan oleh panah dua arah yang menyatakan kesamaan kosinus dan tujuan kontrastif" style="width: 100%; height: auto;">
+              <defs>
+                <marker id="w09-clip" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#8839ef"/></marker>
+                <marker id="w09-clip-rev" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="1" refY="4" orient="auto"><path d="M9 0 L0 4 L9 8 Z" fill="#8839ef"/></marker>
+              </defs>
+
+              <rect x="14" y="30" width="152" height="86" rx="9" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+              <text x="90" y="62" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif" font-weight="700">Encoder Gambar</text>
+              <text x="90" y="88" text-anchor="middle" fill="#4c4f69" font-size="12" font-family="sans-serif">ViT / ResNet</text>
+
+              <rect x="234" y="30" width="152" height="86" rx="9" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
+              <text x="310" y="62" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif" font-weight="700">Encoder Teks</text>
+              <text x="310" y="88" text-anchor="middle" fill="#4c4f69" font-size="12" font-family="sans-serif">Transformer</text>
+
+              <foreignObject x="14" y="120" width="152" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:13px;color:#1e66f5;">\(\mathbf{v}_I\)</div></foreignObject>
+              <foreignObject x="234" y="120" width="152" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:13px;color:#179299;">\(\mathbf{v}_T\)</div></foreignObject>
+
+              <path d="M168 138 H232" fill="none" stroke="#8839ef" stroke-width="2.5" marker-end="url(#w09-clip)"/>
+              <path d="M232 154 H168" fill="none" stroke="#8839ef" stroke-width="2.5" marker-end="url(#w09-clip-rev)"/>
+
+              <text x="200" y="186" text-anchor="middle" fill="#8839ef" font-size="11.5" font-family="sans-serif">Hanya embedding yang dipertemukan, bukan lapisan</text>
+            </svg>
+          </div>
+          <div class="narrative-pane">
+            <div class="narrative-step"><strong>01. Dua Encoder</strong> Gambar dan teks melewati encoder yang benar-benar terpisah; tidak ada lapisan yang dibagi.</div>
+            <div class="narrative-step"><strong>02. Ruang Bersama</strong> Keduanya diproyeksikan ke ruang vektor yang sama, sehingga jarak antar vektor punya makna.</div>
+            <div class="narrative-step"><strong>03. Kontrastif</strong> Pasangan benar didekatkan, pasangan salah dijauhkan &mdash; dilatih pada 400 juta pasangan gambar&ndash;teks.</div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Tekankan paradoksnya: CLIP tidak pernah memakai cross-attention, namun tetap berhasil menyelaraskan modalitas. Yang diselaraskan bukan token demi token, melainkan seluruh gambar dengan seluruh kalimat di ruang embedding. Konsekuensinya penting: karena tidak ada interaksi antar lapisan, embedding dapat dihitung lebih dulu dan diindeks &mdash; inilah yang membuat pencarian lintas modal berskala besar menjadi murah. Sebutkan bahwa <em>v-I</em> dan <em>v-T</em> adalah vektor gambar dan teks yang telah dinormalisasi.
+        </aside>
+      </section>
+
+      <!-- SLIDE 16: TUGAS PRA-LATIH LINTAS MODAL -->
+      <section>
+        <h2>Tugas Pra-latih Lintas Modal</h2>
+        <p>Tiga jenis tujuan yang biasa dipakai untuk melatih interaksi antar modalitas.</p>
+
+        <div class="grid-3" style="margin-top: 16px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">MLM + MRM</h4>
+            </div>
+            <p><em>Masked Language Modeling</em> + <em>Masked Region Modeling</em>: menutup sebagian kata dan sebagian region gambar, lalu memintanya ditebak. Dipakai ViLBERT dan LXMERT.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Image-Text Matching</h4>
+            </div>
+            <p>Memprediksi apakah sebuah gambar dan sebuah teks benar-benar berpasangan. Melatih model membedakan pasangan yang cocok dari yang tidak.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Contrastive</h4>
+            </div>
+            <p>Mendekatkan pasangan benar dan menjauhkan pasangan salah di ruang embedding. Dipakai CLIP; paling sederhana, paling mudah diskalakan.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 16px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Perhatikan gradasi biayanya: <strong>contrastive</strong> hanya butuh <em>embedding</em>, <strong>matching</strong> butuh satu lapisan keputusan, sedangkan <strong>MLM + MRM</strong> butuh interaksi penuh antar modalitas. Semakin dalam interaksinya, semakin mahal &mdash; tetapi semakin halus penalaran yang dipelajari.</div></div>
+
+        <aside class="notes">
+          Hubungkan kembali dengan tabel perbandingan pada slide sebelumnya: pilihan tugas pra-latih tidak bebas, ia terikat pada pola arsitektur. Model dual-encoder hanya bisa memakai tujuan contrastive karena lapisannya memang tidak bertemu. Callout ini adalah ide yang ingin ditanamkan &mdash; ada kurva pertukaran yang konsisten antara kedalaman interaksi dan biaya komputasi.
+        </aside>
+      </section>
+
+      <!-- SLIDE 17: RUMUS CONTRASTIVE LOSS -->
+      <section>
+        <h2>Rumus Inti: InfoNCE</h2>
+        <p>Tujuan kontrastif yang dipakai CLIP, dirumuskan sebagai klasifikasi atas seluruh kandidat dalam satu <em>batch</em>.</p>
+
+        <div class="formula-hero" style="margin-top: 12px;">
+          <div class="formula-label">InfoNCE &mdash; Tujuan Kontrastif</div>
+          <div class="formula-math">$$\mathcal{L} = -\log \frac{\exp\!\big(\mathrm{sim}(\mathbf{v}_I, \mathbf{v}_T^{+})/\tau\big)}{\sum_{j=1}^{N} \exp\!\big(\mathrm{sim}(\mathbf{v}_I, \mathbf{v}_T^{(j)})/\tau\big)}$$</div>
+        </div>
+
+        <div class="formula-breakdown">
+          <div class="formula-term-box"><strong>\(\mathrm{sim}(\mathbf{v}_I, \mathbf{v}_T)\)</strong> Kesamaan kosinus antara vektor gambar dan vektor teks. Nilai besar berarti keduanya dianggap cocok.</div>
+          <div class="formula-term-box"><strong>\(\tau\)</strong> Suhu (<em>temperature</em>). Nilai kecil membuat distribusi lebih tajam, sehingga model lebih tegas membedakan kandidat.</div>
+          <div class="formula-term-box"><strong>Penyebut</strong> Jumlah atas seluruh kandidat \(N\) dalam <em>batch</em> &mdash; termasuk pasangan benar (\(+\)) dan semua pasangan salah.</div>
+        </div>
+
+        <aside class="notes">
+          Bacakan rumus sebagai kalimat: negatif logaritma dari probabilitas pasangan benar di antara seluruh kandidat. Bentuknya persis <em>softmax</em> lintas modal &mdash; dan di situlah kekuatannya: setiap pasangan salah dalam <em>batch</em> otomatis menjadi contoh negatif, tanpa perlu anotasi tambahan. Jelaskan peran suhu <em>tau</em> secara intuitif: mengecilkan <em>tau</em> memperbesar penalti bagi kandidat yang hampir mirip, sehingga pemisahan antar kelas menjadi lebih rapi. Sebutkan bahwa <em>N</em> adalah ukuran <em>batch</em>, dan inilah alasan batch besar sangat membantu CLIP.
+        </aside>
+      </section>
+
+      <!-- SLIDE 18: DIVIDER BAGIAN 4 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(254,100,11,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-peach">Bagian 4</span>
+          <h1>Studi Kasus: Pencarian Visual Tanpa Data Latih</h1>
+          <p class="subtitle">
+            Menerapkan model pra-latih pada tugas nyata &mdash; lalu menilai batasnya secara jujur.
+          </p>
+        </div>
+        <aside class="notes">Bagian ini mengubah teori menjadi keputusan rekayasa. Pola pembahasannya sama seperti pada Pertemuan 5 dan 7: rumusan masalah lebih dulu, penerapan kemudian, analisis terakhir. Jangan menampilkan solusi sebelum mahasiswa sempat berpikir &mdash; slide berikutnya sengaja hanya merumuskan masalah.</aside>
+      </section>
+
+      <!-- SLIDE 19: STUDI KASUS — RUMUSAN MASALAH -->
+      <section>
+        <h2>Studi Kasus: Rumusan Masalah</h2>
+        <p>Sebuah toko daring ingin menambahkan pencarian visual dari deskripsi.</p>
+
+        <div class="grid-2" style="margin-top: 8px;">
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Tugas</h4>
+            </div>
+            <ul style="font-size: 0.8em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Katalog berisi ratusan ribu foto produk, masing-masing hanya berjudul pendek tanpa anotasi region.</li>
+              <li>Deskripsi pelanggan bebas dan sering tidak memakai kata yang sama dengan judul.</li>
+              <li>Tidak tersedia data pasangan gambar&ndash;teks berlabel untuk melatih ulang model.</li>
+            </ul>
+          </div>
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Kendala Nyata</h4>
+            </div>
+            <ul style="font-size: 0.8em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Latensi pencarian harus di bawah satu detik untuk ratusan ribu kandidat.</li>
+              <li>Biaya komputasi dibatasi; tidak ada GPU untuk menyaring interaksi per pasangan.</li>
+              <li>Katalog berubah tiap hari, sehingga indeks harus dapat diperbarui cepat.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 10px;"><span class="material-symbols-outlined icon-blue">help</span><div><p style="margin: 0; font-size: 0.82em; line-height: 1.5;"><strong style="color: var(--ctp-blue);">Tiga pertanyaan sebelum menulis kode</strong> &mdash; diskusikan 3 menit dengan rekan di samping Anda: (1) pola arsitektur mana yang sesuai dengan kendala latensi dan pembaruan indeks? (2) mengapa pola lain tidak cocok? (3) metrik apa yang paling tepat?</p></div></div>
+
+        <aside class="notes">
+          Jangan buru-buru menampilkan jawaban. Beri waktu 3 menit untuk diskusi berpasangan, lalu tampung dua atau tiga dugaan. Arahkan mereka menyadari dua hal: (a) kendala latensi dan indeks yang dapat diperbarui menunjuk pada arsitektur yang tidak butuh interaksi antar lapisan, dan (b) tanpa data berlabel, pra-latih berskala besar menjadi satu-satunya jalan masuk yang realistis. Sebutkan bahwa kumpulan data rujukan untuk tugas semacam ini antara lain MS COCO dan Flickr30k, dengan metrik <em>Recall@K</em>.
+        </aside>
+      </section>
+
+      <!-- SLIDE 20: STUDI KASUS — PENERAPAN -->
+      <section>
+        <h2>Studi Kasus: Penerapan</h2>
+        <p>Rancangan yang dipilih: <em>dual-encoder</em> pra-latih dengan tujuan kontrastif, dipakai tanpa pelatihan ulang.</p>
+
+        <div class="pipeline-flow" style="margin-top: 14px;">
+          <div class="pipeline-step">
+            <span class="c-num-circle c-num-blue">1</span>
+            <h4 style="color: var(--ctp-blue)">Indekskan Katalog</h4>
+            <p>Setiap foto produk dilewatkan encoder gambar sekali, hasilnya disimpan sebagai indeks vektor.</p>
+          </div>
+          <div class="pipeline-step">
+            <span class="c-num-circle c-num-mauve">2</span>
+            <h4 style="color: var(--ctp-mauve)">Encode Kueri</h4>
+            <p>Deskripsi pelanggan dilewatkan encoder teks menjadi satu vektor pada ruang yang sama.</p>
+          </div>
+          <div class="pipeline-step">
+            <span class="c-num-circle c-num-teal">3</span>
+            <h4 style="color: var(--ctp-teal)">Cari Tetangga Terdekat</h4>
+            <p>Kesamaan kosinus dihitung terhadap indeks &mdash; operasi vektor yang sangat murah.</p>
+          </div>
+          <div class="pipeline-step">
+            <span class="c-num-circle c-num-green">4</span>
+            <h4 style="color: var(--ctp-green)">Peringkatkan</h4>
+            <p>Kandidat teratas dikembalikan; ambang kesamaan menyaring hasil yang tidak relevan.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-success" style="margin-top: 14px;"><span class="material-symbols-outlined icon-green">lightbulb</span><div><strong>Mengapa rancangan ini bekerja:</strong> karena tidak ada interaksi antar modalitas, <em>embedding</em> katalog dapat dihitung <strong>sekali di muka</strong> dan disimpan. Kueri baru hanya membutuhkan <strong>satu</strong> penerusan encoder teks, bukan ratusan ribu perbandingan penuh.</div></div>
+
+        <aside class="notes">
+          Tekankan pemisahan waktu komputasi: pekerjaan berat dilakukan sekali saat indeks dibangun, sedangkan permintaan pengguna hanya menyentuh satu encoder dan satu operasi kesamaan. Inilah alasan praktis mengapa CLIP sangat populer untuk pencarian. Bandingkan dengan alternatif dual-stream: akurasinya mungkin lebih tinggi, tetapi setiap kueri harus membandingkan kueri dengan setiap kandidat secara mendalam &mdash; terlalu mahal untuk ratusan ribu produk.
+        </aside>
+      </section>
+
+      <!-- SLIDE 21: STUDI KASUS — ANALISIS -->
+      <section>
+        <h2>Studi Kasus: Analisis Pilihan</h2>
+        <p>Apakah rancangan itu benar-benar memenuhi kendala? Mari uji terhadap tiga tuntutan tadi.</p>
+
+        <table class="c-table" style="margin-top: 14px;">
+          <thead>
+            <tr>
+              <th style="width: 30%;">Tuntutan</th>
+              <th style="width: 34%;">Dual-Encoder (dipilih)</th>
+              <th style="width: 36%;">Dual-Stream / Multi-Encoder</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Latensi &lt; 1 detik</td>
+              <td>Terpenuhi: satu penerusan teks + pencarian vektor.</td>
+              <td>Tidak terpenuhi: interaksi per pasangan kandidat.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Indeks cepat diperbarui</td>
+              <td>Terpenuhi: menambah produk berarti menambah satu vektor.</td>
+              <td>Sulit: setiap perubahan memengaruhi lapisan interaksi.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Tanpa data berlabel</td>
+              <td>Terpenuhi: memakai model pra-latih apa adanya.</td>
+              <td>Terpenuhi, tetapi pra-latih jenis ini jauh lebih mahal.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Penalaran halus</td>
+              <td><strong>Terbatas</strong>: lemah pada relasi komposisional dan atribut yang saling menempel.</td>
+              <td>Lebih kuat: dapat menimbang bagian gambar terhadap bagian kalimat.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Batas yang harus diakui:</strong> dual-encoder unggul pada tiga tuntutan pertama, tetapi kalah pada penalaran halus. Kueri seperti &ldquo;sepatu biru di sebelah kiri tas merah&rdquo; mudah keliru karena relasi antar objek tidak dimodelkan secara eksplisit.</div></div>
+
+        <aside class="notes">
+          Slide ini menutup kerangka yang dijanjikan pada rumusan masalah: keempat baris tabel adalah jawaban atas ketiga pertanyaan awal, ditambah satu batas yang harus diakui. Tekankan bahwa keputusan rekayasa jarang berupa kemenangan mutlak &mdash; di sini kita menukar penalaran halus dengan latensi dan biaya. Jika toko kelak membutuhkan pencarian berbasis relasi, jawabannya bukan menambah lapisan pada CLIP, melainkan pola arsitektur yang berbeda dengan konsekuensi biaya yang berbeda pula.
+        </aside>
+      </section>
+
+      <!-- SLIDE 22: KAPAN TRANSFORMER MULTIMODAL GAGAL -->
+      <section>
+        <h2>Ketika Transformer Multimodal Tidak Membantu</h2>
+        <p>Mengenal mode kegagalan lebih berguna daripada hanya mengagumi keberhasilannya.</p>
+
+        <div class="grid-3" style="margin-top: 8px;">
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Data Berpasangan Langka</h4>
+            </div>
+            <p>Pra-latih kontrastif membutuhkan pasangan dalam jumlah besar. Pada domain khusus dengan ribuan contoh, representasi yang dipelajari terlalu dangkal dan kalah dari fitur tangan.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Biaya Kuadratik</h4>
+            </div>
+            <p>Self-attention tumbuh kuadratik terhadap jumlah token. Modalitas beresolusi tinggi &mdash; video, audio panjang, citra medis &mdash; cepat melampaui anggaran komputasi.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Relasi Komposisional</h4>
+            </div>
+            <p>Menyelaraskan seluruh gambar dengan seluruh kalimat tidak menangkap relasi antar bagian. Negasi, urutan, dan penempelan atribut sering gagal.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 16px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Pemeriksaan sebelum memakai model pra-latih:</strong> apakah pasangan datanya cukup banyak, apakah jumlah tokennya masih wajar, dan apakah tugasnya butuh relasi antar bagian? Jika salah satu jawabannya &ldquo;tidak&rdquo;, arsitektur yang lebih sederhana atau penyelarasan eksplisit dari Pertemuan 7 mungkin lebih tepat.</div></div>
+
+        <aside class="notes">
+          Ketiga mode kegagalan ini sengaja dipasangkan dengan pilar-pilar sebelumnya: mode pertama menyambung ke keterbatasan data, mode kedua ke biaya arsitektur, dan mode ketiga ke konsep penyejajaran dari Pertemuan 7. Tekankan bahwa mode ketiga adalah yang paling halus &mdash; model terlihat berhasil pada metrik pencarian, namun keliru pada kueri yang membutuhkan relasi, dan kesalahan seperti ini jarang terlihat pada evaluasi agregat.
+        </aside>
+      </section>
+
+      <!-- SLIDE 23: LATIHAN TERBIMBING -->
+      <section>
+        <h2>Latihan Terbimbing: Zero-Shot CLIP</h2>
+        <p>Memakai model multimodal pra-latih untuk mengklasifikasi gambar tanpa melatih apa pun.</p>
+
+        <div class="bridge-grid">
+          <div class="bridge-step">
+            <span class="c-num-circle c-num-blue">1</span>
+            <div>
+              <h4 style="color: var(--ctp-blue)">Muat Model</h4>
+              <p>Muat <code>CLIPModel</code> dan <code>CLIPProcessor</code> pra-latih dari <em>Hugging Face</em>.</p>
+            </div>
+          </div>
+          <div class="bridge-step">
+            <span class="c-num-circle c-num-mauve">2</span>
+            <div>
+              <h4 style="color: var(--ctp-mauve)">Susun Kandidat</h4>
+              <p>Pasangkan satu gambar dengan beberapa kalimat label berbahasa Indonesia.</p>
+            </div>
+          </div>
+          <div class="bridge-step">
+            <span class="c-num-circle c-num-teal">3</span>
+            <div>
+              <h4 style="color: var(--ctp-teal)">Hitung Kemiripan</h4>
+              <p>Ubah <em>logits</em> per gambar menjadi probabilitas lewat <em>softmax</em>.</p>
+            </div>
+          </div>
+          <div class="bridge-step">
+            <span class="c-num-circle c-num-green">4</span>
+            <div>
+              <h4 style="color: var(--ctp-green)">Uji &amp; Analisis</h4>
+              <p>Bandingkan dengan label sebenarnya, lalu uji satu kueri komposisional yang <em>seharusnya</em> gagal.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Seluruh latihan berjalan pada tahap <strong>inferensi</strong> &mdash; tidak ada pelatihan ulang. Langkah keempat sengaja meminta Anda mencari kegagalan, bukan hanya keberhasilan.</div></div>
+        <div class="slide-links">
+          <a href="hands-on/mgg09-hands-on.html" class="slide-btn slide-btn-primary"><span class="material-symbols-outlined">science</span> Buka Lembar Kerja</a>
+          <a href="pdf/mgg09-hands-on.pdf" class="slide-btn slide-btn-secondary"><span class="material-symbols-outlined">picture_as_pdf</span> Unduh PDF</a>
+        </div>
+
+        <aside class="notes">
+          Tunjukkan kedua tombol di bawah. Latihan ini sengaja tidak menyentuh pelatihan ulang: tujuannya agar mahasiswa merasakan langsung bahwa penyelarasan lintas modal sudah tertanam di dalam bobot model pra-latih. Langkah keempat adalah bagian terpenting &mdash; meminta mahasiswa membuktikan sendiri batas relasi komposisional, bukan sekadar mempercayai klaim pada slide.
+        </aside>
+      </section>
+
+      <!-- SLIDE 24: RANGKUMAN -->
+      <section>
+        <h2>Rangkuman &amp; Poin Kunci</h2>
+        <p>Benang merah dari satu blok attention hingga arsitektur multimodal pra-latih:</p>
+
+        <div class="grid-2" style="margin-top: 10px;">
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue);">Dari Blok ke Arsitektur</h4>
+            </div>
+            <ul style="font-size: 0.76em; margin: 0; padding-left: 16px; line-height: 1.55;">
+              <li><strong>Encoder&ndash;decoder</strong> &rarr; menggantikan RNN dengan attention; cross-attention menjadi jembatan antar blok.</li>
+              <li><strong>ViT</strong> &rarr; gambar dipotong menjadi <em>patch</em>, diproyeksikan, ditambah <em>embedding</em> posisi, lalu masuk encoder biasa.</li>
+              <li><strong>Kunci penyatu</strong> &rarr; apa pun modalitasnya, masukannya harus berupa sekuens vektor.</li>
+            </ul>
+          </div>
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve);">Tiga Pola &amp; Batasnya</h4>
+            </div>
+            <ul style="font-size: 0.76em; margin: 0; padding-left: 16px; line-height: 1.55;">
+              <li><strong>Dual-stream</strong> (ViLBERT) &rarr; interaksi di dalam lapisan lewat <em>co-attention</em>.</li>
+              <li><strong>Multi-encoder</strong> (LXMERT) &rarr; satu encoder khusus untuk interaksi lintas modal.</li>
+              <li><strong>Dual-encoder</strong> (CLIP) &rarr; modalitas hanya bertemu di ruang <em>embedding</em>; dilatih dengan tujuan kontrastif InfoNCE.</li>
+              <li><strong>Batannya</strong> &rarr; data langka, biaya kuadratik, dan relasi komposisional.</li>
+            </ul>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Tutup dengan menegaskan satu gagasan: seluruh sesi ini adalah rangkaian penambahan satu gagasan per langkah &mdash; satu blok attention, lalu tumpukan, lalu patch, lalu beberapa modalitas. Minta mahasiswa mengulang kembali pertukaran pokoknya dengan kalimat sendiri: semakin dalam modalitas berinteraksi, semakin kuat penalarannya, tetapi semakin mahal biayanya dan semakin sulit indeksnya diperbarui.
+        </aside>
+      </section>
+
+      <!-- SLIDE 25: DISKUSI -->
+      <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Diskusi Kelas">
+        <h2 style="text-align: center; margin-bottom: 24px;">Diskusi Kelas</h2>
+        <p style="text-align: center; margin-bottom: 24px;">Diskusikan bersama rekan di samping Anda selama 3&ndash;5 menit:</p>
+        <div style="display: flex; flex-direction: column; gap: 14px; max-width: 860px; margin: 0 auto;">
+          <div class="c-callout c-callout-info"><span class="material-symbols-outlined icon-blue">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-blue);">Pertanyaan 1:</strong> Jika katalog Anda hanya berisi lima ribu produk, apakah <em>dual-encoder</em> pra-latih masih pilihan terbaik &mdash; atau justru fitur tangan lebih unggul?</p></div></div>
+          <div class="c-callout c-callout-warning"><span class="material-symbols-outlined icon-mauve">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-mauve);">Pertanyaan 2:</strong> Bagaimana Anda akan mendeteksi bahwa kegagalan model disebabkan oleh relasi komposisional, bukan sekadar data yang kurang?</p></div></div>
+          <div class="c-callout c-callout-success"><span class="material-symbols-outlined icon-teal">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-teal);">Pertanyaan 3:</strong> Untuk modalitas audio&ndash;visual, apakah pola <em>dual-encoder</em> tetap masuk akal, atau justru <em>cross-attention</em> dari Pertemuan 7 yang lebih tepat? Jelaskan dasar pilihan Anda.</p></div></div>
+        </div>
+        <aside class="notes">Tiga pertanyaan ini bergerak dari keputusan rekayasa (Pertanyaan 1), ke diagnosis kegagalan (Pertanyaan 2), lalu ke perpindahan modalitas (Pertanyaan 3). Pertanyaan ketiga adalah yang paling menghubungkan &mdash; ia menuntut mahasiswa memindahkan gagasan arsitektur dari ranah visual-linguistik ke audio-visual, dan menyadari bahwa apa yang bekerja untuk teks belum tentu bekerja untuk isyarat waktu yang padat. Beri waktu 3&ndash;5 menit, lalu minta beberapa kelompok berbagi.</aside>
+      </section>
+
+      <!-- SLIDE 26: REFERENSI -->
+      <section>
+        <h2>Referensi &amp; Bacaan Lanjutan</h2>
+        <p style="margin-bottom: 20px;">Rekomendasi literatur akademik wajib dan bacaan lanjutan:</p>
+        <ol style="list-style: none; padding: 0; margin: 0; counter-reset: ref-counter;">
+          <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[1]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Vaswani, A., et al. (2017).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Attention Is All You Need</em>. NeurIPS. &mdash; arsitektur encoder&ndash;decoder yang menjadi dasar seluruh sesi ini.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[2]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Dosovitskiy, A., et al. (2021).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>An Image is Worth 16&times;16 Words: Transformers for Image Recognition at Scale</em>. ICLR. &mdash; sumber Vision Transformer (ViT).</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[3]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Lu, J., et al. (2019).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>ViLBERT: Pretraining Task-Agnostic Visiolinguistic Representations for Vision-and-Language Tasks</em>. NeurIPS. &mdash; pola <em>dual-stream</em> dengan <em>co-attention</em>.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[4]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Tan, H., &amp; Bansal, M. (2019).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>LXMERT: Learning Cross-Modality Encoder Representations from Transformers</em>. EMNLP. &mdash; pola <em>multi-encoder</em> dengan encoder lintas modal.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 14px 0; display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[5]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Radford, A., et al. (2021).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Learning Transferable Visual Models From Natural Language Supervision</em>. ICML. &mdash; sumber CLIP dan tujuan kontrastif InfoNCE.</p></div></li>
+        </ol>
+        <aside class="notes">Lima referensi: paper Transformer asli (Vaswani dkk.), paper Vision Transformer (Dosovitskiy dkk.), pola dual-stream (Lu dkk.), pola multi-encoder (Tan &amp; Bansal), dan sumber CLIP sekaligus tujuan kontrastif (Radford dkk.). Bila waktu memungkinkan, tunjukkan bahwa rumus pada slide 17 diambil langsung dari bagian <em>contrastive pre-training</em> paper CLIP.</aside>
+      </section>
+
+      <!-- SLIDE 27: PENUTUP -->
+      <section>
+        <div style="margin: auto 0; text-align: center;">
+          <h2 style="font-size: 1.8em; font-weight: 800; color: var(--ctp-text); margin-bottom: 16px;">Terima Kasih</h2>
+          <p style="font-size: 1.05em; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.6;">Pertemuan selanjutnya:<br><strong style="color: var(--ctp-blue);">Aplikasi 1: Image Captioning</strong></p>
+          <div style="background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-radius: 12px; padding: 18px 24px; display: inline-block; max-width: 480px;"><div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">Pertanyaan &amp; Diskusi</div><div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;"><span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span></div></div>
+        </div>
+        <aside class="notes">Tutup sesi dengan menegaskan bahwa arsitektur hanyalah alat: yang menentukan keberhasilan adalah kesesuaian antara kedalaman interaksi modalitas dan kendala nyata tugas. Sampaikan bahwa Pertemuan 10 mulai memasuki aplikasi, dimulai dari <em>image captioning</em> &mdash; tugas yang akan memanfaatkan encoder&ndash;decoder yang baru saja dibahas, tetapi dengan cabang <em>cross-attention</em> ke bagian gambar.</aside>
+      </section>
+  </div></div>
+  <!-- Persistent Edge-to-Edge Deck Footer -->
+  <footer class="deck-footer">
+    <div class="deck-footer-left">
+      <span class="deck-footer-code">IF25-40304</span>
+      <span class="deck-footer-sep">&bull;</span>
+      <span class="deck-footer-dept">Teknik Informatika ITERA</span>
+    </div>
+
+    <div class="deck-footer-center">
+      <button type="button" id="deck-footer-topic" class="deck-footer-topic" onclick="toggleTopicPopover(event)" title="Daftar Isi & Navigasi Cepat Slide (Klik)">
+        <span id="deck-footer-topic-text" class="deck-footer-topic-text">Pertemuan 09 &bull; Arsitektur Transformer Multimodal</span>
+        <span class="material-symbols-outlined deck-footer-topic-icon">expand_less</span>
+      </button>
+    </div>
+
+    <div class="deck-footer-right">
+      <button type="button" class="deck-footer-btn" onclick="Reveal.prev()" title="Slide Sebelumnya (← / P)" aria-label="Slide Sebelumnya">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <button type="button" class="deck-counter-btn" onclick="Reveal.toggleOverview()" title="Klik untuk Matriks Seluruh Slide (Esc/O)">
+        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">27</span>
+      </button>
+      <button type="button" class="deck-footer-btn" onclick="Reveal.next()" title="Slide Berikutnya (→ / Space / N)" aria-label="Slide Berikutnya">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </footer>
+  <div class="deck-topic-popover" id="deck-topic-popover"><div class="deck-popover-search-wrap"><input type="text" id="deck-topic-search" class="deck-popover-search" placeholder="Cari slide..." oninput="filterTopicList(this.value)"></div><div class="deck-topic-list" id="deck-topic-list"></div></div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+  <script>
+
+    let currentAspectMode = localStorage.getItem('reveal_aspect_mode') || 'auto';
+
+    function calculateResponsiveDimensions(mode) {
+      const winW = window.innerWidth;
+      const winH = window.innerHeight - 86.5;
+      const ratio = winW / winH;
+
+      if (mode === '16-9') return { width: 1280, height: 720, label: '16:9' };
+      if (mode === '16-10') return { width: 1280, height: 800, label: '16:10' };
+      if (mode === '4-3') return { width: 1024, height: 768, label: '4:3' };
+      if (mode === 'mobile') return { width: 750, height: 1000, label: 'Mobile' };
+      if (mode === 'text-large') return { width: 960, height: 540, label: 'Teks Besar' };
+
+      // Auto mode
+      if (winW <= 768 || ratio < 1.15) {
+        return { width: 750, height: Math.max(900, Math.round(750 / Math.max(0.5, ratio))), label: 'Auto' };
+      } else if (ratio >= 1.65) {
+        return { width: 1280, height: 720, label: 'Auto' };
+      } else if (ratio >= 1.45) {
+        return { width: 1280, height: 800, label: 'Auto' };
+      } else {
+        return { width: 1024, height: 768, label: 'Auto' };
+      }
+    }
+
+    const initialDim = calculateResponsiveDimensions(currentAspectMode);
+
+    Reveal.initialize({
+      width: initialDim.width,
+      height: initialDim.height,
+      margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2.0,
+      hash: true,
+      slideNumber: false,
+      controls: false,
+      progress: false,
+      center: true,
+      touch: true,
+      transition: 'slide',
+      backgroundTransition: 'none',
+      plugins: [ RevealNotes, RevealHighlight, RevealMath.KaTeX ]
+    });
+
+    function updateDeckState(event) {
+      const indices = event ? { h: event.indexh, v: event.indexv } : Reveal.getIndices();
+      const totalSlides = Reveal.getTotalSlides();
+      const currentIdx = indices ? indices.h : 0;
+
+      const progressBar = document.getElementById('deck-progress-bar');
+      if (progressBar) {
+        const progressPercent = totalSlides > 1 ? (currentIdx / (totalSlides - 1)) * 100 : 0;
+        progressBar.style.width = progressPercent + '%';
+      }
+
+      const currentEl = document.getElementById('deck-slide-current');
+      const totalEl = document.getElementById('deck-slide-total');
+      if (currentEl) currentEl.textContent = String(currentIdx + 1).padStart(2, '0');
+      if (totalEl) totalEl.textContent = String(totalSlides).padStart(2, '0');
+
+      const topicEl = document.getElementById('deck-footer-topic-text') || document.getElementById('deck-footer-topic');
+      if (topicEl) {
+        if (currentIdx === 0) {
+          topicEl.textContent = 'Pertemuan 09 \u2022 Arsitektur Transformer Multimodal';
+        } else {
+          const currentSlide = Reveal.getCurrentSlide();
+          if (currentSlide) {
+            const topicAttr = currentSlide.getAttribute('data-topic');
+            if (topicAttr) {
+              topicEl.textContent = topicAttr;
+            } else {
+              const heading = currentSlide.querySelector('h2') || currentSlide.querySelector('h1');
+              if (heading) {
+                topicEl.textContent = heading.textContent.trim();
+              } else {
+                topicEl.textContent = 'Pertemuan 09 \u2022 Arsitektur Transformer Multimodal';
+              }
+            }
+          }
+        }
+      }
+
+      updateActiveTopicItem(currentIdx);
+    }
+
+    Reveal.on('ready', event => {
+      document.body.classList.add('reveal-ready');
+      updateDeckState(event);
+      buildTopicIndex();
+    });
+    Reveal.on('slidechanged', updateDeckState);
+
+    // =========================================================
+    // Floating Slide Topic Navigation Popover (Daftar Isi)
+    // =========================================================
+    function buildTopicIndex() {
+      const listEl = document.getElementById('deck-topic-list');
+      if (!listEl) return;
+
+      const slides = document.querySelectorAll('.reveal .slides > section');
+      let html = '';
+
+      slides.forEach((slide, idx) => {
+        const topicAttr = slide.getAttribute('data-topic');
+        const h1 = slide.querySelector('h1');
+        const h2 = slide.querySelector('h2');
+        const partEl = slide.querySelector('.section-part-label');
+        const isSectionSlide = slide.classList.contains('section-slide') || !!slide.querySelector('.section-slide-content');
+        const partText = partEl ? partEl.textContent.trim().replace(/\s+/g, ' ') : '';
+
+        const h1Text = h1 ? h1.textContent.trim().replace(/\s+/g, ' ') : '';
+        const h2Text = h2 ? h2.textContent.trim().replace(/\s+/g, ' ') : '';
+        let title = '';
+
+        if (idx === 0) {
+          title = h1Text || 'Arsitektur Transformer Multimodal';
+          html += '<div class="deck-topic-section">Pendahuluan & Identitas</div>';
+        } else if (isSectionSlide || partText.startsWith('Bagian')) {
+          const secTitle = h1Text || h2Text || 'Bagian ' + idx;
+          const sectionLabel = partText ? partText + ': ' + secTitle : secTitle;
+          title = secTitle;
+          html += '<div class="deck-topic-section">' + sectionLabel + '</div>';
+        } else if (topicAttr) {
+          title = topicAttr;
+        } else {
+          title = h2Text || h1Text || 'Slide ' + (idx + 1);
+        }
+
+        const numStr = String(idx + 1).padStart(2, '0');
+        html += '<div class="deck-topic-item" data-slide-index="' + idx + '" onclick="jumpToSlide(' + idx + ')"><span class="deck-topic-num">' + numStr + '</span><span class="deck-topic-name" title="' + title + '">' + title + '</span></div>';
+      });
+
+      listEl.innerHTML = html;
+      const currentIdx = Reveal.getIndices ? Reveal.getIndices().h : 0;
+      updateActiveTopicItem(currentIdx);
+    }
+
+    function updateActiveTopicItem(currentIdx) {
+      document.querySelectorAll('.deck-topic-item').forEach(item => {
+        const idx = parseInt(item.getAttribute('data-slide-index'), 10);
+        item.classList.toggle('active', idx === currentIdx);
+      });
+    }
+
+    function toggleTopicPopover(e) {
+      if (e) e.stopPropagation();
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (!popover) return;
+
+      const isActive = popover.classList.toggle('active');
+      if (btn) btn.classList.toggle('active', isActive);
+
+      if (isActive) {
+        const activeItem = popover.querySelector('.deck-topic-item.active');
+        if (activeItem) {
+          activeItem.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }
+        const searchInput = document.getElementById('deck-topic-search');
+        if (searchInput) {
+          searchInput.value = '';
+          filterTopicList('');
+          setTimeout(() => searchInput.focus(), 80);
+        }
+      }
+    }
+
+    function closeTopicPopover() {
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (popover) popover.classList.remove('active');
+      if (btn) btn.classList.remove('active');
+    }
+
+    function jumpToSlide(index) {
+      Reveal.slide(index);
+      closeTopicPopover();
+    }
+
+    function filterTopicList(query) {
+      const q = (query || '').toLowerCase().trim();
+      const items = document.querySelectorAll('.deck-topic-item');
+      const sections = document.querySelectorAll('.deck-topic-section');
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const num = (item.querySelector('.deck-topic-num') || {}).textContent || '';
+        const name = (item.querySelector('.deck-topic-name') || {}).textContent || '';
+        const matches = !q || num.toLowerCase().includes(q) || name.toLowerCase().includes(q);
+        item.style.display = matches ? 'grid' : 'none';
+        if (matches) visibleCount++;
+      });
+
+      sections.forEach(sec => {
+        let nextEl = sec.nextElementSibling;
+        let hasVisibleChild = false;
+        while (nextEl && !nextEl.classList.contains('deck-topic-section')) {
+          if (nextEl.classList.contains('deck-topic-item') && nextEl.style.display !== 'none') {
+            hasVisibleChild = true;
+            break;
+          }
+          nextEl = nextEl.nextElementSibling;
+        }
+        sec.style.display = hasVisibleChild ? 'block' : 'none';
+      });
+
+      const listEl = document.getElementById('deck-topic-list');
+      let emptyMsg = document.getElementById('deck-topic-empty-msg');
+      if (visibleCount === 0) {
+        if (!emptyMsg) {
+          emptyMsg = document.createElement('div');
+          emptyMsg.id = 'deck-topic-empty-msg';
+          emptyMsg.className = 'deck-topic-empty';
+          emptyMsg.textContent = 'Tidak ada slide yang cocok dengan pencarian.';
+          listEl.appendChild(emptyMsg);
+        }
+        emptyMsg.style.display = 'block';
+      } else if (emptyMsg) {
+        emptyMsg.style.display = 'none';
+      }
+    }
+
+    function setAspectMode(mode) {
+      currentAspectMode = mode;
+      localStorage.setItem('reveal_aspect_mode', mode);
+      const dim = calculateResponsiveDimensions(mode);
+
+      Reveal.configure({
+        width: dim.width,
+        height: dim.height,
+        margin: 0.04,
+        minScale: 0.2,
+        maxScale: 2.0
+      });
+
+      document.body.classList.remove('aspect-16-9', 'aspect-16-10', 'aspect-4-3', 'aspect-mobile');
+      if (mode === 'auto') {
+        if (window.innerWidth <= 768) document.body.classList.add('aspect-mobile');
+      } else {
+        document.body.classList.add('aspect-' + mode);
+      }
+
+      const labelEl = document.getElementById('aspect-label');
+      if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+
+      document.querySelectorAll('.dropdown-item').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-aspect') === mode);
+      });
+
+      closeAspectDropdown();
+      setTimeout(() => Reveal.layout(), 50);
+    }
+
+    function toggleAspectDropdown(e) {
+      if (e) e.stopPropagation();
+      document.getElementById('aspect-menu').classList.toggle('active');
+    }
+
+    function closeAspectDropdown() {
+      const menu = document.getElementById('aspect-menu');
+      if (menu) menu.classList.remove('active');
+    }
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-dropdown')) closeAspectDropdown();
+      if (!e.target.closest('#deck-topic-popover') && !e.target.closest('#deck-footer-topic')) closeTopicPopover();
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (currentAspectMode === 'auto') {
+          const dim = calculateResponsiveDimensions('auto');
+          const cfg = Reveal.getConfig();
+          if (cfg.width !== dim.width || cfg.height !== dim.height) {
+            Reveal.configure({ width: dim.width, height: dim.height });
+            const labelEl = document.getElementById('aspect-label');
+            if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+            Reveal.layout();
+          }
+        }
+      }, 200);
+    });
+
+    window.addEventListener('DOMContentLoaded', () => setAspectMode(currentAspectMode));
+
+    function openShortcutsModal() {
+      document.getElementById('shortcuts-modal').classList.add('active');
+    }
+
+    function closeShortcutsModal(event) {
+      if (!event || event.target.id === 'shortcuts-modal' || event.target.classList.contains('modal-close')) {
+        document.getElementById('shortcuts-modal').classList.remove('active');
+      }
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const popover = document.getElementById('deck-topic-popover');
+        if (popover && popover.classList.contains('active')) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeTopicPopover();
+          return;
+        }
+      }
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        document.getElementById('shortcuts-modal').classList.toggle('active');
+      }
+    });
+
+  </script>
+</body></html>
+

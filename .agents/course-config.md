@@ -60,7 +60,7 @@ These placeholders in `resources/slide-template.html` are substituted from this 
 | 06 | Strategi Fusi Multimodal II: Intermediate & Hybrid Fusion | lecture | `Early, Late & Intermediate Fusion` (`pdf/mgg06-hands-on.pdf`) |
 | 07 | Penyejajaran (Alignment): Temporal & Structural | lecture | — |
 | 08 | UTS | milestone | — |
-| 09 | Arsitektur Transformer Multimodal | lecture | — |
+| 09 | Arsitektur Transformer Multimodal | lecture | `Menyejajarkan Dua Ruang` (`pdf/mgg09-hands-on.pdf`) |
 | 10 | Aplikasi 1: Image Captioning | lecture | — |
 | 11 | Aplikasi 2: VQA & Analisis Sentimen Multimodal | lecture | — |
 | 12 | Topik Lanjutan: Generasi Multimodal & Etika | lecture | — |

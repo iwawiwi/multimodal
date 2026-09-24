@@ -55,6 +55,7 @@ jobs:
           python3 scripts/export_pdf.py mgg05.html
           python3 scripts/export_pdf.py mgg06.html
           python3 scripts/export_pdf.py mgg07.html
+          python3 scripts/export_pdf.py mgg09.html
 
       - name: Build hands-on PDFs (Vivliostyle)
         run: |
@@ -66,6 +67,8 @@ jobs:
           HANDSON_WEEK=04 npm run build:pdf
           HANDSON_WEEK=06 npm run bake
           HANDSON_WEEK=06 npm run build:pdf
+          HANDSON_WEEK=09 npm run bake
+          HANDSON_WEEK=09 npm run build:pdf
 
       - name: Verify PDFs exist
         run: |
@@ -77,10 +80,12 @@ jobs:
           test -f pdf/mgg05.pdf
           test -f pdf/mgg06.pdf
           test -f pdf/mgg07.pdf
+          test -f pdf/mgg09.pdf
           test -f pdf/mgg02-hands-on.pdf
           test -f pdf/mgg03-hands-on.pdf
           test -f pdf/mgg04-hands-on.pdf
           test -f pdf/mgg06-hands-on.pdf
+          test -f pdf/mgg09-hands-on.pdf
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

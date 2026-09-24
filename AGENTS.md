@@ -151,7 +151,8 @@ Keputusan yang sudah disetujui pengguna dan **berlaku sampai diubah eksplisit**:
 | `mgg05.html` | Strategi Fusi I: Early & Late Fusion | 28 | ✅ selesai |
 | `mgg06.html` | Strategi Fusi II: Intermediate & Hybrid Fusion | 25 | ✅ selesai |
 | `mgg07.html` | Penyejajaran (Alignment): Temporal & Structural | 27 | ✅ selesai |
-| `mgg08.html` … `mgg15.html` | — | — | ❌ belum dibuat |
+| `mgg09.html` | Arsitektur Transformer Multimodal | 27 | ✅ selesai |
+| `mgg08.html`, `mgg10.html` … `mgg15.html` | — | — | ❌ belum dibuat |
 
   > Angka slide di atas diverifikasi terhadap `<section>` tiap berkas. Perbarui
   > tabel ini setiap kali deck berubah — `CODEBASE.md` §10 pernah tertinggal
@@ -161,9 +162,9 @@ Artefak pendukung:
 
 | Artefak | Ada |
 | :--- | :--- |
-| `hands-on/mgg02,03,04,06-hands-on.html` | ✅ |
-| `tugas/mgg02,03,04,06-tugas.md` + `.tex` | ✅ (via LMS — lihat D-A11) |
-| CI export `mgg01`–`mgg07` + hands-on 02/03/04/06 | ✅ |
+| `hands-on/mgg02,03,04,06,09-hands-on.html` | ✅ |
+| `tugas/mgg02,03,04,06,09-tugas.md` + `.tex` | ✅ (via LMS — lihat D-A11) |
+| CI export `mgg01`–`mgg09` + hands-on 02/03/04/06/09 | ✅ |
 
 > Setiap minggu yang punya hands-on **wajib** lengkap: file hands-on, entri
 > `HANDSON_WEEK` di CI, judul di `vivliostyle.config.js`, kolom hands-on di

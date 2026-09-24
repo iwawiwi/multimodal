@@ -1,0 +1,370 @@
+% =============================================================
+%  Tugas Individu 09 — Menyejajarkan Ruang Embedding
+%  IF25-40304 · Pembelajaran Mesin Multimodal · ITERA
+% =============================================================
+\documentclass[12pt, a4paper]{article}
+
+\usepackage{tugas-style}
+
+\renewcommand{\assignmentnumber}{09}
+\renewcommand{\doctitle}{Tugas Individu 09}
+\renewcommand{\duedate}{\color{ctpBlue}\faCalendarCheck\ \ Tenggat: sesuai jadwal kelas \faCalendarCheck}
+
+\begin{document}
+
+% ── HEADER ──────────────────────────────────────────────────
+\makeassignmentheader
+
+\hrule width0.3\textwidth
+\revisioninfo{%
+  \vhEntry{0.1}{23 September 2026}{I.W.W.}{Draf inisial tugas.}
+}
+\hrule
+\vskip .3in
+
+\tableofcontents
+\clearpage
+
+% =============================================================
+\section{Tujuan Pembelajaran}\label{sec:objectives}
+
+Setelah menyelesaikan tugas ini, mahasiswa mampu:
+\begin{objectives}
+  \item Mengukur keselarasan dua modalitas secara kuantitatif melalui matriks kesamaan dan nilai \emph{InfoNCE}.
+  \item Menyelaraskan dua ruang \emph{embedding} dan membuktikan perbaikan kinerjanya dengan angka.
+  \item Menjelaskan pengaruh suhu (\code{tau}) terhadap tujuan kontrastif dan kestabilan pelatihan.
+  \item Mengukur kinerja pencarian lintas modal dengan metrik \emph{Recall@K}.
+  \item Menilai secara kritis batas arsitektur \emph{dual-encoder} dan mengujinya pada kasus relasi komposisional.
+\end{objectives}
+
+% =============================================================
+\section{Catatan dan Batasan}\label{sec:notes}
+\vspace{-.1cm}
+
+\begin{minipage}{\linewidth}
+\begin{bclogo}[couleur=ctpBase, arrondi=0.1, logo=\bccrayon, ombre=false, couleurBord=ctpSurface, epBord=0.6]{Perhatikan hal berikut:}
+  \begin{coloredPen}
+    \item Tugas ini bersifat \textbf{individu}; tidak diperkenankan bekerja sama atau menyalin jawaban.
+    \item Soal 1--4 memakai data \textbf{sintetis} dengan \emph{seed} tetap, sehingga hasil dapat direproduksi tanpa mengunduh apa pun.
+    \item Soal 5b memakai model \textbf{CLIP pra-latih}. Bobot model \textbf{tidak boleh} diubah --- seluruh Soal 5b bersifat inferensi.
+    \item Laporkan selalu \textbf{baseline sebelum penyelarasan}. Angka setelah penyelarasan tidak bermakna tanpa pembanding.
+    \item Gunakan \code{numpy} untuk Soal 1--4 dan \code{torch} + \code{transformers} untuk Soal 5b.
+  \end{coloredPen}
+\end{bclogo}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+\begin{bclogo}[couleur=ctpMantle, arrondi=0.1, logo=\bcinfo, ombre=false, couleurBord=ctpSurface, epBord=0.6]{Ekspektasi Hasil}
+  Dengan \code{SEED = 42} dan data sintetis pada tugas ini, hasil yang wajar adalah:
+
+  \begin{itemize}[itemsep=1pt,parsep=0pt,topsep=2pt,partopsep=0pt]
+    \item Sebelum penyelarasan: \emph{InfoNCE} berada di kisaran \textbf{10--11} dan \emph{Recall@1} sekitar \textbf{1/6}.
+    \item Sesudah penyelarasan: \emph{InfoNCE} turun di bawah \textbf{0,2} dan \emph{Recall@1} mencapai \textbf{6/6}.
+    \item Suhu mengecil pada data yang sudah selaras menurunkan \emph{loss}, tetapi suhu yang terlalu kecil membuat pelatihan tidak stabil.
+  \end{itemize}
+
+  Bila hasil Anda menyimpang jauh (misalnya \emph{Recall@1} tetap 1/6 setelah penyelarasan), periksa: data belum dipusatkan sebelum dekomposisi nilai singular; sumbu matriks kesamaan tertukar; atau vektor belum dinormalisasi sebelum dihitung kesamaan kosinus.
+\end{bclogo}
+\end{minipage}
+
+% =============================================================
+\section{Perangkat Lunak dan Peralatan yang Diperlukan}\label{sec:requiredsw}
+
+\begin{itemize}[itemsep=2pt,parsep=0pt,topsep=2pt,partopsep=2pt]
+  \item[\color{ctpBlue}\faPython] \textbf{Python} 3.8 atau lebih baru.
+  \item[\color{ctpBlue}\faFileCode] \textbf{Paket wajib:} \code{numpy} (Soal 1--4), \code{torch} + \code{transformers} + \code{pillow} (Soal 5b).
+  \item[\color{ctpBlue}\faDownload] \textbf{Data:} sintetis untuk Soal 1--4; satu gambar pilihan sendiri untuk Soal 5b.
+  \item[\color{ctpBlue}\faFileCode] \textbf{Perangkat:} CPU memadai untuk Soal 1--4; Soal 5b disarankan memakai GPU bila tersedia (bukan syarat).
+\end{itemize}
+
+\begin{codewindow}{setup.sh}
+\begin{lstlisting}[style=pycode]
+pip install numpy torch transformers pillow
+\end{lstlisting}
+\end{codewindow}
+
+\begin{minipage}{\linewidth}
+\begin{bclogo}[couleur=ctpMantle, arrondi=0.1, logo=\bcinfo, ombre=false, couleurBord=ctpSurface, epBord=0.6]{Batasan Cakupan}
+  Soal 1--4 memakai data multimodal \textbf{sintetis} yang dibangkitkan secara programatik.
+  Kedua modalitas memandang faktor laten yang sama, tetapi modalitas kedua melihatnya
+  melalui rotasi ortogonal. Konstruksi ini membuat penyelarasan dapat dihitung dalam
+  bentuk tertutup, sehingga Anda dapat memisahkan persoalan \emph{alignment} dari
+  persoalan \emph{pelatihan jaringan}.
+\end{bclogo}
+\end{minipage}
+
+% =============================================================
+\section{Pernyataan Masalah}\label{sec:intro}
+
+Sebuah katalog berisi ratusan ribu foto produk. Pelanggan mengetik deskripsi bebas, dan
+sistem harus mengembalikan foto yang paling sesuai. Tidak tersedia data berpasangan
+berlabel, dan latensi pencarian harus di bawah satu detik.
+
+Ini adalah persoalan \textbf{penyejajaran lintas modal}: bagaimana membuat satu gambar
+dan satu kalimat yang membicarakan hal yang sama berada pada titik yang berdekatan di
+ruang vektor. Sesi Pertemuan 09 menunjukkan bahwa model \emph{dual-encoder} seperti CLIP
+melakukannya tanpa pernah mempertemukan lapisan kedua modalitas.
+
+Anda akan membuktikan mekanismenya dengan angka: mula-mula tanpa penyelarasan, kemudian
+dengan penyelarasan, lalu pada model pra-latih.
+
+% =============================================================
+\section{Persyaratan}\label{sec:requirements}
+
+Perhatikan setiap persyaratan pada soal-soal berikut.
+
+% ─────────────────────────────────────────────────────────────
+\subsection{Soal 1 --- Pasangan Sintetis dan Baseline InfoNCE}
+
+Sebelum menyelaraskan apa pun, kita harus mengukur seberapa buruk keadaan awalnya.
+Inilah \emph{baseline} yang menjadi pembanding sepanjang tugas.
+
+\begin{enumerate}
+  \item Bangkitkan faktor laten bersama $\mathbf{z}$, lalu bentuk dua modalitas yang
+        memandang faktor tersebut melalui proyeksi berbeda. Pusatkan $\mathbf{z}$
+        terhadap rata-ratanya.
+  \item Hitung matriks kesamaan kosinus antara kedua modalitas, lalu tampilkan nilai
+        diagonalnya (pasangan benar) dan rerata di luar diagonal.
+  \item Hitung nilai \emph{InfoNCE} dan \emph{Recall@1} pada keadaan ini.
+  \item Jawab dalam 3--5 kalimat: mengapa matriks kesamaan tampak acak sebelum
+        penyelarasan, meskipun kedua modalitas sebenarnya mengandung informasi yang sama?
+\end{enumerate}
+
+\begin{codewindow}{soal1\_data.py}
+\begin{lstlisting}[style=pycode]
+import numpy as np
+
+SEED, N, DIM, TAU = 42, 6, 4, 0.10
+rng = np.random.default_rng(SEED)
+
+# Faktor laten bersama, dipusatkan
+z = rng.normal(0.0, 1.0, size=(N, DIM))
+z = z - z.mean(axis=0, keepdims=True)
+
+# Modalitas kedua melihat faktor yang sama lewat rotasi ortogonal Q
+Q, _ = np.linalg.qr(rng.normal(0.0, 1.0, size=(DIM, DIM)))
+
+gambar = z + 0.10 * rng.normal(size=(N, DIM))
+teks = z @ Q.T + 0.10 * rng.normal(size=(N, DIM))
+
+def normalisasi(X):
+    return X / np.linalg.norm(X, axis=1, keepdims=True)
+
+def matriks_kesamaan(A, B):
+    return normalisasi(A) @ normalisasi(B).T
+
+def infonce(S, tau=TAU):
+    Z = S / tau
+    Z = Z - Z.max(axis=1, keepdims=True)          # stabilkan secara numerik
+    log_softmax = Z - np.log(np.exp(Z).sum(axis=1, keepdims=True))
+    return -np.diag(log_softmax).mean()
+
+def recall_at_1(S):
+    return int(np.mean(np.argmax(S, axis=1) == np.arange(len(S))) * len(S))
+
+S0 = matriks_kesamaan(gambar, teks)
+print("diagonal :", np.diag(S0))
+print("rerata luar diagonal: %+.3f" % S0[~np.eye(N, dtype=bool)].mean())
+print("InfoNCE  : %.4f" % infonce(S0))
+print("Recall@1 : %d/%d" % (recall_at_1(S0), N))
+\end{lstlisting}
+\end{codewindow}
+
+% ─────────────────────────────────────────────────────────────
+\subsection{Soal 2 --- Penyelarasan Bentuk Tertutup}
+
+Sekarang kita selaraskan ruang teks terhadap ruang gambar. Karena hubungan antar
+keduanya ortogonal, penyelarasan optimal dapat dihitung langsung lewat dekomposisi
+nilai singular.
+
+\begin{enumerate}
+  \item Hitung matriks rotasi optimal $\mathbf{R}$, lalu selaraskan vektor teks
+        dengan $\mathbf{R}$ tersebut.
+  \item Hitung ulang matriks kesamaan, \emph{InfoNCE}, dan \emph{Recall@1}.
+  \item Sajikan perbandingan sebelum dan sesudah dalam satu tabel.
+  \item Jawab dalam 4--6 kalimat: apa yang sesungguhnya berubah pada langkah ini, dan
+        mengapa hal itu cukup untuk memperbaiki kinerja pencarian?
+\end{enumerate}
+
+\begin{codewindow}{soal2\_procrustes.py}
+\begin{lstlisting}[style=pycode]
+M = teks.T @ gambar
+U, s, Vt = np.linalg.svd(M)
+R = U @ Vt
+teks_selaras = teks @ R
+
+S1 = matriks_kesamaan(gambar, teks_selaras)
+print("diagonal :", np.diag(S1))
+print("rerata luar diagonal: %+.3f" % S1[~np.eye(N, dtype=bool)].mean())
+print("InfoNCE  : %.4f" % infonce(S1))
+print("Recall@1 : %d/%d" % (recall_at_1(S1), N))
+\end{lstlisting}
+\end{codewindow}
+
+% ─────────────────────────────────────────────────────────────
+\subsection{Soal 3 --- Pengaruh Suhu}
+
+Suhu menentukan seberapa tajam model membedakan kandidat.
+
+\begin{enumerate}
+  \item Hitung \emph{InfoNCE} pada data yang sudah selaras untuk setidaknya tiga
+        nilai suhu, misalnya $0{,}05$, $0{,}10$, dan $0{,}50$.
+  \item Tampilkan hasilnya dalam bentuk tabel.
+  \item Jawab dalam 3--5 kalimat: mengapa suhu yang sangat kecil menurunkan
+        \emph{loss}, tetapi tetap tidak dianjurkan dipakai pada pelatihan?
+\end{enumerate}
+
+\begin{codewindow}{soal3\_suhu.py}
+\begin{lstlisting}[style=pycode]
+for t in (0.05, 0.10, 0.50):
+    print("tau=%.2f: InfoNCE=%.4f" % (t, infonce(S1, tau=t)))
+\end{lstlisting}
+\end{codewindow}
+
+% ─────────────────────────────────────────────────────────────
+\subsection{Soal 4 --- Retrieval dan Recall@K}
+
+Pada tugas nyata, yang diukur bukan \emph{loss} melainkan peringkat hasil pencarian.
+
+\begin{enumerate}
+  \item Untuk setiap kueri teks, tentukan peringkat gambar yang benar.
+  \item Laporkan \emph{Recall@1} dan jelaskan mengapa pada katalog besar angka ini
+        dapat terlihat rendah meskipun modelnya baik.
+  \item Sebutkan satu cara agar \emph{Recall@K} tinggi tanpa melatih ulang model.
+\end{enumerate}
+
+\begin{codewindow}{soal4\_retrieval.py}
+\begin{lstlisting}[style=pycode]
+for i in range(N):
+    rank = np.argsort(-S1[i])
+    pos = int(np.where(rank == i)[0][0]) + 1
+    print("  teks %d: peringkat %d" % (i, pos))
+\end{lstlisting}
+\end{codewindow}
+
+% ─────────────────────────────────────────────────────────────
+\clearpage
+\subsection{Soal 5 --- Analisis Kritis}
+
+Jawab pertanyaan berikut dalam bentuk paragraf singkat (masing-masing 5--8 kalimat).
+
+\textbf{(a) Perbandingan Pola Arsitektur.}
+
+Buat tabel yang membandingkan tiga pola arsitektur multimodal (\emph{dual-stream},
+\emph{multi-encoder}, dan \emph{dual-encoder}) pada tiga aspek: tempat modalitas
+bertemu, kedalaman interaksi yang mungkin dipelajari, dan kesesuaiannya untuk
+pencarian berskala besar. Pilih satu pola untuk pernyataan masalah pada
+Bagian~\ref{sec:intro} dan pertanggungjawabkan pilihan Anda secara eksplisit.
+
+\textbf{(b) Uji Kegagalan Komposisional (memerlukan kode).}
+
+Uji apakah model pra-latih benar-benar menangkap \emph{relasi} antar objek atau hanya
+kehadiran objek. Gunakan satu gambar pilihan Anda dan empat kandidat teks yang memakai
+kata yang sama tetapi berbeda relasi atau negasi. Catat probabilitas setiap kandidat,
+lalu jawab: apakah kegagalan yang Anda amati disebabkan oleh kurangnya data, kurangnya
+kapasitas, atau tujuan pelatihannya? Jelaskan dasar penilaian Anda.
+
+\begin{codewindow}{soal5\_komposisional.py}
+\begin{lstlisting}[style=pycode]
+import torch
+from PIL import Image
+from transformers import CLIPModel, CLIPProcessor
+
+NAMA = "openai/clip-vit-base-patch32"
+model = CLIPModel.from_pretrained(NAMA)
+proc = CLIPProcessor.from_pretrained(NAMA)
+model.eval()
+
+gambar = Image.open("gambar_pilihan_anda.jpg").convert("RGB")
+kandidat = [
+    "sebuah sepeda di atas mobil",      # relasi benar
+    "sebuah mobil di atas sepeda",      # relasi dibalik
+    "sebuah sepeda dan sebuah mobil",   # tanpa relasi
+    "sebuah mobil tanpa sepeda",        # negasi
+]
+
+inputs = proc(text=kandidat, images=gambar, return_tensors="pt", padding=True)
+with torch.no_grad():
+    out = model(**inputs)
+
+probs = out.logits_per_image.softmax(dim=1)[0]
+urut = torch.argsort(probs, descending=True)
+for i in urut:
+    print("%-32s %.4f" % (kandidat[int(i)], float(probs[int(i)])))
+\end{lstlisting}
+\end{codewindow}
+
+\textbf{(c) Kaitan dengan Teori.}
+
+Hubungkan hasil Anda dengan dua gagasan dari perkuliahan: (i) pilar \emph{alignment}
+beserta mekanisme \emph{cross-attention} pada Pertemuan 7, dan (ii) pernyataan bahwa
+penambahan modalitas \emph{tidak otomatis} meningkatkan kinerja. Apakah kasus pencarian
+produk pada tugas ini termasuk kasus yang menguntungkan bagi \emph{dual-encoder}?
+Sebutkan satu syarat yang membuat pilihan Anda gagal.
+
+% =============================================================
+\clearpage
+\section{Kriteria Penilaian}\label{sec:evaluation}
+
+Tugas Anda akan dinilai berdasarkan kriteria berikut:
+
+\renewcommand{\arraystretch}{1.5}
+\begin{center}\small
+\begin{tabular}{|p{11.5cm}|c|}
+  \hline
+  \thead{\color{ctpBlue} Kriteria} & \thead{\color{ctpBlue}Bobot} \\
+  \hline
+  Kebenaran teknis --- kode berjalan tanpa error, \emph{InfoNCE} dan \emph{Recall@K} dihitung dengan tepat, bobot pra-latih tidak diubah. & 35\% \\
+  \hline
+  Kedalaman analisis --- penjelasan menghubungkan hasil dengan konsep \emph{alignment}, suhu, dan pola arsitektur multimodal. & 30\% \\
+  \hline
+  Eksperimen --- pengukuran baseline, perbandingan sebelum/sesudah penyelarasan, dan uji kegagalan komposisional. & 20\% \\
+  \hline
+  Kualitas presentasi --- tabel hasil rapi, laporan terstruktur, dan interpretasi jelas. & 15\% \\
+  \hline
+  \textbf{Total} & \textbf{100\%} \\
+  \hline
+\end{tabular}
+\end{center}
+
+% =============================================================
+\section{Apa yang Dikumpulkan}\label{sec:submit}
+
+Seluruh artefak tugas dikemas ke dalam \textbf{satu berkas arsip} dengan format penamaan:
+\begin{center}
+  \code{mgg09\_tugas\_nim.zip}
+\end{center}
+
+dengan \code{nim} diganti oleh Nomor Induk Mahasiswa (NIM) masing-masing tanpa spasi.
+
+\textbf{Artefak yang dapat disertakan di dalam arsip} (dapat lebih dari satu jenis berkas, disesuaikan dengan bentuk penyelesaian Anda):
+\begin{borderedsquare}
+  \item \code{mgg09\_tugas\_NIM.ipynb} --- apabila penyelesaian dikerjakan menggunakan Jupyter Notebook (termasuk Google Colab). Notebook \textbf{wajib telah dijalankan} sehingga seluruh \emph{output} sel tersimpan di dalam berkas.
+  \item \code{mgg09\_tugas\_NIM.py} --- apabila penyelesaian dikerjakan dalam bentuk skrip Python.
+  \item \code{mgg09\_tugas\_NIM.pdf} --- apabila analisis ditulis dalam dokumen teks terpisah.
+  \item \code{mgg09\_tugas\_xx.txt} --- catatan probabilitas kandidat teks pada Soal 5b; \code{xx} merupakan nomor urut (\code{01}, \code{02}, dan seterusnya).
+  \item \code{mgg09\_tugas\_xx.jpg} --- apabila terdapat plot atau gambar pendukung tambahan.
+\end{borderedsquare}
+
+Setiap berkas menggunakan awalan \code{mgg09\_tugas\_NIM} yang sama, dengan \code{NIM} ditulis secara konsisten (huruf besar/kecil mengikuti NIM resmi). Pastikan seluruh berkas berada tepat di dalam satu arsip \code{.zip} tanpa struktur folder bertingkat yang tidak perlu.
+
+\begin{callout}[ctpBlue]
+\textbf{\color{ctpBlue}Catatan Pengerjaan}
+\begin{itemize}
+  \item \textbf{Soal 1--4:} Wajib dikerjakan oleh semua mahasiswa. Soal 1 wajib dilaporkan lebih dulu sebagai baseline.
+  \item \textbf{Soal 5:} Wajib dikerjakan; bagian (b) memerlukan kode, bagian (a) dan (c) bersifat analitis.
+  \item \textbf{Bobot pra-latih tidak boleh diubah:} mengubah atau melatih ulang model akan dinilai sebagai kesalahan prosedur.
+  \item \textbf{Estimasi waktu:} 3--4 jam.
+\end{itemize}
+\end{callout}
+
+\section*{Referensi}
+{\small\color{ctpSubtext}
+\begin{enumerate}[label={[\arabic*]}, leftmargin=2em]
+  \item Radford, A., et al. (2021). \emph{Learning Transferable Visual Models From Natural Language Supervision}. ICML. --- sumber CLIP dan tujuan kontrastif \emph{InfoNCE}.
+  \item Sch\"onemann, P. H. (1966). \emph{A Generalized Solution of the Orthogonal Procrustes Problem}. Psychometrika. --- dasar penyelarasan bentuk tertutup pada Soal 2.
+  \item Vaswani, A., et al. (2017). \emph{Attention Is All You Need}. NeurIPS. --- arsitektur dasar yang mendasari sesi ini.
+  \item Liang, P., Zadeh, A., \& Morency, L.-P. (2023). \emph{Tutorial on Multimodal Machine Learning}. ICML. --- bagian \emph{multimodal transformers} dan \emph{pre-training}.
+\end{enumerate}}
+
+\end{document}
