@@ -84,12 +84,18 @@ def _token_used_in_prism_context(content, tok):
     return bool(token_rule.search(content))
 
 
-def _is_hands_on_doc(html_path):
-    """Hands-on docs (hands-on/mggNN-hands-on.html) are code-first companion
-    documents, NOT slide decks. Several slide-only rules do not apply:
-    vh/vw units (floating nav + drawer), and overflow-x: auto on code/terminal."""
+def _is_document(html_path):
+    """Dokumen mengalir (BUKAN slide deck): `hands-on/mggNN-hands-on.html`
+    (lembar kerja) dan `dokumen/*.html` (mis. kisi-kisi ujian). Keduanya sah
+    memakai satuan vh/vw (floating nav + drawer) dan `overflow-x: auto` pada
+    blok kode, sehingga beberapa aturan khusus slide tidak berlaku."""
     base = os.path.basename(html_path)
-    return ('hands-on' in html_path) or ('hands-on' in base)
+    return (
+        'hands-on' in html_path
+        or 'hands-on' in base
+        or 'dokumen' in html_path
+        or 'dokumen' in base
+    )
 
 
 def check_design_compliance(content, doc_type='slide', filename=''):
@@ -318,7 +324,7 @@ def validate_file(html_path):
             print(f"   - {bl}")
 
     # Design-language compliance
-    doc_type = 'hands-on' if _is_hands_on_doc(html_path) else 'slide'
+    doc_type = 'document' if _is_document(html_path) else 'slide'
     violations = check_design_compliance(
         content, doc_type=doc_type, filename=os.path.basename(html_path)
     )
