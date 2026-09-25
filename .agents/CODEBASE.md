@@ -272,10 +272,10 @@ git update-index --no-skip-worktree pdf/mggXX.pdf  # Unskip saat release
 | `mgg08.html` | Milestone (UTS, tanpa deck) |
 | Hands-on 02/03/04/06/09/13 | ✅ `hands-on/mggNN-hands-on.html` |
 | Tugas 02/03/04/06/09 | ✅ `.md` + `.tex` (LaTeX, `tugas-style.sty`) — didistribusikan via LMS, tidak lewat portal (D-A11) |
-| Kisi-kisi UTS | ✅ `tugas/uts-kisi-kisi.tex` — publik, ditautkan dari `index.html`, PDF dirender CI (D-A12) |
+| Kisi-kisi UTS | ✅ `dokumen/uts-kisi-kisi.html` (terbit) + `tugas/uts-kisi-kisi.tex` (sumber) — ditautkan dari `index.html`, PDF dirender CI (D-A12) |
 | Soal & kunci UTS | ✅ `tugas/uts-soal.tex` + `uts-kunci.tex` — rahasia, di-`.gitignore`, tidak dibangun CI (D-A12) |
 | Skill & design system | ✅ Lengkap (SKILL.md, tokens, template, scripts) |
-| CI (GitHub Pages) | ✅ Export PDF slide + hands-on + kisi-kisi UTS |
+| CI (GitHub Pages) | ✅ Export PDF slide (Chrome) + hands-on & kisi-kisi (Vivliostyle, `HANDSON_WEEK=`/`DOC=`) — tanpa TeX Live |
 
 > Status mutakhir, keputusan aktif, dan aturan kerja ada di **`AGENTS.md`**
 > (dimuat otomatis oleh pi). Dokumen ini menjelaskan arsitektur, bukan status.
@@ -286,6 +286,8 @@ git update-index --no-skip-worktree pdf/mggXX.pdf  # Unskip saat release
 
 - Slide: `mgg{XX}.html` (2 digit, zero-padded: `mgg01.html`, `mgg02.html`)
 - PDF: `pdf/mgg{XX}.pdf`
+- Dokumen non-mingguan: `dokumen/{nama}.html` → PDF `pdf/{nama}.pdf`
+  (mis. `dokumen/uts-kisi-kisi.html` → `pdf/uts-kisi-kisi.pdf`)
 - Template placeholder: `{{WEEK_NUM_2DIGIT}}`, `{{TOPIC_TITLE}}`, `{{WEEK_NUM}}`
 
 ---
@@ -299,3 +301,12 @@ git update-index --no-skip-worktree pdf/mggXX.pdf  # Unskip saat release
 3. **Debounced resize handler** — 200ms debounce dengan dimension guard (`if (cfg.width !== dim.width || cfg.height !== dim.height)`) sebelum `Reveal.configure()` untuk mencegah layout thrashing saat DevTools dibuka/di-resize.
 
 4. **PDF print mode** — URL parameter `?print-pdf&pdfSeparateFragments=false` untuk rendering PDF tanpa fragment animation.
+
+5. **Pipeline PDF dokumen (hands-on & `dokumen/`) tanpa TeX Live** —
+   `vivliostyle.config.js` memilih berkas sumber dari dua env var: `HANDSON_WEEK`
+   (mingguan, `hands-on/mggNN-hands-on.html`) atau `DOC` (non-mingguan, entri di
+   `documents{}`, mis. `DOC=uts-kisi-kisi`). Nama keluaran diturunkan dari nama
+   berkas sumber → `pdf/<namaberkas>.pdf`. Kisi-kisi UTS sengaja memakai jalur ini
+   dan **bukan** LaTeX: `xu-cheng/latex-action` adalah Docker action yang menarik
+   image TeX Live ~2,4 GB **setiap run** (runner GitHub ephemeral, tanpa cache
+   layer), sedangkan Chrome/Vivliostyle sudah tersedia untuk PDF lain. Lihat D-A12.

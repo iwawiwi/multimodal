@@ -74,10 +74,30 @@ Keputusan yang sudah disetujui pengguna dan **berlaku sampai diubah eksplisit**:
     pengerjaan, dan tenggat mingguan (semuanya lewat LMS).
 - **D-A12 — Materi ujian: kisi-kisi publik lewat portal; soal & kunci rahasia.**
   Perlakuan berbeda dari tugas mingguan (D-A11):
-  - **Kisi-kisi UTS** (`tugas/uts-kisi-kisi.tex`) **dipublikasikan**, karena sengaja
-    dibagikan sebagai acuan belajar. Ia ditautkan dari kartu UTS di `index.html`
-    (tombol "Kisi-kisi"), dan PDF-nya dirender CI melalui langkah LuaLaTeX
-    (`xu-cheng/latex-action`) lalu disalin ke `pdf/uts-kisi-kisi.pdf`.
+  - **Kisi-kisi UTS** (`dokumen/uts-kisi-kisi.html`) **dipublikasikan**, karena
+    sengaja dibagikan sebagai acuan belajar. Tombol "Kisi-kisi" pada kartu UTS di
+    `index.html` **membuka dokumen HTML-nya** (bisa dibaca langsung di browser);
+    tombol unduh PDF tersedia di dalam dokumen itu sendiri, dan berkasnya
+    `pdf/uts-kisi-kisi.pdf` dirender CI lewat **jalur HTML→PDF yang sama dengan
+    hands-on** (`DOC=uts-kisi-kisi npm run build:pdf`) — bukan TeX Live.
+  - **Amandemen 25 Sep 2026 — jalur terbit kisi-kisi pindah dari LaTeX ke HTML.**
+    Sumber `tugas/uts-kisi-kisi.tex` tetap disimpan (riwayat versi + versi cetak
+    formal), mengikuti pola `origin/*.pptx` → `mggNN.html`: **sumber ≠ yang
+    diterbitkan**. Yang terbit adalah `dokumen/uts-kisi-kisi.html`.
+    - **Alasan:** `xu-cheng/latex-action` adalah *Docker container action*;
+      karena runner GitHub bersifat *ephemeral* (dibuat baru tiap run, tanpa cache
+      layer), image TeX Live ~2,4 GB **ditarik ulang setiap run**. Mesin lokal
+      tidak membantu — CI tidak menyentuh mesin pengembang. Pipeline HTML→PDF
+      (Vivliostyle + `print-formal.css`) sudah ada dan dipakai semua PDF lain.
+    - **Konsekuensi:** **tidak ada langkah LaTeX/TeX Live di CI.** ❌ Jangan
+      menambahkan kembali `xu-cheng/latex-action` atau `apt-get install texlive-*`.
+    - Menambah dokumen baru: buat entri di `documents{}` pada
+      `vivliostyle.config.js` (kunci = nilai `DOC`), lalu bangun dengan
+      `DOC=<kunci> npm run build:pdf`. Keluaran otomatis `pdf/<namaberkas>.pdf`.
+    - ❌ **`.tex` bukan lagi sumber pemeliharaan.** Perubahan kisi-kisi wajib
+      dilakukan di `dokumen/uts-kisi-kisi.html`; menyunting `.tex` saja **tidak**
+      mengubah berkas yang terbit (`.tex` dipertahankan sebagai arsip versi cetak
+      LaTeX, mengikuti pola `origin/*.pptx`).
   - **Soal & kunci** (`tugas/uts-soal.*`, `tugas/uts-kunci.*`) **rahasia**:
     di-`.gitignore`, **tidak** ditautkan di mana pun, dan **tidak** dibangun CI.
     Distribusinya lewat LMS saat jadwal ujian.
@@ -190,7 +210,8 @@ Artefak pendukung:
 | :--- | :--- |
 | `hands-on/mgg02,03,04,06,09,13-hands-on.html` | ✅ |
 | `tugas/mgg02,03,04,06,09-tugas.md` + `.tex` | ✅ (via LMS — lihat D-A11) |
-| `tugas/uts-kisi-kisi.tex` | ✅ publik (via portal — lihat D-A12) |
+| `dokumen/uts-kisi-kisi.html` | ✅ publik (jalur terbit kisi-kisi — D-A12) |
+| `tugas/uts-kisi-kisi.tex` | ✅ sumber/riwayat (tidak dirender CI — D-A12) |
 | `tugas/uts-soal.tex` + `tugas/uts-kunci.tex` | ✅ lokal/LMS saja (rahasia — D-A12) |
 | CI export `mgg01`–`mgg07`, `mgg09`–`mgg15` + hands-on 02/03/04/06/09/13 + kisi-kisi UTS | ✅ |
 
@@ -206,6 +227,17 @@ npm run measure -- mggNN.html                  # overflow @ Teks Besar 960×540
 git diff --check                               # whitespace
 ```
 
+Linter yang sama juga memvalidasi **dokumen** (`hands-on/*.html` dan
+`dokumen/*.html`): keduanya dikenali sebagai *document* (bukan slide), sehingga
+aturan khusus slide (vh/vw, no-scroll) tidak berlaku — tetapi pemeriksaan tag,
+tautan rusak, dan token warna tetap jalan.
+
+```bash
+python3 scripts/validate_slide.py dokumen/uts-kisi-kisi.html
+```
+
+Otomatis PDF dokumen = `DOC=<kunci> npm run build:pdf` (lihat D-A12).
+
 `measure_overflow.js` **hanya** menguji mode Teks Besar. Untuk memastikan 5 mode
 (16:9, 16:10, 4:3, Teks Besar, Mobile), pakai probe headless Chrome + CDP
 (buat sementara di `scripts/`, **hapus setelah selesai**).
@@ -220,6 +252,7 @@ mggNN.html                     deck Reveal.js (satu file mandiri, boilerplate se
 index.html                     portal: kartu minggu + milestone UTS/UAS
 css/catppuccin-latte.css       tema + komponen (sumber kebenaran komponen)
 hands-on/mggNN-hands-on.html   lembar kerja (Prism baked, gaya code-first)
+dokumen/*.html                 dokumen non-mingguan (mis. uts-kisi-kisi.html) — jalur cetak sama
 tugas/mggNN-tugas.{md,tex}     tugas mingguan (LaTeX pakai tugas-style.sty)
 origin/*.pptx                  sumber asli (gitignored, TIDAK dipublikasikan)
 scripts/                       validate_slide.py, measure_overflow.js, export_pdf.py, chrome_print_pdf.js
