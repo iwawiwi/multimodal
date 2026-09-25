@@ -32,7 +32,7 @@ Portal perkuliahan **Pembelajaran Mesin Multimodal (IF25-40304)** — Institut T
 | 10 | Aplikasi 1: Image Captioning | Kuliah | — |
 | 11 | Aplikasi 2: VQA & Analisis Sentimen Multimodal | Kuliah | — |
 | 12 | Topik Lanjutan: Generasi Multimodal & Etika | Kuliah | — |
-| 13 | Evaluasi Model Multimodal | Kuliah | — |
+| 13 | Evaluasi Model Multimodal | Kuliah | Protokol Evaluasi & Uji Signifikansi |
 | 14 | Studi Kasus Terpadu | Kuliah | — |
 | 15 | Review Materi | Kuliah | — |
 | 16 | **Ujian Akhir Semester (UAS)** | Evaluasi | — |
@@ -53,7 +53,7 @@ Portal perkuliahan **Pembelajaran Mesin Multimodal (IF25-40304)** — Institut T
 | 10 | [mgg10.html](mgg10.html) | [pdf/mgg10.pdf](pdf/mgg10.pdf) | — |
 | 11 | [mgg11.html](mgg11.html) | [pdf/mgg11.pdf](pdf/mgg11.pdf) | — |
 | 12 | [mgg12.html](mgg12.html) | [pdf/mgg12.pdf](pdf/mgg12.pdf) | — |
-| 13 | [mgg13.html](mgg13.html) | [pdf/mgg13.pdf](pdf/mgg13.pdf) | — |
+| 13 | [mgg13.html](mgg13.html) | [pdf/mgg13.pdf](pdf/mgg13.pdf) | [hands-on/mgg13-hands-on.html](hands-on/mgg13-hands-on.html) |
 | 14 | [mgg14.html](mgg14.html) | [pdf/mgg14.pdf](pdf/mgg14.pdf) | — |
 | 15 | [mgg15.html](mgg15.html) | [pdf/mgg15.pdf](pdf/mgg15.pdf) | — |
 

@@ -175,7 +175,7 @@ Keputusan yang sudah disetujui pengguna dan **berlaku sampai diubah eksplisit**:
 | `mgg10.html` | Aplikasi 1: Image Captioning | 27 | ✅ selesai |
 | `mgg11.html` | Aplikasi 2: VQA & Analisis Sentimen Multimodal | 26 | ✅ selesai |
 | `mgg12.html` | Topik Lanjutan: Generasi Multimodal & Etika | 28 | ✅ selesai |
-| `mgg13.html` | Evaluasi Model Multimodal | 26 | ✅ selesai |
+| `mgg13.html` | Evaluasi Model Multimodal | 27 | ✅ selesai |
 | `mgg14.html` | Studi Kasus Terpadu | 26 | ✅ selesai |
 | `mgg15.html` | Review Materi | 25 | ✅ selesai |
 | `mgg08.html` | — | — | milestone (UTS, tanpa deck) |
@@ -188,11 +188,11 @@ Artefak pendukung:
 
 | Artefak | Ada |
 | :--- | :--- |
-| `hands-on/mgg02,03,04,06,09-hands-on.html` | ✅ |
+| `hands-on/mgg02,03,04,06,09,13-hands-on.html` | ✅ |
 | `tugas/mgg02,03,04,06,09-tugas.md` + `.tex` | ✅ (via LMS — lihat D-A11) |
 | `tugas/uts-kisi-kisi.tex` | ✅ publik (via portal — lihat D-A12) |
 | `tugas/uts-soal.tex` + `tugas/uts-kunci.tex` | ✅ lokal/LMS saja (rahasia — D-A12) |
-| CI export `mgg01`–`mgg07`, `mgg09`–`mgg15` + hands-on 02/03/04/06/09 + kisi-kisi UTS | ✅ |
+| CI export `mgg01`–`mgg07`, `mgg09`–`mgg15` + hands-on 02/03/04/06/09/13 + kisi-kisi UTS | ✅ |
 
 > Setiap minggu yang punya hands-on **wajib** lengkap: file hands-on, entri
 > `HANDSON_WEEK` di CI, judul di `vivliostyle.config.js`, kolom hands-on di

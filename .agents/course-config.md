@@ -64,7 +64,7 @@ These placeholders in `resources/slide-template.html` are substituted from this 
 | 10 | Aplikasi 1: Image Captioning | lecture | — |
 | 11 | Aplikasi 2: VQA & Analisis Sentimen Multimodal | lecture | — |
 | 12 | Topik Lanjutan: Generasi Multimodal & Etika | lecture | — |
-| 13 | Evaluasi Model Multimodal | lecture | — |
+| 13 | Evaluasi Model Multimodal | lecture | `Protokol Evaluasi & Uji Signifikansi` (`pdf/mgg13-hands-on.pdf`) |
 | 14 | Studi Kasus Terpadu | lecture | — |
 | 15 | Review Materi | lecture | — |
 | 16 | UAS | milestone | — |

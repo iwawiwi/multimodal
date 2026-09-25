@@ -75,6 +75,8 @@ jobs:
           HANDSON_WEEK=06 npm run build:pdf
           HANDSON_WEEK=09 npm run bake
           HANDSON_WEEK=09 npm run build:pdf
+          HANDSON_WEEK=13 npm run bake
+          HANDSON_WEEK=13 npm run build:pdf
 
       # Kisi-kisi UTS satu-satunya materi ujian yang dipublikasikan (ditautkan dari
       # index.html). Soal & kunci bersifat rahasia: di-.gitignore, tidak dibangun di sini.
@@ -111,6 +113,7 @@ jobs:
           test -f pdf/mgg04-hands-on.pdf
           test -f pdf/mgg06-hands-on.pdf
           test -f pdf/mgg09-hands-on.pdf
+          test -f pdf/mgg13-hands-on.pdf
           test -f pdf/uts-kisi-kisi.pdf
 
       - name: Upload artifact

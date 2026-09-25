@@ -14,6 +14,7 @@ const titles = {
   '04': 'Hands-on 04: Representasi Audio & Video',
   '06': 'Hands-on 06: Early, Late & Intermediate Fusion',
   '09': 'Hands-on 09: Menyejajarkan Dua Ruang — dari Kontrastif ke CLIP',
+  '13': 'Hands-on 13: Protokol Evaluasi & Uji Signifikansi',
 };
 
 module.exports = {
