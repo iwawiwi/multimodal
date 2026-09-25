@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lembar Kerja 13: Mengukur dengan Jujur — Protokol Evaluasi &amp; Uji Signifikansi</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+  <style>
+    :root {
+      --ctp-base: #eff1f5;
+      --ctp-mantle: #e6e9ef;
+      --ctp-crust: #dce0e8;
+      --ctp-surface0: #ccd0da;
+      --ctp-surface1: #bcc0cc;
+      --ctp-overlay0: #9ca0b0;
+      --ctp-overlay1: #8c8fa1;
+      --ctp-overlay2: #7c7f93;
+      --ctp-text: #4c4f69;
+      --ctp-subtext1: #5c5f77;
+      --ctp-subtext0: #6c6f85;
+      --ctp-blue: #1e66f5;
+      --ctp-sapphire: #209fb5;
+      --ctp-mauve: #8839ef;
+      --ctp-teal: #179299;
+      --ctp-green: #40a02b;
+      --ctp-peach: #fe640b;
+      --ctp-maroon: #e64553;
+      --ctp-lavender: #7287fd;
+      --ctp-yellow: #df8e1d;
+      --ctp-sky: #04a5e5;
+
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { -webkit-text-size-adjust: 100%; text-rendering: optimizeLegibility; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--ctp-base);
+      color: var(--ctp-text);
+      font-family: var(--font-sans);
+      line-height: 1.7;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* =========================================================
+       Header dokumen akademik (kompak, bukan hero 100vh)
+       ========================================================= */
+    .doc-header-block {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 44px 40px 0 40px;
+    }
+    .doc-logos {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .doc-logos img { height: 34px; width: auto; }
+    .doc-course {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ctp-subtext0);
+      letter-spacing: 0.02em;
+      margin-bottom: 6px;
+    }
+    .doc-kicker {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ctp-blue);
+      margin-bottom: 10px;
+    }
+    .doc-header-block h1 {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.25;
+      color: var(--ctp-text);
+      margin: 0 0 8px 0;
+    }
+    .doc-subtitle {
+      font-size: 16px;
+      color: var(--ctp-subtext0);
+      margin: 0;
+    }
+    .doc-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 20px;
+      font-size: 12.5px;
+      color: var(--ctp-subtext0);
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--ctp-surface0);
+    }
+
+    /* =========================================================
+       Floating Navigation Pill + TOC Drawer
+       ========================================================= */
+    .floating-nav {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .fn-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid var(--ctp-surface1);
+      background: var(--ctp-base);
+      color: var(--ctp-subtext0);
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(76, 79, 105, 0.12);
+      transition: all 0.15s ease;
+    }
+    .fn-btn:hover {
+      border-color: var(--ctp-blue);
+      color: var(--ctp-blue);
+      background: #ffffff;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(30, 102, 245, 0.18);
+    }
+    .fn-btn .material-symbols-outlined {
+      font-size: 21px;
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .fn-btn.fn-toc {
+      background: var(--ctp-blue);
+      border-color: var(--ctp-blue);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(30, 102, 245, 0.28);
+    }
+    .fn-btn.fn-toc:hover { background: #1455d9; border-color: #1455d9; color: #fff; }
+    .fn-btn.fn-pdf { color: var(--ctp-blue); }
+    .fn-btn.fn-text-large { color: var(--ctp-mauve); }
+    .fn-btn.fn-text-large.active {
+      background: var(--ctp-mauve);
+      border-color: var(--ctp-mauve);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(136, 57, 239, 0.28);
+    }
+
+    /* --- Mode Teks Besar (HTML only; PDF tidak terpengaruh) --- */
+    html.text-large {
+      zoom: 1.35;
+    }
+
+    /* --- Drawer --- */
+    .toc-drawer {
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      width: 340px;
+      max-width: 88vw;
+      z-index: 110;
+      background: var(--ctp-base);
+      border-left: 1px solid var(--ctp-surface1);
+      box-shadow: -8px 0 24px rgba(76, 79, 105, 0.18);
+      transform: translateX(100%);
+      transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    .toc-drawer.open { transform: translateX(0); }
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--ctp-surface1);
+      position: sticky;
+      top: 0;
+      background: var(--ctp-base);
+      z-index: 1;
+    }
+    .drawer-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ctp-blue);
+    }
+    .drawer-title .material-symbols-outlined { font-size: 18px; }
+    .drawer-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: var(--ctp-subtext0);
+      cursor: pointer;
+    }
+    .drawer-close:hover { background: var(--ctp-surface0); color: var(--ctp-text); }
+    .drawer-close .material-symbols-outlined { font-size: 20px; }
+    .toc-drawer .toc-list { list-style: none; margin: 8px 0; padding: 0 12px; }
+    .toc-drawer .toc-list li { margin: 0; border-bottom: 1px solid var(--ctp-surface0); }
+    .toc-drawer .toc-list li:last-child { border-bottom: none; }
+    .toc-drawer .toc-list a {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 11px 8px;
+      text-decoration: none;
+      color: var(--ctp-text);
+      font-size: 14px;
+      border-radius: 6px;
+    }
+    .toc-drawer .toc-list a:hover { color: var(--ctp-blue); background: var(--ctp-mantle); }
+    .toc-drawer .toc-num {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--ctp-blue);
+      min-width: 22px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .toc-drawer .toc-label { flex-grow: 1; }
+
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 105;
+      background: rgba(76, 79, 105, 0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.28s ease;
+    }
+    .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+
+    /* =========================================================
+       Isi dokumen
+       ========================================================= */
+    .page {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 28px 40px 90px 40px;
+    }
+
+    h2 {
+      font-size: 21px;
+      font-weight: 800;
+      color: var(--ctp-text);
+      letter-spacing: -0.015em;
+      margin: 44px 0 10px 0;
+      padding-top: 8px;
+    }
+    h2 .sec-num {
+      font-family: var(--font-mono);
+      color: var(--ctp-blue);
+      font-size: 17px;
+      margin-right: 8px;
+      font-weight: 700;
+    }
+    h3 {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--ctp-subtext0);
+      margin: 24px 0 8px 0;
+    }
+    p { margin: 0 0 14px 0; color: var(--ctp-text); }
+    ul, ol { margin: 0 0 16px 0; padding-left: 24px; }
+    li { margin-bottom: 6px; }
+    strong { color: var(--ctp-text); }
+    em { color: var(--ctp-subtext0); }
+    a { color: var(--ctp-blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Inline code */
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.9em;
+      background: var(--ctp-mantle);
+      border: 1px solid var(--ctp-surface0);
+      border-radius: 5px;
+      padding: 1px 6px;
+      color: var(--ctp-mauve);
+    }
+
+    /* =========================================================
+       Notes (thin left border — bukan kartu)
+       ========================================================= */
+    .note {
+      border-left: 3px solid;
+      padding: 2px 0 2px 14px;
+      margin: 18px 0;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+    .note .note-title { font-weight: 800; display: block; margin-bottom: 2px; }
+    .note-blue   { border-left-color: var(--ctp-blue); }
+    .note-blue   .note-title { color: var(--ctp-blue); }
+    .note-peach  { border-left-color: var(--ctp-peach); }
+    .note-peach  .note-title { color: var(--ctp-peach); }
+    .note-green  { border-left-color: var(--ctp-green); }
+    .note-green  .note-title { color: var(--ctp-green); }
+    .note-mauve  { border-left-color: var(--ctp-mauve); }
+    .note-mauve  .note-title { color: var(--ctp-mauve); }
+
+    /* =========================================================
+       Code Window (IDE framing — light)
+       ========================================================= */
+    .code-window {
+      border: 1px solid var(--ctp-surface0);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 18px 0;
+      background: var(--ctp-base);
+      box-shadow: 0 1px 2px rgba(76, 79, 105, 0.06);
+    }
+    .code-window-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--ctp-mantle);
+      border-bottom: 1px solid var(--ctp-surface0);
+      padding: 9px 14px;
+    }
+    .window-dots { display: flex; gap: 6px; flex-shrink: 0; }
+    .window-dots .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+    .dot-red    { background: var(--ctp-maroon); }
+    .dot-yellow { background: var(--ctp-yellow); }
+    .dot-green  { background: var(--ctp-green); }
+    .code-filename {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ctp-subtext0);
+      flex-grow: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--ctp-surface1);
+      background: var(--ctp-base);
+      color: var(--ctp-subtext0);
+      font-size: 11.5px;
+      font-weight: 600;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+    .copy-btn:hover { border-color: var(--ctp-blue); color: var(--ctp-blue); background: #fff; }
+    .copy-btn .material-symbols-outlined { font-size: 15px; }
+    .copy-btn.copied { border-color: var(--ctp-green); color: var(--ctp-green); background: #fff; }
+
+    .code-window pre {
+      margin: 0;
+      padding: 0;
+      background: var(--ctp-base);
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--ctp-surface1) transparent;
+    }
+    .code-window pre::-webkit-scrollbar { height: 8px; }
+    .code-window pre::-webkit-scrollbar-thumb { background: var(--ctp-surface1); border-radius: 4px; }
+    .code-window pre::-webkit-scrollbar-track { background: transparent; }
+
+    .code-window pre[class*="language-"],
+    .code-window code[class*="language-"] {
+      color: var(--ctp-text);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.6;
+      direction: ltr;
+      text-align: left;
+      white-space: pre;
+      word-spacing: normal;
+      word-break: normal;
+      tab-size: 4;
+      hyphens: none;
+    }
+    .code-window pre[class*="language-"] > code[class*="language-"] {
+      display: block;
+      padding: 12px 0;
+    }
+
+    /* --- Baked line numbers (statis) --- */
+    .code-window pre.code-baked > code {
+      display: table;
+      width: 100%;
+      padding: 0;
+      border-collapse: collapse;
+    }
+    .code-window .code-line {
+      display: table-row;
+    }
+    .code-window .ln {
+      display: table-cell;
+      text-align: right;
+      padding: 3px 14px 3px 16px;
+      color: var(--ctp-overlay1);
+      background: var(--ctp-mantle);
+      border-right: 1px solid var(--ctp-surface0);
+      user-select: none;
+      -webkit-user-select: none;
+      white-space: nowrap;
+      font-size: 12px;
+      min-width: 3em;
+      vertical-align: top;
+    }
+    .code-window .lc {
+      display: table-cell;
+      padding: 3px 18px;
+      white-space: pre;
+      color: var(--ctp-text);
+      font-size: 13px;
+      vertical-align: top;
+    }
+    .code-window .code-line:first-child .ln,
+    .code-window .code-line:first-child .lc { padding-top: 12px; }
+    .code-window .code-line:last-child .ln,
+    .code-window .code-line:last-child .lc { padding-bottom: 12px; }
+
+    /* Prism token colors (Catppuccin Latte) */
+    .token.comment, .token.prolog, .token.doctype, .token.cdata { color: var(--ctp-overlay2); font-style: italic; }
+    .token.punctuation { color: var(--ctp-subtext1); }
+    .token.keyword { color: var(--ctp-mauve); }
+    .token.string, .token.char { color: var(--ctp-green); }
+    .token.number, .token.boolean { color: var(--ctp-peach); }
+    .token.function { color: var(--ctp-blue); }
+    .token.builtin { color: var(--ctp-maroon); }
+    .token.class-name { color: var(--ctp-yellow); }
+    .token.operator { color: var(--ctp-sky); }
+    .token.property { color: var(--ctp-teal); }
+    .token.decorator { color: var(--ctp-mauve); }
+    .token.interpolation { color: var(--ctp-peach); }
+
+    /* =========================================================
+       Terminal (output)
+       ========================================================= */
+    .terminal {
+      border: 1px solid var(--ctp-surface0);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 18px 0;
+    }
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--ctp-mantle);
+      border-bottom: 1px solid var(--ctp-surface0);
+      padding: 8px 14px;
+    }
+    .terminal-header .material-symbols-outlined { font-size: 15px; color: var(--ctp-teal); }
+    .terminal-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ctp-overlay1);
+    }
+    .terminal-body {
+      background: var(--ctp-base);
+      padding: 14px 18px;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      color: var(--ctp-subtext1);
+      white-space: pre-wrap;
+      line-height: 1.5;
+      overflow-x: auto;
+    }
+
+    /* Formula */
+    .formula {
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--ctp-blue);
+      background: var(--ctp-mantle);
+      border: 1px solid var(--ctp-surface0);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 16px 0;
+      letter-spacing: 0.01em;
+    }
+
+    hr { border: none; border-top: 1px solid var(--ctp-surface0); margin: 36px 0; }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+    th {
+      background: var(--ctp-mantle);
+      text-align: left;
+      font-weight: 700;
+      padding: 10px 14px;
+      border: 1px solid var(--ctp-surface0);
+      color: var(--ctp-text);
+    }
+    td { padding: 10px 14px; border: 1px solid var(--ctp-surface0); color: var(--ctp-subtext1); }
+    tr:nth-child(even) td { background: var(--ctp-mantle); }
+
+    .reference-list {
+      font-size: 13px;
+      color: var(--ctp-subtext0);
+      list-style: none;
+      padding: 0;
+    }
+    .reference-list li {
+      padding: 9px 0;
+      border-bottom: 1px solid var(--ctp-surface0);
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 12px;
+    }
+    .reference-list .ref-num {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--ctp-blue);
+      text-align: right;
+    }
+
+    @media (max-width: 640px) {
+      .floating-nav { bottom: 16px; right: 16px; }
+      .fn-btn { width: 42px; height: 42px; }
+      .doc-header-block { padding: 28px 16px 0 16px; }
+      .page { padding: 20px 16px 80px 16px; }
+      .doc-header-block h1 { font-size: 24px; }
+    }
+
+    /* Print */
+    @media print {
+      body { background: #fff; }
+      .floating-nav { display: none; }
+      .drawer-backdrop { display: none; }
+      .copy-btn { display: none; }
+      .page { max-width: 100%; padding: 0; }
+
+      .toc-drawer {
+        position: static;
+        width: 100%;
+        max-width: 100%;
+        transform: none;
+        border-left: none;
+        box-shadow: none;
+        background: transparent;
+        display: block;
+        overflow: visible;
+        break-after: page;
+        page-break-after: always;
+      }
+      .toc-drawer .drawer-header { position: static; background: transparent; }
+      .toc-drawer .drawer-close { display: none; }
+
+      .doc-header-block { break-after: page; page-break-after: always; }
+
+      p, li { orphans: 3; widows: 3; }
+      h2, h3 { break-after: avoid; page-break-after: avoid; }
+
+      .code-window { break-inside: auto; page-break-inside: auto; }
+      .code-window-header { break-after: avoid; page-break-after: avoid; }
+      pre { break-inside: auto; page-break-inside: auto; }
+      .terminal, .note, table, .formula { break-inside: avoid; page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<header class="doc-header-block">
+    <div class="doc-logos">
+      <img src="../assets/img/logo_2.png" alt="Logo ITERA">
+      <img src="../assets/img/dikti-saintek-berdampak-color.svg" alt="Logo Kemdiktisaintek">
+    </div>
+    <div class="doc-course">IF25-40304 &middot; Pembelajaran Mesin Multimodal</div>
+    <div class="doc-kicker">Lembar Kerja 13</div>
+    <h1>Mengukur dengan Jujur: Protokol Evaluasi &amp; Uji Signifikansi</h1>
+    <p class="doc-subtitle">Evaluasi Model Multimodal</p>
+    <div class="doc-meta">
+      <span>Program Studi Teknik Informatika</span>
+      <span>Institut Teknologi Sumatera (ITERA)</span>
+    </div>
+  </header>
+
+  <div class="page">
+
+  <aside class="toc-drawer" id="tocDrawer" aria-label="Daftar isi"><div class="drawer-header"><span class="drawer-title"><span class="material-symbols-outlined">list</span> Daftar Isi</span><button class="drawer-close" type="button" onclick="toggleToc(false)" title="Tutup"><span class="material-symbols-outlined">close</span></button></div><ul class="toc-list"><li><a href="#sec-konsep" onclick="gotoSection(this)"><span class="toc-num">01</span><span class="toc-label">Evaluasi yang Menipu</span></a></li><li><a href="#sec-setup" onclick="gotoSection(this)"><span class="toc-num">02</span><span class="toc-label">Setup Lingkungan</span></a></li><li><a href="#sec-data" onclick="gotoSection(this)"><span class="toc-num">03</span><span class="toc-label">Data Berpasangan</span></a></li><li><a href="#sec-bocor" onclick="gotoSection(this)"><span class="toc-num">04</span><span class="toc-label">Kebocoran Data</span></a></li><li><a href="#sec-metrik" onclick="gotoSection(this)"><span class="toc-num">05</span><span class="toc-label">Metrik Retrieval</span></a></li><li><a href="#sec-galeri" onclick="gotoSection(this)"><span class="toc-num">06</span><span class="toc-label">Ukuran Galeri</span></a></li><li><a href="#sec-sig" onclick="gotoSection(this)"><span class="toc-num">07</span><span class="toc-label">Uji Signifikansi</span></a></li><li><a href="#sec-kegagalan" onclick="gotoSection(this)"><span class="toc-num">08</span><span class="toc-label">Kegagalan &amp; Etika</span></a></li><li><a href="#sec-analisis" onclick="gotoSection(this)"><span class="toc-num">09</span><span class="toc-label">Analisis</span></a></li><li><a href="#sec-rangkuman" onclick="gotoSection(this)"><span class="toc-num"></span><span class="toc-label">Rangkuman</span></a></li><li><a href="#sec-referensi" onclick="gotoSection(this)"><span class="toc-num">&#9873;</span><span class="toc-label">Referensi</span></a></li></ul></aside><div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleToc(false)"></div>    <p>Lembar kerja ini melengkapi materi Pertemuan 13 (<em>Evaluasi Model Multimodal</em>). Anda akan membangun protokol evaluasi retrieval dari nol &mdash; bukan memanggil satu fungsi <code>evaluate()</code> &mdash; supaya setiap keputusan yang biasanya tersembunyi di baliknya menjadi terlihat. Tiga gagasan yang diverifikasi:</p>
+  <ol>
+    <li><strong>Skor bisa menipu.</strong> Satu kesalahan pemisahan data sudah cukup membuat <em>Recall@1</em> melompat dari 0,62 menjadi 1,00 &mdash; tanpa memperbaiki model sedikit pun.</li>
+    <li><strong>Angka tidak berarti tanpa konteks.</strong> Ukuran galeri menentukan tingkat kebetulan; <em>Recall@K</em> yang sama bisa berarti sangat berbeda pada katalog 100 dan 3.000 item.</li>
+    <li><strong>Perbedaan harus diuji.</strong> Selisih dua model perlu selang kepercayaan dan uji signifikansi &mdash; dan kekuatan uji bergantung pada banyaknya kueri uji, bukan hanya pada besarnya selisih.</li>
+  </ol>
+<div class="note note-peach"><span class="note-title">Cakupan</span>Seluruh bagian hanya memakai <strong>data sintetis</strong> dan cukup dengan <code>numpy</code>. Tidak ada unduhan, tidak ada pelatihan, dan setiap angka dapat direproduksi dalam hitungan detik di CPU (<code>SEED = 42</code>).</div>
+<div class="note note-mauve"><span class="note-title">Mengapa sintetis?</span>Pada data nyata kita tidak pernah tahu &ldquo;jawaban benar&rdquo; yang sesungguhnya, sehingga sulit memisahkan kesalahan <em>model</em> dari kesalahan <em>protokol</em>. Data sintetis memberi kita kendali: kita tahu pasangan yang benar, kita tahu kapan kebocoran terjadi, dan kita dapat mengubah ukuran galeri sesuai kehendak.</div>
+
+<section id="sec-konsep"><h2><span class="sec-num">01</span> Evaluasi yang Menipu</h2>
+<p>Evaluasi yang jujur menuntut tiga hal yang sering dilewati. Tanpa ketiganya, angka yang terlihat meyakinkan bisa saja tidak berarti apa-apa.</p>
+<table><thead><tr><th>Jebakan</th><th>Gejala</th><th>Penangkal</th></tr></thead><tbody>
+<tr><td><strong>Kebocoran data</strong></td><td>Skor uji nyaris sempurna, tetapi gagal di lapangan</td><td>Pisahkan item yang dinilai dari indeks; cek duplikat &amp; <em>near-duplicate</em></td></tr>
+<tr><td><strong>Tanpa tingkat kebetulan</strong></td><td>&ldquo;Recall@1 = 0,31&rdquo; dibaca seolah buruk, padahal katalognya 3.000 item</td><td>Laporkan ukuran galeri dan bandingkan dengan <code>1/N</code></td></tr>
+<tr><td><strong>Tanpa uji ketidakpastian</strong></td><td>Selisih 0,03 diumumkan sebagai perbaikan</td><td>Selang kepercayaan <em>bootstrap</em> + uji permutasi berpasangan</td></tr>
+</tbody></table>
+<div class="note note-blue"><span class="note-title">Prinsip</span>Sebuah metrik baru bermakna bila disertai tiga hal: <strong>cara pemisahan data</strong>, <strong>ukuran himpunan uji</strong>, dan <strong>ketidakpastian pengukurannya</strong>. Inilah isi protokol evaluasi yang akan Anda tulis.</div></section>
+
+<section id="sec-setup"><h2><span class="sec-num">02</span> Setup Lingkungan</h2><p>Seluruh kode Bagian 03&ndash;08 disimpan dalam satu berkas <code>evaluasi_lab_w13.py</code>.</p><div class="code-window"><div class="code-window-header">
+      <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+      <span class="code-filename">setup.sh</span>
+      <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
+    </div>
+    <pre class="code-baked language-bash"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc">pip <span class="token function">install</span> numpy</span></span></code></pre></div>
+<p>Semua angka keluaran di bawah berasal dari menjalankan skrip tersebut secara utuh dengan <code>SEED = 42</code>.</p></section>
+
+<section id="sec-data"><h2><span class="sec-num">03</span> Data Berpasangan &amp; Himpunan Uji</h2>
+<p>Kita bangkitkan 3.000 <em>embedding</em> dimensi 32 yang saling bebas. Sebuah &ldquo;encoder&rdquo; dipakai untuk menghasilkan dua sisi: <strong>galeri</strong> (indeks yang dicari) dan <strong>kueri</strong>. Pasangan yang benar adalah kueri ke-<code>i</code> dengan galeri ke-<code>i</code>.</p>
+<p>Parameter <code>sigma</code> mengatur derau encoder: makin besar, makin kabur representasinya. Galeri aktif dibatasi <code>N = 300</code> item, sedangkan kueri uji berjumlah <code>Q = 100</code>.</p><div class="code-window"><div class="code-window-header">
+      <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+      <span class="code-filename">evaluasi_lab_w13.py</span>
+      <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
+    </div>
+    <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc">SEED<span class="token punctuation">,</span> DIM<span class="token punctuation">,</span> N_MAKS<span class="token punctuation">,</span> Q<span class="token punctuation">,</span> N <span class="token operator">=</span> <span class="token number">42</span><span class="token punctuation">,</span> <span class="token number">32</span><span class="token punctuation">,</span> <span class="token number">3000</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">300</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc">rng <span class="token operator">=</span> np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>default_rng<span class="token punctuation">(</span>SEED<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc"><span class="token keyword">def</span> <span class="token function">norm</span><span class="token punctuation">(</span>X<span class="token punctuation">)</span><span class="token punctuation">:</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc">    <span class="token keyword">return</span> X <span class="token operator">/</span> np<span class="token punctuation">.</span>linalg<span class="token punctuation">.</span>norm<span class="token punctuation">(</span>X<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span> keepdims<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">9</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">10</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">11</span><span class="lc"><span class="token keyword">def</span> <span class="token function">encoder</span><span class="token punctuation">(</span>Z<span class="token punctuation">,</span> sigma<span class="token punctuation">,</span> rng<span class="token punctuation">)</span><span class="token punctuation">:</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">12</span><span class="lc">    <span class="token keyword">return</span> norm<span class="token punctuation">(</span>Z <span class="token operator">+</span> sigma <span class="token operator">*</span> rng<span class="token punctuation">.</span>normal<span class="token punctuation">(</span>size<span class="token operator">=</span>Z<span class="token punctuation">.</span>shape<span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">13</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">14</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">15</span><span class="lc">Z <span class="token operator">=</span> rng<span class="token punctuation">.</span>normal<span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">,</span> size<span class="token operator">=</span><span class="token punctuation">(</span>N_MAKS<span class="token punctuation">,</span> DIM<span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">16</span><span class="lc">GALERI <span class="token operator">=</span> encoder<span class="token punctuation">(</span>Z<span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">,</span> rng<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">17</span><span class="lc">KUERI <span class="token operator">=</span> encoder<span class="token punctuation">(</span>Z<span class="token punctuation">[</span><span class="token punctuation">:</span>Q<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">,</span> rng<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">18</span><span class="lc">TARGET <span class="token operator">=</span> np<span class="token punctuation">.</span>arange<span class="token punctuation">(</span>Q<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">19</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">20</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Z.shape      ="</span><span class="token punctuation">,</span> Z<span class="token punctuation">.</span>shape<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">21</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"GALERI.shape ="</span><span class="token punctuation">,</span> GALERI<span class="token punctuation">.</span>shape<span class="token punctuation">,</span> <span class="token string">"  KUERI.shape ="</span><span class="token punctuation">,</span> KUERI<span class="token punctuation">.</span>shape<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">22</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"pasangan     : KUERI[i] &lt;-benar-> GALERI[i],  i = 0..%d"</span> <span class="token operator">%</span> <span class="token punctuation">(</span>Q <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">23</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"target kueri : array 0..%d"</span> <span class="token operator">%</span> <span class="token punctuation">(</span>Q <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span></code></pre></div><div class="terminal">
+        <div class="terminal-header">
+          <span class="material-symbols-outlined">terminal</span>
+          <span class="terminal-title">Output</span>
+        </div>
+        <div class="terminal-body">Z.shape      = (3000, 32)
+GALERI.shape = (3000, 32)   KUERI.shape = (100, 32)
+pasangan     : KUERI[i] &lt;-benar-&gt; GALERI[i],  i = 0..99
+target kueri : array 0..99</div>
+      </div>
+<p>Perhatikan bahwa galeri memuat <strong>semua</strong> kandidat; kueri uji tidak boleh ikut ke dalamnya.</p></section>
+
+<section id="sec-bocor"><h2><span class="sec-num">04</span> Kebocoran: Skor 100% yang Palsu</h2>
+<p>Sekarang kita sengaja melakukan kesalahan yang paling umum: menambahkan kueri ke dalam galeri. Karena kueri adalah salinan dirinya sendiri (dengan derau sangat kecil), seharusnya ia menemukan &ldquo;dirinya&rdquo; di peringkat pertama &mdash; dan itulah yang terjadi.</p><div class="code-window"><div class="code-window-header">
+      <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+      <span class="code-filename">evaluasi_lab_w13.py</span>
+      <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
+    </div>
+    <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc">GAL_BOCOR <span class="token operator">=</span> norm<span class="token punctuation">(</span>np<span class="token punctuation">.</span>vstack<span class="token punctuation">(</span><span class="token punctuation">[</span>GALERI<span class="token punctuation">[</span><span class="token punctuation">:</span>N<span class="token punctuation">]</span><span class="token punctuation">,</span> KUERI <span class="token operator">+</span> <span class="token number">0.01</span> <span class="token operator">*</span> rng<span class="token punctuation">.</span>normal<span class="token punctuation">(</span>size<span class="token operator">=</span><span class="token punctuation">(</span>Q<span class="token punctuation">,</span> DIM<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc">TARGET_BOCOR <span class="token operator">=</span> N <span class="token operator">+</span> np<span class="token punctuation">.</span>arange<span class="token punctuation">(</span>Q<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc"><span class="token keyword">def</span> <span class="token function">peringkat</span><span class="token punctuation">(</span>S<span class="token punctuation">,</span> target<span class="token punctuation">)</span><span class="token punctuation">:</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc">    urut <span class="token operator">=</span> np<span class="token punctuation">.</span>argsort<span class="token punctuation">(</span><span class="token operator">-</span>S<span class="token punctuation">,</span> axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc">    <span class="token keyword">return</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">(</span>np<span class="token punctuation">.</span>where<span class="token punctuation">(</span>urut<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">==</span> target<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>target<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">9</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">10</span><span class="lc"><span class="token keyword">def</span> <span class="token function">recall_at_k</span><span class="token punctuation">(</span>S<span class="token punctuation">,</span> target<span class="token punctuation">,</span> k<span class="token punctuation">)</span><span class="token punctuation">:</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">11</span><span class="lc">    <span class="token keyword">return</span> <span class="token builtin">float</span><span class="token punctuation">(</span>np<span class="token punctuation">.</span>mean<span class="token punctuation">(</span>peringkat<span class="token punctuation">(</span>S<span class="token punctuation">,</span> target<span class="token punctuation">)</span> <span class="token operator">&lt;=</span> k<span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">12</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">13</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">14</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"galeri bersih  : %4d item"</span> <span class="token operator">%</span> N<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">15</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"galeri 'bocor' : %4d item  (+%d kueri ikut masuk indeks)"</span> <span class="token operator">%</span> <span class="token punctuation">(</span>GAL_BOCOR<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> Q<span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">16</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Recall@1 bocor = %.3f"</span> <span class="token operator">%</span> recall_at_k<span class="token punctuation">(</span>KUERI @ GAL_BOCOR<span class="token punctuation">.</span>T<span class="token punctuation">,</span> TARGET_BOCOR<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">17</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Recall@1 bersih= %.3f"</span> <span class="token operator">%</span> recall_at_k<span class="token punctuation">(</span>KUERI @ GALERI<span class="token punctuation">[</span><span class="token punctuation">:</span>N<span class="token punctuation">]</span><span class="token punctuation">.</span>T<span class="token punctuation">,</span> TARGET<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span></code></pre></div><div class="terminal">
+        <div class="terminal-header">
+          <span class="material-symbols-outlined">terminal</span>
+          <span class="terminal-title">Output</span>
+        </div>
+        <div class="terminal-body">galeri bersih  :  300 item
+galeri 'bocor' :  400 item  (+100 kueri ikut masuk indeks)
+Recall@1 bocor = 1.000
+Recall@1 bersih= 0.620</div>
+      </div>
+<div class="note note-peach"><span class="note-title">Selisih 0,38 tanpa memperbaiki apa pun</span>Recall@1 naik dari <strong>0,620</strong> ke <strong>1,000</strong> semata-mata karena kueri uji diletakkan di dalam indeks. Modelnya identik. Inilah mengapa protokol harus ditulis <em>sebelum</em> eksperimen dijalankan.</div></section>
+
+<section id="sec-metrik"><h2><span class="sec-num">05</span> Metrik Retrieval: Recall@K &amp; MRR</h2>
+<p>Setelah pemisahan dilakukan dengan benar, kita ukur tiga metrik. <strong>Recall@K</strong> bertanya: berapa bagian kueri yang pasangan benarnya muncul di K peringkat teratas? <strong>MRR</strong> (<em>Mean Reciprocal Rank</em>) memberi bobot lebih pada peringkat teratas.</p>
+<p><span style="font-family: var(--font-mono);">Recall@K = (1/Q) &middot; &Sigma;<sub>i</sub> 1[peringkat<sub>i</sub> &le; K]</span> &nbsp;&nbsp;&middot;&nbsp;&nbsp; <span style="font-family: var(--font-mono);">MRR = (1/Q) &middot; &Sigma;<sub>i</sub> 1/peringkat<sub>i</sub></span></p><div class="code-window"><div class="code-window-header">
+      <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+      <span class="code-filename">evaluasi_lab_w13.py</span>
+      <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
+    </div>
+    <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc">S <span class="token operator">=</span> KUERI @ GALERI<span class="token punctuation">[</span><span class="token punctuation">:</span>N<span class="token punctuation">]</span><span class="token punctuation">.</span>T</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc">r <span class="token operator">=</span> peringkat<span class="token punctuation">(</span>S<span class="token punctuation">,</span> TARGET<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Recall@1  = %.3f"</span> <span class="token operator">%</span> recall_at_k<span class="token punctuation">(</span>S<span class="token punctuation">,</span> TARGET<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Recall@5  = %.3f"</span> <span class="token operator">%</span> recall_at_k<span class="token punctuation">(</span>S<span class="token punctuation">,</span> TARGET<span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Recall@10 = %.3f"</span> <span class="token operator">%</span> recall_at_k<span class="token punctuation">(</span>S<span class="token punctuation">,</span> TARGET<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"MRR       = %.3f"</span> <span class="token operator">%</span> <span class="token builtin">float</span><span class="token punctuation">(</span>np<span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token number">1.0</span> <span class="token operator">/</span> r<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"peringkat : min=%d  median=%d  maks=%d"</span> <span class="token operator">%</span> <span class="token punctuation">(</span>r<span class="token punctuation">.</span><span class="token builtin">min</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">(</span>np<span class="token punctuation">.</span>median<span class="token punctuation">(</span>r<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> r<span class="token punctuation">.</span><span class="token builtin">max</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span></code></pre></div><div class="terminal">
+        <div class="terminal-header">
+          <span class="material-symbols-outlined">terminal</span>
+          <span class="terminal-title">Output</span>
+        </div>
+        <div class="terminal-body">Recall@1  = 0.620
+Recall@5  = 0.830
+Recall@10 = 0.930
+MRR       = 0.725
+peringkat : min=1  median=1  maks=56</div>
+      </div>
+<div class="note note-mauve"><span class="note-title">Membaca tiga angka sekaligus</span><code>Recall@1 = 0,620</code> dan <code>Recall@10 = 0,930</code> menceritakan hal berbeda: 38 kueri tidak menemukan pasangan benarnya di peringkat pertama, tetapi sebagian besar dari mereka masih menemukannya di sepuluh besar. Selalu laporkan minimal dua nilai K.</div></section>
+
+<section id="sec-galeri"><h2><span class="sec-num">06</span> Ukuran Galeri Mengubah Arti Angka</h2>
+<p>Kita pakai encoder yang <strong>sama persis</strong> tetapi mengubah jumlah kandidat dalam galeri. Tidak ada yang berubah pada model &mdash; hanya tingkat kesulitan soalnya.</p><div class="code-window"><div class="code-window-header">
+      <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+      <span class="code-filename">evaluasi_lab_w13.py</span>
+      <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
+    </div>
+    <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc"><span class="token keyword">for</span> n <span class="token keyword">in</span> <span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">300</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">,</span> <span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">:</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc">    Sn <span class="token operator">=</span> KUERI @ GALERI<span class="token punctuation">[</span><span class="token punctuation">:</span>n<span class="token punctuation">]</span><span class="token punctuation">.</span>T</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc">    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"n=%4d  Recall@1=%.3f  Recall@10=%.3f"</span> <span class="token operator">%</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc">          <span class="token punctuation">(</span>n<span class="token punctuation">,</span> recall_at_k<span class="token punctuation">(</span>Sn<span class="token punctuation">,</span> TARGET<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> recall_at_k<span class="token punctuation">(</span>Sn<span class="token punctuation">,</span> TARGET<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span></code></pre></div><div class="terminal">
+        <div class="terminal-header">
+          <span class="material-symbols-outlined">terminal</span>
+          <span class="terminal-title">Output</span>
+        </div>
+        <div class="terminal-body">n= 100  Recall@1=0.730  Recall@10=0.970
+n= 300  Recall@1=0.620  Recall@10=0.930
+n=1000  Recall@1=0.490  Recall@10=0.800
+n=3000  Recall@1=0.310  Recall@10=0.690</div>
+      </div>
+<div class="note note-blue"><span class="note-title">Kebetulan juga bergeser</span>Tingkat kebetulan <em>Recall@1</em> kira-kira <code>1/n</code>: 0,01 pada 100 item dan 0,0003 pada 3.000 item. Menambahkan kandidat menurunkan Recall@K sekaligus menurunkan peluang tebakan benar &mdash; dua hal yang harus disebut bersama. Karena itu angka &ldquo;Recall@1 = 0,31&rdquo; pada 3.000 item belum tentu lebih buruk daripada 0,73 pada 100 item.</div></section>
+
+<section id="sec-sig"><h2><span class="sec-num">07</span> Uji Signifikansi: Selang &amp; Permutasi</h2>
+<p>Kita bandingkan dua encoder: <strong>A</strong> (derau 1,00) dan <strong>B</strong> (derau 1,25). Karena kueri ujinya sama, perbandingannya <em>berpasangan</em> &mdash; untuk setiap kueri kita tahu siapa yang benar. Dari selisih per kueri itu kita hitung selang kepercayaan <em>bootstrap</em> dan <em>p-value</em> uji permutasi tanda (tanpa paket statistik apa pun).</p><div class="code-window"><div class="code-window-header">
+      <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+      <span class="code-filename">evaluasi_lab_w13.py</span>
+      <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
+    </div>
+    <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc">GAL_B <span class="token operator">=</span> encoder<span class="token punctuation">(</span>Z<span class="token punctuation">,</span> <span class="token number">1.25</span><span class="token punctuation">,</span> rng<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc">KU_B <span class="token operator">=</span> encoder<span class="token punctuation">(</span>Z<span class="token punctuation">[</span><span class="token punctuation">:</span>Q<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">1.25</span><span class="token punctuation">,</span> rng<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc">hit_a <span class="token operator">=</span> <span class="token punctuation">(</span>peringkat<span class="token punctuation">(</span>S<span class="token punctuation">,</span> TARGET<span class="token punctuation">)</span> <span class="token operator">&lt;=</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token builtin">float</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc">hit_b <span class="token operator">=</span> <span class="token punctuation">(</span>peringkat<span class="token punctuation">(</span>KU_B @ GAL_B<span class="token punctuation">[</span><span class="token punctuation">:</span>N<span class="token punctuation">]</span><span class="token punctuation">.</span>T<span class="token punctuation">,</span> TARGET<span class="token punctuation">)</span> <span class="token operator">&lt;=</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token builtin">float</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc">beda <span class="token operator">=</span> hit_a <span class="token operator">-</span> hit_b</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"encoder A (derau 1,00) Recall@1 = %.3f  (%d/%d)"</span> <span class="token operator">%</span> <span class="token punctuation">(</span>hit_a<span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">(</span>hit_a<span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> Q<span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">9</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"encoder B (derau 1,25) Recall@1 = %.3f  (%d/%d)"</span> <span class="token operator">%</span> <span class="token punctuation">(</span>hit_b<span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">(</span>hit_b<span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> Q<span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">10</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"selisih berpasangan             = %+.3f"</span> <span class="token operator">%</span> beda<span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">11</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">12</span><span class="lc">B <span class="token operator">=</span> <span class="token number">5000</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">13</span><span class="lc">idx <span class="token operator">=</span> rng<span class="token punctuation">.</span>integers<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> Q<span class="token punctuation">,</span> size<span class="token operator">=</span><span class="token punctuation">(</span>B<span class="token punctuation">,</span> Q<span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">14</span><span class="lc">boot <span class="token operator">=</span> beda<span class="token punctuation">[</span>idx<span class="token punctuation">]</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">15</span><span class="lc">lo<span class="token punctuation">,</span> hi <span class="token operator">=</span> np<span class="token punctuation">.</span>percentile<span class="token punctuation">(</span>boot<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">2.5</span><span class="token punctuation">,</span> <span class="token number">97.5</span><span class="token punctuation">]</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">16</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"95%% CI bootstrap = [%+.3f, %+.3f]"</span> <span class="token operator">%</span> <span class="token punctuation">(</span>lo<span class="token punctuation">,</span> hi<span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">17</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">18</span><span class="lc">sgn <span class="token operator">=</span> rng<span class="token punctuation">.</span>choice<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> size<span class="token operator">=</span><span class="token punctuation">(</span>B<span class="token punctuation">,</span> Q<span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">19</span><span class="lc">perm <span class="token operator">=</span> <span class="token punctuation">(</span>beda <span class="token operator">*</span> sgn<span class="token punctuation">)</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">20</span><span class="lc">p <span class="token operator">=</span> <span class="token builtin">float</span><span class="token punctuation">(</span>np<span class="token punctuation">.</span>mean<span class="token punctuation">(</span>np<span class="token punctuation">.</span><span class="token builtin">abs</span><span class="token punctuation">(</span>perm<span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token builtin">abs</span><span class="token punctuation">(</span>beda<span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">21</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"p-value uji permutasi (dua sisi) = %.4f"</span> <span class="token operator">%</span> p<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">22</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">23</span><span class="lc"><span class="token comment"># ulangi dengan hanya 25 kueri pertama</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">24</span><span class="lc">q <span class="token operator">=</span> <span class="token number">25</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">25</span><span class="lc">d_q <span class="token operator">=</span> beda<span class="token punctuation">[</span><span class="token punctuation">:</span>q<span class="token punctuation">]</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">26</span><span class="lc">idx <span class="token operator">=</span> rng<span class="token punctuation">.</span>integers<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> q<span class="token punctuation">,</span> size<span class="token operator">=</span><span class="token punctuation">(</span>B<span class="token punctuation">,</span> q<span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">27</span><span class="lc">boot_q <span class="token operator">=</span> d_q<span class="token punctuation">[</span>idx<span class="token punctuation">]</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">28</span><span class="lc">lo_q<span class="token punctuation">,</span> hi_q <span class="token operator">=</span> np<span class="token punctuation">.</span>percentile<span class="token punctuation">(</span>boot_q<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">2.5</span><span class="token punctuation">,</span> <span class="token number">97.5</span><span class="token punctuation">]</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">29</span><span class="lc">sgn <span class="token operator">=</span> rng<span class="token punctuation">.</span>choice<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> size<span class="token operator">=</span><span class="token punctuation">(</span>B<span class="token punctuation">,</span> q<span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">30</span><span class="lc">perm_q <span class="token operator">=</span> <span class="token punctuation">(</span>d_q <span class="token operator">*</span> sgn<span class="token punctuation">)</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">31</span><span class="lc">p_q <span class="token operator">=</span> <span class="token builtin">float</span><span class="token punctuation">(</span>np<span class="token punctuation">.</span>mean<span class="token punctuation">(</span>np<span class="token punctuation">.</span><span class="token builtin">abs</span><span class="token punctuation">(</span>perm_q<span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token builtin">abs</span><span class="token punctuation">(</span>d_q<span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">32</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">33</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"hanya %d kueri pertama:"</span> <span class="token operator">%</span> q<span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">34</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"  selisih        = %+.3f"</span> <span class="token operator">%</span> d_q<span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">35</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"  95%% CI bootstrap = [%+.3f, %+.3f]"</span> <span class="token operator">%</span> <span class="token punctuation">(</span>lo_q<span class="token punctuation">,</span> hi_q<span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">36</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"  p-value        = %.4f"</span> <span class="token operator">%</span> p_q<span class="token punctuation">)</span></span></span></code></pre></div><div class="terminal">
+        <div class="terminal-header">
+          <span class="material-symbols-outlined">terminal</span>
+          <span class="terminal-title">Output</span>
+        </div>
+        <div class="terminal-body">encoder A (derau 1,00) Recall@1 = 0.620  (62/100)
+encoder B (derau 1,25) Recall@1 = 0.290  (29/100)
+selisih berpasangan             = +0.330
+95% CI bootstrap = [+0.210, +0.450]
+p-value uji permutasi (dua sisi) = 0.0000
+hanya 25 kueri pertama:
+  selisih        = +0.200
+  95% CI bootstrap = [-0.040, +0.440]
+  p-value        = 0.2358</div>
+      </div>
+<div class="note note-maroon"><span class="note-title">Efek nyata, bukti yang belum cukup</span>Dengan 100 kueri, selisih <strong>+0,33</strong> jelas (selang tidak memuat nol). Dengan 25 kueri pertama, selisihnya <strong>+0,20</strong> tetapi selangnya <strong>memuat nol</strong> (<em>p</em> = 0,24) &mdash; padahal encoder-nya sama. Nilai <code>p = 0,0000</code> berarti tidak satu pun dari 5.000 permutasi mencapai sebesar itu; laporkan sebagai <em>p</em> &lt; 0,001. Pelajarannya: <strong>banyaknya kueri uji menentukan kekuatan uji</strong>, bukan hanya besar selisihnya.</div></section>
+
+<section id="sec-kegagalan"><h2><span class="sec-num">08</span> Analisis Kegagalan &amp; Audit Etika</h2>
+<p>Evaluasi tidak selesai pada angka agregat. Kita periksa <em>bagaimana</em> sistem gagal: berapa jauh peringkatnya meleset, dan seberapa tipis selisih kemiripan antara jawaban benar dan pengganggu teratas.</p><div class="code-window"><div class="code-window-header">
+      <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
+      <span class="code-filename">evaluasi_lab_w13.py</span>
+      <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>
+    </div>
+    <pre class="code-baked language-python"><code><span class="code-line"><span class="ln" aria-hidden="true">1</span><span class="lc">gagal <span class="token operator">=</span> r <span class="token operator">></span> <span class="token number">1</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">2</span><span class="lc">diag <span class="token operator">=</span> np<span class="token punctuation">.</span>einsum<span class="token punctuation">(</span><span class="token string">"ij,ij->i"</span><span class="token punctuation">,</span> KUERI<span class="token punctuation">,</span> GALERI<span class="token punctuation">[</span><span class="token punctuation">:</span>N<span class="token punctuation">]</span><span class="token punctuation">[</span>TARGET<span class="token punctuation">]</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">3</span><span class="lc">top1 <span class="token operator">=</span> S<span class="token punctuation">.</span><span class="token builtin">max</span><span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">4</span><span class="lc">&nbsp;</span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">5</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"gagal Recall@1        : %d/%d kueri"</span> <span class="token operator">%</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>gagal<span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> Q<span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">6</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"median peringkat gagal: %d"</span> <span class="token operator">%</span> <span class="token builtin">int</span><span class="token punctuation">(</span>np<span class="token punctuation">.</span>median<span class="token punctuation">(</span>r<span class="token punctuation">[</span>gagal<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">7</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"rerata kemiripan benar: %.3f"</span> <span class="token operator">%</span> diag<span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">8</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"rerata kemiripan top-1: %.3f"</span> <span class="token operator">%</span> top1<span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">9</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"celah rerata          : %+.3f"</span> <span class="token operator">%</span> <span class="token punctuation">(</span>top1 <span class="token operator">-</span> diag<span class="token punctuation">)</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span>
+<span class="code-line"><span class="ln" aria-hidden="true">10</span><span class="lc"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"kueri dgn celah >0,05 : %d"</span> <span class="token operator">%</span> <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span>top1 <span class="token operator">-</span> diag<span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0.05</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span></span></code></pre></div><div class="terminal">
+        <div class="terminal-header">
+          <span class="material-symbols-outlined">terminal</span>
+          <span class="terminal-title">Output</span>
+        </div>
+        <div class="terminal-body">gagal Recall@1        : 38/100 kueri
+median peringkat gagal: 5
+rerata kemiripan benar: 0.512
+rerata kemiripan top-1: 0.556
+celah rerata          : +0.044
+kueri dgn celah &gt;0,05 : 28</div>
+      </div>
+<p>Isi tabel berikut dari keluaran Anda, lalu catat satu contoh kueri yang paling menyesatkan.</p>
+<table><thead><tr><th>Aspek</th><th>Angka</th><th>Tafsir</th></tr></thead><tbody>
+<tr><td>Kegagalan @1</td><td>38/100</td><td>&nbsp;</td></tr>
+<tr><td>Median peringkat gagal</td><td>5</td><td>&nbsp;</td></tr>
+<tr><td>Celah kemiripan rerata</td><td>+0,044</td><td>&nbsp;</td></tr>
+<tr><td>Kueri bercelah &gt;0,05</td><td>28</td><td>&nbsp;</td></tr>
+</tbody></table>
+<div class="note note-maroon"><span class="note-title">Audit etika &mdash; kerjakan pada data proyek Anda</span>Setelah angka di atas, jawab untuk dataset Anda sendiri: (a) apakah galeri dan kueri dipisah per <strong>budaya/bahasa</strong> yang sama, atau ada informasi yang bocor antar-pemisahan? (b) label siapa yang menjadi &ldquo;kebenaran&rdquo;, dan kelompok mana yang tidak terwakili? (c) bila galeri hanya memuat foto Jawa, apakah kueri berbahasa Indonesia non-Jawa akan tampak &ldquo;salah&rdquo; padahal sistemnya benar? Tuliskan satu keputusan desain yang Anda ubah setelah menjawab pertanyaan ini.</div></section>
+
+<section id="sec-analisis"><h2><span class="sec-num">09</span> Analisis</h2>
+<p>Jawab dengan mengacu pada angka yang Anda peroleh sendiri.</p>
+<ol>
+<li>Pada Bagian 04, mengapa menaikkan skor dari 0,62 ke 1,00 lewat kebocoran justru <em>lebih berbahaya</em> daripada menaikkannya lewat model yang lebih baik?</li>
+<li>Pada Bagian 06, encoder-nya identik. Jelaskan dengan kalimat Anda sendiri mengapa <em>Recall@1</em> turun dari 0,73 ke 0,31, dan apa yang harus selalu dilaporkan bersamanya.</li>
+<li>Pada Bagian 07, dua pengukuran memakai encoder yang sama tetapi memberi kesimpulan berbeda. Mana yang harus Anda laporkan ke pembaca, dan mengapa?</li>
+<li>Pada Bagian 08, celah kemiripan rerata hanya +0,044. Apa implikasinya bagi keandalan peringkat pada katalog nyata?</li>
+<li>Jika proyek Anda harus memilih antara menambah data latih atau memperbaiki protokol evaluasi, mana yang Anda dahulukan? Kaitkan dengan ketiga jebakan pada Bagian 01.</li>
+</ol>
+<div class="note note-green"><span class="note-title">Hubungan dengan proyek (M4)</span>Bagian 03&ndash;08 adalah kerangka langsung untuk <strong>Milestone M4</strong>: protokol evaluasi + himpunan uji privat. Protokol yang Anda tulis dari lab ini &mdash; cara pemisahan, ukuran galeri, metrik, dan uji signifikansi &mdash; menjadi bagian metode pada laporan akhir, dan wajib Anda jalankan sebelum menyentuh data uji.</div></section>
+
+<section id="sec-rangkuman"><h2><span class="sec-num"></span> Rangkuman</h2>
+<ul>
+<li><strong>Protokol lebih dulu, angka kemudian.</strong> Kebocoran menaikkan <em>Recall@1</em> dari 0,62 ke 1,00 tanpa memperbaiki model &mdash; protokol harus ditetapkan sebelum eksperimen.</li>
+<li><strong>Konteks mengubah makna.</strong> Encoder yang sama menghasilkan <em>Recall@1</em> 0,73 pada galeri 100 item dan 0,31 pada 3.000 item; tingkat kebetulan ikut bergeser (<code>1/n</code>).</li>
+<li><strong>Laporkan ketidakpastian.</strong> Selisih +0,33 dengan 100 kueri jelas; +0,20 dengan 25 kueri tidak konklusif (<em>p</em> = 0,24).</li>
+<li><strong>Kegagalan punya bentuk.</strong> 38 dari 100 kueri gagal di peringkat pertama, dengan celah kemiripan rerata hanya +0,044 &mdash; keputusan yang rapuh.</li>
+<li><strong>Evaluasi adalah soal etika.</strong> Pilihan pemisahan, label, dan cakupan galeri menentukan siapa yang &ldquo;tampak benar&rdquo;; dokumentasikan dan uji, jangan asumsikan.</li>
+</ul></section>
+
+<section id="sec-referensi"><h2><span class="sec-num">&#9873;</span> Referensi Utama</h2>
+<ul class="reference-list">
+<li><span class="ref-num">[1]</span><span><strong>Manning, C. D., Raghavan, P., &amp; Sch&uuml;tze, H.</strong> (2008). <em>Introduction to Information Retrieval</em>. Cambridge University Press. &mdash; definisi <em>Recall@K</em>, MRR, dan evaluasi sistem temu kembali.</span></li>
+<li><span class="ref-num">[2]</span><span><strong>Kaufman, S., Rosset, S., &amp; Perlich, C.</strong> (2012). <em>Leakage in Data Mining: Formulation, Detection, and Avoidance</em>. ACM TKDD. &mdash; taksonomi kebocoran pada Bagian 04.</span></li>
+<li><span class="ref-num">[3]</span><span><strong>Efron, B., &amp; Tibshirani, R. J.</strong> (1993). <em>An Introduction to the Bootstrap</em>. Chapman &amp; Hall. &mdash; dasar selang kepercayaan pada Bagian 07.</span></li>
+<li><span class="ref-num">[4]</span><span><strong>Dror, R., Baumer, G., Shlomov, S., &amp; Reichart, R.</strong> (2018). <em>The Hitchhiker's Guide to Testing Statistical Significance in Natural Language Processing</em>. ACL. &mdash; panduan uji signifikansi dan pemilihan uji berpasangan.</span></li>
+<li><span class="ref-num">[5]</span><span><strong>Recht, B., Roelofs, R., Schmidt, L., &amp; Shankar, V.</strong> (2019). <em>Do ImageNet Classifiers Generalize to ImageNet?</em>. ICML. &mdash; generalisasi dan bahaya menghafal himpunan uji.</span></li>
+<li><span class="ref-num">[6]</span><span><strong>Gebru, T., et al.</strong> (2021). <em>Datasheets for Datasets</em>. Communications of the ACM. &mdash; kerangka dokumentasi dataset untuk audit etika pada Bagian 08.</span></li>
+</ul></section>
+  </div>
+<nav class="floating-nav" aria-label="Navigasi dokumen">
+  <button class="fn-btn fn-toc" type="button" onclick="toggleToc(true)" title="Daftar isi"><span class="material-symbols-outlined">toc</span></button>
+  <button class="fn-btn fn-text-large" id="textLargeBtn" type="button" onclick="toggleTextLarge()" title="Teks Besar (untuk proyektor)"><span class="material-symbols-outlined">text_increase</span></button>
+  <a href="#" class="fn-btn fn-top" title="Kembali ke atas" onclick="scrollTop();return false;"><span class="material-symbols-outlined">arrow_upward</span></a>
+  <a href="../index.html" class="fn-btn fn-portal" title="Kembali ke Portal Kuliah"><span class="material-symbols-outlined">arrow_back</span></a>
+  <a href="../pdf/mgg13-hands-on.pdf" class="fn-btn fn-pdf" download title="Unduh versi PDF"><span class="material-symbols-outlined">picture_as_pdf</span></a>
+</nav>
+<script>
+function copyCode(btn){var codeEl=btn.closest('.code-window').querySelector('pre code');var lines=codeEl.querySelectorAll('.lc');var text=lines.length?Array.from(lines).map(function(x){return x.textContent}).join('\n'):codeEl.textContent;if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(function(){flashCopied(btn)}).catch(function(){fallbackCopy(text,btn)});else fallbackCopy(text,btn)}
+function fallbackCopy(text,btn){var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');flashCopied(btn)}catch(e){}document.body.removeChild(ta)}
+function flashCopied(btn){var i=btn.querySelector('.material-symbols-outlined'),l=btn.querySelector('span:last-child');if(i)i.textContent='check';if(l)l.textContent='Tersalin';setTimeout(function(){if(i)i.textContent='content_copy';if(l)l.textContent='Salin'},2000)}
+function toggleToc(open){var d=document.getElementById('tocDrawer'),b=document.getElementById('drawerBackdrop'),on=open===undefined?!d.classList.contains('open'):open;d.classList.toggle('open',on);b.classList.toggle('open',on);document.body.style.overflow=on?'hidden':''}function gotoSection(link){var t=document.querySelector(link.getAttribute('href'));toggleToc(false);if(t)setTimeout(function(){t.scrollIntoView({behavior:'smooth',block:'start'})},180);return false}function scrollTop(){window.scrollTo({top:0,behavior:'smooth'})}function toggleTextLarge(){var on=document.documentElement.classList.toggle('text-large'),b=document.getElementById('textLargeBtn');if(b)b.classList.toggle('active',on);try{localStorage.setItem('hands_on_text_large',on?'1':'0')}catch(e){}}(function(){try{if(localStorage.getItem('hands_on_text_large')==='1'){document.documentElement.classList.add('text-large');var b=document.getElementById('textLargeBtn');if(b)b.classList.add('active')}}catch(e){}})();document.addEventListener('keydown',function(e){if(e.key==='Escape')toggleToc(false)});
+</script>
+</body></html>
+

@@ -726,7 +726,54 @@
         </aside>
       </section>
 
-      <!-- SLIDE 23: RANGKUMAN -->
+      <!-- SLIDE 23: LATIHAN TERBIMBING -->
+      <section>
+        <h2>Latihan Terbimbing: Protokol Evaluasi</h2>
+        <p>Menulis protokol evaluasi sebelum menyentuh data uji, lalu menguji apakah selisih dua model benar-benar berarti.</p>
+
+        <div class="bridge-grid">
+          <div class="bridge-step">
+            <span class="c-num-circle c-num-blue">1</span>
+            <div>
+              <h4 style="color: var(--ctp-blue)">Pisahkan Data</h4>
+              <p>Pisahkan galeri (indeks) dari kueri uji, lalu periksa duplikat agar tak ada item uji yang bocor ke dalam indeks.</p>
+            </div>
+          </div>
+          <div class="bridge-step">
+            <span class="c-num-circle c-num-mauve">2</span>
+            <div>
+              <h4 style="color: var(--ctp-mauve)">Ukur Metrik</h4>
+              <p>Hitung <code>Recall@1</code>, <code>Recall@10</code>, dan MRR &mdash; selalu sertakan ukuran galeri.</p>
+            </div>
+          </div>
+          <div class="bridge-step">
+            <span class="c-num-circle c-num-teal">3</span>
+            <div>
+              <h4 style="color: var(--ctp-teal)">Uji Signifikansi</h4>
+              <p>Bandingkan dua model dengan selang <em>bootstrap</em> dan uji permutasi berpasangan.</p>
+            </div>
+          </div>
+          <div class="bridge-step">
+            <span class="c-num-circle c-num-green">4</span>
+            <div>
+              <h4 style="color: var(--ctp-green)">Analisis &amp; Audit</h4>
+              <p>Kategorikan kegagalan, lalu audit etika: kelompok mana yang tidak terwakili di galeri?</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Latihan hanya memakai <strong>data sintetis</strong> dan cukup dengan <code>numpy</code> &mdash; tanpa unduhan. Protokol yang Anda susun langsung menjadi kerangka <strong>Milestone M4</strong> pada proyek akhir.</div></div>
+        <div class="slide-links">
+          <a href="hands-on/mgg13-hands-on.html" class="slide-btn slide-btn-primary"><span class="material-symbols-outlined">science</span> Buka Lembar Kerja</a>
+          <a href="pdf/mgg13-hands-on.pdf" class="slide-btn slide-btn-secondary"><span class="material-symbols-outlined">picture_as_pdf</span> Unduh PDF</a>
+        </div>
+
+        <aside class="notes">
+          Buka sesi latihan dengan menegaskan urutannya: protokol lebih dulu, angka kemudian. Tunjukkan bahwa satu kesalahan pemisahan data sudah cukup menaikkan Recall@1 dari 0,62 ke 1,00, dan bahwa selisih dua model bisa tampak meyakinkan dengan 100 kueri tetapi tidak konklusif dengan 25 kueri. Tekankan bahwa lembar kerja ini adalah kerangka langsung untuk Milestone M4, sehingga dapat dikerjakan sambil menyiapkan laporan proyek.
+        </aside>
+      </section>
+
+      <!-- SLIDE 24: RANGKUMAN -->
       <section>
         <h2>Rangkuman &amp; Poin Kunci</h2>
         <p>Mengukur, memahami, lalu memperbaiki:</p>
@@ -760,7 +807,7 @@
         </aside>
       </section>
 
-      <!-- SLIDE 24: DISKUSI -->
+      <!-- SLIDE 25: DISKUSI -->
       <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Diskusi Kelas">
         <h2 style="text-align: center; margin-bottom: 24px;">Diskusi Kelas</h2>
         <p style="text-align: center; margin-bottom: 24px;">Diskusikan bersama rekan di samping Anda selama 3&ndash;5 menit:</p>
@@ -772,7 +819,7 @@
         <aside class="notes">Tiga pertanyaan bergerak dari metode (1), ke risiko (2), ke kendala praktis (3). Pertanyaan kedua menyentuh insentif: metrik yang dilaporkan membentuk perilaku tim. Ketiga langsung relevan dengan proyek: evaluasi lengkap memakan waktu, dan aplikasi nyata punya anggaran latensi. Beri waktu 3&ndash;5 menit, lalu minta beberapa kelompok berbagi.</aside>
       </section>
 
-      <!-- SLIDE 25: REFERENSI -->
+      <!-- SLIDE 26: REFERENSI -->
       <section>
         <h2>Referensi &amp; Bacaan Lanjutan</h2>
         <p style="margin-bottom: 20px;">Rekomendasi literatur akademik wajib dan bacaan lanjutan:</p>
@@ -786,7 +833,7 @@
         <aside class="notes">Lima referensi: dua tentang interpretabilitas (Doshi-Velez &amp; Kim; Zhou et al. untuk CAM), satu paper CIDEr sebagai contoh metrik yang dirancang baik, tutorial multimodal untuk bagian evaluasi, dan tautan ke metrik resmi kompetisi VQA/MS COCO sebagai acuan implementasi. Sebutkan bahwa implementasi metrik standar (misalnya pycocoevalcap) biasanya sudah tersedia &mdash; jangan mengimplementasikan dari nol.</aside>
       </section>
 
-      <!-- SLIDE 26: PENUTUP -->
+      <!-- SLIDE 27: PENUTUP -->
       <section>
         <div style="margin: auto 0; text-align: center;">
           <h2 style="font-size: 1.8em; font-weight: 800; color: var(--ctp-text); margin-bottom: 16px;">Terima Kasih</h2>
@@ -816,7 +863,7 @@
         <span class="material-symbols-outlined">chevron_left</span>
       </button>
       <button type="button" class="deck-counter-btn" onclick="Reveal.toggleOverview()" title="Klik untuk Matriks Seluruh Slide (Esc/O)">
-        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">26</span>
+        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">27</span>
       </button>
       <button type="button" class="deck-footer-btn" onclick="Reveal.next()" title="Slide Berikutnya (→ / Space / N)" aria-label="Slide Berikutnya">
         <span class="material-symbols-outlined">chevron_right</span>
