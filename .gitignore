@@ -40,6 +40,15 @@ tugas/*.hst
 tugas/*.out
 tugas/*.pdf
 tugas/*.html
+tugas/*.fls
+tugas/*.fdb_latexmk
+tugas/*.synctex.gz
+
+# Materi ujian BERSIFAT RAHASIA (soal + kunci) -- JANGAN di-commit.
+# PDF-nya pun tidak dibangun CI. Kisi-kisi (uts-kisi-kisi.tex) tetap publik
+# karena ditautkan dari index.html dan dirender CI (lihat deploy-pages.yml).
+tugas/uts-soal.*
+tugas/uts-kunci.*
 
 # Source PPTX decks (not part of the published site)
 origin/
