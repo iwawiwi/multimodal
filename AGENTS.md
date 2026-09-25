@@ -68,6 +68,10 @@ Keputusan yang sudah disetujui pengguna dan **berlaku sampai diubah eksplisit**:
   - Saat audit melaporkan "tugas tidak bisa ditemukan", itu **perilaku yang
     diharapkan**, bukan gap.
   - Kekecualian sempit untuk **materi ujian** diatur di **D-A12**.
+  - **Peta milestone proyek** (minggu → *jenis* deliverable, mis. M0–M4) **boleh**
+    tampil di portal sebagai *scaffolding* pedagogis — lihat kartu "Proyek Akhir"
+    di `index.html`. Yang **tetap tidak boleh** tampil: berkas TOR, rubrik, contoh
+    pengerjaan, dan tenggat mingguan (semuanya lewat LMS).
 - **D-A12 — Materi ujian: kisi-kisi publik lewat portal; soal & kunci rahasia.**
   Perlakuan berbeda dari tugas mingguan (D-A11):
   - **Kisi-kisi UTS** (`tugas/uts-kisi-kisi.tex`) **dipublikasikan**, karena sengaja

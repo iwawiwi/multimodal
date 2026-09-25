@@ -119,6 +119,7 @@ multimodal-v2/
 - Setiap card: `min-height: 420px`, flex column, uniform title/desc/topics/actions
 - **3 state:** `active-ready` (biru, interaktif), `disabled` (abu-abu, button disabled), `milestone` (peach, untuk UTS/UAS)
 - Dual action buttons: "Buka Slide" (primary) + "Ekspor PDF" (secondary)
+- **Grid "Jadwal Evaluasi":** `.milestones-grid` (`repeat(auto-fill, minmax(360px, 1fr))`) berisi tiga `.milestone-card` — **UTS**, **PROYEK** (peta milestone M0–M4; boleh tampil sebagai scaffolding, D-A11), dan **UAS**. Kartu proyek hanya menampilkan *jenis* deliverable per minggu; TOR/rubrik/tenggat tetap lewat LMS.
 
 ### 5.3 Footer
 - Cheatsheet pintasan keyboard (compact, inline flex-wrap chips)
