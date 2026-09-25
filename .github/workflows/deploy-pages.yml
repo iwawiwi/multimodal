@@ -79,17 +79,11 @@ jobs:
           HANDSON_WEEK=13 npm run build:pdf
 
       # Kisi-kisi UTS satu-satunya materi ujian yang dipublikasikan (ditautkan dari
-      # index.html). Soal & kunci bersifat rahasia: di-.gitignore, tidak dibangun di sini.
-      - name: Build Kisi-Kisi UTS (LaTeX / LuaLaTeX)
-        uses: xu-cheng/latex-action@v3
-        with:
-          working_directory: tugas
-          root_file: uts-kisi-kisi.tex
-          latexmk_use_lualatex: true
-          args: "-interaction=nonstopmode -halt-on-error -file-line-error"
-
-      - name: Move kisi-kisi PDF into pdf/
-        run: cp tugas/uts-kisi-kisi.pdf pdf/uts-kisi-kisi.pdf
+      # index.html). Dirender lewat jalur HTML→PDF yang sama dengan dokumen lain
+      # (Vivliostyle + print-formal.css), sehingga tidak perlu TeX Live di runner.
+      # Soal & kunci bersifat rahasia: di-.gitignore, tidak dibangun di sini.
+      - name: Build Kisi-Kisi UTS (Vivliostyle)
+        run: DOC=uts-kisi-kisi npm run build:pdf
 
       - name: Verify PDFs exist
         run: |
