@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pertemuan 15: Review Materi | ITERA</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <link rel="stylesheet" href="css/catppuccin-latte.css">
+</head>
+<body>
+  <header class="deck-header">
+    <div class="deck-header-left">
+      <a href="index.html" class="deck-brand-link" title="Kembali ke Portal Kuliah">
+        <img src="assets/img/logo_2.png" alt="Logo ITERA" class="deck-logo">
+        <img src="assets/img/dikti-saintek-berdampak-color.svg" alt="Logo Dikti Saintek Berdampak" class="deck-logo">
+      </a>
+    </div>
+
+    <div class="deck-header-right">
+      <!-- Aspect Ratio / Projector Switcher -->
+      <div class="nav-dropdown">
+        <button type="button" class="deck-ctrl-btn" id="aspect-btn" onclick="toggleAspectDropdown(event)" title="Sesuaikan Rasio Layar & Proyektor">
+          <span class="material-symbols-outlined">aspect_ratio</span>
+          <span id="aspect-label" class="deck-btn-label">Auto</span>
+          <span class="material-symbols-outlined" style="font-size: 14px;">arrow_drop_down</span>
+        </button>
+        <div class="nav-dropdown-menu" id="aspect-menu">
+          <button type="button" class="dropdown-item active" data-aspect="auto" onclick="setAspectMode('auto')">
+            <span class="item-title">Auto</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-9" onclick="setAspectMode('16-9')">
+            <span class="item-title">16:9</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-10" onclick="setAspectMode('16-10')">
+            <span class="item-title">16:10</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="4-3" onclick="setAspectMode('4-3')">
+            <span class="item-title">4:3</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="mobile" onclick="setAspectMode('mobile')">
+            <span class="item-title">Mobile</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="text-large" onclick="setAspectMode('text-large')">
+            <span class="item-title">Teks Besar</span>
+          </button>
+        </div>
+      </div>
+
+      <button type="button" class="deck-ctrl-btn" onclick="Reveal.toggleOverview()" title="Lihat Matriks Seluruh Slide (Esc/O)">
+        <span class="material-symbols-outlined">grid_view</span>
+        <span class="deck-btn-label">Overview</span>
+      </button>
+      <button type="button" class="deck-ctrl-btn" onclick="openShortcutsModal()" title="Panduan Pintasan Keyboard (?)">
+        <span class="material-symbols-outlined">keyboard</span>
+        <span class="deck-btn-label">Pintasan</span>
+      </button>
+      <a href="index.html" class="deck-ctrl-btn" title="Kembali ke Portal Kuliah">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span class="deck-btn-label">Portal</span>
+      </a>
+    </div>
+  </header>
+  <div class="deck-progress-track"><div class="deck-progress-bar" id="deck-progress-bar"></div></div>
+  <div id="shortcuts-modal" onclick="closeShortcutsModal(event)"><div class="modal-content" onclick="event.stopPropagation()"><div class="modal-header"><h4 style="margin:0;font-weight:800"><span class="material-symbols-outlined icon-blue">keyboard</span> Pintasan Navigasi Presentasi</h4><button class="modal-close" onclick="closeShortcutsModal()">&times;</button></div><div class="shortcut-row"><span>Slide berikutnya</span><span><span class="kbd-key">Space</span> / <span class="kbd-key">→</span></span></div><div class="shortcut-row"><span>Slide sebelumnya</span><span><span class="kbd-key">←</span></span></div><div class="shortcut-row"><span>Catatan dosen</span><span><span class="kbd-key">S</span></span></div></div></div>
+  <div class="reveal"><div class="slides">
+
+      <!-- SLIDE 1: COVER -->
+      <section id="deck-title">
+        <div style="margin: auto 0; text-align: left;">
+          <h1 style="font-size: 2.3em; line-height: 1.15; font-weight: 800; color: var(--ctp-text); margin-bottom: 12px; letter-spacing: -0.025em;">
+            Pembelajaran Mesin Multimodal
+          </h1>
+          <div style="font-size: 1.15em; font-weight: 600; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.4;">
+            Pertemuan 15 &bull; Review Materi
+          </div>
+          <div style="max-width: 620px; background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-left: 3.5px solid var(--ctp-blue); border-radius: 12px; padding: 18px 24px;">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">
+              Dosen Pengampu
+            </div>
+            <div style="font-size: 1.1em; font-weight: 800; color: var(--ctp-text); margin-bottom: 6px;">
+              I Wayan Wiprayoga Wisesa
+            </div>
+            <div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;">
+              Program Studi Teknik Informatika<br>
+              Fakultas Teknologi Industri<br>
+              Institut Teknologi Sumatera (ITERA)<br>
+              <span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Sesi penutup sebelum UAS. Tujuannya bukan menambah materi, melainkan merangkai seluruh semester menjadi satu peta yang koheren &mdash; agar mahasiswa dapat menempatkan setiap topik dalam gambaran besar dan siap mempertanggungjawabkan proyeknya. Sampaikan bahwa sesi ini juga menjadi gladi terakhir sebelum presentasi proyek di UAS.
+        </aside>
+      </section>
+
+      <!-- SLIDE 2: TUJUAN -->
+      <section>
+        <h2>Tujuan Sesi Review</h2>
+        <p style="margin-bottom: 24px;">Di akhir sesi ini, mahasiswa diharapkan mampu:</p>
+
+        <div class="grid-4">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-blue">01</span>
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Konsolidasi</h4>
+            </div>
+            <p>Menyatukan konsep kunci dari Pertemuan 1 hingga 14 menjadi peta yang koheren.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-mauve">02</span>
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Menghubungkan</h4>
+            </div>
+            <p>Menjelaskan bagaimana tiap topik saling terkait dan menopang sistem multimodal utuh.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-teal">03</span>
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Identifikasi Celah</h4>
+            </div>
+            <p>Menemukan area materi yang masih lemah untuk didalami sebelum UAS.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-peach">04</span>
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Gladi UAS</h4>
+            </div>
+            <p>Menyiapkan diri mempertanggungjawabkan proyek akhir sebagai pengganti UAS tertulis.</p>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Tekankan bahwa sesi ini punya dua sisi: konsolidasi akademik dan persiapan praktis. Capaian ketiga menyentuh kejujuran intelektual &mdash; setiap mahasiswa perlu mengidentifikasi celahnya sendiri. Capaian keempat menegaskan bahwa &ldquo;UAS&rdquo; di mata kuliah ini adalah pertanggungjawaban proyek, bukan ujian tertulis.
+        </aside>
+      </section>
+
+      <!-- SLIDE 3: PETA ALUR SEMESTER -->
+      <section>
+        <h2>Peta Alur Semester</h2>
+        <p>Dari UTS hingga UAS &mdash; bagaimana paruh kedua dibangun di atas paruh pertama:</p>
+
+        <table class="c-table" style="margin-top: 10px;">
+          <thead>
+            <tr>
+              <th style="width: 14%;">Pertemuan</th>
+              <th style="width: 46%;">Topik</th>
+              <th style="width: 40%;">Peran dalam Alur</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">W01&ndash;W07</td>
+              <td>Tiga pilar: representasi, penyejajaran, fusi</td>
+              <td>Fondasi (diuji lewat <strong>UTS tertulis</strong>, W08)</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">W09</td>
+              <td>Arsitektur Transformer Multimodal</td>
+              <td>Mesin yang menyatukan pilar</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">W10&ndash;W11</td>
+              <td>Aplikasi: Captioning, VQA &amp; Sentimen</td>
+              <td>Dari pemahaman ke penalaran multimodal</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">W12</td>
+              <td>Generasi Multimodal &amp; Etika</td>
+              <td>Dari memahami ke mencipta</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">W13&ndash;W14</td>
+              <td>Evaluasi &amp; Studi Kasus Terpadu</td>
+              <td>Mengukur, men-<em>debug</em>, sintesis + klinik proyek</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">W15&ndash;W16</td>
+              <td>Review Materi &rarr; UAS</td>
+              <td>Gladi &amp; pertanggungjawaban <strong>proyek</strong></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="c-callout c-callout-info" style="margin-top: 10px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Catatan penting:</strong> UTS adalah <strong>ujian tertulis</strong> (W01&ndash;W07), sedangkan UAS adalah <strong>presentasi &amp; pertanggungjawaban proyek</strong> (W09&ndash;W15) &mdash; bukan ujian tertulis.</div></div>
+
+        <aside class="notes">
+          Slide ini adalah pemandu seluruh sesi. Telusuri dari atas: paruh pertama membangun tiga pilar; UTS mengujinya; paruh kedua memakai pilar itu untuk membangun aplikasi. Tekankan bahwa W09 (arsitektur transformer) adalah jembatan &mdash; ia menjelaskan mesin yang dipakai oleh semua aplikasi setelahnya. Jika mahasiswa hanya sempat mengulang satu hal, ulangilah alur ini.
+        </aside>
+      </section>
+
+      <!-- SLIDE 4: DIVIDER BAGIAN 1 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(30,102,245,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-blue">Bagian 1</span>
+          <h1>Fondasi: Tiga Pilar</h1>
+          <p class="subtitle">
+            Representasi, penyejajaran, dan fusi &mdash; materi pra-UTS yang menopang segalanya.
+          </p>
+        </div>
+        <aside class="notes">Bagian pertama me-review materi pra-UTS secara padat. Meskipun UTS sudah lewat, fondasi ini tetap diuji dalam bentuk pemahaman saat presentasi proyek &mdash; penguji dapat menanyakan mengapa sebuah pilihan representasi atau fusi diambil. Tekankan bahwa review ini bukan pengulangan, melainkan penyegaran sudut pandang.</aside>
+      </section>
+
+      <!-- SLIDE 5: TIGA PILAR -->
+      <section>
+        <h2>Tiga Pilar Mata Kuliah</h2>
+        <p>Semua tugas multimodal dapat dipetakan ke tiga pilar ini:</p>
+
+        <div class="grid-3" style="margin-top: 14px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Representasi</h4>
+            </div>
+            <p>Mengubah tiap modalitas menjadi vektor yang bermakna. Tanpa representasi yang baik, tidak ada yang bisa diselaraskan atau difusikan.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Penyejajaran</h4>
+            </div>
+            <p>Menyelaraskan elemen antar modalitas &mdash; secara temporal, spasial, atau struktural. Jembatan antara dua dunia.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Fusi</h4>
+            </div>
+            <p>Menggabungkan informasi dari modalitas berbeda untuk mengambil keputusan atau menghasilkan keluaran yang lebih kaya.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div><strong>Uji pemahaman cepat:</strong> ambil satu tugas (misalnya retrieval) dan tunjuk bagian mana yang merupakan representasi, penyejajaran, dan fusi. Jika ketiganya jelas, Anda memahami kerangka mata kuliah ini.</div></div>
+
+        <aside class="notes">
+          Minta mahasiswa melakukan uji pemahaman di callout sebagai latihan langsung. Tekankan bahwa kerangka tiga pilar berasal dari survei Baltrušaitis et al. (2018) yang menjadi rujukan utama mata kuliah. Sebutkan bahwa penyejajaran sering diabaikan pemula, padahal ia yang membuat fusi bermakna &mdash; memfusikan fitur yang tidak selaras hanya menghasilkan derau.
+        </aside>
+      </section>
+
+      <!-- SLIDE 6: REKAP REPRESENTASI -->
+      <section>
+        <h2>Rekap: Representasi per Modalitas</h2>
+        <p>Encoder yang berbeda untuk sifat data yang berbeda:</p>
+
+        <div class="grid-3" style="margin-top: 14px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Teks</h4>
+            </div>
+            <p>Word embeddings &rarr; contextual (BERT) &rarr; RNN/LSTM &rarr; Transformer encoder. Modern: embedding kontekstual dua arah.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Gambar</h4>
+            </div>
+            <p>CNN (ResNet) untuk fitur hierarkis; Vision Transformer (ViT) untuk representasi berbasis <em>patch</em>.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Audio &amp; Video</h4>
+            </div>
+            <p>Spektrogram &amp; MFCC untuk audio; 3D CNN dan RNN/LSTM untuk sekuens video.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Benang merah:</strong> semua modalitas akhirnya menjadi <em>urutan vektor</em> &mdash; inilah yang memungkinkan transformer memprosesnya dengan cara yang seragam.</div></div>
+
+        <aside class="notes">
+          Tekankan persamaan lintas modalitas: pada akhirnya semuanya menjadi urutan vektor, sehingga arsitektur yang sama (transformer + attention) dapat menanganinya. Sebutkan bahwa ViT pada dasarnya memperlakukan gambar sebagai urutan patch &mdash; jembatan konseptual menuju W09. Tanyakan: mengapa MFCC dan spektrogram keduanya dipakai? Karena keduanya menangkap aspek berbeda dari sinyal audio.
+        </aside>
+      </section>
+
+      <!-- SLIDE 7: REKAP FUSI & ATTENTION -->
+      <section>
+        <h2>Rekap: Fusi &amp; Attention</h2>
+        <p>Empat strategi dan satu mekanisme yang menyatukannya:</p>
+
+        <table class="c-table" style="margin-top: 10px;">
+          <thead>
+            <tr>
+              <th style="width: 26%;">Strategi</th>
+              <th style="width: 40%;">Kapan Digabung</th>
+              <th style="width: 34%;">Karakteristik</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Early</td>
+              <td>Sebelum pemrosesan mendalam</td>
+              <td>Sederhana; interaksi dini, kurang fleksibel</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Late</td>
+              <td>Setelah tiap modalitas diputuskan</td>
+              <td>Robust bila modalitas hilang; interaksi minim</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Intermediate</td>
+              <td>Di tengah, setelah fitur diekstrak</td>
+              <td>Keseimbangan interaksi dan fleksibilitas</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Hybrid</td>
+              <td>Di beberapa titik sekaligus</td>
+              <td>Paling kaya; paling kompleks dilatih</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="c-callout c-callout-success" style="margin-top: 12px;"><span class="material-symbols-outlined icon-green">check_circle</span><div><strong>Attention adalah mesin penyejajaran,</strong> bukan sekadar komponen: <em>self-attention</em> memahami konteks internal, <em>cross-attention</em> menghubungkan antar modalitas &mdash; dipakai di captioning, VQA, hingga ruang bersama CLIP.</div></div>
+
+        <aside class="notes">
+          Minta mahasiswa mengingat trade-off tiap strategi sebelum membuka tabel. Tekankan bahwa attention melampaui batas strategi klasik: ia dapat berperan sebagai penyejajar <em>dan</em> fusi sekaligus, karena ia memilih informasi relevan secara dinamis. Sebutkan bahwa cross-attention muncul kembali berulang kali di W10&ndash;W12 &mdash; inilah satu ide yang paling sering dipakai di semester ini.
+        </aside>
+      </section>
+
+      <!-- SLIDE 8: DIVIDER BAGIAN 2 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(136,57,239,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-mauve">Bagian 2</span>
+          <h1>Pasca-UTS: Arsitektur &amp; Aplikasi</h1>
+          <p class="subtitle">
+            Dari mesin (W09) ke aplikasi (W10&ndash;W12) &mdash; bagaimana pilar menjadi produk.
+          </p>
+        </div>
+        <aside class="notes">Bagian kedua me-review paruh setelah UTS. Urutannya mengikuti jadwal: arsitektur transformer sebagai mesin, lalu tiga blok aplikasi. Tekankan bahwa bagian ini adalah inti pertanggungjawaban proyek &mdash; penguji akan menanyakan keputusan arsitektur yang mahasiswa ambil.</aside>
+      </section>
+
+      <!-- SLIDE 9: ARSITEKTUR TRANSFORMER MULTIMODAL -->
+      <section>
+        <h2>Arsitektur Transformer Multimodal (W09)</h2>
+        <p>Mesin yang menyatukan pilar menjadi satu model:</p>
+
+        <div class="grid-3" style="margin-top: 12px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">ViLBERT</h4>
+            </div>
+            <p><em>Dual-stream</em> transformer: dua jalur bertukar informasi lewat <em>Co-Attentional Layers</em>.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">LXMERT</h4>
+            </div>
+            <p>Tiga encoder: teks, visual, dan lintas modalitas &mdash; sangat efektif untuk VQA.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">CLIP</h4>
+            </div>
+            <p>Dua encoder + <em>contrastive learning</em> ke ruang bersama. Fondasi retrieval &amp; model generatif.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Pola besar:</strong> dari encoder terpisah yang digabung &rarr; menjadi satu transformer yang memproses semua modalitas bersama, dilatih pada tugas besar lebih dulu (<em>pre-training</em>) lalu disetel halus.</div></div>
+
+        <aside class="notes">
+          Tekankan pergeseran desain dari W09: model multimodal modern tidak lagi menempelkan dua encoder, melainkan memproses modalitas bersama sejak awal dengan attention berlapis. Sebutkan bahwa CLIP adalah jembatan ke W12 (retrieval &amp; generasi) dan W14 (proyek). Tiga nama ini harus dapat dibedakan mahasiswa: ViLBERT (dual-stream), LXMERT (tiga encoder), CLIP (contrastive, ruang bersama).
+        </aside>
+      </section>
+
+      <!-- SLIDE 10: REKAP APLIKASI (PETA) -->
+      <section>
+        <h2>Rekap: Tiga Aplikasi</h2>
+        <p>Bentuk masukan dan keluaran menentukan tantangannya:</p>
+
+        <div class="grid-3" style="margin-top: 14px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Captioning (W10)</h4>
+            </div>
+            <p><strong>Gambar &rarr; Teks.</strong> Menghasilkan deskripsi bebas. Tantangan: <em>grounding</em> dan halusinasi.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">VQA (W11)</h4>
+            </div>
+            <p><strong>Gambar + Teks &rarr; Teks.</strong> Menjawab pertanyaan spesifik. Tantangan: penalaran &amp; <em>shortcut</em>.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Sentimen (W11)</h4>
+            </div>
+            <p><strong>Teks + Audio + Visual &rarr; Kelas.</strong> Mendeteksi emosi. Tantangan: fusi konflik &amp; sarkasme.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div><strong>Semakin banyak modalitas, semakin sulit.</strong> Captioning (2 modalitas) &rarr; VQA (2) &rarr; sentimen (3). Setiap tambahan modalitas memperbesar masalah penyejajaran dan fusi.</div></div>
+
+        <aside class="notes">
+          Tanyakan ke kelas: tantangan apa yang khas pada tiap aplikasi? Jawaban yang diharapkan: captioning punya masalah halusinasi; VQA punya masalah <em>shortcut</em> (menebak dari pertanyaan); sentimen punya masalah konflik antar modalitas. Tekankan bahwa ketiganya memakai cross-attention yang sama, hanya tujuannya berbeda.
+        </aside>
+      </section>
+
+      <!-- SLIDE 11: GENERASI & RETRIEVAL -->
+      <section>
+        <h2>Generasi &amp; Retrieval (W12)</h2>
+        <p>Dari memahami ke mencipta, dan dari mencipta ke mencari:</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Generasi</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Text-to-image (DALL-E, Stable Diffusion) dan text-to-video.</li>
+              <li>Model: GAN, VAE, diffusion, transformer.</li>
+              <li>Dikendalikan lewat <em>cross-attention</em> terhadap kondisi teks.</li>
+            </ul>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Retrieval</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Mencari konten lintas modalitas lewat <em>joint embedding space</em>.</li>
+              <li>Dilatih dengan <em>contrastive learning</em> (InfoNCE, CLIP).</li>
+              <li>Fondasi langsung proyek akhir.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Tanggung jawab menyertai kemampuan:</strong> generasi membawa risiko bias, privasi, <em>deepfake</em>, dan halusinasi &mdash; bagian etika yang wajib disertakan dalam laporan proyek.</div></div>
+
+        <aside class="notes">
+          Tekankan bahwa generasi dan retrieval berbagi fondasi yang sama: ruang embedding bersama. Pada generasi, kondisi teks mengarahkan proses; pada retrieval, jarak di ruang bersama menentukan peringkat. Sebutkan bahwa etika bukan topik terpisah: generasi berisiko menyebarkan bias pada skala besar, dan retrieval berisiko memberi layanan tidak setara pada subkelompok.
+        </aside>
+      </section>
+
+      <!-- SLIDE 12: DIVIDER BAGIAN 3 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(23,146,153,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-teal">Bagian 3</span>
+          <h1>Evaluasi &amp; Etika</h1>
+          <p class="subtitle">
+            Mengukur dengan jujur, dan bertanggung jawab atas hasilnya.
+          </p>
+        </div>
+        <aside class="notes">Bagian ketiga me-review W12 (etika) dan W13 (evaluasi). Tekankan bahwa dua topik ini saling terkait: evaluasi yang baik adalah satu-satunya cara mendeteksi bias dan ketimpangan. Bagian ini juga yang paling sering ditanyakan pada presentasi proyek.</aside>
+      </section>
+
+      <!-- SLIDE 13: REKAP EVALUASI KUANTITATIF -->
+      <section>
+        <h2>Rekap: Evaluasi Kuantitatif</h2>
+        <p>Metrik per jenis keluaran (W10&ndash;W13):</p>
+
+        <table class="c-table" style="margin-top: 10px;">
+          <thead>
+            <tr>
+              <th style="width: 30%;">Jenis Keluaran</th>
+              <th style="width: 70%;">Metrik</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Teks (generasi)</td>
+              <td>BLEU, METEOR, CIDEr, SPICE</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Teks singkat (VQA)</td>
+              <td>VQA Accuracy, WUPS</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Kelas / skor</td>
+              <td>Accuracy, Precision, Recall, \(F_1\); MAE, RMSE</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Peringkat (retrieval)</td>
+              <td>Recall@K, MAP, MRR</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 12px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Jangan lupakan:</strong> angka agregat menyembunyikan masalah. Selalu laporkan metrik <strong>per subkelompok</strong> &mdash; inilah pelajaran utama studi kasus W13.</div></div>
+
+        <aside class="notes">
+          Minta mahasiswa memilih metrik yang tepat untuk proyek mereka sendiri sebelum membuka tabel. Tekankan bahwa pemilihan metrik bukan detail administratif &mdash; ia membentuk keputusan desain (misalnya mengoptimalkan R@1 dapat mengorbankan R@10). Sebutkan kembali contoh W13: R@1 agregat 35% ternyata menyembunyikan R@1 hanya 9,5% pada subkelompok budaya lokal.
+        </aside>
+      </section>
+
+      <!-- SLIDE 14: REKAP EVALUASI KUALITATIF & ETIKA -->
+      <section>
+        <h2>Rekap: Evaluasi Kualitatif &amp; Etika</h2>
+        <p>Memahami sebab, dan bertanggung jawab atas dampak:</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Kualitatif (W13)</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Analisis kesalahan sistematis: identifikasi, kategorisasi, akar masalah.</li>
+              <li>Interpretasi: <em>attention maps</em>, saliency, perturbasi, ablasi.</li>
+              <li>Tantangan debugging: lintas modalitas, abstrak, non-deterministik.</li>
+            </ul>
+          </div>
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Etika (W12)</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Bias: replikasi dan penguatan bias data; korelasi palsu.</li>
+              <li>Privasi: data multimodal sulit dianonimkan.</li>
+              <li>Fairness: definisi dan pengukuran diperdebatkan; mitigasi berkelanjutan.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-success" style="margin-top: 14px;"><span class="material-symbols-outlined icon-green">check_circle</span><div><strong>Strategi evaluasi delapan langkah:</strong> definisikan tujuan &rarr; pilih metrik &rarr; analisis kesalahan &rarr; interpretasi &rarr; uji robustness &rarr; audit etika &rarr; penilaian manusia &rarr; iterasi.</div></div>
+
+        <aside class="notes">
+          Tekankan bahwa evaluasi kualitatif dan audit etika bukan pelengkap &mdash; keduanya bagian dari strategi delapan langkah. Sebutkan bahwa langkah audit etika (bias/fairness per subkelompok) sering dilupakan mahasiswa, padahal ini yang membedakan proyek yang matang. Kaitkan dengan laporan proyek: rubrik memberi bobot pada analisis limitasi dan etika.
+        </aside>
+      </section>
+
+      <!-- SLIDE 15: RUMUS KUNCI -->
+      <section>
+        <h2>Rumus-rumus Kunci</h2>
+        <p>Satu halaman untuk mengingat kembali notasi inti:</p>
+
+        <div class="formula-hero" style="margin-top: 8px;">
+          <div class="formula-label">Perhatian, Ruang Bersama, dan Peringkat</div>
+          <div class="formula-math">$$\alpha_i = \mathrm{softmax}\!\big(w^\top \tanh(W_q q + W_v v_i)\big),\quad \mathcal{L}_{\text{InfoNCE}} = -\log\frac{\exp(\mathrm{sim}(v_i,t_i)/\tau)}{\sum_j \exp(\mathrm{sim}(v_i,t_j)/\tau)}$$</div>
+        </div>
+
+        <div class="formula-breakdown">
+          <div class="formula-term-box"><strong>\(\alpha_i,\ \hat{v}\)</strong> Bobot perhatian dan vektor konteks: jumlah berbobot fitur area. Inti cross-attention.</div>
+          <div class="formula-term-box"><strong>\(\mathcal{L}_{\text{InfoNCE}}\)</strong> Menarik pasangan benar mendekat, mendorong yang salah menjauh. Dasar CLIP &amp; retrieval.</div>
+          <div class="formula-term-box"><strong>\(\mathrm{MRR},\ \mathrm{MAP}\)</strong> Ukuran peringkat; \(\mathrm{MRR}\) memakai kebalikan peringkat, \(\mathrm{MAP}\) rata-rata presisi.</div>
+        </div>
+
+        <aside class="notes">
+          Slide ini untuk penyegaran notasi, bukan hafalan rumus. Tunjukkan bahwa rumus perhatian (VQA) dan InfoNCE (CLIP) sebenarnya berbagi prinsip yang sama: menilai kesesuaian lalu menormalkan dengan softmax. Tekankan bahwa pada presentasi proyek, mahasiswa harus dapat menjelaskan <em>arti</em> tiap simbol, bukan menuliskannya. Sebutkan bahwa slide berikutnya berisi latihan terintegrasi.
+        </aside>
+      </section>
+
+      <!-- SLIDE 16: DIVIDER BAGIAN 4 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(223,142,29,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-peach">Bagian 4</span>
+          <h1>Persiapan UAS &amp; Latihan</h1>
+          <p class="subtitle">
+            Latihan terintegrasi, teknik menjawab, dan gladi proyek.
+          </p>
+        </div>
+        <aside class="notes">Bagian terakhir bersifat praktis. Latihan terintegrasi dirancang untuk menyatukan semua pilar dalam satu soal. Tekankan bahwa sesi ini adalah gladi terakhir: setelah ini mahasiswa mempresentasikan proyek pada UAS. Dorong mereka memanfaatkan waktu untuk bertanya.</aside>
+      </section>
+
+      <!-- SLIDE 17: FORMAT & CAKUPAN UAS -->
+      <section>
+        <h2>Format &amp; Cakupan UAS</h2>
+        <p>UAS mata kuliah ini adalah pertanggungjawaban proyek:</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Format</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Presentasi kelompok (waktu ditentukan panitia).</li>
+              <li>Sesi tanya jawab / <em>viva</em> per anggota.</li>
+              <li>Deliverable: laporan, kode, dan hasil eksperimen.</li>
+            </ul>
+          </div>
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Yang Dinilai</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Kedalaman analisis &amp; ablasi.</li>
+              <li>Kemampuan membela keputusan teknis.</li>
+              <li>Kesadaran akan limitasi dan etika.</li>
+              <li>Kontribusi individu tiap anggota.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Bukan ujian tertulis.</strong> Tidak ada soal esai pada UAS; yang ada adalah pertanyaan penguji tentang proyek Anda. Karena itu, kuasai <em>alasan</em> di balik setiap pilihan desain.</div></div>
+
+        <aside class="notes">
+          Tegaskan ulang perbedaan UTS dan UAS: UTS tertulis (W01&ndash;W07), UAS berbasis proyek. Sebutkan bahwa referensi lengkap format dan rubrik ada di TOR proyek yang dibagikan lewat LMS. Ingatkan bahwa pertanyaan penguji biasanya menyasar keputusan desain: mengapa encoder ini, mengapa strategi fusi itu, mengapa metrik tersebut.
+        </aside>
+      </section>
+
+      <!-- SLIDE 18: LATIHAN TERINTEGRASI (D-026) -->
+      <section>
+        <h2>Latihan Terintegrasi: Rumusan</h2>
+        <p>Sebuah tim membangun sistem pencarian gambar berbahasa Indonesia. R@1 = 12%, tetapi tim melaporkan &ldquo;sudah bagus&rdquo; karena kode berjalan tanpa error.</p>
+
+        <table class="c-table" style="margin-top: 10px;">
+          <thead>
+            <tr>
+              <th style="width: 30%;">Klaim Tim</th>
+              <th style="width: 70%;">Pertanyaan Penguji</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Sistem bekerja</td>
+              <td>Metrik apa yang membuktikan itu, dan pada subkelompok mana?</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Akurasi 12%</td>
+              <td>Apakah ini R@1, R@5, atau akurasi klasifikasi? Mengapa metrik itu?</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Tidak ada error</td>
+              <td>Kode tanpa error &ne; model yang berguna. Apa bukti kualitatifnya?</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">help</span><div><p style="margin: 0; font-size: 0.82em; line-height: 1.5;"><strong style="color: var(--ctp-blue);">Diskusikan 3 menit:</strong> (1) diagnosis apa yang Anda berikan? (2) percobaan apa yang Anda sarankan lebih dulu? (3) bagaimana Anda melaporkannya secara jujur?</p></div></div>
+
+        <aside class="notes">
+          Ini latihan terintegrasi yang menyatukan seluruh semester. Jangan beri jawaban dulu; biarkan mahasiswa berlatih berpikir seperti penguji. Arahkan bahwa klaim &ldquo;kode tanpa error&rdquo; adalah kesalahan mendasar &mdash; evaluasi mengukur kinerja, bukan keberhasilan eksekusi. Pertanyaan ini persis yang akan muncul saat presentasi proyek.
+        </aside>
+      </section>
+
+      <!-- SLIDE 19: LATIHAN TERINTEGRASI (PENERAPAN & ANALISIS) -->
+      <section>
+        <h2>Latihan Terintegrasi: Penerapan &amp; Analisis</h2>
+        <p>Diagnosis yang diharapkan &mdash; dari pilar ke evaluasi:</p>
+
+        <div class="grid-3" style="margin-top: 10px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Pilar: Representasi</h4>
+            </div>
+            <p>Uji encoder teks untuk bahasa Indonesia &mdash; mungkin representasinya lemah, bukan arsitekturnya.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Pilar: Penyejajaran</h4>
+            </div>
+            <p>Periksa kualitas ruang bersama (t-SNE) dan ukuran <em>batch</em> contrastive &mdash; apakah gambar &amp; teks benar-benar menyatu?</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Evaluasi Berlapis</h4>
+            </div>
+            <p>Laporkan R@1/R@5/R@10 per subkelompok; analisis 20 kesalahan kualitatif; bandingkan dengan baseline.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-success" style="margin-top: 14px;"><span class="material-symbols-outlined icon-green">check_circle</span><div><strong>Jawaban pertanyaan 3:</strong> laporkan apa adanya &mdash; baseline, per-subkelompok, dan limitasi &mdash; lalu usulkan perbaikan berbasis bukti. Kejujuran metodologis adalah bagian dari penilaian.</div></div>
+
+        <aside class="notes">
+          Bandingkan jawaban mahasiswa dengan diagnosis ini. Tekankan urutan: periksa representasi dan penyejajaran sebelum menambah kapasitas model. Sebutkan bahwa jawaban pertanyaan ketiga (melaporkan apa adanya) adalah pesan etis sesi ini: laporan yang jujur tentang kegagalan lebih bernilai daripada klaim berlebihan. Ini juga sesuai rubrik proyek.
+        </aside>
+      </section>
+
+      <!-- SLIDE 20: TEKNIK MENJAWAB -->
+      <section>
+        <h2>Teknik Menjawab &amp; Pertanyaan Penguji</h2>
+        <p>Pola yang berguna saat presentasi dan tanya jawab:</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Menjawab Pertanyaan Konsep</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Mulai dari intuisi, lalu rumus, lalu contoh.</li>
+              <li>Sebutkan asumsi dan batasnya.</li>
+              <li>Hubungkan ke pilar (representasi / alignment / fusi).</li>
+            </ul>
+          </div>
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Membela Keputusan Teknis</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Sebutkan alternatif yang dipertimbangkan.</li>
+              <li>Tunjukkan bukti (ablasi, metrik) yang mendukung.</li>
+              <li>Akui keterbatasan dengan jujur.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Jangan mengarang.</strong> Jika tidak tahu, katakan tidak tahu lalu tawarkan cara mencarinya. Penguji lebih menghargai kejujuran daripada jawaban yang dikarang.</div></div>
+
+        <aside class="notes">
+          Bagikan pola ini sebagai persiapan gladi. Tekankan dua hal: (1) selalu hubungkan jawaban ke kerangka tiga pilar &mdash; ini menunjukkan pemahaman sistemik; (2) akui keterbatasan &mdash; penguji sengaja menanyakan limitasi untuk menguji kedewasaan ilmiah. Sebutkan bahwa mengarang jawaban adalah satu-satunya kesalahan yang tidak dapat dimaafkan dalam viva.
+        </aside>
+      </section>
+
+      <!-- SLIDE 21: TIPS BELAJAR -->
+      <section>
+        <h2>Tips Belajar &amp; Strategi Review</h2>
+        <p>Lima kebiasaan yang membuat review efektif:</p>
+
+        <div class="grid-4" style="margin-top: 12px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Pahami Intuisi</h4>
+            </div>
+            <p>Kuasai <em>mengapa</em> attention bekerja, bukan sekadar rumusnya.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Latih Diagram</h4>
+            </div>
+            <p>Biasakan membaca dan menggambar ulang arsitektur model.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Kuasai Trade-off</h4>
+            </div>
+            <p>Hafalkan kelebihan &amp; kekurangan tiap strategi fusi dan representasi.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Tinjau Hasil Lab</h4>
+            </div>
+            <p>Pelajari kembali hands-on dan kode Anda &mdash; penguji sering menanyakannya.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div><strong>Tips kelima:</strong> bertanya. Tidak ada pertanyaan yang bodoh pada sesi review &mdash; ini kesempatan terakhir sebelum UAS.</div></div>
+
+        <aside class="notes">
+          Empat kartu adalah kebiasaan belajar; callout menambahkan yang kelima. Tekankan bahwa penguji sering menanyakan kode hands-on: mengapa memilih arsitektur ini, apa yang gagal, bagaimana memperbaikinya. Sebutkan bahwa memahami trade-off lebih penting daripada menghafal detail &mdash; pertanyaan UAS (dan viva) menguji penalaran, bukan ingatan.
+        </aside>
+      </section>
+
+      <!-- SLIDE 22: RANGKUMAN -->
+      <section>
+        <h2>Rangkuman Akhir</h2>
+        <p>Satu semester dalam dua gagasan besar:</p>
+
+        <div class="grid-2" style="margin-top: 10px;">
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue);">Gagasan 1: Tiga Pilar</h4>
+            </div>
+            <ul style="font-size: 0.76em; margin: 0; padding-left: 16px; line-height: 1.55;">
+              <li><strong>Representasi</strong> &rarr; modalitas menjadi vektor bermakna.</li>
+              <li><strong>Penyejajaran</strong> &rarr; elemen antar modalitas dihubungkan (attention).</li>
+              <li><strong>Fusi</strong> &rarr; informasi digabung untuk keputusan atau generasi.</li>
+              <li>Semua aplikasi (W10&ndash;W12) adalah kombinasi ketiganya.</li>
+            </ul>
+          </div>
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach);">Gagasan 2: Ukur &amp; Bertanggung Jawab</h4>
+            </div>
+            <ul style="font-size: 0.76em; margin: 0; padding-left: 16px; line-height: 1.55;">
+              <li><strong>Evaluasi</strong> &rarr; metrik berlapis, analisis kesalahan, interpretasi.</li>
+              <li><strong>Etika</strong> &rarr; bias, privasi, fairness adalah bagian rekayasa.</li>
+              <li><strong>Kejujuran</strong> &rarr; laporkan limitasi, jangan klaim berlebihan.</li>
+            </ul>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Tutup dengan dua gagasan besar yang merangkum seluruh semester. Pertama, semua yang dibangun bertumpu pada tiga pilar &mdash; kemampuan menjelaskan posisi tiap topik dalam kerangka ini adalah tanda pemahaman sejati. Kedua, kemampuan teknis tanpa evaluasi jujur dan kesadaran etis tidak cukup. Sampaikan bahwa UAS adalah kesempatan menunjukkan keduanya.
+        </aside>
+      </section>
+
+      <!-- SLIDE 23: DISKUSI -->
+      <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Diskusi Kelas">
+        <h2 style="text-align: center; margin-bottom: 24px;">Diskusi &amp; Tanya Jawab Akhir</h2>
+        <p style="text-align: center; margin-bottom: 24px;">Sesi terbuka: tanyakan apa pun sebelum UAS.</p>
+        <div style="display: flex; flex-direction: column; gap: 14px; max-width: 860px; margin: 0 auto;">
+          <div class="c-callout c-callout-info"><span class="material-symbols-outlined icon-blue">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-blue);">Konsep:</strong> topik mana yang masih terasa kabur, dan di mana Anda tersangkut?</p></div></div>
+          <div class="c-callout c-callout-warning"><span class="material-symbols-outlined icon-mauve">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-mauve);">Proyek:</strong> keputusan desain mana pada proyek Anda yang paling sulit dipertanggungjawabkan?</p></div></div>
+          <div class="c-callout c-callout-success"><span class="material-symbols-outlined icon-teal">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-teal);">Strategi:</strong> apa rencana Anda menyelesaikan deliverable sebelum sesi UAS?</p></div></div>
+        </div>
+        <aside class="notes">Sesi terbuka terakhir sebelum UAS. Dorong mahasiswa bertanya secara spesifik &mdash; bukan &ldquo;apakah materi ini keluar?&rdquo; melainkan &ldquo;mengapa X bekerja seperti itu?&rdquo;. Gunakan pertanyaan ketiga untuk memastikan setiap kelompok punya rencana konkret menyelesaikan deliverable. Catat pertanyaan berulang untuk perbaikan materi tahun berikutnya.</aside>
+      </section>
+
+      <!-- SLIDE 24: REFERENSI -->
+      <section>
+        <h2>Referensi Utama Mata Kuliah</h2>
+        <p style="margin-bottom: 20px;">Rujukan menyeluruh untuk review dan proyek:</p>
+        <ol style="list-style: none; padding: 0; margin: 0; counter-reset: ref-counter;">
+          <li style="counter-increment: ref-counter; padding: 13px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[1]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Baltrušaitis, T., Ahuja, C., &amp; Morency, L.-P. (2018).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Multimodal Machine Learning: A Survey and Taxonomy</em>. IEEE TPAMI, 40(2), 421&ndash;443. &mdash; kerangka tiga pilar.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 13px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[2]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Liang, P., Zadeh, A., &amp; Morency, L.-P. (2023).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Tutorial on Multimodal Machine Learning</em>. ICML. &mdash; survei terkini seluruh topik kuliah.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 13px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[3]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Goodfellow, I., Bengio, Y., &amp; Courville, A. (2016).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Deep Learning</em>. MIT Press. &mdash; dasar jaringan saraf, generatif (Bab 20), dan aplikasi (Bab 12).</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 13px 0; display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[4]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Paper riset &amp; repositori.</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;">NeurIPS/ICML/CVPR/ACL; Hugging Face Transformers, PyTorch &mdash; untuk implementasi dan pendalaman.</p></div></li>
+        </ol>
+        <aside class="notes">Empat rujukan utama: survei tiga pilar (Baltrušaitis), tutorial ICML (Liang), buku teks (Goodfellow), dan sumber praktik (paper + repositori). Sebutkan bahwa survei Baltrušaitis adalah bacaan paling penting untuk memahami kerangka mata kuliah. Anjurkan mahasiswa membaca ulang referensi yang paling relevan dengan proyeknya sebelum presentasi.</aside>
+      </section>
+
+      <!-- SLIDE 25: PENUTUP -->
+      <section>
+        <div style="margin: auto 0; text-align: center;">
+          <h2 style="font-size: 1.8em; font-weight: 800; color: var(--ctp-text); margin-bottom: 16px;">Semoga Sukses di UAS</h2>
+          <p style="font-size: 1.05em; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.6;">Pertemuan 16:<br><strong style="color: var(--ctp-blue);">Presentasi &amp; Pertanggungjawaban Proyek Akhir</strong></p>
+          <div style="background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-radius: 12px; padding: 18px 24px; display: inline-block; max-width: 480px;"><div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">Pertanyaan &amp; Diskusi</div><div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;"><span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span></div></div>
+        </div>
+        <aside class="notes">Tutup semester dengan menegaskan bahwa UAS adalah kesempatan menunjukkan pemahaman sistemik dan kejujuran metodologis. Sampaikan bahwa penguji menilai proses berpikir, bukan kesempurnaan hasil. Akhiri dengan ucapan terima kasih atas kerja keras semester ini dan ajakan menyelesaikan deliverable proyek tepat waktu.</aside>
+      </section>
+  </div></div>
+  <!-- Persistent Edge-to-Edge Deck Footer -->
+  <footer class="deck-footer">
+    <div class="deck-footer-left">
+      <span class="deck-footer-code">IF25-40304</span>
+      <span class="deck-footer-sep">&bull;</span>
+      <span class="deck-footer-dept">Teknik Informatika ITERA</span>
+    </div>
+
+    <div class="deck-footer-center">
+      <button type="button" id="deck-footer-topic" class="deck-footer-topic" onclick="toggleTopicPopover(event)" title="Daftar Isi & Navigasi Cepat Slide (Klik)">
+        <span id="deck-footer-topic-text" class="deck-footer-topic-text">Pertemuan 15 &bull; Review Materi</span>
+        <span class="material-symbols-outlined deck-footer-topic-icon">expand_less</span>
+      </button>
+    </div>
+
+    <div class="deck-footer-right">
+      <button type="button" class="deck-footer-btn" onclick="Reveal.prev()" title="Slide Sebelumnya (← / P)" aria-label="Slide Sebelumnya">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <button type="button" class="deck-counter-btn" onclick="Reveal.toggleOverview()" title="Klik untuk Matriks Seluruh Slide (Esc/O)">
+        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">25</span>
+      </button>
+      <button type="button" class="deck-footer-btn" onclick="Reveal.next()" title="Slide Berikutnya (→ / Space / N)" aria-label="Slide Berikutnya">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </footer>
+  <div class="deck-topic-popover" id="deck-topic-popover"><div class="deck-popover-search-wrap"><input type="text" id="deck-topic-search" class="deck-popover-search" placeholder="Cari slide..." oninput="filterTopicList(this.value)"></div><div class="deck-topic-list" id="deck-topic-list"></div></div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+  <script>
+
+    let currentAspectMode = localStorage.getItem('reveal_aspect_mode') || 'auto';
+
+    function calculateResponsiveDimensions(mode) {
+      const winW = window.innerWidth;
+      const winH = window.innerHeight - 86.5;
+      const ratio = winW / winH;
+
+      if (mode === '16-9') return { width: 1280, height: 720, label: '16:9' };
+      if (mode === '16-10') return { width: 1280, height: 800, label: '16:10' };
+      if (mode === '4-3') return { width: 1024, height: 768, label: '4:3' };
+      if (mode === 'mobile') return { width: 750, height: 1000, label: 'Mobile' };
+      if (mode === 'text-large') return { width: 960, height: 540, label: 'Teks Besar' };
+
+      // Auto mode
+      if (winW <= 768 || ratio < 1.15) {
+        return { width: 750, height: Math.max(900, Math.round(750 / Math.max(0.5, ratio))), label: 'Auto' };
+      } else if (ratio >= 1.65) {
+        return { width: 1280, height: 720, label: 'Auto' };
+      } else if (ratio >= 1.45) {
+        return { width: 1280, height: 800, label: 'Auto' };
+      } else {
+        return { width: 1024, height: 768, label: 'Auto' };
+      }
+    }
+
+    const initialDim = calculateResponsiveDimensions(currentAspectMode);
+
+    Reveal.initialize({
+      width: initialDim.width,
+      height: initialDim.height,
+      margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2.0,
+      hash: true,
+      slideNumber: false,
+      controls: false,
+      progress: false,
+      center: true,
+      touch: true,
+      transition: 'slide',
+      backgroundTransition: 'none',
+      plugins: [ RevealNotes, RevealHighlight, RevealMath.KaTeX ]
+    });
+
+    function updateDeckState(event) {
+      const indices = event ? { h: event.indexh, v: event.indexv } : Reveal.getIndices();
+      const totalSlides = Reveal.getTotalSlides();
+      const currentIdx = indices ? indices.h : 0;
+
+      const progressBar = document.getElementById('deck-progress-bar');
+      if (progressBar) {
+        const progressPercent = totalSlides > 1 ? (currentIdx / (totalSlides - 1)) * 100 : 0;
+        progressBar.style.width = progressPercent + '%';
+      }
+
+      const currentEl = document.getElementById('deck-slide-current');
+      const totalEl = document.getElementById('deck-slide-total');
+      if (currentEl) currentEl.textContent = String(currentIdx + 1).padStart(2, '0');
+      if (totalEl) totalEl.textContent = String(totalSlides).padStart(2, '0');
+
+      const topicEl = document.getElementById('deck-footer-topic-text') || document.getElementById('deck-footer-topic');
+      if (topicEl) {
+        if (currentIdx === 0) {
+          topicEl.textContent = 'Pertemuan 15 \u2022 Review Materi';
+        } else {
+          const currentSlide = Reveal.getCurrentSlide();
+          if (currentSlide) {
+            const topicAttr = currentSlide.getAttribute('data-topic');
+            if (topicAttr) {
+              topicEl.textContent = topicAttr;
+            } else {
+              const heading = currentSlide.querySelector('h2') || currentSlide.querySelector('h1');
+              if (heading) {
+                topicEl.textContent = heading.textContent.trim();
+              } else {
+                topicEl.textContent = 'Pertemuan 15 \u2022 Review Materi';
+              }
+            }
+          }
+        }
+      }
+
+      updateActiveTopicItem(currentIdx);
+    }
+
+    Reveal.on('ready', event => {
+      document.body.classList.add('reveal-ready');
+      updateDeckState(event);
+      buildTopicIndex();
+    });
+    Reveal.on('slidechanged', updateDeckState);
+
+    // =========================================================
+    // Floating Slide Topic Navigation Popover (Daftar Isi)
+    // =========================================================
+    function buildTopicIndex() {
+      const listEl = document.getElementById('deck-topic-list');
+      if (!listEl) return;
+
+      const slides = document.querySelectorAll('.reveal .slides > section');
+      let html = '';
+
+      slides.forEach((slide, idx) => {
+        const topicAttr = slide.getAttribute('data-topic');
+        const h1 = slide.querySelector('h1');
+        const h2 = slide.querySelector('h2');
+        const partEl = slide.querySelector('.section-part-label');
+        const isSectionSlide = slide.classList.contains('section-slide') || !!slide.querySelector('.section-slide-content');
+        const partText = partEl ? partEl.textContent.trim().replace(/\s+/g, ' ') : '';
+
+        const h1Text = h1 ? h1.textContent.trim().replace(/\s+/g, ' ') : '';
+        const h2Text = h2 ? h2.textContent.trim().replace(/\s+/g, ' ') : '';
+        let title = '';
+
+        if (idx === 0) {
+          title = h1Text || 'Review Materi';
+          html += '<div class="deck-topic-section">Pendahuluan & Identitas</div>';
+        } else if (isSectionSlide || partText.startsWith('Bagian')) {
+          const secTitle = h1Text || h2Text || 'Bagian ' + idx;
+          const sectionLabel = partText ? partText + ': ' + secTitle : secTitle;
+          title = secTitle;
+          html += '<div class="deck-topic-section">' + sectionLabel + '</div>';
+        } else if (topicAttr) {
+          title = topicAttr;
+        } else {
+          title = h2Text || h1Text || 'Slide ' + (idx + 1);
+        }
+
+        const numStr = String(idx + 1).padStart(2, '0');
+        html += '<div class="deck-topic-item" data-slide-index="' + idx + '" onclick="jumpToSlide(' + idx + ')"><span class="deck-topic-num">' + numStr + '</span><span class="deck-topic-name" title="' + title + '">' + title + '</span></div>';
+      });
+
+      listEl.innerHTML = html;
+      const currentIdx = Reveal.getIndices ? Reveal.getIndices().h : 0;
+      updateActiveTopicItem(currentIdx);
+    }
+
+    function updateActiveTopicItem(currentIdx) {
+      document.querySelectorAll('.deck-topic-item').forEach(item => {
+        const idx = parseInt(item.getAttribute('data-slide-index'), 10);
+        item.classList.toggle('active', idx === currentIdx);
+      });
+    }
+
+    function toggleTopicPopover(e) {
+      if (e) e.stopPropagation();
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (!popover) return;
+
+      const isActive = popover.classList.toggle('active');
+      if (btn) btn.classList.toggle('active', isActive);
+
+      if (isActive) {
+        const activeItem = popover.querySelector('.deck-topic-item.active');
+        if (activeItem) {
+          activeItem.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }
+        const searchInput = document.getElementById('deck-topic-search');
+        if (searchInput) {
+          searchInput.value = '';
+          filterTopicList('');
+          setTimeout(() => searchInput.focus(), 80);
+        }
+      }
+    }
+
+    function closeTopicPopover() {
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (popover) popover.classList.remove('active');
+      if (btn) btn.classList.remove('active');
+    }
+
+    function jumpToSlide(index) {
+      Reveal.slide(index);
+      closeTopicPopover();
+    }
+
+    function filterTopicList(query) {
+      const q = (query || '').toLowerCase().trim();
+      const items = document.querySelectorAll('.deck-topic-item');
+      const sections = document.querySelectorAll('.deck-topic-section');
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const num = (item.querySelector('.deck-topic-num') || {}).textContent || '';
+        const name = (item.querySelector('.deck-topic-name') || {}).textContent || '';
+        const matches = !q || num.toLowerCase().includes(q) || name.toLowerCase().includes(q);
+        item.style.display = matches ? 'grid' : 'none';
+        if (matches) visibleCount++;
+      });
+
+      sections.forEach(sec => {
+        let nextEl = sec.nextElementSibling;
+        let hasVisibleChild = false;
+        while (nextEl && !nextEl.classList.contains('deck-topic-section')) {
+          if (nextEl.classList.contains('deck-topic-item') && nextEl.style.display !== 'none') {
+            hasVisibleChild = true;
+            break;
+          }
+          nextEl = nextEl.nextElementSibling;
+        }
+        sec.style.display = hasVisibleChild ? 'block' : 'none';
+      });
+
+      const listEl = document.getElementById('deck-topic-list');
+      let emptyMsg = document.getElementById('deck-topic-empty-msg');
+      if (visibleCount === 0) {
+        if (!emptyMsg) {
+          emptyMsg = document.createElement('div');
+          emptyMsg.id = 'deck-topic-empty-msg';
+          emptyMsg.className = 'deck-topic-empty';
+          emptyMsg.textContent = 'Tidak ada slide yang cocok dengan pencarian.';
+          listEl.appendChild(emptyMsg);
+        }
+        emptyMsg.style.display = 'block';
+      } else if (emptyMsg) {
+        emptyMsg.style.display = 'none';
+      }
+    }
+
+    function setAspectMode(mode) {
+      currentAspectMode = mode;
+      localStorage.setItem('reveal_aspect_mode', mode);
+      const dim = calculateResponsiveDimensions(mode);
+
+      Reveal.configure({
+        width: dim.width,
+        height: dim.height,
+        margin: 0.04,
+        minScale: 0.2,
+        maxScale: 2.0
+      });
+
+      document.body.classList.remove('aspect-16-9', 'aspect-16-10', 'aspect-4-3', 'aspect-mobile');
+      if (mode === 'auto') {
+        if (window.innerWidth <= 768) document.body.classList.add('aspect-mobile');
+      } else {
+        document.body.classList.add('aspect-' + mode);
+      }
+
+      const labelEl = document.getElementById('aspect-label');
+      if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+
+      document.querySelectorAll('.dropdown-item').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-aspect') === mode);
+      });
+
+      closeAspectDropdown();
+      setTimeout(() => Reveal.layout(), 50);
+    }
+
+    function toggleAspectDropdown(e) {
+      if (e) e.stopPropagation();
+      document.getElementById('aspect-menu').classList.toggle('active');
+    }
+
+    function closeAspectDropdown() {
+      const menu = document.getElementById('aspect-menu');
+      if (menu) menu.classList.remove('active');
+    }
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-dropdown')) closeAspectDropdown();
+      if (!e.target.closest('#deck-topic-popover') && !e.target.closest('#deck-footer-topic')) closeTopicPopover();
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (currentAspectMode === 'auto') {
+          const dim = calculateResponsiveDimensions('auto');
+          const cfg = Reveal.getConfig();
+          if (cfg.width !== dim.width || cfg.height !== dim.height) {
+            Reveal.configure({ width: dim.width, height: dim.height });
+            const labelEl = document.getElementById('aspect-label');
+            if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+            Reveal.layout();
+          }
+        }
+      }, 200);
+    });
+
+    window.addEventListener('DOMContentLoaded', () => setAspectMode(currentAspectMode));
+
+    function openShortcutsModal() {
+      document.getElementById('shortcuts-modal').classList.add('active');
+    }
+
+    function closeShortcutsModal(event) {
+      if (!event || event.target.id === 'shortcuts-modal' || event.target.classList.contains('modal-close')) {
+        document.getElementById('shortcuts-modal').classList.remove('active');
+      }
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const popover = document.getElementById('deck-topic-popover');
+        if (popover && popover.classList.contains('active')) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeTopicPopover();
+          return;
+        }
+      }
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        document.getElementById('shortcuts-modal').classList.toggle('active');
+      }
+    });
+
+  </script>
+</body></html>

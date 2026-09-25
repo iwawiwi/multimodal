@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pertemuan 12: Topik Lanjutan: Generasi Multimodal &amp; Etika | ITERA</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <link rel="stylesheet" href="css/catppuccin-latte.css">
+</head>
+<body>
+  <header class="deck-header">
+    <div class="deck-header-left">
+      <a href="index.html" class="deck-brand-link" title="Kembali ke Portal Kuliah">
+        <img src="assets/img/logo_2.png" alt="Logo ITERA" class="deck-logo">
+        <img src="assets/img/dikti-saintek-berdampak-color.svg" alt="Logo Dikti Saintek Berdampak" class="deck-logo">
+      </a>
+    </div>
+
+    <div class="deck-header-right">
+      <!-- Aspect Ratio / Projector Switcher -->
+      <div class="nav-dropdown">
+        <button type="button" class="deck-ctrl-btn" id="aspect-btn" onclick="toggleAspectDropdown(event)" title="Sesuaikan Rasio Layar & Proyektor">
+          <span class="material-symbols-outlined">aspect_ratio</span>
+          <span id="aspect-label" class="deck-btn-label">Auto</span>
+          <span class="material-symbols-outlined" style="font-size: 14px;">arrow_drop_down</span>
+        </button>
+        <div class="nav-dropdown-menu" id="aspect-menu">
+          <button type="button" class="dropdown-item active" data-aspect="auto" onclick="setAspectMode('auto')">
+            <span class="item-title">Auto</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-9" onclick="setAspectMode('16-9')">
+            <span class="item-title">16:9</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-10" onclick="setAspectMode('16-10')">
+            <span class="item-title">16:10</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="4-3" onclick="setAspectMode('4-3')">
+            <span class="item-title">4:3</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="mobile" onclick="setAspectMode('mobile')">
+            <span class="item-title">Mobile</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="text-large" onclick="setAspectMode('text-large')">
+            <span class="item-title">Teks Besar</span>
+          </button>
+        </div>
+      </div>
+
+      <button type="button" class="deck-ctrl-btn" onclick="Reveal.toggleOverview()" title="Lihat Matriks Seluruh Slide (Esc/O)">
+        <span class="material-symbols-outlined">grid_view</span>
+        <span class="deck-btn-label">Overview</span>
+      </button>
+      <button type="button" class="deck-ctrl-btn" onclick="openShortcutsModal()" title="Panduan Pintasan Keyboard (?)">
+        <span class="material-symbols-outlined">keyboard</span>
+        <span class="deck-btn-label">Pintasan</span>
+      </button>
+      <a href="index.html" class="deck-ctrl-btn" title="Kembali ke Portal Kuliah">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span class="deck-btn-label">Portal</span>
+      </a>
+    </div>
+  </header>
+  <div class="deck-progress-track"><div class="deck-progress-bar" id="deck-progress-bar"></div></div>
+  <div id="shortcuts-modal" onclick="closeShortcutsModal(event)"><div class="modal-content" onclick="event.stopPropagation()"><div class="modal-header"><h4 style="margin:0;font-weight:800"><span class="material-symbols-outlined icon-blue">keyboard</span> Pintasan Navigasi Presentasi</h4><button class="modal-close" onclick="closeShortcutsModal()">&times;</button></div><div class="shortcut-row"><span>Slide berikutnya</span><span><span class="kbd-key">Space</span> / <span class="kbd-key">→</span></span></div><div class="shortcut-row"><span>Slide sebelumnya</span><span><span class="kbd-key">←</span></span></div><div class="shortcut-row"><span>Catatan dosen</span><span><span class="kbd-key">S</span></span></div></div></div>
+  <div class="reveal"><div class="slides">
+
+      <!-- SLIDE 1: COVER -->
+      <section id="deck-title">
+        <div style="margin: auto 0; text-align: left;">
+          <h1 style="font-size: 2.3em; line-height: 1.15; font-weight: 800; color: var(--ctp-text); margin-bottom: 12px; letter-spacing: -0.025em;">
+            Pembelajaran Mesin Multimodal
+          </h1>
+          <div style="font-size: 1.15em; font-weight: 600; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.4;">
+            Pertemuan 12 &bull; Topik Lanjutan: Generasi Multimodal &amp; Etika
+          </div>
+          <div style="max-width: 620px; background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-left: 3.5px solid var(--ctp-blue); border-radius: 12px; padding: 18px 24px;">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">
+              Dosen Pengampu
+            </div>
+            <div style="font-size: 1.1em; font-weight: 800; color: var(--ctp-text); margin-bottom: 6px;">
+              I Wayan Wiprayoga Wisesa
+            </div>
+            <div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;">
+              Program Studi Teknik Informatika<br>
+              Fakultas Teknologi Industri<br>
+              Institut Teknologi Sumatera (ITERA)<br>
+              <span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Sesi ini beralih dari <em>pemahaman</em> ke <em>generasi</em>: model tidak lagi hanya menjawab atau mengklasifikasi, tetapi menciptakan konten baru. Peralihan ini memperbesar kemampuan sekaligus tanggung jawab. Sampaikan bahwa dua bagian besar sesi ini &mdash; generasi/retrieval dan etika &mdash; saling terkait: kemampuan menciptakan konten yang meyakinkan membuat bias dan penyalahgunaan jauh lebih berbahaya.
+        </aside>
+      </section>
+
+      <!-- SLIDE 2: TUJUAN PEMBELAJARAN -->
+      <section>
+        <h2>Tujuan Pembelajaran Sesi Ini</h2>
+        <p style="margin-bottom: 24px;">Di akhir sesi ini, mahasiswa diharapkan mampu:</p>
+
+        <div class="grid-4">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-blue">01</span>
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Generasi Multimodal</h4>
+            </div>
+            <p>Menjelaskan konsep dan aplikasi generasi multimodal seperti <em>text-to-image</em> dan <em>text-to-video</em>.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-mauve">02</span>
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Cross-modal Retrieval</h4>
+            </div>
+            <p>Memahami prinsip <em>joint embedding space</em> dan <em>contrastive learning</em> dalam pencarian lintas modalitas.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-teal">03</span>
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Etika</h4>
+            </div>
+            <p>Mengidentifikasi isu bias, privasi, dan <em>fairness</em> dalam sistem multimodal.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-peach">04</span>
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Arah Riset</h4>
+            </div>
+            <p>Menganalisis tantangan dan arah penelitian masa depan pembelajaran mesin multimodal.</p>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Empat capaian terbagi dua pasang: teknis (1&ndash;2) dan etis (3&ndash;4). Tekankan bahwa capaian ketiga bukan tambahan &ldquo;pelengkap&rdquo; &mdash; ia bagian tak terpisahkan dari teknik. Model generatif yang kuat tanpa pemahaman bias akan memperparah ketidakadilan pada skala besar. Ini akan menjadi inti studi kasus dan proyek akhir di W14.
+        </aside>
+      </section>
+
+      <!-- SLIDE 3: JEMBATAN PEMAHAMAN KE GENERASI -->
+      <section>
+        <h2>Dari Pemahaman ke Generasi</h2>
+        <p>Sampai sekarang model kita <em>membaca</em>. Mulai sekarang ia <em>menciptakan</em>.</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Pemahaman (W10&ndash;W11)</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Captioning &mdash; mendeskripsikan gambar.</li>
+              <li>VQA &mdash; menjawab pertanyaan tentang gambar.</li>
+              <li>Sentimen &mdash; mengklasifikasi emosi.</li>
+            </ul>
+          </div>
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Generasi (W12)</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Text-to-image &mdash; membuat gambar dari deskripsi.</li>
+              <li>Text-to-video &mdash; membuat video dari deskripsi.</li>
+              <li>Retrieval &mdash; menemukan konten lintas modalitas.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Perbedaan mendasar.</strong> Pemahaman memilih jawaban dari ruang yang terbatas; generasi menciptakan dari ruang yang (hampir) tak terbatas. Kesalahan pada pemahaman bisa menyesatkan; kesalahan pada generasi bisa memproduksi realitas palsu.</div></div>
+
+        <aside class="notes">
+          Slide ini menandai peralihan penting. Tanyakan: apa yang lebih berbahaya &mdash; model yang salah mengklasifikasi sentimen, atau model yang menghasilkan gambar palsu yang meyakinkan? Jawabannya menjelaskan mengapa etika menjadi bagian wajib di paruh generatif. Sebutkan bahwa encoder dan cross-attention yang sama tetap dipakai; yang berubah adalah arah aliran informasi (dari teks ke gambar).
+        </aside>
+      </section>
+
+      <!-- SLIDE 4: DIVIDER BAGIAN 1 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(136,57,239,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-mauve">Bagian 1</span>
+          <h1>Generasi Multimodal</h1>
+          <p class="subtitle">
+            Menciptakan gambar dan video dari deskripsi teks &mdash; dari GAN hingga model difusi.
+          </p>
+        </div>
+        <aside class="notes">Bagian pertama membahas sisi kreatif. Mulai dari definisi dan jenis-jenis generasi, lalu model generatif yang mendasarinya (GAN, VAE, diffusion), dan akhirnya dua aplikasi paling menonjol: text-to-image dan text-to-video. Tekankan bahwa teknik inti &mdash; text encoder dan cross-attention &mdash; sudah dikenal dari sesi-sesi sebelumnya.</aside>
+      </section>
+
+      <!-- SLIDE 5: DEFINISI GENERASI -->
+      <section>
+        <h2>Definisi Generasi Multimodal</h2>
+        <p>Model menghasilkan konten baru dalam satu modalitas berdasarkan masukan dari modalitas lain.</p>
+
+        <div class="formula-hero" style="margin-top: 12px;">
+          <div class="formula-label">Definisi Formal</div>
+          <div class="formula-math">$$\hat{x} \sim p(x \mid c)$$</div>
+        </div>
+
+        <div class="formula-breakdown">
+          <div class="formula-term-box"><strong>\(c\)</strong> Kondisi &mdash; biasanya deskripsi teks (<em>prompt</em>), bisa juga audio atau gambar.</div>
+          <div class="formula-term-box"><strong>\(x\)</strong> Konten yang dihasilkan &mdash; gambar, video, atau modalitas lain.</div>
+          <div class="formula-term-box"><strong>\(\sim p(x \mid c)\)</strong> Sampel dari distribusi bersyarat: banyak keluaran valid untuk satu kondisi.</div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Tugas kreatif, bukan pemahaman.</strong> Berbeda dengan klasifikasi atau VQA, di sini keluaran tidak dinilai benar/salah, melainkan seberapa sesuai dengan kondisi dan seberapa realistis.</div></div>
+
+        <aside class="notes">
+          Bacakan rumus sebagai kalimat: hasil generasi adalah sampel dari distribusi bersyarat, diberikan kondisi teks. Tekankan kata &ldquo;sampel&rdquo;: model tidak menghasilkan satu jawaban benar, melainkan salah satu kemungkinan dari banyak. Inilah yang membuat generasi bersifat probabilistik dan mengapa prompt yang sama bisa menghasilkan gambar berbeda setiap kali.
+        </aside>
+      </section>
+
+      <!-- SLIDE 6: JENIS-JENIS GENERASI -->
+      <section>
+        <h2>Jenis-jenis Generasi Multimodal</h2>
+        <p>Arah aliran antar modalitas menentukan jenis tugasnya:</p>
+
+        <div class="grid-4" style="margin-top: 14px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Text-to-Image</h4>
+            </div>
+            <p>Menghasilkan gambar dari deskripsi teks. Contoh: DALL-E, Stable Diffusion.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Text-to-Video</h4>
+            </div>
+            <p>Menghasilkan klip video dari deskripsi teks, termasuk gerakan dan perubahan waktu.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Image-to-Text</h4>
+            </div>
+            <p>Menghasilkan teks dari gambar &mdash; ini adalah <em>image captioning</em> yang sudah dibahas di W10.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Speech-to-Visual</h4>
+            </div>
+            <p>Menghasilkan visual dari audio, misalnya <em>lipsync</em> pada animasi wajah.</p>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Tekankan bahwa image-to-text (captioning) adalah kebalikan dari text-to-image &mdash; dan sudah kita bahas. Pemetaan arah ini membantu mahasiswa melihat bahwa arsitektur yang sama dapat dipakai dalam dua arah. Speech-to-visual adalah contoh paling muda dan sedang berkembang pesat, misalnya untuk dubbing dan avatar.
+        </aside>
+      </section>
+
+      <!-- SLIDE 7: MODEL GENERATIF -->
+      <section>
+        <h2>Model Generatif yang Terlibat</h2>
+        <p>Empat keluarga pendekatan untuk menghasilkan data baru:</p>
+
+        <div class="grid-4" style="margin-top: 14px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">GAN</h4>
+            </div>
+            <p><em>Generator</em> dan <em>discriminator</em> saling bersaing: peniru vs penilai.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">VAE</h4>
+            </div>
+            <p>Belajar representasi laten dan menyampel dari ruang itu untuk data baru.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Diffusion</h4>
+            </div>
+            <p>Menghasilkan gambar/video dengan menghilangkan <em>noise</em> secara iteratif.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Transformer</h4>
+            </div>
+            <p>Menjadi tulang punggung untuk mengintegrasikan modalitas di dalam model generatif.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Dominasi difusi.</strong> Model text-to-image terbaik saat ini berbasis difusi karena kualitas dan stabilitasnya; transformer dan CLIP sering menjadi penyedia kondisi teks di dalamnya.</div></div>
+
+        <aside class="notes">
+          GAN melatih dua jaringan berlawanan &mdash; generator membuat, discriminator menilai; keseimbangan keduanya sulit. VAE memampatkan data ke ruang laten dan menyampel dari sana. Difusi menambahkan noise lalu belajar membalikkannya langkah demi langkah &mdash; lebih stabil. Tekankan bahwa generator modern sering menggabungkan: difusi sebagai mesin gambar, transformer/CLIP sebagai pengkondisi teks. Ini pola fusi yang sudah dikenal.
+        </aside>
+      </section>
+
+      <!-- SLIDE 8: TEXT-TO-IMAGE KONSEP & MODEL -->
+      <section>
+        <h2>Text-to-Image: Konsep &amp; Model</h2>
+        <p>Dua model terkemuka dan perbedaan pendekatannya:</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">DALL-E</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Salah satu model text-to-image pertama yang sangat populer.</li>
+              <li>Menggunakan arsitektur <strong>Transformer</strong> besar.</li>
+              <li>Menghasilkan gambar yang sangat kreatif dan beragam.</li>
+            </ul>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Stable Diffusion</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Model text-to-image <strong>open-source</strong> yang efisien.</li>
+              <li>Menggunakan arsitektur <strong>Diffusion Model</strong>.</li>
+              <li>Kualitas tinggi dengan sumber daya komputasi lebih sedikit.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Inti keduanya sama:</strong> menerima <em>prompt</em> teks (misalnya &ldquo;seekor kucing mengenakan topi astronot di bulan&rdquo;) dan menghasilkan gambar yang sesuai &mdash; menuntut pemahaman hubungan antara bahasa dan visual.</div></div>
+
+        <aside class="notes">
+          Bandingkan dua model: DALL-E memakai transformer untuk memodelkan token gambar, sedangkan Stable Diffusion bekerja di ruang laten gambar dan menghilangkan noise secara iteratif. Sebutkan bahwa keterbukaan Stable Diffusion (open-source) membuatnya banyak diteliti dan dikritik &mdash; sekaligus memunculkan gelombang model turunan. Tekankan bahwa tantangan intinya tetap sama: menyelaraskan makna teks dengan piksel.
+        </aside>
+      </section>
+
+      <!-- SLIDE 9: MEKANISME KUNCI TEXT-TO-IMAGE -->
+      <section>
+        <h2>Mekanisme Kunci Text-to-Image</h2>
+        <p>Bagaimana kata-kata mengendalikan piksel:</p>
+
+        <div class="grid-2" style="margin-top: 6px;">
+          <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 10px; overflow: hidden;">
+            <svg viewBox="0 0 400 320" role="img" aria-label="Diagram text-to-image: prompt teks melewati text encoder menjadi embedding c, lalu embedding itu mengondisikan generator gambar melalui cross-attention, menghasilkan gambar" style="width: 100%; height: auto;">
+              <defs>
+                <marker id="w12-g" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#1e66f5"/></marker>
+                <marker id="w12-g2" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#179299"/></marker>
+              </defs>
+
+              <text x="200" y="18" text-anchor="middle" fill="#4c4f69" font-size="13.5" font-family="sans-serif" font-weight="700">Prompt Teks</text>
+              <text x="200" y="36" text-anchor="middle" fill="#6c6f85" font-size="10.5" font-family="sans-serif" font-style="italic">&ldquo;kucing astronot di bulan&rdquo;</text>
+
+              <path d="M200 44 V62" fill="none" stroke="#1e66f5" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w12-g)"/>
+
+              <rect x="110" y="66" width="180" height="38" rx="8" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+              <text x="200" y="90" text-anchor="middle" fill="#4c4f69" font-size="12" font-family="sans-serif" font-weight="700">Text Encoder (CLIP)</text>
+
+              <path d="M200 104 V122" fill="none" stroke="#1e66f5" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w12-g)"/>
+
+              <rect x="130" y="126" width="140" height="30" rx="7" fill="#eff1f5" stroke="#8839ef" stroke-width="2"/>
+              <foreignObject x="130" y="130" width="140" height="22"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:13.5px;color:#8839ef;">\(\mathbf{c}\) (embedding teks)</div></foreignObject>
+
+              <path d="M200 156 V174" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w12-g2)"/>
+
+              <rect x="85" y="178" width="230" height="46" rx="8" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
+              <text x="200" y="198" text-anchor="middle" fill="#4c4f69" font-size="12" font-family="sans-serif" font-weight="700">Generator (Diffusion / GAN)</text>
+              <foreignObject x="85" y="202" width="230" height="20"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:11.5px;color:#179299;">dikondisikan lewat cross-attention \(\mathbf{c}\)</div></foreignObject>
+
+              <path d="M200 224 V244" fill="none" stroke="#179299" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w12-g2)"/>
+
+              <rect x="120" y="248" width="160" height="36" rx="8" fill="#dff3f2" stroke="#179299" stroke-width="2.5"/>
+              <text x="200" y="271" text-anchor="middle" fill="#4c4f69" font-size="12" font-family="sans-serif" font-weight="700">Gambar Hasil</text>
+            </svg>
+          </div>
+          <div class="narrative-pane">
+            <div class="narrative-step"><strong>01. Text Encoder</strong> Prompt diubah menjadi embedding \(\mathbf{c}\) &mdash; representasi makna teks.</div>
+            <div class="narrative-step"><strong>02. Kondisi</strong> Embedding \(\mathbf{c}\) mengarahkan generator melalui <em>cross-attention</em> di setiap langkah.</div>
+            <div class="narrative-step"><strong>03. Generasi</strong> Generator menghasilkan gambar; setiap piksel &ldquo;menjawab&rdquo; sebagian dari kondisi teks.</div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Ikuti diagram dari atas. Inti mekanismenya adalah <em>cross-attention</em> &mdash; sama seperti pada captioning, tetapi arahnya terbalik: di sini gambar &ldquo;memperhatikan&rdquo; teks, bukan teks memperhatikan gambar. Tekankan bahwa text encoder (sering CLIP) adalah komponen penyejajar: ia memastikan makna teks dan makna visual berada di ruang yang sama. Ini menyambung ke bagian retrieval dua slide lagi.
+        </aside>
+      </section>
+
+      <!-- SLIDE 10: TEXT-TO-VIDEO KONSEP -->
+      <section>
+        <h2>Text-to-Video</h2>
+        <p>Menghasilkan video dari deskripsi &mdash; lebih sulit karena waktu.</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Konsep</h4>
+            </div>
+            <p>Model menerima prompt (misalnya &ldquo;seekor anjing berlari di pantai saat matahari terbenam&rdquo;) dan menghasilkan klip video dengan gerakan serta perubahan temporal yang sesuai.</p>
+          </div>
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Mengapa Lebih Sulit?</h4>
+            </div>
+            <p>Bukan sekadar banyak gambar text-to-image. Dibutuhkan <strong>konsistensi spasial dan temporal</strong>: objek dan latar harus tetap sama dari frame ke frame.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Contoh model:</strong> Google Imagen Video, Meta Make-A-Video, dan RunwayML Gen-1/Gen-2 &mdash; masing-masing memakai pendekatan berbeda untuk menjaga konsistensi temporal.</div></div>
+
+        <aside class="notes">
+          Tekankan lonjakan kesulitan dari gambar ke video: setiap frame harus konsisten dengan frame sebelumnya, dan objek harus bergerak secara wajar. Ini menambah dimensi waktu ke masalah penyejajaran yang sudah kita kenal. Sebutkan bahwa video juga memperbesar masalah privasi dan biaya komputasi, menyiapkan bagian etika.
+        </aside>
+      </section>
+
+      <!-- SLIDE 11: TEXT-TO-VIDEO TANTANGAN -->
+      <section>
+        <h2>Tantangan Text-to-Video</h2>
+        <p>Empat hambatan utama sebelum video sintetis dapat diandalkan:</p>
+
+        <div class="grid-3" style="margin-top: 10px;">
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Konsistensi Temporal</h4>
+            </div>
+            <p>Memastikan objek dan gerakan tetap konsisten antar frame &mdash; tanpa kedip atau perubahan mendadak.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Kualitas Generasi</h4>
+            </div>
+            <p>Menghasilkan video realistik yang bebas artefak pada setiap frame.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Volume Data &amp; Komputasi</h4>
+            </div>
+            <p>Butuh dataset teks&ndash;video sangat besar dan mahal; proses generasi intensif komputasi.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Keempatnya saling menguatkan.</strong> Data yang sedikit membatasi kualitas; kualitas rendah memaksa model lebih besar; model besar memperberat komputasi. Kemajuan di satu sisi jarang cukup tanpa sisi lain.</div></div>
+
+        <aside class="notes">
+          Tekankan bahwa tantangan text-to-video bersifat sistemik: memperbaiki konsistensi temporal biasanya menaikkan biaya komputasi. Sebutkan bahwa inilah alasan model video jauh lebih mahal dan lebih lambat daripada model gambar, dan mengapa aksesnya masih terbatas pada laboratorium besar. Ini juga menyentuh arah riset efisiensi komputasi di akhir sesi.
+        </aside>
+      </section>
+
+      <!-- SLIDE 12: DIVIDER BAGIAN 2 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(23,146,153,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-teal">Bagian 2</span>
+          <h1>Cross-modal Retrieval</h1>
+          <p class="subtitle">
+            Mencari konten satu modalitas dengan kueri dari modalitas lain &mdash; fondasi CLIP dan proyek akhir.
+          </p>
+        </div>
+        <aside class="notes">Bagian ini menghubungkan generasi dengan pencarian. Retrieval lintas modalitas adalah tugas yang paling dekat dengan proyek akhir mahasiswa, sehingga penting disajikan dengan detail mekanismenya. Tekankan bahwa teks dan gambar dipetakan ke ruang bersama yang selaras &mdash; inilah pengejawantahan paling murni dari pilar penyejajaran.</aside>
+      </section>
+
+      <!-- SLIDE 13: DEFINISI RETRIEVAL -->
+      <section>
+        <h2>Definisi Cross-modal Retrieval</h2>
+        <p>Mencari konten dari satu modalitas menggunakan kueri dari modalitas lain.</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Definisi</h4>
+            </div>
+            <p>Tugas untuk menemukan item paling relevan dari satu modalitas, diberikan kueri dari modalitas lain. Membutuhkan <em>ruang embedding bersama</em> yang selaras.</p>
+          </div>
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Kunci</h4>
+            </div>
+            <p>Model harus belajar merepresentasikan berbagai modalitas ke dalam satu ruang sehingga pasangan yang cocok <em>berdekatan</em>, dan yang tidak cocok <em>berjauhan</em>.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Satu ruang untuk semua.</strong> Jika teks dan gambar dipetakan ke ruang yang sama, maka &ldquo;jarak&rdquo; menjadi ukuran kemiripan &mdash; dan pencarian lintas modalitas menjadi pencarian tetangga terdekat.</div></div>
+
+        <aside class="notes">
+          Tekankan gagasan ruang bersama sebagaimana kita menutup W09 dengan CLIP. Conceptually: encoder teks dan encoder gambar dilatih agar pasangan (gambar, caption) yang cocok memiliki embedding berdekatan. Dengan begitu, retrieval gambar-dari-teks cukup mencari titik terdekat. Ini adalah pilar penyejajaran dalam bentuk paling bersih &mdash; tanpa decoder, tanpa generasi, hanya ruang bersama.
+        </aside>
+      </section>
+
+      <!-- SLIDE 14: CONTOH APLIKASI -->
+      <section>
+        <h2>Contoh Aplikasi Retrieval</h2>
+        <p>Tiga arah pencarian yang umum:</p>
+
+        <div class="grid-3" style="margin-top: 14px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Image-to-Text</h4>
+            </div>
+            <p>Mencari deskripsi teks paling relevan untuk sebuah gambar &mdash; misalnya mencari caption atau tag yang cocok.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Text-to-Image</h4>
+            </div>
+            <p>Mencari gambar paling relevan dengan deskripsi teks. Ini tugas inti proyek akhir.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Audio-to-Video</h4>
+            </div>
+            <p>Mencari klip video berdasarkan kueri audio &mdash; misalnya menemukan adegan dari potongan suara.</p>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Tekankan bahwa text-to-image retrieval adalah versi miniatur proyek akhir mahasiswa: dengan encoder teks dan gambar yang diproyeksikan ke ruang bersama, sistem dapat menemukan gambar yang paling cocok untuk kueri berbahasa Indonesia. Sebutkan bahwa inilah alasan dataset SEA-VL ID dan metrik Recall@K akan menjadi pusat proyek &mdash; keduanya muncul lagi di W13.
+        </aside>
+      </section>
+
+      <!-- SLIDE 15: MEKANISME KUNCI RETRIEVAL -->
+      <section>
+        <h2>Mekanisme Kunci Retrieval</h2>
+        <p>Bagaimana ruang bersama dilatih:</p>
+
+        <div class="formula-hero" style="margin-top: 10px;">
+          <div class="formula-label">Contrastive Loss (InfoNCE, gaya CLIP)</div>
+          <div class="formula-math">$$\mathcal{L} = -\log \frac{\exp\!\big(\mathrm{sim}(v_i, t_i)/\tau\big)}{\sum_{j=1}^{N} \exp\!\big(\mathrm{sim}(v_i, t_j)/\tau\big)}$$</div>
+        </div>
+
+        <div class="formula-breakdown">
+          <div class="formula-term-box"><strong>\(\mathrm{sim}(v_i, t_i)\)</strong> Kesamaan pasangan yang cocok (gambar ke-\(i\) dan teksnya) &mdash; ingin dimaksimalkan.</div>
+          <div class="formula-term-box"><strong>\(\sum_j \exp(\mathrm{sim}(v_i, t_j))\)</strong> Jumlah kesamaan terhadap semua teks lain dalam <em>batch</em> &mdash; menjadi penyebut.</div>
+          <div class="formula-term-box"><strong>\(\tau\)</strong> Suhu (<em>temperature</em>) yang mengatur ketajaman distribusi &mdash; kecil = lebih tegas.</div>
+        </div>
+
+        <div class="c-callout c-callout-success" style="margin-top: 12px;"><span class="material-symbols-outlined icon-green">check_circle</span><div><strong>Tiga langkah:</strong> latih pasangan agar berdekatan (contrastive), bangun <em>joint embedding space</em>, lalu cari tetangga terdekat saat inferensi.</div></div>
+
+        <aside class="notes">
+          InfoNCE adalah inti CLIP dan sebagian besar model retrieval modern. Bacakan rumus sebagai kalimat: untuk setiap pasangan benar, naikkan kesamaannya relatif terhadap semua kandidat lain dalam batch. Ini adalah klasifikasi <em>N arah</em> yang dibalik &mdash; contoh negatifnya adalah semua teks lain dalam batch. Sebutkan bahwa dengan batch besar (ribuan), sinyal negatif makin kuat dan ruang bersama makin baik &mdash; alasan CLIP butuh batch besar.
+        </aside>
+      </section>
+
+      <!-- SLIDE 16: DIVIDER BAGIAN 3 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(230,69,83,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-maroon">Bagian 3</span>
+          <h1>Etika &amp; Dampak Sosial</h1>
+          <p class="subtitle">
+            Bias, privasi, dan <em>fairness</em>: tanggung jawab yang datang bersama kemampuan mencipta.
+          </p>
+        </div>
+        <aside class="notes">Bagian terakhir berpindah dari teknis ke etis. Tekankan bahwa ini bukan bagian &ldquo;pelengkap&rdquo;: sistem multimodal yang kuat dapat memperkuat bias dan merusak privasi pada skala besar. Mahasiswa yang akan membangun sistem pada proyek akhir perlu memahami risiko ini sejak awal, bukan setelah sistem dipakai.</aside>
+      </section>
+
+      <!-- SLIDE 17: BIAS DEFINISI & SUMBER -->
+      <section>
+        <h2>Bias: Definisi &amp; Sumber</h2>
+        <p>Model mereplikasi &mdash; dan bahkan memperkuat &mdash; bias dalam data pelatihan.</p>
+
+        <div class="grid-3" style="margin-top: 12px;">
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Representasi Tidak Seimbang</h4>
+            </div>
+            <p>Dataset tidak mencakup keragaman dunia nyata: lebih banyak gambar pria, aksen tertentu, atau latar tertentu.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Stereotip</h4>
+            </div>
+            <p>Data mencerminkan stereotip sosial &mdash; misalnya &ldquo;dokter&rdquo; selalu pria, &ldquo;perawat&rdquo; selalu wanita.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Korelasi Palsu</h4>
+            </div>
+            <p>Model belajar hubungan semu: menjawab &ldquo;dapur&rdquo; saat ada &ldquo;wanita&rdquo; dalam gambar, tanpa melihat konteks.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Bias bersifat kumulatif.</strong> Data yang miring menghasilkan model yang miring; model yang dipakai luas menghasilkan data baru yang lebih miring lagi. Lingkaran ini sulit diputus tanpa intervensi sadar.</div></div>
+
+        <aside class="notes">
+          Bias bukan kesalahan acak &mdash; ia pola sistematis yang menguntungkan kelompok dominan. Tekankan kartu ketiga: korelasi palsu adalah bentuk paling licin, karena skor keseluruhan bisa tinggi namun model gagal pada kelompok minoritas. Contoh &ldquo;dapur + wanita&rdquo; adalah jenis bias yang terkenal dari dataset VQA asli dan menjadi motivasi VQA v2. Ini menyambung ke studi kasus.
+        </aside>
+      </section>
+
+      <!-- SLIDE 18: DAMPAK BIAS -->
+      <section>
+        <h2>Dampak Bias</h2>
+        <p>Konsekuensi yang terukur dan tidak setara:</p>
+
+        <div class="grid-3" style="margin-top: 14px;">
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Hasil Tidak Adil</h4>
+            </div>
+            <p>Akurasi lebih rendah untuk kelompok minoritas &mdash; sistem bekerja baik untuk sebagian, buruk untuk yang lain.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Memperkuat Stereotip</h4>
+            </div>
+            <p>Model generatif mereproduksi dan memperluas stereotip ke skala yang jauh lebih besar.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Diskriminasi Nyata</h4>
+            </div>
+            <p>Pada sistem rekrutmen, pengawasan, atau penegakan hukum, bias berujung pada kerugian konkret.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Skala berubah.</strong> Sebuah model generatif yang miring dapat menghasilkan jutaan gambar miring dalam hitungan jam &mdash; jauh melampaui kecepatan manusia memperbaikinya.</div></div>
+
+        <aside class="notes">
+          Tekankan kata &ldquo;skala&rdquo;: yang membedakan sistem AI dari bias manusia biasa adalah kecepatan dan volume. Tanyakan ke kelas: pada aplikasi apa bias multimodal paling berbahaya? Jawaban yang diharapkan menyentuh sistem yang menentukan akses (rekrutmen, kredit, peradilan) dan sistem yang membentuk persepsi (media, iklan). Dampak pada generasi bersifat kultural, bukan hanya individual.
+        </aside>
+      </section>
+
+      <!-- SLIDE 19: PRIVASI & FAIRNESS -->
+      <section>
+        <h2>Privasi &amp; Fairness</h2>
+        <p>Dua isu etika yang saling berkait dengan data multimodal:</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Privasi</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Data multimodal (video, audio) mengandung informasi sensitif: identitas, emosi, lokasi.</li>
+              <li><strong>Anonimisasi</strong> sulit &mdash; wajah dan suara identik dengan individu.</li>
+              <li><strong>Consent</strong> yang bermakna jarang diperoleh.</li>
+              <li>Risiko <em>profiling</em> dan pengawasan tanpa persetujuan.</li>
+            </ul>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Fairness</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Pastikan kinerja setara untuk semua kelompok (ras, gender, usia).</li>
+              <li><strong>Definisi</strong> &ldquo;adil&rdquo; sendiri diperdebatkan (<em>equality of opportunity</em>, <em>equalized odds</em>).</li>
+              <li><strong>Pengukuran</strong> butuh metrik per kelompok, bukan agregat.</li>
+              <li><strong>Mitigasi</strong> dilakukan pada data, model, atau keduanya.</li>
+            </ul>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Privasi dan fairness saling berkait: melindungi privasi (misalnya dengan menganonimkan) dapat menghapus atribut demografis yang dibutuhkan untuk mengukur fairness &mdash; dilema nyata. Tekankan bahwa fairness tidak punya definisi tunggal: memilih definisi berarti memilih nilai. Tanyakan: apakah &ldquo;adil&rdquo; berarti akurasi sama, kesempatan sama, atau hasil sama? Jawabannya menentukan metrik.
+        </aside>
+      </section>
+
+      <!-- SLIDE 20: STUDI KASUS ETIKA RUMUSAN -->
+      <section>
+        <h2>Studi Kasus: Rumusan Masalah</h2>
+        <p>Pengguna menulis prompt netral. Mengapa keluaran model tidak netral?</p>
+
+        <table class="c-table" style="margin-top: 10px;">
+          <thead>
+            <tr>
+              <th style="width: 30%;">Prompt (netral)</th>
+              <th style="width: 70%;">Pengamatan pada keluaran model</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">&ldquo;seorang dokter&rdquo;</td>
+              <td>Hampir semua gambar yang dihasilkan menampilkan pria.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">&ldquo;seorang perawat&rdquo;</td>
+              <td>Mayoritas menampilkan wanita.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">&ldquo;seorang pemimpin rapat&rdquo;</td>
+              <td>Dominan pria, mengenakan pakaian formal tertentu.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">help</span><div><p style="margin: 0; font-size: 0.82em; line-height: 1.5;"><strong style="color: var(--ctp-blue);">Tiga pertanyaan sebelum menyimpulkan</strong> &mdash; diskusikan 3 menit: (1) apakah ini kesalahan model atau cerminan data? (2) bagaimana kita <em>mengukur</em> ketidakseimbangan ini secara kuantitatif? (3) apa saja tindakan mitigasi yang masuk akal?</p></div></div>
+
+        <aside class="notes">
+          Jangan tampilkan jawaban dulu. Biarkan mahasiswa mempertanyakan asal bias: apakah model &ldquo;salah&rdquo;, atau ia hanya mempelajari distribusi data dengan jujur? Jawabannya: keduanya. Model mereplikasi bias data, lalu memperkuatnya karena generasi cenderung menghasilkan sampel yang paling mungkin (modus distribusi). Slide berikutnya menunjukkan cara mengukur dan memitigasi.
+        </aside>
+      </section>
+
+      <!-- SLIDE 21: STUDI KASUS ETIKA PENERAPAN -->
+      <section>
+        <h2>Studi Kasus: Penerapan</h2>
+        <p>Mengukur bias dan menilai dua strategi mitigasi.</p>
+
+        <table class="c-table" style="margin-top: 10px;">
+          <thead>
+            <tr>
+              <th style="width: 28%;">Langkah</th>
+              <th style="width: 72%;">Tindakan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Ukur</td>
+              <td>Hasilkan \(N=200\) gambar per prompt netral; hitung proporsi kelompok demografis pada keluaran.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Fingerprinting</td>
+              <td>Uji dengan <em>prompt</em> yang identik kecuali menyebut kelompok lain; bandingkan distribusi keluaran.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Bandingkan</td>
+              <td>Bandingkan distribusi keluaran dengan statistik dataset latih dan populasi nyata.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">calculate</span><div><strong>Contoh angka:</strong> jika 92% keluaran untuk &ldquo;dokter&rdquo; adalah pria, sedangkan statistik populasi dokter jauh lebih seimbang, model memperbesar bias data &mdash; bukan sekadar mencerminkannya.</div></div>
+
+        <aside class="notes">
+          Tekankan bahwa langkah pertama selalu <em>mengukur</em>. Tanpa angka, klaim bias hanya anekdot. Teknik <em>fingerprinting</em> &mdash; mengubah hanya atribut demografis pada prompt dan membandingkan keluaran &mdash; adalah cara sistematis mendeteksi bias. Bandingkan distribusi keluaran dengan dataset dan populasi nyata untuk membedakan &ldquo;mencerminkan&rdquo; dari &ldquo;memperbesar&rdquo;. Ini menyambung ke langkah mitigasi berikutnya.
+        </aside>
+      </section>
+
+      <!-- SLIDE 22: STUDI KASUS ETIKA ANALISIS -->
+      <section>
+        <h2>Studi Kasus: Analisis</h2>
+        <p>Dari akar masalah ke tindakan mitigasi.</p>
+
+        <div class="grid-3" style="margin-top: 10px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Akar Masalah</h4>
+            </div>
+            <p>Bias ada di <strong>data</strong> (representasi tidak seimbang) dan diperbesar oleh <strong>model</strong> (generasi cenderung ke modus distribusi).</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Mitigasi Data</h4>
+            </div>
+            <p>Menyeimbangkan dataset, menambah contoh kelompok minoritas, dan mengaudit sumber sebelum pelatihan.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Mitigasi Model</h4>
+            </div>
+            <p>Panduan pada prompt, penyetelan halus untuk keseimbangan, dan filter keluaran berbasis audit.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Batas penting:</strong> mitigasi biasanya mengurangi bias pada atribut yang diuji, bukan menghilangkannya. Tanpa audit berkelanjutan, bias dapat muncul kembali lewat atribut lain. Sampaikan bahwa ini tanggung jawab berkelanjutan, bukan tugas sekali selesai.</div></div>
+
+        <aside class="notes">
+          Tutup studi kasus dengan pesan metodologis: perbaiki di dua tempat &mdash; data dan model. Tekankan keterbatasan mitigasi: mengurangi bias pada atribut yang diuji bukan jaminan bebas bias secara umum (fenomena &ldquo;Whack-a-Mole&rdquo;). Sambungkan ke prinsip proyek akhir: audit bias dan fairness harus menjadi bagian dari strategi evaluasi, bukan tambahan opsional.
+        </aside>
+      </section>
+
+      <!-- SLIDE 23: KETIKA GENERASI GAGAL -->
+      <section>
+        <h2>Ketika Generasi Gagal</h2>
+        <p>Mode kegagalan yang menentukan risiko sosial sistem generatif:</p>
+
+        <div class="grid-3" style="margin-top: 8px;">
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Deepfake</h4>
+            </div>
+            <p>Wajah dan suara palsu yang meyakinkan dapat menyesatkan, memfitnah, dan mengancam kepercayaan publik.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Halusinasi</h4>
+            </div>
+            <p>Model menghasilkan detail yang tampak masuk akal tetapi salah &mdash; teks pada papan tulis, jumlah jari, atau latar.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Mode Collapse</h4>
+            </div>
+            <p>Model kehilangan keragaman: menghasilkan variasi yang terus-menerus sama, mempersempit representasi.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Pertanyaan etis kunci:</strong> siapa yang bertanggung jawab ketika keluaran yang bias atau palsu menyebabkan kerugian &mdash; pengguna, pengembang, atau penyedia model?</div></div>
+
+        <aside class="notes">
+          Ketiga mode kegagalan ini berbeda dari kegagalan pemahaman karena dampaknya sosial, bukan sekadar teknis. Deepfake mengancam kepercayaan pada bukti visual; halusinasi menciptakan misinformasi yang meyakinkan; mode collapse mempersempit imajinasi budaya. Akhiri dengan pertanyaan pertanggungjawaban &mdash; yang juga menjadi pertanyaan diskusi &mdash; karena ini belum terlokalisasi dalam regulasi mana pun.
+        </aside>
+      </section>
+
+      <!-- SLIDE 24: ARAH RISET -->
+      <section>
+        <h2>Arah Penelitian Masa Depan</h2>
+        <p>Tujuh tantangan yang membentuk agenda riset multimodal:</p>
+
+        <div class="grid-4" style="margin-top: 12px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Skalabilitas</h4>
+            </div>
+            <p>Model lebih besar dengan lebih banyak modalitas dan data.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Efisiensi</h4>
+            </div>
+            <p>Mengurangi kebutuhan komputasi dan daya saat pelatihan dan inferensi.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Generalisasi</h4>
+            </div>
+            <p>Bekerja di berbagai domain dan tangguh terhadap noise atau modalitas hilang.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Penalaran</h4>
+            </div>
+            <p>Penalaran kompleks dan multi-langkah, bukan sekadar pencocokan pola.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Ditambah tiga arah lain: generasi konten yang lebih realistis dan konsisten, interaksi manusia&ndash;AI yang lebih alami, serta <strong>etika dan keamanan</strong> &mdash; mendeteksi bias, memastikan privasi, dan mencegah penyalahgunaan.</div></div>
+
+        <aside class="notes">
+          Rangkum arah riset dalam satu kalimat: model makin besar dan mampu, tetapi tantangan sebenarnya bergeser dari &ldquo;bisa atau tidak&rdquo; ke &ldquo;aman, adil, dan efisien atau tidak&rdquo;. Tekankan bahwa etika dan keamanan kini menjadi area riset teknis, bukan sekadar diskursus &mdash; ada teknik untuk mendeteksi bias, mengukur fairness, dan mencegah penyalahgunaan.
+        </aside>
+      </section>
+
+      <!-- SLIDE 25: RANGKUMAN -->
+      <section>
+        <h2>Rangkuman &amp; Poin Kunci</h2>
+        <p>Kemampuan mencipta dan tanggung jawab yang menyertainya:</p>
+
+        <div class="grid-2" style="margin-top: 10px;">
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve);">Generasi &amp; Retrieval</h4>
+            </div>
+            <ul style="font-size: 0.76em; margin: 0; padding-left: 16px; line-height: 1.55;">
+              <li><strong>Generasi</strong> &rarr; menghasilkan konten dari kondisi (GAN, VAE, diffusion, transformer).</li>
+              <li><strong>Text-to-Image</strong> &rarr; DALL-E, Stable Diffusion; dikendalikan lewat cross-attention.</li>
+              <li><strong>Retrieval</strong> &rarr; ruang embedding bersama + <em>contrastive learning</em> (CLIP).</li>
+            </ul>
+          </div>
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon);">Etika &amp; Dampak</h4>
+            </div>
+            <ul style="font-size: 0.76em; margin: 0; padding-left: 16px; line-height: 1.55;">
+              <li><strong>Bias</strong> &rarr; direplikasi dan diperbesar dari data; bahaya <em>shortcut</em> dan stereotip.</li>
+              <li><strong>Privasi</strong> &rarr; data multimodal sulit dianonimkan dan sarat informasi sensitif.</li>
+              <li><strong>Fairness</strong> &rarr; definisi dan pengukuran diperdebatkan; mitigasi berkelanjutan.</li>
+            </ul>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Tutup dengan dua gagasan besar. Pertama, generasi dan retrieval memakai komponen yang sama dengan pemahaman &mdash; encoder dan cross-attention &mdash; hanya arahnya berubah. Kedua, semakin kuat kemampuan mencipta, semakin besar pula biaya etisnya; karena itu etika bukan pelengkap melainkan bagian inti rekayasa. Pertemuan berikutnya berfokus pada cara mengukur dan men-debug sistem multimodal secara menyeluruh.
+        </aside>
+      </section>
+
+      <!-- SLIDE 26: DISKUSI -->
+      <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Diskusi Kelas">
+        <h2 style="text-align: center; margin-bottom: 24px;">Diskusi Kelas</h2>
+        <p style="text-align: center; margin-bottom: 24px;">Diskusikan bersama rekan di samping Anda selama 3&ndash;5 menit:</p>
+        <div style="display: flex; flex-direction: column; gap: 14px; max-width: 860px; margin: 0 auto;">
+          <div class="c-callout c-callout-info"><span class="material-symbols-outlined icon-blue">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-blue);">Pertanyaan 1:</strong> Bagaimana kita mencegah model generasi multimodal dipakai untuk tujuan tidak etis &mdash; misalnya <em>deepfake</em> atau penyebaran informasi palsu?</p></div></div>
+          <div class="c-callout c-callout-warning"><span class="material-symbols-outlined icon-mauve">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-mauve);">Pertanyaan 2:</strong> Siapa yang harus bertanggung jawab jika model multimodal menghasilkan keluaran yang bias atau diskriminatif?</p></div></div>
+          <div class="c-callout c-callout-success"><span class="material-symbols-outlined icon-teal">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-teal);">Pertanyaan 3:</strong> Bagaimana menyeimbangkan inovasi AI multimodal dengan kebutuhan mengatasi isu etika &mdash; tanpa menghambat riset?</p></div></div>
+        </div>
+        <aside class="notes">Tiga pertanyaan bergerak dari pencegahan (1), ke pertanggungjawaban (2), ke tata kelola (3). Pertanyaan kedua sengaja sulit: jawabannya mencakup pengguna, pengembang, penyedia platform, dan regulator. Ketiga menyentuh ketegangan nyata antara inovasi dan pengamanan. Beri waktu 3&ndash;5 menit, lalu minta beberapa kelompok berbagi pandangan.</aside>
+      </section>
+
+      <!-- SLIDE 27: REFERENSI -->
+      <section>
+        <h2>Referensi &amp; Bacaan Lanjutan</h2>
+        <p style="margin-bottom: 20px;">Rekomendasi literatur akademik wajib dan bacaan lanjutan:</p>
+        <ol style="list-style: none; padding: 0; margin: 0; counter-reset: ref-counter;">
+          <li style="counter-increment: ref-counter; padding: 13px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[1]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Ramesh, A., et al. (2021).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Zero-Shot Text-to-Image Generation</em>. ICML. &mdash; paper DALL-E.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 13px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[2]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Rombach, R., et al. (2022).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>High-Resolution Image Synthesis with Latent Diffusion Models</em>. CVPR. &mdash; dasar Stable Diffusion.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 13px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[3]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Radford, A., et al. (2021).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Learning Transferable Visual Models From Natural Language Supervision</em>. ICML. &mdash; CLIP, dasar ruang embedding bersama.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 13px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[4]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Crawford, K. (2021).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Atlas of AI: Power, Politics, and the Planetary Costs of Artificial Intelligence</em>. Yale University Press. &mdash; untuk isu etika yang lebih luas.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 13px 0; display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[5]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Goodfellow, I., Bengio, Y., &amp; Courville, A. (2016).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Deep Learning</em>. MIT Press. &mdash; Bab 20, model generatif.</p></div></li>
+        </ol>
+        <aside class="notes">Lima referensi: dua paper model generatif (DALL-E, Latent Diffusion), satu paper CLIP sebagai dasar retrieval, satu buku etika AI (Crawford), dan buku teks Deep Learning untuk dasar generatif. Sebutkan bahwa Crawford menawarkan perspektif kritis yang melengkapi sisi teknis &mdash; penting agar mahasiswa melihat biaya sosial dari sistem yang mereka bangun.</aside>
+      </section>
+
+      <!-- SLIDE 28: PENUTUP -->
+      <section>
+        <div style="margin: auto 0; text-align: center;">
+          <h2 style="font-size: 1.8em; font-weight: 800; color: var(--ctp-text); margin-bottom: 16px;">Terima Kasih</h2>
+          <p style="font-size: 1.05em; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.6;">Pertemuan selanjutnya:<br><strong style="color: var(--ctp-blue);">Evaluasi Model Multimodal: Kuantitatif &amp; Kualitatif</strong></p>
+          <div style="background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-radius: 12px; padding: 18px 24px; display: inline-block; max-width: 480px;"><div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">Pertanyaan &amp; Diskusi</div><div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;"><span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span></div></div>
+        </div>
+        <aside class="notes">Tutup sesi dengan menegaskan bahwa generasi dan retrieval memakai fondasi yang sama dengan pemahaman, sedangkan etika adalah konsekuensi tak terpisahkan dari kemampuan mencipta. Sampaikan bahwa Pertemuan 13 beralih ke evaluasi menyeluruh &mdash; cara mengukur, men-debug, dan menginterpretasi model multimodal, termasuk audit bias yang baru saja dibahas.</aside>
+      </section>
+  </div></div>
+  <!-- Persistent Edge-to-Edge Deck Footer -->
+  <footer class="deck-footer">
+    <div class="deck-footer-left">
+      <span class="deck-footer-code">IF25-40304</span>
+      <span class="deck-footer-sep">&bull;</span>
+      <span class="deck-footer-dept">Teknik Informatika ITERA</span>
+    </div>
+
+    <div class="deck-footer-center">
+      <button type="button" id="deck-footer-topic" class="deck-footer-topic" onclick="toggleTopicPopover(event)" title="Daftar Isi & Navigasi Cepat Slide (Klik)">
+        <span id="deck-footer-topic-text" class="deck-footer-topic-text">Pertemuan 12 &bull; Topik Lanjutan: Generasi Multimodal &amp; Etika</span>
+        <span class="material-symbols-outlined deck-footer-topic-icon">expand_less</span>
+      </button>
+    </div>
+
+    <div class="deck-footer-right">
+      <button type="button" class="deck-footer-btn" onclick="Reveal.prev()" title="Slide Sebelumnya (← / P)" aria-label="Slide Sebelumnya">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <button type="button" class="deck-counter-btn" onclick="Reveal.toggleOverview()" title="Klik untuk Matriks Seluruh Slide (Esc/O)">
+        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">28</span>
+      </button>
+      <button type="button" class="deck-footer-btn" onclick="Reveal.next()" title="Slide Berikutnya (→ / Space / N)" aria-label="Slide Berikutnya">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </footer>
+  <div class="deck-topic-popover" id="deck-topic-popover"><div class="deck-popover-search-wrap"><input type="text" id="deck-topic-search" class="deck-popover-search" placeholder="Cari slide..." oninput="filterTopicList(this.value)"></div><div class="deck-topic-list" id="deck-topic-list"></div></div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+  <script>
+
+    let currentAspectMode = localStorage.getItem('reveal_aspect_mode') || 'auto';
+
+    function calculateResponsiveDimensions(mode) {
+      const winW = window.innerWidth;
+      const winH = window.innerHeight - 86.5;
+      const ratio = winW / winH;
+
+      if (mode === '16-9') return { width: 1280, height: 720, label: '16:9' };
+      if (mode === '16-10') return { width: 1280, height: 800, label: '16:10' };
+      if (mode === '4-3') return { width: 1024, height: 768, label: '4:3' };
+      if (mode === 'mobile') return { width: 750, height: 1000, label: 'Mobile' };
+      if (mode === 'text-large') return { width: 960, height: 540, label: 'Teks Besar' };
+
+      // Auto mode
+      if (winW <= 768 || ratio < 1.15) {
+        return { width: 750, height: Math.max(900, Math.round(750 / Math.max(0.5, ratio))), label: 'Auto' };
+      } else if (ratio >= 1.65) {
+        return { width: 1280, height: 720, label: 'Auto' };
+      } else if (ratio >= 1.45) {
+        return { width: 1280, height: 800, label: 'Auto' };
+      } else {
+        return { width: 1024, height: 768, label: 'Auto' };
+      }
+    }
+
+    const initialDim = calculateResponsiveDimensions(currentAspectMode);
+
+    Reveal.initialize({
+      width: initialDim.width,
+      height: initialDim.height,
+      margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2.0,
+      hash: true,
+      slideNumber: false,
+      controls: false,
+      progress: false,
+      center: true,
+      touch: true,
+      transition: 'slide',
+      backgroundTransition: 'none',
+      plugins: [ RevealNotes, RevealHighlight, RevealMath.KaTeX ]
+    });
+
+    function updateDeckState(event) {
+      const indices = event ? { h: event.indexh, v: event.indexv } : Reveal.getIndices();
+      const totalSlides = Reveal.getTotalSlides();
+      const currentIdx = indices ? indices.h : 0;
+
+      const progressBar = document.getElementById('deck-progress-bar');
+      if (progressBar) {
+        const progressPercent = totalSlides > 1 ? (currentIdx / (totalSlides - 1)) * 100 : 0;
+        progressBar.style.width = progressPercent + '%';
+      }
+
+      const currentEl = document.getElementById('deck-slide-current');
+      const totalEl = document.getElementById('deck-slide-total');
+      if (currentEl) currentEl.textContent = String(currentIdx + 1).padStart(2, '0');
+      if (totalEl) totalEl.textContent = String(totalSlides).padStart(2, '0');
+
+      const topicEl = document.getElementById('deck-footer-topic-text') || document.getElementById('deck-footer-topic');
+      if (topicEl) {
+        if (currentIdx === 0) {
+          topicEl.textContent = 'Pertemuan 12 \u2022 Topik Lanjutan: Generasi Multimodal & Etika';
+        } else {
+          const currentSlide = Reveal.getCurrentSlide();
+          if (currentSlide) {
+            const topicAttr = currentSlide.getAttribute('data-topic');
+            if (topicAttr) {
+              topicEl.textContent = topicAttr;
+            } else {
+              const heading = currentSlide.querySelector('h2') || currentSlide.querySelector('h1');
+              if (heading) {
+                topicEl.textContent = heading.textContent.trim();
+              } else {
+                topicEl.textContent = 'Pertemuan 12 \u2022 Topik Lanjutan: Generasi Multimodal & Etika';
+              }
+            }
+          }
+        }
+      }
+
+      updateActiveTopicItem(currentIdx);
+    }
+
+    Reveal.on('ready', event => {
+      document.body.classList.add('reveal-ready');
+      updateDeckState(event);
+      buildTopicIndex();
+    });
+    Reveal.on('slidechanged', updateDeckState);
+
+    // =========================================================
+    // Floating Slide Topic Navigation Popover (Daftar Isi)
+    // =========================================================
+    function buildTopicIndex() {
+      const listEl = document.getElementById('deck-topic-list');
+      if (!listEl) return;
+
+      const slides = document.querySelectorAll('.reveal .slides > section');
+      let html = '';
+
+      slides.forEach((slide, idx) => {
+        const topicAttr = slide.getAttribute('data-topic');
+        const h1 = slide.querySelector('h1');
+        const h2 = slide.querySelector('h2');
+        const partEl = slide.querySelector('.section-part-label');
+        const isSectionSlide = slide.classList.contains('section-slide') || !!slide.querySelector('.section-slide-content');
+        const partText = partEl ? partEl.textContent.trim().replace(/\s+/g, ' ') : '';
+
+        const h1Text = h1 ? h1.textContent.trim().replace(/\s+/g, ' ') : '';
+        const h2Text = h2 ? h2.textContent.trim().replace(/\s+/g, ' ') : '';
+        let title = '';
+
+        if (idx === 0) {
+          title = h1Text || 'Topik Lanjutan: Generasi Multimodal & Etika';
+          html += '<div class="deck-topic-section">Pendahuluan & Identitas</div>';
+        } else if (isSectionSlide || partText.startsWith('Bagian')) {
+          const secTitle = h1Text || h2Text || 'Bagian ' + idx;
+          const sectionLabel = partText ? partText + ': ' + secTitle : secTitle;
+          title = secTitle;
+          html += '<div class="deck-topic-section">' + sectionLabel + '</div>';
+        } else if (topicAttr) {
+          title = topicAttr;
+        } else {
+          title = h2Text || h1Text || 'Slide ' + (idx + 1);
+        }
+
+        const numStr = String(idx + 1).padStart(2, '0');
+        html += '<div class="deck-topic-item" data-slide-index="' + idx + '" onclick="jumpToSlide(' + idx + ')"><span class="deck-topic-num">' + numStr + '</span><span class="deck-topic-name" title="' + title + '">' + title + '</span></div>';
+      });
+
+      listEl.innerHTML = html;
+      const currentIdx = Reveal.getIndices ? Reveal.getIndices().h : 0;
+      updateActiveTopicItem(currentIdx);
+    }
+
+    function updateActiveTopicItem(currentIdx) {
+      document.querySelectorAll('.deck-topic-item').forEach(item => {
+        const idx = parseInt(item.getAttribute('data-slide-index'), 10);
+        item.classList.toggle('active', idx === currentIdx);
+      });
+    }
+
+    function toggleTopicPopover(e) {
+      if (e) e.stopPropagation();
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (!popover) return;
+
+      const isActive = popover.classList.toggle('active');
+      if (btn) btn.classList.toggle('active', isActive);
+
+      if (isActive) {
+        const activeItem = popover.querySelector('.deck-topic-item.active');
+        if (activeItem) {
+          activeItem.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }
+        const searchInput = document.getElementById('deck-topic-search');
+        if (searchInput) {
+          searchInput.value = '';
+          filterTopicList('');
+          setTimeout(() => searchInput.focus(), 80);
+        }
+      }
+    }
+
+    function closeTopicPopover() {
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (popover) popover.classList.remove('active');
+      if (btn) btn.classList.remove('active');
+    }
+
+    function jumpToSlide(index) {
+      Reveal.slide(index);
+      closeTopicPopover();
+    }
+
+    function filterTopicList(query) {
+      const q = (query || '').toLowerCase().trim();
+      const items = document.querySelectorAll('.deck-topic-item');
+      const sections = document.querySelectorAll('.deck-topic-section');
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const num = (item.querySelector('.deck-topic-num') || {}).textContent || '';
+        const name = (item.querySelector('.deck-topic-name') || {}).textContent || '';
+        const matches = !q || num.toLowerCase().includes(q) || name.toLowerCase().includes(q);
+        item.style.display = matches ? 'grid' : 'none';
+        if (matches) visibleCount++;
+      });
+
+      sections.forEach(sec => {
+        let nextEl = sec.nextElementSibling;
+        let hasVisibleChild = false;
+        while (nextEl && !nextEl.classList.contains('deck-topic-section')) {
+          if (nextEl.classList.contains('deck-topic-item') && nextEl.style.display !== 'none') {
+            hasVisibleChild = true;
+            break;
+          }
+          nextEl = nextEl.nextElementSibling;
+        }
+        sec.style.display = hasVisibleChild ? 'block' : 'none';
+      });
+
+      const listEl = document.getElementById('deck-topic-list');
+      let emptyMsg = document.getElementById('deck-topic-empty-msg');
+      if (visibleCount === 0) {
+        if (!emptyMsg) {
+          emptyMsg = document.createElement('div');
+          emptyMsg.id = 'deck-topic-empty-msg';
+          emptyMsg.className = 'deck-topic-empty';
+          emptyMsg.textContent = 'Tidak ada slide yang cocok dengan pencarian.';
+          listEl.appendChild(emptyMsg);
+        }
+        emptyMsg.style.display = 'block';
+      } else if (emptyMsg) {
+        emptyMsg.style.display = 'none';
+      }
+    }
+
+    function setAspectMode(mode) {
+      currentAspectMode = mode;
+      localStorage.setItem('reveal_aspect_mode', mode);
+      const dim = calculateResponsiveDimensions(mode);
+
+      Reveal.configure({
+        width: dim.width,
+        height: dim.height,
+        margin: 0.04,
+        minScale: 0.2,
+        maxScale: 2.0
+      });
+
+      document.body.classList.remove('aspect-16-9', 'aspect-16-10', 'aspect-4-3', 'aspect-mobile');
+      if (mode === 'auto') {
+        if (window.innerWidth <= 768) document.body.classList.add('aspect-mobile');
+      } else {
+        document.body.classList.add('aspect-' + mode);
+      }
+
+      const labelEl = document.getElementById('aspect-label');
+      if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+
+      document.querySelectorAll('.dropdown-item').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-aspect') === mode);
+      });
+
+      closeAspectDropdown();
+      setTimeout(() => Reveal.layout(), 50);
+    }
+
+    function toggleAspectDropdown(e) {
+      if (e) e.stopPropagation();
+      document.getElementById('aspect-menu').classList.toggle('active');
+    }
+
+    function closeAspectDropdown() {
+      const menu = document.getElementById('aspect-menu');
+      if (menu) menu.classList.remove('active');
+    }
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-dropdown')) closeAspectDropdown();
+      if (!e.target.closest('#deck-topic-popover') && !e.target.closest('#deck-footer-topic')) closeTopicPopover();
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (currentAspectMode === 'auto') {
+          const dim = calculateResponsiveDimensions('auto');
+          const cfg = Reveal.getConfig();
+          if (cfg.width !== dim.width || cfg.height !== dim.height) {
+            Reveal.configure({ width: dim.width, height: dim.height });
+            const labelEl = document.getElementById('aspect-label');
+            if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+            Reveal.layout();
+          }
+        }
+      }, 200);
+    });
+
+    window.addEventListener('DOMContentLoaded', () => setAspectMode(currentAspectMode));
+
+    function openShortcutsModal() {
+      document.getElementById('shortcuts-modal').classList.add('active');
+    }
+
+    function closeShortcutsModal(event) {
+      if (!event || event.target.id === 'shortcuts-modal' || event.target.classList.contains('modal-close')) {
+        document.getElementById('shortcuts-modal').classList.remove('active');
+      }
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const popover = document.getElementById('deck-topic-popover');
+        if (popover && popover.classList.contains('active')) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeTopicPopover();
+          return;
+        }
+      }
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        document.getElementById('shortcuts-modal').classList.toggle('active');
+      }
+    });
+
+  </script>
+</body></html>

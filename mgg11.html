@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pertemuan 11: Aplikasi 2: VQA &amp; Analisis Sentimen Multimodal | ITERA</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <link rel="stylesheet" href="css/catppuccin-latte.css">
+</head>
+<body>
+  <header class="deck-header">
+    <div class="deck-header-left">
+      <a href="index.html" class="deck-brand-link" title="Kembali ke Portal Kuliah">
+        <img src="assets/img/logo_2.png" alt="Logo ITERA" class="deck-logo">
+        <img src="assets/img/dikti-saintek-berdampak-color.svg" alt="Logo Dikti Saintek Berdampak" class="deck-logo">
+      </a>
+    </div>
+
+    <div class="deck-header-right">
+      <!-- Aspect Ratio / Projector Switcher -->
+      <div class="nav-dropdown">
+        <button type="button" class="deck-ctrl-btn" id="aspect-btn" onclick="toggleAspectDropdown(event)" title="Sesuaikan Rasio Layar & Proyektor">
+          <span class="material-symbols-outlined">aspect_ratio</span>
+          <span id="aspect-label" class="deck-btn-label">Auto</span>
+          <span class="material-symbols-outlined" style="font-size: 14px;">arrow_drop_down</span>
+        </button>
+        <div class="nav-dropdown-menu" id="aspect-menu">
+          <button type="button" class="dropdown-item active" data-aspect="auto" onclick="setAspectMode('auto')">
+            <span class="item-title">Auto</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-9" onclick="setAspectMode('16-9')">
+            <span class="item-title">16:9</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-10" onclick="setAspectMode('16-10')">
+            <span class="item-title">16:10</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="4-3" onclick="setAspectMode('4-3')">
+            <span class="item-title">4:3</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="mobile" onclick="setAspectMode('mobile')">
+            <span class="item-title">Mobile</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="text-large" onclick="setAspectMode('text-large')">
+            <span class="item-title">Teks Besar</span>
+          </button>
+        </div>
+      </div>
+
+      <button type="button" class="deck-ctrl-btn" onclick="Reveal.toggleOverview()" title="Lihat Matriks Seluruh Slide (Esc/O)">
+        <span class="material-symbols-outlined">grid_view</span>
+        <span class="deck-btn-label">Overview</span>
+      </button>
+      <button type="button" class="deck-ctrl-btn" onclick="openShortcutsModal()" title="Panduan Pintasan Keyboard (?)">
+        <span class="material-symbols-outlined">keyboard</span>
+        <span class="deck-btn-label">Pintasan</span>
+      </button>
+      <a href="index.html" class="deck-ctrl-btn" title="Kembali ke Portal Kuliah">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span class="deck-btn-label">Portal</span>
+      </a>
+    </div>
+  </header>
+  <div class="deck-progress-track"><div class="deck-progress-bar" id="deck-progress-bar"></div></div>
+  <div id="shortcuts-modal" onclick="closeShortcutsModal(event)"><div class="modal-content" onclick="event.stopPropagation()"><div class="modal-header"><h4 style="margin:0;font-weight:800"><span class="material-symbols-outlined icon-blue">keyboard</span> Pintasan Navigasi Presentasi</h4><button class="modal-close" onclick="closeShortcutsModal()">&times;</button></div><div class="shortcut-row"><span>Slide berikutnya</span><span><span class="kbd-key">Space</span> / <span class="kbd-key">→</span></span></div><div class="shortcut-row"><span>Slide sebelumnya</span><span><span class="kbd-key">←</span></span></div><div class="shortcut-row"><span>Catatan dosen</span><span><span class="kbd-key">S</span></span></div></div></div>
+  <div class="reveal"><div class="slides">
+
+      <!-- SLIDE 1: COVER -->
+      <section id="deck-title">
+        <div style="margin: auto 0; text-align: left;">
+          <h1 style="font-size: 2.3em; line-height: 1.15; font-weight: 800; color: var(--ctp-text); margin-bottom: 12px; letter-spacing: -0.025em;">
+            Pembelajaran Mesin Multimodal
+          </h1>
+          <div style="font-size: 1.15em; font-weight: 600; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.4;">
+            Pertemuan 11 &bull; Aplikasi 2: VQA &amp; Analisis Sentimen Multimodal
+          </div>
+          <div style="max-width: 620px; background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-left: 3.5px solid var(--ctp-blue); border-radius: 12px; padding: 18px 24px;">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">
+              Dosen Pengampu
+            </div>
+            <div style="font-size: 1.1em; font-weight: 800; color: var(--ctp-text); margin-bottom: 6px;">
+              I Wayan Wiprayoga Wisesa
+            </div>
+            <div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;">
+              Program Studi Teknik Informatika<br>
+              Fakultas Teknologi Industri<br>
+              Institut Teknologi Sumatera (ITERA)<br>
+              <span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Sesi ini menggabungkan dua tugas aplikasi menjadi satu pertemuan padat: Visual Question Answering dan analisis sentimen multimodal. Keduanya memakai kembali seluruh fondasi yang sudah dibangun &mdash; representasi, penyejajaran, dan fusi. Sampaikan bahwa pemadatan ini disengaja agar ruang untuk proyek akhir dan studi kasus terpadu tetap tersedia di minggu-minggu berikutnya.
+        </aside>
+      </section>
+
+      <!-- SLIDE 2: TUJUAN PEMBELAJARAN -->
+      <section>
+        <h2>Tujuan Pembelajaran Sesi Ini</h2>
+        <p style="margin-bottom: 24px;">Di akhir sesi ini, mahasiswa diharapkan mampu:</p>
+
+        <div class="grid-4">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-blue">01</span>
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Definisi VQA</h4>
+            </div>
+            <p>Menjelaskan definisi, tujuan, dan tantangan Visual Question Answering sebagai tugas penalaran multimodal.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-mauve">02</span>
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Arsitektur VQA</h4>
+            </div>
+            <p>Membandingkan pendekatan konkatenasi, <em>attention-based</em>, dan transformer (ViLBERT, LXMERT).</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-teal">03</span>
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Sentimen Multimodal</h4>
+            </div>
+            <p>Menganalisis keterbatasan analisis unimodal dan peran fusi teks&ndash;audio&ndash;visual.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-peach">04</span>
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Metrik Evaluasi</h4>
+            </div>
+            <p>Mengidentifikasi VQA Accuracy, WUPS, serta metrik klasifikasi dan regresi sentimen.</p>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Empat capaian terbagi dua pasang: VQA (1&ndash;2) dan sentimen (3&ndash;4). Keduanya bertumpu pada mekanisme yang sama &mdash; cross-attention sebagai penyejajar. Tekankan bahwa capaian keempat menyiapkan mahasiswa menyusun strategi evaluasi untuk proyek akhir: memilih metrik yang tepat untuk tugas yang berbeda.
+        </aside>
+      </section>
+
+      <!-- SLIDE 3: JEMBATAN TIGA TUGAS -->
+      <section>
+        <h2>Dari Captioning ke VQA ke Sentimen</h2>
+        <p>Tiga tugas aplikasi yang dibangun dari fondasi multimodal yang sama.</p>
+
+        <div class="grid-3" style="margin-top: 14px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Image Captioning</h4>
+            </div>
+            <p><strong>Gambar ke Teks.</strong> Model menghasilkan deskripsi bebas dari satu gambar. Sudah dibahas di Pertemuan 10.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">VQA</h4>
+            </div>
+            <p><strong>Gambar + Teks ke Teks.</strong> Model menjawab pertanyaan spesifik tentang gambar. Fokus sesi ini, bagian pertama.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Sentimen Multimodal</h4>
+            </div>
+            <p><strong>Teks + Audio + Visual ke Label.</strong> Model mengklasifikasi emosi. Bagian kedua sesi ini.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div><strong>Pola yang sama, tugas yang berbeda.</strong> Ketiganya memakai encoder&ndash;decoder dan cross-attention; yang berubah hanya bentuk masukan, keluaran, dan cara mengukurnya.</div></div>
+
+        <aside class="notes">
+          Slide ini berfungsi sebagai peta jalan. Minta mahasiswa menyebutkan bentuk masukan dan keluaran tiap tugas. Perhatikan bahwa sentimen multimodal menambah modalitas ketiga (audio &amp; visual) &mdash; ini memperluas tantangan fusi yang sudah dikenal. Hubungkan dengan tiga pilar mata kuliah: representasi, penyejajaran, fusi.
+        </aside>
+      </section>
+
+      <!-- SLIDE 4: DIVIDER BAGIAN 1 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(136,57,239,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-mauve">Bagian 1</span>
+          <h1>Visual Question Answering</h1>
+          <p class="subtitle">
+            Menjawab pertanyaan tentang gambar: pemahaman visual, bahasa, dan penalaran dalam satu tugas.
+          </p>
+        </div>
+        <aside class="notes">Bagian pertama menutup rangkaian tugas berbasis gambar. Jika captioning menghasilkan deskripsi bebas, VQA menuntut jawaban yang tepat atas pertanyaan tertentu &mdash; jauh lebih sulit karena pertanyaannya bisa menyentuh objek, atribut, hubungan, hingga penalaran. Tekankan bahwa inilah tugas yang paling banyak dijadikan tolok ukur pemahaman visual.</aside>
+      </section>
+
+      <!-- SLIDE 5: VQA DEFINISI -->
+      <section>
+        <h2>Definisi Visual Question Answering</h2>
+        <p>Model menerima gambar <em>dan</em> pertanyaan teks, lalu menghasilkan jawaban yang akurat.</p>
+
+        <div class="formula-hero" style="margin-top: 12px;">
+          <div class="formula-label">Definisi Formal</div>
+          <div class="formula-math">$$\hat{a} = \arg\max_{a}\, P(a \mid I, Q)$$</div>
+        </div>
+
+        <div class="formula-breakdown">
+          <div class="formula-term-box"><strong>\(I\)</strong> Gambar masukan. Sumber informasi visual yang harus dipahami model.</div>
+          <div class="formula-term-box"><strong>\(Q\)</strong> Pertanyaan dalam teks. Menentukan <em>apa</em> yang harus dicari di dalam gambar.</div>
+          <div class="formula-term-box"><strong>\(\hat{a}\)</strong> Jawaban terpilih &mdash; biasanya teks singkat, atau satu dari daftar pilihan jawaban.</div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Bukan sekadar captioning.</strong> Captioning mendeskripsikan gambar secara bebas; VQA harus menemukan <em>informasi tertentu</em> yang diminta pertanyaan. Satu gambar bisa punya ratusan pertanyaan berbeda, masing-masing menuntut jawaban berbeda.</div></div>
+
+        <aside class="notes">
+          Bacakan rumus sebagai kalimat: pilih jawaban dengan probabilitas tertinggi, diberikan gambar dan pertanyaan. Bandingkan dengan captioning: di sana keluaran adalah urutan kata bebas, di sini keluaran adalah jawaban yang terkondisi pada pertanyaan. Beri contoh satu gambar dengan tiga pertanyaan berbeda (warna, jumlah, posisi) untuk menegaskan perbedaan tuntutannya.
+        </aside>
+      </section>
+
+      <!-- SLIDE 6: VQA TUJUAN -->
+      <section>
+        <h2>Empat Tujuan Visual Question Answering</h2>
+        <p>Yang diuji oleh VQA melampaui pengenalan objek:</p>
+
+        <div class="grid-4" style="margin-top: 14px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Pemahaman Visual</h4>
+            </div>
+            <p>Menguji pemahaman objek, atribut, hubungan spasial, dan konteks dalam gambar.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Pemahaman Bahasa</h4>
+            </div>
+            <p>Menguji pemahaman pertanyaan kompleks, termasuk yang ambigu atau butuh penalaran.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Penalaran Multimodal</h4>
+            </div>
+            <p>Menggabungkan informasi gambar dan teks untuk menghasilkan jawaban yang logis.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Interaksi Manusia&ndash;Komputer</h4>
+            </div>
+            <p>Memungkinkan interaksi alami dengan sistem AI, misalnya asisten visual.</p>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Empat tujuan ini bergerak dari kemampuan persepsi ke penalaran ke aplikasi. Tekankan bahwa tujuan ketiga &mdash; penalaran multimodal &mdash; adalah yang membedakan VQA dari tugas retrieval. Model tidak cukup mencocokkan kata pertanyaan dengan objek; ia harus memahami hubungan, misalnya membandingkan tinggi dua objek atau menyimpulkan penyebab sebuah ekspresi.
+        </aside>
+      </section>
+
+      <!-- SLIDE 7: VQA TANTANGAN -->
+      <section>
+        <h2>Tantangan dalam VQA</h2>
+        <p>Empat kesulitan teknis, ditambah bahaya bias yang tersembunyi:</p>
+
+        <div class="grid-3" style="margin-top: 10px;">
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Representasi Multimodal</h4>
+            </div>
+            <p>Bagaimana merepresentasikan gambar dan pertanyaan dalam ruang fitur yang kompatibel?</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Alignment &amp; Grounding</h4>
+            </div>
+            <p>Menyelaraskan kata dalam pertanyaan dengan objek atau area relevan pada gambar.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Penalaran</h4>
+            </div>
+            <p>Banyak pertanyaan menuntut penalaran logis, spasial, atau pengetahuan umum.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Bahaya terbesar &mdash; bias <em>shortcut</em>.</strong> Jika sebagian besar gambar kuda di data latih berwarna cokelat, model bisa menjawab &ldquo;cokelat&rdquo; tanpa melihat gambar. Skor tinggi di dataset tidak menjamin penalaran yang benar.</div></div>
+
+        <aside class="notes">
+          Tiga kartu adalah tantangan teknis; callout adalah jebakan metodologis. Tekankan bias <em>shortcut</em>: model belajar korelasi statistik dari data, bukan hubungan sebab-akibat visual. Ini alasan VQA v2 dibuat &mdash; dengan menyeimbangkan pasangan gambar&ndash;pertanyaan sehingga model tidak bisa menebak dari pertanyaan saja. Sebutkan bahwa menguji &ldquo;blind model&rdquo; (hanya pertanyaan, tanpa gambar) adalah praktik standar untuk mendeteksi shortcut.
+        </aside>
+      </section>
+
+      <!-- SLIDE 8: VQA ARSITEKTUR KONKATENASI -->
+      <section>
+        <h2>Arsitektur VQA: Konkatenasi</h2>
+        <p>Pendekatan awal: encode tiap modalitas, gabung sederhana, klasifikasi.</p>
+
+        <div class="grid-2" style="margin-top: 6px;">
+          <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 10px; overflow: hidden;">
+            <svg viewBox="0 0 400 330" role="img" aria-label="Diagram VQA konkatenasi: gambar di-encode CNN menjadi v, pertanyaan di-encode LSTM menjadi q, keduanya dikonkatenasi lalu diumpankan ke MLP untuk menghasilkan jawaban" style="width: 100%; height: auto;">
+              <defs>
+                <marker id="w11-con" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#1e66f5"/></marker>
+                <marker id="w11-con2" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#179299"/></marker>
+              </defs>
+
+              <text x="100" y="16" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif" font-weight="700">Gambar</text>
+              <text x="300" y="16" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif" font-weight="700">Pertanyaan</text>
+
+              <rect x="30" y="26" width="140" height="36" rx="8" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+              <text x="100" y="49" text-anchor="middle" fill="#4c4f69" font-size="11.5" font-family="sans-serif" font-weight="700">Image Encoder (CNN)</text>
+              <rect x="230" y="26" width="140" height="36" rx="8" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
+              <text x="300" y="49" text-anchor="middle" fill="#4c4f69" font-size="11.5" font-family="sans-serif" font-weight="700">Question Encoder (LSTM)</text>
+
+              <path d="M100 62 V80" fill="none" stroke="#1e66f5" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w11-con)"/>
+              <path d="M300 62 V80" fill="none" stroke="#179299" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w11-con2)"/>
+
+              <rect x="55" y="84" width="90" height="30" rx="7" fill="#eff1f5" stroke="#8839ef" stroke-width="2"/>
+              <foreignObject x="55" y="88" width="90" height="22"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#8839ef;">\(\mathbf{v}\)</div></foreignObject>
+              <rect x="255" y="84" width="90" height="30" rx="7" fill="#eff1f5" stroke="#8839ef" stroke-width="2"/>
+              <foreignObject x="255" y="88" width="90" height="22"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#8839ef;">\(\mathbf{q}\)</div></foreignObject>
+
+              <path d="M100 114 L165 138" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w11-con)"/>
+              <path d="M300 114 L235 138" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w11-con)"/>
+
+              <rect x="85" y="142" width="230" height="36" rx="8" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
+              <text x="200" y="159" text-anchor="middle" fill="#4c4f69" font-size="11.5" font-family="sans-serif" font-weight="700">Konkatenasi</text>
+              <foreignObject x="85" y="161" width="230" height="18"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:12.5px;color:#8839ef;">\([\mathbf{v};\ \mathbf{q}]\)</div></foreignObject>
+
+              <path d="M200 178 V198" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w11-con2)"/>
+
+              <rect x="85" y="202" width="230" height="36" rx="8" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+              <text x="200" y="219" text-anchor="middle" fill="#4c4f69" font-size="11.5" font-family="sans-serif" font-weight="700">MLP Classifier</text>
+              <text x="200" y="233" text-anchor="middle" fill="#6c6f85" font-size="10.5" font-family="sans-serif">prediksi jawaban</text>
+
+              <path d="M200 238 V258" fill="none" stroke="#1e66f5" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w11-con)"/>
+
+              <rect x="120" y="262" width="160" height="34" rx="8" fill="#dff3f2" stroke="#179299" stroke-width="2.5"/>
+              <foreignObject x="120" y="266" width="160" height="26"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#4c4f69;">Jawaban \(\hat{a}\)</div></foreignObject>
+            </svg>
+          </div>
+          <div class="narrative-pane">
+            <div class="narrative-step"><strong>01. Encode</strong> Gambar dipadatkan menjadi vektor \(\mathbf{v}\) oleh CNN; pertanyaan menjadi vektor \(\mathbf{q}\) oleh LSTM.</div>
+            <div class="narrative-step"><strong>02. Konkatenasi</strong> Kedua vektor disambung menjadi \([\mathbf{v};\mathbf{q}]\) &mdash; fusi paling sederhana.</div>
+            <div class="narrative-step"><strong>03. Klasifikasi</strong> MLP memetakan vektor gabungan ke distribusi jawaban.</div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Ikuti diagram dari atas: dua encoder paralel, lalu konkatenasi, lalu MLP. Ini adalah fusi awal (early fusion) dalam bentuk paling sederhana. Kelemahannya akan menjadi motivasi attention di slide berikutnya: konkatenasi memperlakukan seluruh gambar dan seluruh pertanyaan sebagai satu paket, tanpa interaksi antar bagian. Tunjukkan bahwa ini sama dengan pola encoder&ndash;decoder W10, hanya saja keluaran decoder diganti klasifikasi.
+        </aside>
+      </section>
+
+      <!-- SLIDE 9: VQA ATTENTION-BASED -->
+      <section>
+        <h2>Arsitektur VQA: Attention-Based</h2>
+        <p>Pertanyaan memandu model untuk memperhatikan area gambar yang relevan.</p>
+
+        <div class="formula-hero" style="margin-top: 10px;">
+          <div class="formula-label">Perhatian Terpandu Pertanyaan (VQA)</div>
+          <div class="formula-math">$$\alpha_i = \mathrm{softmax}\big(w^\top \tanh(W_q\, q + W_v\, v_i)\big),\qquad \hat{v} = \sum_i \alpha_i\, v_i$$</div>
+        </div>
+
+        <div class="formula-breakdown">
+          <div class="formula-term-box"><strong>\(v_i\)</strong> Fitur spasial area ke-\(i\) dari CNN &mdash; grid area gambar, bukan satu vektor global.</div>
+          <div class="formula-term-box"><strong>\(q\)</strong> Fitur pertanyaan. Menjadi <em>query</em> yang menentukan area mana yang penting.</div>
+          <div class="formula-term-box"><strong>\(\alpha_i,\ \hat{v}\)</strong> Bobot perhatian tiap area dan fitur gambar terfokus (jumlah berbobot).</div>
+        </div>
+
+        <div class="c-callout c-callout-success" style="margin-top: 12px;"><span class="material-symbols-outlined icon-green">check_circle</span><div><strong>Mengapa lebih baik?</strong> Pertanyaan &ldquo;Apa warna payung itu?&rdquo; membuat bobot menumpuk di area payung; pertanyaan lain memindahkan fokus ke area lain &mdash; gambar yang sama, perhatian yang berbeda.</div></div>
+
+        <aside class="notes">
+          Ini adalah cross-attention yang sudah dikenal dari W09 dan W10, kini dengan peran baru: memfilter gambar sesuai pertanyaan. Bandingkan dengan slide sebelumnya &mdash; alih-alih mengirim seluruh vektor \(\mathbf{v}\), kita mengirim \(\hat{v}\) yang hanya merangkum area relevan. Jelaskan bahwa skor \(e_i = w^\top\tanh(W_q q + W_v v_i)\) bersifat aditif (bukan dot-product) karena lebih stabil untuk fusi lintas modalitas. Model ini klasik dari Yang et al. (2016).
+        </aside>
+      </section>
+
+      <!-- SLIDE 10: VQA TRANSFORMER-BASED -->
+      <section>
+        <h2>Arsitektur VQA: Berbasis Transformer</h2>
+        <p>Co-attention dua arah: gambar dan teks saling memperhatikan.</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">ViLBERT</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li><em>Dual-stream</em>: satu jalur untuk gambar, satu untuk teks.</li>
+              <li>Dihubungkan oleh <strong>Co-Attentional Transformer Layers</strong>.</li>
+              <li>Memproses kedua modalitas secara paralel, lalu menyatukannya.</li>
+            </ul>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">LXMERT</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Tiga encoder: <strong>teks</strong>, <strong>visual</strong>, dan <strong>lintas modalitas</strong>.</li>
+              <li>Encoder lintas modalitas khusus mempelajari interaksi.</li>
+              <li>Sangat efektif untuk VQA karena fokus pada interaksi.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Pola yang bertahan.</strong> Arsitektur modern menggantikan encoder unimodal terpisah dengan satu transformer besar yang memproses gambar dan teks bersama &mdash; fondasi yang sama dengan CLIP dan model generatif di pertemuan berikutnya.</div></div>
+
+        <aside class="notes">
+          Tekankan pergeseran desain: dari &ldquo;encode terpisah lalu gabung&rdquo; menjadi &ldquo;proses bersama dengan attention berlapis&rdquo;. ViLBERT memakai dua jalur yang bertukar informasi melalui co-attention; LXMERT menyiapkan encoder lintas modalitas khusus. Sebutkan bahwa keduanya adalah model <em>pra-latih</em> &mdash; dilatih pada tugas besar lebih dulu, lalu disetel halus untuk VQA. Ini pola yang sama dengan encoder beku pada proyek akhir.
+        </aside>
+      </section>
+
+      <!-- SLIDE 11: VQA METRIK -->
+      <section>
+        <h2>Metrik Evaluasi VQA</h2>
+        <p>Jawaban bisa bervariasi &mdash; metrik harus toleran terhadap variasi linguistik.</p>
+
+        <table class="c-table" style="margin-top: 12px;">
+          <thead>
+            <tr>
+              <th style="width: 24%;">Metrik</th>
+              <th style="width: 44%;">Cara Kerja</th>
+              <th style="width: 32%;">Catatan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">VQA Accuracy</td>
+              <td>\(\min\!\left(1,\ \dfrac{\text{cocok dengan manusia}}{3}\right)\)</td>
+              <td>Toleran terhadap variasi; 3+ manusia setuju &rarr; skor 1,0</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">WUPS</td>
+              <td>Kesamaan semantik berbasis hierarki WordNet</td>
+              <td>Menangkap &ldquo;kucing&rdquo; &asymp; &ldquo;kucing anggora&rdquo;</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">BLEU/METEOR</td>
+              <td>Kesamaan n-gram antara jawaban dan referensi</td>
+              <td>Dipakai bila jawaban panjang atau generatif</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">calculate</span><div><strong>Contoh:</strong> 10 manusia menjawab sebuah pertanyaan; 3 di antaranya menulis &ldquo;kucing&rdquo;. Jika model menjawab &ldquo;kucing&rdquo;, skornya \(\min(1, 3/3) = 1{,}0\) &mdash; meski ada 7 jawaban lain yang juga valid.</div></div>
+
+        <aside class="notes">
+          VQA Accuracy adalah metrik paling khas: ia mengakui bahwa banyak jawaban bisa benar. Aturannya: ambil jawaban manusia yang paling banyak sepakat (biasanya 10 anotator), hitung seberapa banyak anotator yang menulis jawaban model, bagi tiga, batasi di 1. WUPS melangkah lebih jauh dengan mengukur kedekatan makna lewat WordNet. Tekankan bahwa VQA Accuracy mengasumsikan ada 3 anotator sepakat &mdash; detail teknis yang penting untuk mereproduksi angka dari paper.
+        </aside>
+      </section>
+
+      <!-- SLIDE 12: DIVIDER BAGIAN 2 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(23,146,153,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-teal">Bagian 2</span>
+          <h1>Analisis Sentimen Multimodal</h1>
+          <p class="subtitle">
+            Mengapa kata-kata saja tidak cukup: sentimen hidup di intonasi dan ekspresi.
+          </p>
+        </div>
+        <aside class="notes">Bagian kedua berpindah dari tugas berbasis gambar ke tugas tiga modalitas. Perbedaannya: sentimen menyentuh nuansa (sarkasme, emosi halus) yang tidak terlihat dari satu modalitas. Tekankan bahwa masalah intinya adalah <em>fusi konflik</em> &mdash; apa yang terjadi ketika teks, audio, dan visual saling bertentangan.</aside>
+      </section>
+
+      <!-- SLIDE 13: SENTIMEN DEFINISI & MOTIVASI -->
+      <section>
+        <h2>Definisi &amp; Motivasi</h2>
+        <p>Sentimen tidak hanya diucapkan &mdash; ia juga ditunjukkan.</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Definisi</h4>
+            </div>
+            <p>Mengidentifikasi dan mengategorikan opini atau emosi dengan mengintegrasikan informasi dari <strong>teks</strong> (apa yang dikatakan), <strong>audio</strong> (bagaimana cara mengatakannya), dan <strong>visual</strong> (ekspresi wajah, bahasa tubuh).</p>
+          </div>
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Motivasi</h4>
+            </div>
+            <p>Sentimen sering diekspresikan lewat <em>intonasi</em> dan <em>ekspresi</em>, bukan hanya kata. Kalimat sama bisa berarti tulus atau sarkastik &mdash; teks saja tidak dapat membedakannya.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Keluaran.</strong> Biasanya klasifikasi (Positif, Negatif, Netral) atau skor polaritas sentimen. Tiga modalitas, satu keputusan akhir.</div></div>
+
+        <aside class="notes">
+          Mulai dengan contoh konkret: kalimat &ldquo;Oh, bagus sekali!&rdquo; bisa berarti pujian tulus atau sarkasme &mdash; perbedaannya hanya pada intonasi dan ekspresi. Ini adalah masalah yang tidak bisa dipecahkan modalitas teks saja. Definisi ini menegaskan bahwa sentimen multimodal adalah tugas fusi tiga arah, yang lebih sulit daripada fusi dua modalitas di VQA.
+        </aside>
+      </section>
+
+      <!-- SLIDE 14: KETERBATASAN UNIMODAL -->
+      <section>
+        <h2>Keterbatasan Analisis Unimodal</h2>
+        <p>Setiap modalitas punya titik buta sendiri:</p>
+
+        <div class="grid-3" style="margin-top: 14px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Teks Saja</h4>
+            </div>
+            <p>Sulit menangkap <strong>sarkasme atau ironi</strong> tanpa intonasi atau ekspresi. Contoh: &ldquo;Oh, bagus sekali!&rdquo;</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Audio Saja</h4>
+            </div>
+            <p>Mendeteksi intonasi (gembira, marah), tetapi tidak tahu <strong>apa yang dibicarakan</strong> &mdash; sulit membedakan marah dan semangat.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Visual Saja</h4>
+            </div>
+            <p>Melihat ekspresi wajah, tetapi tidak tahu <strong>konteks atau penyebab</strong> emosi. Senyum bisa berarti bahagia, gugup, atau sopan.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-success" style="margin-top: 14px;"><span class="material-symbols-outlined icon-green">check_circle</span><div><strong>Kesimpulan:</strong> multimodal memberi pemahaman sentimen yang lebih akurat, komprehensif, dan <em>robust</em> &mdash; serta mampu menangkap nuansa emosi yang kompleks.</div></div>
+
+        <aside class="notes">
+          Gunakan tiga kartu untuk membangun argumen bertahap: teks buta terhadap nada, audio buta terhadap isi, visual buta terhadap konteks. Ketiganya saling melengkapi &mdash; dan di situlah fusi menjadi krusial. Tanyakan ke kelas: modalitas mana yang paling sering menyesatkan? Jawabannya biasanya audio dan visual, karena ekspresi bisa dipalsukan (senyum sopan) sedangkan isi teks lebih terkendali.
+        </aside>
+      </section>
+
+      <!-- SLIDE 15: SENTIMEN TANTANGAN -->
+      <section>
+        <h2>Tantangan Analisis Sentimen Multimodal</h2>
+        <p>Teknis dan non-teknis, dari fusi konflik hingga privasi:</p>
+
+        <div class="grid-3" style="margin-top: 10px;">
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Representasi Heterogen</h4>
+            </div>
+            <p>Mengubah teks, spektrogram/MFCC, dan fitur wajah ke format yang kompatibel.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Alignment Temporal</h4>
+            </div>
+            <p>Wajah, intonasi, dan kata bisa tidak sinkron sempurna sepanjang waktu.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Fusi Konflik</h4>
+            </div>
+            <p>Bagaimana bila modalitas bertentangan, dan bagaimana mencegah satu mendominasi?</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Ditambah tiga beban:</strong> sarkasme &amp; ironi masih sulit; emosi halus (terkejut vs takut) mudah tertukar; dan data multimodal (video, audio) menimbulkan isu <strong>privasi</strong> yang serius.</div></div>
+
+        <aside class="notes">
+          Fusi konflik adalah inti bagian ini &mdash; akan menjadi studi kasus dua slide ke depan. Tekankan bahwa &ldquo;konflik&rdquo; bukan bug melainkan sinyal: ketidaksesuaian antar modalitas justru petunjuk sarkasme. Sebutkan juga beban privasi: mengumpulkan video wajah dan suara jauh lebih sensitif daripada teks, dan anonimisasi penuh sangat sulit karena wajah dan suara bersifat identik dengan individu.
+        </aside>
+      </section>
+
+      <!-- SLIDE 16: SENTIMEN ARSITEKTUR FUSI -->
+      <section>
+        <h2>Arsitektur &amp; Strategi Fusi</h2>
+        <p>Tiga cara menggabungkan sinyal sentimen dari tiga modalitas:</p>
+
+        <div class="grid-3" style="margin-top: 14px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Late Fusion</h4>
+            </div>
+            <p>Classifier terpisah tiap modalitas, lalu probabilitas digabung (voting). Sederhana dan robust bila satu modalitas hilang.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Intermediate Fusion</h4>
+            </div>
+            <p>Fitur digabung (konkatenasi, perkalian Hadamard) sebelum lapisan gabungan. Memungkinkan interaksi fitur lebih dalam.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Attention-based</h4>
+            </div>
+            <p>Cross-attention: satu modalitas &ldquo;memperhatikan&rdquo; modalitas lain. Teks memperhatikan ekspresi; audio memperhatikan kata.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div><strong>Ingat tiga strategi ini.</strong> Studi kasus berikutnya membandingkan late fusion (voting) dengan attention-based fusion pada sebuah video ulasan produk.</div></div>
+
+        <aside class="notes">
+          Ketiga strategi sudah dikenal dari W05&ndash;W06 (Early &amp; Late, Intermediate &amp; Hybrid). Sekarang penerapannya pada tiga modalitas. Tekankan bahwa pilihan fusi menentukan kemampuan model menangani konflik: late fusion dengan voting sederhana tidak dapat menangani konflik dengan baik, sedangkan attention dapat belajar memberikan bobot lebih pada modalitas yang lebih ekspresif. Ini menjadi pertanyaan studi kasus.
+        </aside>
+      </section>
+
+      <!-- SLIDE 17: STUDI KASUS RUMUSAN -->
+      <section>
+        <h2>Studi Kasus: Rumusan Masalah</h2>
+        <p>Sebuah video ulasan produk. Ketiga modalitas tidak sepakat. Apa sentimen akhirnya?</p>
+
+        <table class="c-table" style="margin-top: 10px;">
+          <thead>
+            <tr>
+              <th style="width: 22%;">Modalitas</th>
+              <th style="width: 50%;">Bukti</th>
+              <th style="width: 28%;">Polaritas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Teks</td>
+              <td>&ldquo;Produk ini sebenarnya bagus, tapi saya tidak yakin.&rdquo;</td>
+              <td>Netral / sedikit positif</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Audio</td>
+              <td>Intonasi datar, menunjukkan kebosanan dan kekecewaan.</td>
+              <td>Negatif</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Visual</td>
+              <td>Kerutan dahi, ekspresi tidak puas.</td>
+              <td>Negatif</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">help</span><div><p style="margin: 0; font-size: 0.82em; line-height: 1.5;"><strong style="color: var(--ctp-blue);">Tiga pertanyaan sebelum berhitung</strong> &mdash; diskusikan 3 menit: (1) dengan late fusion voting sederhana, apa hasil akhirnya? (2) dengan attention-based fusion, bagaimana model mengatasinya? (3) bagaimana sarkasme terdeteksi dalam skenario ini?</p></div></div>
+
+        <aside class="notes">
+          Jangan tampilkan jawaban dulu. Biarkan mahasiswa menghitung voting sendiri: teks 1 suara netral/positif, audio dan visual masing-masing negatif &rarr; mayoritas negatif. Tanyakan apakah mayoritas selalu benar &mdash; bagaimana jika dua modalitas &ldquo;salah&rdquo; bersama-sama? Arahkan diskusi ke gagasan bahwa attention dapat membobot modalitas berdasarkan reliabilitasnya, bukan sekadar menghitung suara.
+        </aside>
+      </section>
+
+      <!-- SLIDE 18: STUDI KASUS PENERAPAN -->
+      <section>
+        <h2>Studi Kasus: Penerapan</h2>
+        <p>Late fusion (voting) vs attention-based fusion pada konflik yang sama.</p>
+
+        <div class="grid-2" style="margin-top: 10px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Late Fusion (Voting)</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Teks: Netral/Positif &mdash; 1 suara.</li>
+              <li>Audio: Negatif &mdash; 1 suara.</li>
+              <li>Visual: Negatif &mdash; 1 suara.</li>
+              <li><strong>Hasil: Negatif (2 dari 3).</strong></li>
+            </ul>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Attention-based</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Model belajar memberi bobot lebih pada modalitas yang paling ekspresif.</li>
+              <li>Audio dan visual yang kuat menang atas teks yang ambigu.</li>
+              <li><strong>Hasil: Negatif &mdash; dengan keyakinan lebih tinggi dan dapat dijelaskan.</strong></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">calculate</span><div>Sederhananya: <strong>voting menghitung jumlah suara</strong>, sedangkan <strong>attention menimbang kualitas bukti</strong>. Ketika satu modalitas ambigu, model dapat mengalihkan fokus ke yang lebih jelas &mdash; persis kegunaan cross-attention.</div></div>
+
+        <aside class="notes">
+          Bandingkan dua jalur. Voting memberi hasil yang sama (negatif) tetapi dengan alasan yang rapuh: ia menang hanya karena 2 lawan 1. Jika teks lebih panjang atau lebih ekspresif, hasilnya bisa terbalik tanpa alasan yang jelas. Attention memberi jalur yang dapat dijelaskan: bobot perhatian menunjukkan modalitas mana yang mendominasi keputusan. Hubungkan dengan interpretabilitas yang akan dibahas di W13.
+        </aside>
+      </section>
+
+      <!-- SLIDE 19: STUDI KASUS ANALISIS -->
+      <section>
+        <h2>Studi Kasus: Analisis</h2>
+        <p>Sarkasme adalah ketidaksesuaian yang terukur &mdash; dan multimodal bisa menangkapnya.</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Ketidaksesuaian (Incongruity)</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Teks positif berbenturan dengan audio negatif/datar.</li>
+              <li>Teks positif berbenturan dengan ekspresi wajah negatif/netral.</li>
+              <li>Cross-attention menangkap hubungan kontradiktif ini secara langsung.</li>
+            </ul>
+          </div>
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Kesimpulan Studi Kasus</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Konflik antar modalitas bukan gangguan &mdash; ia adalah <strong>sinyal</strong>.</li>
+              <li>Model unimodal akan salah membaca sarkasme; model multimodal unggul ketika dilatih untuk mendeteksi ketidaksesuaian.</li>
+              <li>Fusi yang dipilih menentukan kemampuan menangkap nuansa ini.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-success" style="margin-top: 14px;"><span class="material-symbols-outlined icon-green">check_circle</span><div><strong>Jawaban pertanyaan 3:</strong> sarkasme dideteksi sebagai <em>ketidaksesuaian</em> antara modalitas &mdash; bukan dari modalitas mana pun secara terpisah. Inilah pembenaran paling kuat mengapa sentimen harus multimodal.</div></div>
+
+        <aside class="notes">
+          Tutup studi kasus dengan gagasan kunci: konflik = sinyal. Model yang dilatih pada data multimodal dapat belajar bahwa kata &ldquo;bagus&rdquo; yang diucapkan dengan nada datar dan wajah masam bukan pujian. Tekankan bahwa kemampuan ini <em>tidak muncul</em> dari penggabungan sederhana (late fusion) &mdash; ia butuh interaksi antar fitur, yang hanya disediakan oleh fusi intermediate atau attention. Sambungkan ke mode kegagalan di slide berikutnya.
+        </aside>
+      </section>
+
+      <!-- SLIDE 20: KETIKA GAGAL -->
+      <section>
+        <h2>Ketika VQA &amp; Sentimen Gagal</h2>
+        <p>Mode kegagalan yang perlu dikenali sebelum mempercayai skor:</p>
+
+        <div class="grid-3" style="margin-top: 8px;">
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Shortcut VQA</h4>
+            </div>
+            <p>Model menebak jawaban dari distribusi pertanyaan, bukan dari gambar. Terdeteksi lewat &ldquo;blind model&rdquo; yang benar tanpa gambar.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Emosi Halus Tertukar</h4>
+            </div>
+            <p>&ldquo;Terkejut&rdquo; vs &ldquo;takut&rdquo;, atau senyum bahagia vs senyum gugup &mdash; perbedaan yang tipis dan konteks-sensitif.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Dominasi Satu Modalitas</h4>
+            </div>
+            <p>Model mengabaikan audio/visual dan mengandalkan teks; atau sebaliknya, bergantung pada bias visual wajah.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Pemeriksaan sebelum rilis:</strong> apakah model tetap benar tanpa gambar (shortcut)? apakah satu modalitas mendominasi tak wajar? apakah skor tinggi hanya pada kelas mayoritas?</div></div>
+
+        <aside class="notes">
+          Tiga mode kegagalan ini melengkapi argumen sesi. Shortcut VQA adalah kegagalan paling halus &mdash; skor tinggi, penalaran nol. Dominasi modalitas mudah dideteksi lewat ablasi: hilangkan satu modalitas, lihat seberapa jauh skor jatuh. Untuk sentimen, uji dengan modalitas yang di-<em>mask</em> (teks saja, audio saja) dan bandingkan. Ini akan menjadi bagian strategi evaluasi komprehensif di W13.
+        </aside>
+      </section>
+
+      <!-- SLIDE 21: METRIK KLASIFIKASI -->
+      <section>
+        <h2>Metrik Klasifikasi Sentimen</h2>
+        <p>Ketika sentimen berupa kelas (Positif/Negatif/Netral):</p>
+
+        <div class="formula-hero" style="margin-top: 10px;">
+          <div class="formula-label">Empat Metrik Inti</div>
+          <div class="formula-math">$$\text{Precision} = \frac{TP}{TP+FP},\quad \text{Recall} = \frac{TP}{TP+FN},\quad F_1 = 2\cdot\frac{P\cdot R}{P+R}$$</div>
+        </div>
+
+        <div class="formula-breakdown">
+          <div class="formula-term-box"><strong>Accuracy</strong> Proporsi prediksi benar: \((TP+TN)/(\text{total})\). Menyesatkan bila kelas tidak seimbang.</div>
+          <div class="formula-term-box"><strong>Precision &amp; Recall</strong> Ketepatan prediksi positif dan cakupan penemuan positif sebenarnya.</div>
+          <div class="formula-term-box"><strong>\(F_1\)</strong> Rata-rata harmonis presisi dan <em>recall</em> &mdash; pilihan tepat untuk dataset tidak seimbang.</div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Confusion matrix</strong> melengkapinya: tabel yang menunjukkan jenis kesalahan per kelas &mdash; membantu melihat apakah model keliru mengubah &ldquo;negatif&rdquo; menjadi &ldquo;netral&rdquo; atau sebaliknya.</div></div>
+
+        <aside class="notes">
+          Ingatkan kembali bahwa sentimen multimodal sering punya kelas tidak seimbang &mdash; mayoritas netral. Itulah alasan \(F_1\) lebih informatif daripada akurasi. Tekankan hubungan dengan studi kasus: confusion matrix dapat mengungkap apakah model menyeragamkan jawaban ke satu kelas dominan. Untuk tugas regresi (skor polaritas kontinu), metriknya berganti ke MAE/RMSE di slide berikutnya.
+        </aside>
+      </section>
+
+      <!-- SLIDE 22: METRIK REGRESI -->
+      <section>
+        <h2>Metrik Regresi Sentimen</h2>
+        <p>Ketika sentimen berupa skor polaritas kontinu, bukan kelas:</p>
+
+        <div class="formula-hero" style="margin-top: 12px;">
+          <div class="formula-label">Dua Metrik Utama</div>
+          <div class="formula-math">$$\text{MAE} = \frac{1}{n}\sum_{i=1}^{n}|y_i - \hat{y}_i|,\qquad \text{RMSE} = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}$$</div>
+        </div>
+
+        <div class="formula-breakdown">
+          <div class="formula-term-box"><strong>MAE</strong> Rata-rata selisih absolut. Mudah diinterpretasikan dalam satuan skor asli.</div>
+          <div class="formula-term-box"><strong>RMSE</strong> Akar rata-rata kuadrat selisih. Memberi <strong>bobot lebih besar</strong> pada kesalahan besar.</div>
+          <div class="formula-term-box"><strong>Pilihan</strong> Pakai MAE bila kesalahan besar tidak lebih buruk; RMSE bila kesalahan besar harus dihukum berat.</div>
+        </div>
+
+        <aside class="notes">
+          Perbedaan MAE dan RMSE penting secara praktis: RMSE sensitif terhadap outlier karena selisih dikuadratkan. Pada tugas sentimen kontinu (misalnya skor &minus;3 sampai +3), memilih metrik menentukan model mana yang &ldquo;menang&rdquo;. Tanyakan: jika model sesekali sangat salah, metrik mana yang mencerminkannya? Jawabannya RMSE. Ini persis contoh bahwa metrik membentuk perilaku pengembangan.
+        </aside>
+      </section>
+
+      <!-- SLIDE 23: RANGKUMAN -->
+      <section>
+        <h2>Rangkuman &amp; Poin Kunci</h2>
+        <p>Dua aplikasi, satu fondasi:</p>
+
+        <div class="grid-2" style="margin-top: 10px;">
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue);">Visual Question Answering</h4>
+            </div>
+            <ul style="font-size: 0.76em; margin: 0; padding-left: 16px; line-height: 1.55;">
+              <li><strong>Tugas</strong> &rarr; jawab pertanyaan tentang gambar; butuh persepsi + bahasa + penalaran.</li>
+              <li><strong>Arsitektur</strong> &rarr; konkatenasi &rarr; attention &rarr; transformer (ViLBERT, LXMERT).</li>
+              <li><strong>Metrik</strong> &rarr; VQA Accuracy (toleran variasi) dan WUPS (kedekatan makna).</li>
+            </ul>
+          </div>
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal);">Analisis Sentimen Multimodal</h4>
+            </div>
+            <ul style="font-size: 0.76em; margin: 0; padding-left: 16px; line-height: 1.55;">
+              <li><strong>Tugas</strong> &rarr; klasifikasi emosi dari teks + audio + visual.</li>
+              <li><strong>Kunci</strong> &rarr; konflik antar modalitas adalah sinyal (sarkasme).</li>
+              <li><strong>Metrik</strong> &rarr; akurasi, presisi, <em>recall</em>, \(F_1\); MAE/RMSE untuk regresi.</li>
+            </ul>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Tutup dengan dua gagasan besar. Pertama, VQA dan sentimen menunjukkan bahwa tugas multimodal makin sulit seiring bertambahnya modalitas: gambar saja (captioning), gambar+teks (VQA), teks+audio+visual (sentimen). Kedua, di semua kasus, cross-attention adalah mesin penyejajar dan fusi adalah tempat keputusan dibuat. Pertemuan berikutnya memperluas dari pemahaman ke <em>generasi</em>, beserta pertanyaan etika yang menyertainya.
+        </aside>
+      </section>
+
+      <!-- SLIDE 24: DISKUSI -->
+      <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Diskusi Kelas">
+        <h2 style="text-align: center; margin-bottom: 24px;">Diskusi Kelas</h2>
+        <p style="text-align: center; margin-bottom: 24px;">Diskusikan bersama rekan di samping Anda selama 3&ndash;5 menit:</p>
+        <div style="display: flex; flex-direction: column; gap: 14px; max-width: 860px; margin: 0 auto;">
+          <div class="c-callout c-callout-info"><span class="material-symbols-outlined icon-blue">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-blue);">Pertanyaan 1:</strong> Bagaimana model VQA dapat menjawab pertanyaan yang membutuhkan pengetahuan <em>di luar</em> gambar &mdash; misalnya &ldquo;Kapan Menara Eiffel dibangun?&rdquo;</p></div></div>
+          <div class="c-callout c-callout-warning"><span class="material-symbols-outlined icon-mauve">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-mauve);">Pertanyaan 2:</strong> Apa implikasi etika sistem VQA dan sentimen, terutama terkait bias dan kemampuan penalaran yang salah?</p></div></div>
+          <div class="c-callout c-callout-success"><span class="material-symbols-outlined icon-teal">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-teal);">Pertanyaan 3:</strong> Bagaimana Anda menangani ketidakseimbangan kelas dalam dataset sentimen, dan bagaimana integrasinya ke aplikasi dunia nyata?</p></div></div>
+        </div>
+        <aside class="notes">Tiga pertanyaan bergerak dari penalaran (1), ke etika (2), ke praktik data dan aplikasi (3). Pertanyaan pertama menyentuh batas VQA &mdash; model harus menggabungkan memori eksternal atau basis pengetahuan. Pertanyaan kedua menyiapkan W12 (etika). Ketiga langsung relevan dengan proyek akhir: kelas tidak seimbang akan muncul saat mengevaluasi retrieval. Beri waktu 3&ndash;5 menit.</aside>
+      </section>
+
+      <!-- SLIDE 25: REFERENSI -->
+      <section>
+        <h2>Referensi &amp; Bacaan Lanjutan</h2>
+        <p style="margin-bottom: 20px;">Rekomendasi literatur akademik wajib dan bacaan lanjutan:</p>
+        <ol style="list-style: none; padding: 0; margin: 0; counter-reset: ref-counter;">
+          <li style="counter-increment: ref-counter; padding: 13px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[1]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Antol, S., et al. (2015).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>VQA: Visual Question Answering</em>. ICCV. &mdash; paper dataset VQA orisinal.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 13px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[2]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Goyal, Y., et al. (2017).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Making the V in VQA Matter</em>. CVPR. &mdash; VQA v2, mengatasi bias <em>shortcut</em>.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 13px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[3]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Lu, J., et al. (2019).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>ViLBERT</em>. NeurIPS. &mdash; arsitektur <em>dual-stream</em> vision-and-language.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 13px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[4]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Tsai, Y. H. H., et al. (2019).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Multimodal Transformer for Unaligned Multimodal Language Sequences</em>. ACL. &mdash; fusi lintas modalitas untuk sentimen.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 13px 0; display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[5]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Liang, P., Zadeh, A., &amp; Morency, L.-P. (2023).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Tutorial on Multimodal Machine Learning</em>. ICML. &mdash; survei menyeluruh VQA dan sentimen.</p></div></li>
+        </ol>
+        <aside class="notes">Lima referensi: dataset VQA orisinal (Antol), VQA v2 (Goyal), ViLBERT (Lu), dan dua rujukan fusi multimodal untuk sentimen. Sebutkan bahwa Tsai et al. (2019) memakai transformer untuk menangani modalitas yang tidak selaras waktunya &mdash; langsung menyambung ke tantangan alignment temporal pada slide 15.</aside>
+      </section>
+
+      <!-- SLIDE 26: PENUTUP -->
+      <section>
+        <div style="margin: auto 0; text-align: center;">
+          <h2 style="font-size: 1.8em; font-weight: 800; color: var(--ctp-text); margin-bottom: 16px;">Terima Kasih</h2>
+          <p style="font-size: 1.05em; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.6;">Pertemuan selanjutnya:<br><strong style="color: var(--ctp-blue);">Topik Lanjutan: Generasi Multimodal &amp; Etika</strong></p>
+          <div style="background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-radius: 12px; padding: 18px 24px; display: inline-block; max-width: 480px;"><div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">Pertanyaan &amp; Diskusi</div><div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;"><span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span></div></div>
+        </div>
+        <aside class="notes">Tutup sesi dengan menegaskan bahwa VQA dan sentimen adalah bukti bahwa nilai multimodal muncul dari <em>interaksi</em> antar modalitas, bukan dari penjumlahan modalitas. Sampaikan bahwa Pertemuan 12 beralih dari pemahaman ke generasi &mdash; teks ke gambar dan video &mdash; yang membawa peluang sekaligus tanggung jawab etika yang jauh lebih besar.</aside>
+      </section>
+  </div></div>
+  <!-- Persistent Edge-to-Edge Deck Footer -->
+  <footer class="deck-footer">
+    <div class="deck-footer-left">
+      <span class="deck-footer-code">IF25-40304</span>
+      <span class="deck-footer-sep">&bull;</span>
+      <span class="deck-footer-dept">Teknik Informatika ITERA</span>
+    </div>
+
+    <div class="deck-footer-center">
+      <button type="button" id="deck-footer-topic" class="deck-footer-topic" onclick="toggleTopicPopover(event)" title="Daftar Isi & Navigasi Cepat Slide (Klik)">
+        <span id="deck-footer-topic-text" class="deck-footer-topic-text">Pertemuan 11 &bull; Aplikasi 2: VQA &amp; Analisis Sentimen Multimodal</span>
+        <span class="material-symbols-outlined deck-footer-topic-icon">expand_less</span>
+      </button>
+    </div>
+
+    <div class="deck-footer-right">
+      <button type="button" class="deck-footer-btn" onclick="Reveal.prev()" title="Slide Sebelumnya (← / P)" aria-label="Slide Sebelumnya">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <button type="button" class="deck-counter-btn" onclick="Reveal.toggleOverview()" title="Klik untuk Matriks Seluruh Slide (Esc/O)">
+        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">26</span>
+      </button>
+      <button type="button" class="deck-footer-btn" onclick="Reveal.next()" title="Slide Berikutnya (→ / Space / N)" aria-label="Slide Berikutnya">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </footer>
+  <div class="deck-topic-popover" id="deck-topic-popover"><div class="deck-popover-search-wrap"><input type="text" id="deck-topic-search" class="deck-popover-search" placeholder="Cari slide..." oninput="filterTopicList(this.value)"></div><div class="deck-topic-list" id="deck-topic-list"></div></div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+  <script>
+
+    let currentAspectMode = localStorage.getItem('reveal_aspect_mode') || 'auto';
+
+    function calculateResponsiveDimensions(mode) {
+      const winW = window.innerWidth;
+      const winH = window.innerHeight - 86.5;
+      const ratio = winW / winH;
+
+      if (mode === '16-9') return { width: 1280, height: 720, label: '16:9' };
+      if (mode === '16-10') return { width: 1280, height: 800, label: '16:10' };
+      if (mode === '4-3') return { width: 1024, height: 768, label: '4:3' };
+      if (mode === 'mobile') return { width: 750, height: 1000, label: 'Mobile' };
+      if (mode === 'text-large') return { width: 960, height: 540, label: 'Teks Besar' };
+
+      // Auto mode
+      if (winW <= 768 || ratio < 1.15) {
+        return { width: 750, height: Math.max(900, Math.round(750 / Math.max(0.5, ratio))), label: 'Auto' };
+      } else if (ratio >= 1.65) {
+        return { width: 1280, height: 720, label: 'Auto' };
+      } else if (ratio >= 1.45) {
+        return { width: 1280, height: 800, label: 'Auto' };
+      } else {
+        return { width: 1024, height: 768, label: 'Auto' };
+      }
+    }
+
+    const initialDim = calculateResponsiveDimensions(currentAspectMode);
+
+    Reveal.initialize({
+      width: initialDim.width,
+      height: initialDim.height,
+      margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2.0,
+      hash: true,
+      slideNumber: false,
+      controls: false,
+      progress: false,
+      center: true,
+      touch: true,
+      transition: 'slide',
+      backgroundTransition: 'none',
+      plugins: [ RevealNotes, RevealHighlight, RevealMath.KaTeX ]
+    });
+
+    function updateDeckState(event) {
+      const indices = event ? { h: event.indexh, v: event.indexv } : Reveal.getIndices();
+      const totalSlides = Reveal.getTotalSlides();
+      const currentIdx = indices ? indices.h : 0;
+
+      const progressBar = document.getElementById('deck-progress-bar');
+      if (progressBar) {
+        const progressPercent = totalSlides > 1 ? (currentIdx / (totalSlides - 1)) * 100 : 0;
+        progressBar.style.width = progressPercent + '%';
+      }
+
+      const currentEl = document.getElementById('deck-slide-current');
+      const totalEl = document.getElementById('deck-slide-total');
+      if (currentEl) currentEl.textContent = String(currentIdx + 1).padStart(2, '0');
+      if (totalEl) totalEl.textContent = String(totalSlides).padStart(2, '0');
+
+      const topicEl = document.getElementById('deck-footer-topic-text') || document.getElementById('deck-footer-topic');
+      if (topicEl) {
+        if (currentIdx === 0) {
+          topicEl.textContent = 'Pertemuan 11 \u2022 Aplikasi 2: VQA & Analisis Sentimen Multimodal';
+        } else {
+          const currentSlide = Reveal.getCurrentSlide();
+          if (currentSlide) {
+            const topicAttr = currentSlide.getAttribute('data-topic');
+            if (topicAttr) {
+              topicEl.textContent = topicAttr;
+            } else {
+              const heading = currentSlide.querySelector('h2') || currentSlide.querySelector('h1');
+              if (heading) {
+                topicEl.textContent = heading.textContent.trim();
+              } else {
+                topicEl.textContent = 'Pertemuan 11 \u2022 Aplikasi 2: VQA & Analisis Sentimen Multimodal';
+              }
+            }
+          }
+        }
+      }
+
+      updateActiveTopicItem(currentIdx);
+    }
+
+    Reveal.on('ready', event => {
+      document.body.classList.add('reveal-ready');
+      updateDeckState(event);
+      buildTopicIndex();
+    });
+    Reveal.on('slidechanged', updateDeckState);
+
+    // =========================================================
+    // Floating Slide Topic Navigation Popover (Daftar Isi)
+    // =========================================================
+    function buildTopicIndex() {
+      const listEl = document.getElementById('deck-topic-list');
+      if (!listEl) return;
+
+      const slides = document.querySelectorAll('.reveal .slides > section');
+      let html = '';
+
+      slides.forEach((slide, idx) => {
+        const topicAttr = slide.getAttribute('data-topic');
+        const h1 = slide.querySelector('h1');
+        const h2 = slide.querySelector('h2');
+        const partEl = slide.querySelector('.section-part-label');
+        const isSectionSlide = slide.classList.contains('section-slide') || !!slide.querySelector('.section-slide-content');
+        const partText = partEl ? partEl.textContent.trim().replace(/\s+/g, ' ') : '';
+
+        const h1Text = h1 ? h1.textContent.trim().replace(/\s+/g, ' ') : '';
+        const h2Text = h2 ? h2.textContent.trim().replace(/\s+/g, ' ') : '';
+        let title = '';
+
+        if (idx === 0) {
+          title = h1Text || 'Aplikasi 2: VQA & Analisis Sentimen Multimodal';
+          html += '<div class="deck-topic-section">Pendahuluan & Identitas</div>';
+        } else if (isSectionSlide || partText.startsWith('Bagian')) {
+          const secTitle = h1Text || h2Text || 'Bagian ' + idx;
+          const sectionLabel = partText ? partText + ': ' + secTitle : secTitle;
+          title = secTitle;
+          html += '<div class="deck-topic-section">' + sectionLabel + '</div>';
+        } else if (topicAttr) {
+          title = topicAttr;
+        } else {
+          title = h2Text || h1Text || 'Slide ' + (idx + 1);
+        }
+
+        const numStr = String(idx + 1).padStart(2, '0');
+        html += '<div class="deck-topic-item" data-slide-index="' + idx + '" onclick="jumpToSlide(' + idx + ')"><span class="deck-topic-num">' + numStr + '</span><span class="deck-topic-name" title="' + title + '">' + title + '</span></div>';
+      });
+
+      listEl.innerHTML = html;
+      const currentIdx = Reveal.getIndices ? Reveal.getIndices().h : 0;
+      updateActiveTopicItem(currentIdx);
+    }
+
+    function updateActiveTopicItem(currentIdx) {
+      document.querySelectorAll('.deck-topic-item').forEach(item => {
+        const idx = parseInt(item.getAttribute('data-slide-index'), 10);
+        item.classList.toggle('active', idx === currentIdx);
+      });
+    }
+
+    function toggleTopicPopover(e) {
+      if (e) e.stopPropagation();
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (!popover) return;
+
+      const isActive = popover.classList.toggle('active');
+      if (btn) btn.classList.toggle('active', isActive);
+
+      if (isActive) {
+        const activeItem = popover.querySelector('.deck-topic-item.active');
+        if (activeItem) {
+          activeItem.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }
+        const searchInput = document.getElementById('deck-topic-search');
+        if (searchInput) {
+          searchInput.value = '';
+          filterTopicList('');
+          setTimeout(() => searchInput.focus(), 80);
+        }
+      }
+    }
+
+    function closeTopicPopover() {
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (popover) popover.classList.remove('active');
+      if (btn) btn.classList.remove('active');
+    }
+
+    function jumpToSlide(index) {
+      Reveal.slide(index);
+      closeTopicPopover();
+    }
+
+    function filterTopicList(query) {
+      const q = (query || '').toLowerCase().trim();
+      const items = document.querySelectorAll('.deck-topic-item');
+      const sections = document.querySelectorAll('.deck-topic-section');
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const num = (item.querySelector('.deck-topic-num') || {}).textContent || '';
+        const name = (item.querySelector('.deck-topic-name') || {}).textContent || '';
+        const matches = !q || num.toLowerCase().includes(q) || name.toLowerCase().includes(q);
+        item.style.display = matches ? 'grid' : 'none';
+        if (matches) visibleCount++;
+      });
+
+      sections.forEach(sec => {
+        let nextEl = sec.nextElementSibling;
+        let hasVisibleChild = false;
+        while (nextEl && !nextEl.classList.contains('deck-topic-section')) {
+          if (nextEl.classList.contains('deck-topic-item') && nextEl.style.display !== 'none') {
+            hasVisibleChild = true;
+            break;
+          }
+          nextEl = nextEl.nextElementSibling;
+        }
+        sec.style.display = hasVisibleChild ? 'block' : 'none';
+      });
+
+      const listEl = document.getElementById('deck-topic-list');
+      let emptyMsg = document.getElementById('deck-topic-empty-msg');
+      if (visibleCount === 0) {
+        if (!emptyMsg) {
+          emptyMsg = document.createElement('div');
+          emptyMsg.id = 'deck-topic-empty-msg';
+          emptyMsg.className = 'deck-topic-empty';
+          emptyMsg.textContent = 'Tidak ada slide yang cocok dengan pencarian.';
+          listEl.appendChild(emptyMsg);
+        }
+        emptyMsg.style.display = 'block';
+      } else if (emptyMsg) {
+        emptyMsg.style.display = 'none';
+      }
+    }
+
+    function setAspectMode(mode) {
+      currentAspectMode = mode;
+      localStorage.setItem('reveal_aspect_mode', mode);
+      const dim = calculateResponsiveDimensions(mode);
+
+      Reveal.configure({
+        width: dim.width,
+        height: dim.height,
+        margin: 0.04,
+        minScale: 0.2,
+        maxScale: 2.0
+      });
+
+      document.body.classList.remove('aspect-16-9', 'aspect-16-10', 'aspect-4-3', 'aspect-mobile');
+      if (mode === 'auto') {
+        if (window.innerWidth <= 768) document.body.classList.add('aspect-mobile');
+      } else {
+        document.body.classList.add('aspect-' + mode);
+      }
+
+      const labelEl = document.getElementById('aspect-label');
+      if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+
+      document.querySelectorAll('.dropdown-item').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-aspect') === mode);
+      });
+
+      closeAspectDropdown();
+      setTimeout(() => Reveal.layout(), 50);
+    }
+
+    function toggleAspectDropdown(e) {
+      if (e) e.stopPropagation();
+      document.getElementById('aspect-menu').classList.toggle('active');
+    }
+
+    function closeAspectDropdown() {
+      const menu = document.getElementById('aspect-menu');
+      if (menu) menu.classList.remove('active');
+    }
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-dropdown')) closeAspectDropdown();
+      if (!e.target.closest('#deck-topic-popover') && !e.target.closest('#deck-footer-topic')) closeTopicPopover();
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (currentAspectMode === 'auto') {
+          const dim = calculateResponsiveDimensions('auto');
+          const cfg = Reveal.getConfig();
+          if (cfg.width !== dim.width || cfg.height !== dim.height) {
+            Reveal.configure({ width: dim.width, height: dim.height });
+            const labelEl = document.getElementById('aspect-label');
+            if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+            Reveal.layout();
+          }
+        }
+      }, 200);
+    });
+
+    window.addEventListener('DOMContentLoaded', () => setAspectMode(currentAspectMode));
+
+    function openShortcutsModal() {
+      document.getElementById('shortcuts-modal').classList.add('active');
+    }
+
+    function closeShortcutsModal(event) {
+      if (!event || event.target.id === 'shortcuts-modal' || event.target.classList.contains('modal-close')) {
+        document.getElementById('shortcuts-modal').classList.remove('active');
+      }
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const popover = document.getElementById('deck-topic-popover');
+        if (popover && popover.classList.contains('active')) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeTopicPopover();
+          return;
+        }
+      }
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        document.getElementById('shortcuts-modal').classList.toggle('active');
+      }
+    });
+
+  </script>
+</body></html>

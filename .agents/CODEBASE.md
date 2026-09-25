@@ -262,11 +262,19 @@ git update-index --no-skip-worktree pdf/mggXX.pdf  # Unskip saat release
 | `mgg06.html` | ✅ Selesai, 25 slide |
 | `mgg07.html` | ✅ Selesai, 27 slide |
 | `mgg09.html` | ✅ Selesai, 27 slide |
-| `mgg08.html`, `mgg10.html` – `mgg15.html` | ❌ Belum dibuat |
+| `mgg10.html` | ✅ Selesai, 27 slide |
+| `mgg11.html` | ✅ Selesai, 26 slide |
+| `mgg12.html` | ✅ Selesai, 28 slide |
+| `mgg13.html` | ✅ Selesai, 26 slide |
+| `mgg14.html` | ✅ Selesai, 26 slide |
+| `mgg15.html` | ✅ Selesai, 25 slide |
+| `mgg08.html` | Milestone (UTS, tanpa deck) |
 | Hands-on 02/03/04/06/09 | ✅ `hands-on/mggNN-hands-on.html` |
 | Tugas 02/03/04/06/09 | ✅ `.md` + `.tex` (LaTeX, `tugas-style.sty`) — didistribusikan via LMS, tidak lewat portal (D-A11) |
+| Kisi-kisi UTS | ✅ `tugas/uts-kisi-kisi.tex` — publik, ditautkan dari `index.html`, PDF dirender CI (D-A12) |
+| Soal & kunci UTS | ✅ `tugas/uts-soal.tex` + `uts-kunci.tex` — rahasia, di-`.gitignore`, tidak dibangun CI (D-A12) |
 | Skill & design system | ✅ Lengkap (SKILL.md, tokens, template, scripts) |
-| CI (GitHub Pages) | ✅ Export PDF slide + hands-on |
+| CI (GitHub Pages) | ✅ Export PDF slide + hands-on + kisi-kisi UTS |
 
 > Status mutakhir, keputusan aktif, dan aturan kerja ada di **`AGENTS.md`**
 > (dimuat otomatis oleh pi). Dokumen ini menjelaskan arsitektur, bukan status.

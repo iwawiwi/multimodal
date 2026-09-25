@@ -48,9 +48,16 @@ Portal perkuliahan **Pembelajaran Mesin Multimodal (IF25-40304)** — Institut T
 | 05 | [mgg05.html](mgg05.html) | [pdf/mgg05.pdf](pdf/mgg05.pdf) | — |
 | 06 | [mgg06.html](mgg06.html) | [pdf/mgg06.pdf](pdf/mgg06.pdf) | [hands-on/mgg06-hands-on.html](hands-on/mgg06-hands-on.html) |
 | 07 | [mgg07.html](mgg07.html) | [pdf/mgg07.pdf](pdf/mgg07.pdf) | — |
+| 08 (UTS) | — | [pdf/uts-kisi-kisi.pdf](pdf/uts-kisi-kisi.pdf) *(kisi-kisi)* | — |
 | 09 | [mgg09.html](mgg09.html) | [pdf/mgg09.pdf](pdf/mgg09.pdf) | [hands-on/mgg09-hands-on.html](hands-on/mgg09-hands-on.html) |
+| 10 | [mgg10.html](mgg10.html) | [pdf/mgg10.pdf](pdf/mgg10.pdf) | — |
+| 11 | [mgg11.html](mgg11.html) | [pdf/mgg11.pdf](pdf/mgg11.pdf) | — |
+| 12 | [mgg12.html](mgg12.html) | [pdf/mgg12.pdf](pdf/mgg12.pdf) | — |
+| 13 | [mgg13.html](mgg13.html) | [pdf/mgg13.pdf](pdf/mgg13.pdf) | — |
+| 14 | [mgg14.html](mgg14.html) | [pdf/mgg14.pdf](pdf/mgg14.pdf) | — |
+| 15 | [mgg15.html](mgg15.html) | [pdf/mgg15.pdf](pdf/mgg15.pdf) | — |
 
-> PDF dirender otomatis oleh CI saat push — tidak disimpan di repositori.
+> PDF dirender otomatis oleh CI saat push — tidak disimpan di repositori. Kisi-kisi UTS bersifat publik; soal dan kunci ujian tidak diterbitkan di repositori ini (lihat `AGENTS.md` D-A12).
 
 ## Situs
 

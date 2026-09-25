@@ -56,6 +56,12 @@ jobs:
           python3 scripts/export_pdf.py mgg06.html
           python3 scripts/export_pdf.py mgg07.html
           python3 scripts/export_pdf.py mgg09.html
+          python3 scripts/export_pdf.py mgg10.html
+          python3 scripts/export_pdf.py mgg11.html
+          python3 scripts/export_pdf.py mgg12.html
+          python3 scripts/export_pdf.py mgg13.html
+          python3 scripts/export_pdf.py mgg14.html
+          python3 scripts/export_pdf.py mgg15.html
 
       - name: Build hands-on PDFs (Vivliostyle)
         run: |
@@ -70,6 +76,19 @@ jobs:
           HANDSON_WEEK=09 npm run bake
           HANDSON_WEEK=09 npm run build:pdf
 
+      # Kisi-kisi UTS satu-satunya materi ujian yang dipublikasikan (ditautkan dari
+      # index.html). Soal & kunci bersifat rahasia: di-.gitignore, tidak dibangun di sini.
+      - name: Build Kisi-Kisi UTS (LaTeX / LuaLaTeX)
+        uses: xu-cheng/latex-action@v3
+        with:
+          working_directory: tugas
+          root_file: uts-kisi-kisi.tex
+          latexmk_use_lualatex: true
+          args: "-interaction=nonstopmode -halt-on-error -file-line-error"
+
+      - name: Move kisi-kisi PDF into pdf/
+        run: cp tugas/uts-kisi-kisi.pdf pdf/uts-kisi-kisi.pdf
+
       - name: Verify PDFs exist
         run: |
           ls -la pdf/
@@ -81,11 +100,18 @@ jobs:
           test -f pdf/mgg06.pdf
           test -f pdf/mgg07.pdf
           test -f pdf/mgg09.pdf
+          test -f pdf/mgg10.pdf
+          test -f pdf/mgg11.pdf
+          test -f pdf/mgg12.pdf
+          test -f pdf/mgg13.pdf
+          test -f pdf/mgg14.pdf
+          test -f pdf/mgg15.pdf
           test -f pdf/mgg02-hands-on.pdf
           test -f pdf/mgg03-hands-on.pdf
           test -f pdf/mgg04-hands-on.pdf
           test -f pdf/mgg06-hands-on.pdf
           test -f pdf/mgg09-hands-on.pdf
+          test -f pdf/uts-kisi-kisi.pdf
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

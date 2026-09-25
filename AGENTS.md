@@ -67,6 +67,22 @@ Keputusan yang sudah disetujui pengguna dan **berlaku sampai diubah eksplisit**:
     alasan di atas.
   - Saat audit melaporkan "tugas tidak bisa ditemukan", itu **perilaku yang
     diharapkan**, bukan gap.
+  - Kekecualian sempit untuk **materi ujian** diatur di **D-A12**.
+- **D-A12 — Materi ujian: kisi-kisi publik lewat portal; soal & kunci rahasia.**
+  Perlakuan berbeda dari tugas mingguan (D-A11):
+  - **Kisi-kisi UTS** (`tugas/uts-kisi-kisi.tex`) **dipublikasikan**, karena sengaja
+    dibagikan sebagai acuan belajar. Ia ditautkan dari kartu UTS di `index.html`
+    (tombol "Kisi-kisi"), dan PDF-nya dirender CI melalui langkah LuaLaTeX
+    (`xu-cheng/latex-action`) lalu disalin ke `pdf/uts-kisi-kisi.pdf`.
+  - **Soal & kunci** (`tugas/uts-soal.*`, `tugas/uts-kunci.*`) **rahasia**:
+    di-`.gitignore`, **tidak** ditautkan di mana pun, dan **tidak** dibangun CI.
+    Distribusinya lewat LMS saat jadwal ujian.
+  - **Alasan:** kisi-kisi aman dibagikan (ia hanya memuat cakupan, CPMK, dan
+    bentuk soal), sedangkan membocorkan butir soal/kunci merusak ujian. Repositori
+    publik tidak boleh mengekspos butir soal.
+  - ❌ Jangan menambahkan tautan/chip soal atau kunci di `index.html`, `README.md`,
+    deck, maupun langkah build CI.
+  - Aturan `.gitignore`: `tugas/uts-soal.*` dan `tugas/uts-kunci.*`.
 - **D-A05 — Pola desain yang dipakai sejak mgg04** (detail di `design-decisions.md`):
   - Slide "kategori/karakteristik" → `grid-3` 3 kartu
     (`c-card c-card-{blue,mauve,teal} c-card-accent-top` + `<h3 style="color:...">`),
@@ -152,7 +168,13 @@ Keputusan yang sudah disetujui pengguna dan **berlaku sampai diubah eksplisit**:
 | `mgg06.html` | Strategi Fusi II: Intermediate & Hybrid Fusion | 25 | ✅ selesai |
 | `mgg07.html` | Penyejajaran (Alignment): Temporal & Structural | 27 | ✅ selesai |
 | `mgg09.html` | Arsitektur Transformer Multimodal | 27 | ✅ selesai |
-| `mgg08.html`, `mgg10.html` … `mgg15.html` | — | — | ❌ belum dibuat |
+| `mgg10.html` | Aplikasi 1: Image Captioning | 27 | ✅ selesai |
+| `mgg11.html` | Aplikasi 2: VQA & Analisis Sentimen Multimodal | 26 | ✅ selesai |
+| `mgg12.html` | Topik Lanjutan: Generasi Multimodal & Etika | 28 | ✅ selesai |
+| `mgg13.html` | Evaluasi Model Multimodal | 26 | ✅ selesai |
+| `mgg14.html` | Studi Kasus Terpadu | 26 | ✅ selesai |
+| `mgg15.html` | Review Materi | 25 | ✅ selesai |
+| `mgg08.html` | — | — | milestone (UTS, tanpa deck) |
 
   > Angka slide di atas diverifikasi terhadap `<section>` tiap berkas. Perbarui
   > tabel ini setiap kali deck berubah — `CODEBASE.md` §10 pernah tertinggal
@@ -164,7 +186,9 @@ Artefak pendukung:
 | :--- | :--- |
 | `hands-on/mgg02,03,04,06,09-hands-on.html` | ✅ |
 | `tugas/mgg02,03,04,06,09-tugas.md` + `.tex` | ✅ (via LMS — lihat D-A11) |
-| CI export `mgg01`–`mgg09` + hands-on 02/03/04/06/09 | ✅ |
+| `tugas/uts-kisi-kisi.tex` | ✅ publik (via portal — lihat D-A12) |
+| `tugas/uts-soal.tex` + `tugas/uts-kunci.tex` | ✅ lokal/LMS saja (rahasia — D-A12) |
+| CI export `mgg01`–`mgg07`, `mgg09`–`mgg15` + hands-on 02/03/04/06/09 + kisi-kisi UTS | ✅ |
 
 > Setiap minggu yang punya hands-on **wajib** lengkap: file hands-on, entri
 > `HANDSON_WEEK` di CI, judul di `vivliostyle.config.js`, kolom hands-on di

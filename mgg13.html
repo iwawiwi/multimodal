@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pertemuan 13: Evaluasi Model Multimodal: Kuantitatif &amp; Kualitatif | ITERA</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <link rel="stylesheet" href="css/catppuccin-latte.css">
+</head>
+<body>
+  <header class="deck-header">
+    <div class="deck-header-left">
+      <a href="index.html" class="deck-brand-link" title="Kembali ke Portal Kuliah">
+        <img src="assets/img/logo_2.png" alt="Logo ITERA" class="deck-logo">
+        <img src="assets/img/dikti-saintek-berdampak-color.svg" alt="Logo Dikti Saintek Berdampak" class="deck-logo">
+      </a>
+    </div>
+
+    <div class="deck-header-right">
+      <!-- Aspect Ratio / Projector Switcher -->
+      <div class="nav-dropdown">
+        <button type="button" class="deck-ctrl-btn" id="aspect-btn" onclick="toggleAspectDropdown(event)" title="Sesuaikan Rasio Layar & Proyektor">
+          <span class="material-symbols-outlined">aspect_ratio</span>
+          <span id="aspect-label" class="deck-btn-label">Auto</span>
+          <span class="material-symbols-outlined" style="font-size: 14px;">arrow_drop_down</span>
+        </button>
+        <div class="nav-dropdown-menu" id="aspect-menu">
+          <button type="button" class="dropdown-item active" data-aspect="auto" onclick="setAspectMode('auto')">
+            <span class="item-title">Auto</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-9" onclick="setAspectMode('16-9')">
+            <span class="item-title">16:9</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-10" onclick="setAspectMode('16-10')">
+            <span class="item-title">16:10</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="4-3" onclick="setAspectMode('4-3')">
+            <span class="item-title">4:3</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="mobile" onclick="setAspectMode('mobile')">
+            <span class="item-title">Mobile</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="text-large" onclick="setAspectMode('text-large')">
+            <span class="item-title">Teks Besar</span>
+          </button>
+        </div>
+      </div>
+
+      <button type="button" class="deck-ctrl-btn" onclick="Reveal.toggleOverview()" title="Lihat Matriks Seluruh Slide (Esc/O)">
+        <span class="material-symbols-outlined">grid_view</span>
+        <span class="deck-btn-label">Overview</span>
+      </button>
+      <button type="button" class="deck-ctrl-btn" onclick="openShortcutsModal()" title="Panduan Pintasan Keyboard (?)">
+        <span class="material-symbols-outlined">keyboard</span>
+        <span class="deck-btn-label">Pintasan</span>
+      </button>
+      <a href="index.html" class="deck-ctrl-btn" title="Kembali ke Portal Kuliah">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span class="deck-btn-label">Portal</span>
+      </a>
+    </div>
+  </header>
+  <div class="deck-progress-track"><div class="deck-progress-bar" id="deck-progress-bar"></div></div>
+  <div id="shortcuts-modal" onclick="closeShortcutsModal(event)"><div class="modal-content" onclick="event.stopPropagation()"><div class="modal-header"><h4 style="margin:0;font-weight:800"><span class="material-symbols-outlined icon-blue">keyboard</span> Pintasan Navigasi Presentasi</h4><button class="modal-close" onclick="closeShortcutsModal()">&times;</button></div><div class="shortcut-row"><span>Slide berikutnya</span><span><span class="kbd-key">Space</span> / <span class="kbd-key">→</span></span></div><div class="shortcut-row"><span>Slide sebelumnya</span><span><span class="kbd-key">←</span></span></div><div class="shortcut-row"><span>Catatan dosen</span><span><span class="kbd-key">S</span></span></div></div></div>
+  <div class="reveal"><div class="slides">
+
+      <!-- SLIDE 1: COVER -->
+      <section id="deck-title">
+        <div style="margin: auto 0; text-align: left;">
+          <h1 style="font-size: 2.3em; line-height: 1.15; font-weight: 800; color: var(--ctp-text); margin-bottom: 12px; letter-spacing: -0.025em;">
+            Pembelajaran Mesin Multimodal
+          </h1>
+          <div style="font-size: 1.15em; font-weight: 600; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.4;">
+            Pertemuan 13 &bull; Evaluasi Model Multimodal: Kuantitatif &amp; Kualitatif
+          </div>
+          <div style="max-width: 620px; background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-left: 3.5px solid var(--ctp-blue); border-radius: 12px; padding: 18px 24px;">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">
+              Dosen Pengampu
+            </div>
+            <div style="font-size: 1.1em; font-weight: 800; color: var(--ctp-text); margin-bottom: 6px;">
+              I Wayan Wiprayoga Wisesa
+            </div>
+            <div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;">
+              Program Studi Teknik Informatika<br>
+              Fakultas Teknologi Industri<br>
+              Institut Teknologi Sumatera (ITERA)<br>
+              <span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Sesi ini adalah sesi metodologis: cara mengetahui apakah model multimodal benar-benar bekerja. Sampaikan bahwa evaluasi bukan langkah terakhir setelah semua selesai, melainkan aktivitas yang membentuk keputusan desain &mdash; mulai dari pemilihan arsitektur hingga strategi data. Ini juga sesi yang paling langsung menyiapkan proyek akhir, karena mahasiswa harus menyusun strategi evaluasi sendiri.
+        </aside>
+      </section>
+
+      <!-- SLIDE 2: TUJUAN PEMBELAJARAN -->
+      <section>
+        <h2>Tujuan Pembelajaran Sesi Ini</h2>
+        <p style="margin-bottom: 24px;">Di akhir sesi ini, mahasiswa diharapkan mampu:</p>
+
+        <div class="grid-4">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-blue">01</span>
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Metrik Kuantitatif</h4>
+            </div>
+            <p>Menerapkan metrik yang tepat untuk tugas generasi, klasifikasi, regresi, dan retrieval.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-mauve">02</span>
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Analisis Kualitatif</h4>
+            </div>
+            <p>Melakukan analisis kesalahan dan interpretasi model untuk memahami <em>mengapa</em> model gagal.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-teal">03</span>
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Debugging</h4>
+            </div>
+            <p>Memahami tantangan debugging model multimodal lintas modalitas dan representasi abstrak.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-peach">04</span>
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Strategi Komprehensif</h4>
+            </div>
+            <p>Merumuskan strategi evaluasi menyeluruh untuk proyek multimodal, termasuk audit etika.</p>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Empat capaian tersusun bertingkat: mengukur (1), memahami kegagalan (2), men-debug (3), dan menyusun strategi (4). Tekankan bahwa capaian keempat adalah yang diuji lewat proyek akhir: mahasiswa harus mampu menjelaskan <em>mengapa</em> memilih metrik tertentu, bukan sekadar melaporkan angkanya. Sampaikan bahwa ini sesi paling praktis dari paruh kedua kuliah.
+        </aside>
+      </section>
+
+      <!-- SLIDE 3: DUA SISI EVALUASI -->
+      <section>
+        <h2>Dua Sisi Evaluasi</h2>
+        <p>Angka tidak pernah cukup; angka selalu butuh penjelasan.</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Kuantitatif</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Mengukur kinerja dengan metrik numerik.</li>
+              <li>Cepat, dapat direproduksi, mudah dibandingkan.</li>
+              <li>Memberi gambaran umum, tetapi tidak menjelaskan sebab.</li>
+            </ul>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Kualitatif</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Memahami <em>mengapa</em> model membuat kesalahan.</li>
+              <li>Mengungkap pola kegagalan dan bias tersembunyi.</li>
+              <li>Penting terutama untuk model generatif.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div><strong>Keduanya wajib.</strong> Kuantitatif tanpa kualitatif bisa menyesatkan (skor tinggi, penalaran nol); kualitatif tanpa kuantitatif tidak terukur. Sesi ini membahas keduanya.</div></div>
+
+        <aside class="notes">
+          Buka dengan analogi: nilai ujian tanpa melihat lembar jawaban. Angka memberi tahu seberapa baik, bukan mengapa. Tekankan bahwa pada model multimodal, ketidaksesuaian antar modalitas membuat analisis kualitatif hampir selalu diperlukan. Sebutkan bahwa struktur sesi mengikuti urutan ini: kuantitatif dulu (bagian 1), lalu kualitatif (bagian 2), lalu strategi terpadu (bagian 3).
+        </aside>
+      </section>
+
+      <!-- SLIDE 4: DIVIDER BAGIAN 1 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(30,102,245,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-blue">Bagian 1</span>
+          <h1>Evaluasi Kuantitatif</h1>
+          <p class="subtitle">
+            Memilih metrik yang tepat untuk tiap jenis tugas &mdash; dan memahami batasnya.
+          </p>
+        </div>
+        <aside class="notes">Bagian pertama menyatukan semua metrik yang sudah muncul sepanjang kuliah: BLEU/CIDEr untuk generasi teks, accuracy/F1 untuk klasifikasi, MAE/RMSE untuk regresi, dan R@K/MAP/MRR untuk retrieval. Tekankan bahwa memilih metrik yang salah dapat menyesatkan pengembangan, bukan hanya pelaporan.</aside>
+      </section>
+
+      <!-- SLIDE 5: REKAP APLIKASI & METRIK -->
+      <section>
+        <h2>Rekap: Aplikasi &amp; Metrik Terkait</h2>
+        <p>Setiap tugas multimodal punya keluarga metriknya sendiri:</p>
+
+        <table class="c-table" style="margin-top: 12px;">
+          <thead>
+            <tr>
+              <th style="width: 34%;">Aplikasi</th>
+              <th style="width: 20%;">Jenis Keluaran</th>
+              <th style="width: 46%;">Metrik Utama</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Image Captioning</td>
+              <td>Teks</td>
+              <td>BLEU, METEOR, CIDEr, SPICE</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">VQA</td>
+              <td>Teks singkat</td>
+              <td>VQA Accuracy, WUPS</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Analisis Sentimen</td>
+              <td>Kelas / skor</td>
+              <td>Accuracy, Precision, Recall, \(F_1\); MAE, RMSE</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Cross-modal Retrieval</td>
+              <td>Peringkat</td>
+              <td>Recall@K, MAP, MRR</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Jenis keluaran menentukan metrik.</strong> Teks bebas &rarr; kesamaan n-gram/semantik; kelas &rarr; metrik klasifikasi; skor kontinu &rarr; metrik regresi; peringkat &rarr; metrik retrieval.</div></div>
+
+        <aside class="notes">
+          Slide ini berfungsi sebagai peta. Minta mahasiswa menebak jenis keluaran tiap tugas sebelum menampilkan tabel. Tekankan bahwa memahami jenis keluaran adalah langkah pertama memilih metrik &mdash; kesalahan umum mahasiswa adalah memakai akurasi untuk tugas retrieval, atau BLEU untuk klasifikasi. Ketiga keluarga berikutnya merinci tiap baris tabel.
+        </aside>
+      </section>
+
+      <!-- SLIDE 6: MENGAPA EVALUASI KOMPREHENSIF -->
+      <section>
+        <h2>Mengapa Evaluasi Menyeluruh Penting?</h2>
+        <p>Model multimodal itu kompleks &mdash; satu angka tidak cukup:</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Kompleksitas</h4>
+            </div>
+            <p>Model multimodal punya banyak jalur dan komponen. Satu metrik tidak dapat menangkap semua aspek kinerja &mdash; kekuatan maupun kelemahan.</p>
+          </div>
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Kesiapan Dunia Nyata</h4>
+            </div>
+            <p>Metrik yang tinggi di dataset tidak menjamin model bekerja sesuai harapan di dunia nyata &mdash; atau bebas dari isu etika.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Rata-rata menyembunyikan masalah.</strong> Skor agregat yang bagus bisa menyembunyikan kegagalan sistematis pada kelompok atau kondisi tertentu &mdash; persis yang akan kita lihat di studi kasus nanti.</div></div>
+
+        <aside class="notes">
+          Tekankan kalimat terakhir: rata-rata menyembunyikan masalah. Ini adalah benang merah sesi. Contoh: R@1 tinggi secara keseluruhan bisa menutupi performa buruk pada subkelompok. Sampaikan bahwa evaluasi komprehensif berarti: beberapa metrik, analisis per subkelompok, analisis kesalahan, interpretasi, uji robustness, dan penilaian manusia.
+        </aside>
+      </section>
+
+      <!-- SLIDE 7: METRIK GENERASI TEKS -->
+      <section>
+        <h2>Metrik untuk Generasi Teks</h2>
+        <p>Mengukur kesamaan antara teks model dan teks referensi:</p>
+
+        <div class="grid-4" style="margin-top: 14px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">BLEU</h4>
+            </div>
+            <p>Presisi n-gram. Baik untuk kelancaran dan akurasi kata; lemah pada makna.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">METEOR</h4>
+            </div>
+            <p>Unigram dengan sinonim, <em>stemming</em>, dan kelancaran; menambahkan <em>recall</em>.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">CIDEr</h4>
+            </div>
+            <p>Konsensus dengan bobot n-gram penting; sangat berkorelasi dengan penilaian manusia.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">SPICE</h4>
+            </div>
+            <p>Kualitas semantik: objek, atribut, dan hubungan &mdash; melampaui permukaan kata.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Tidak ada metrik tunggal yang sempurna.</strong> Kombinasi metrik memberi gambaran lebih lengkap, dan beberapa caption referensi sangat dianjurkan.</div></div>
+
+        <aside class="notes">
+          Ingatkan kembali W10: BLEU mengukur permukaan, SPICE mengukur makna, CIDEr menjembatani dengan konsensus. Tekankan lagi kelemahan BLEU (caption pendek dapat skor tinggi). Sebutkan bahwa di praktik modern, CIDEr sering dilaporkan bersama BLEU-4 dan SPICE untuk memberi gambaran berlapis. Tugas generasi tidak punya satu jawaban benar, jadi metrik hanyalah proksi.
+        </aside>
+      </section>
+
+      <!-- SLIDE 8: METRIK KLASIFIKASI & REGRESI -->
+      <section>
+        <h2>Metrik Klasifikasi &amp; Regresi</h2>
+        <p>Untuk keluaran diskret (kelas) dan kontinu (skor):</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Klasifikasi</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li><strong>Accuracy</strong> &mdash; proporsi benar; menyesatkan bila tidak seimbang.</li>
+              <li><strong>Precision / Recall</strong> &mdash; ketepatan dan cakupan prediksi positif.</li>
+              <li><strong>\(F_1\)</strong> &mdash; harmonis presisi &amp; <em>recall</em>; pilihan untuk kelas tidak seimbang.</li>
+              <li><strong>Confusion Matrix</strong> &mdash; kinerja per kelas.</li>
+            </ul>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Regresi</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li><strong>MAE</strong> &mdash; rata-rata selisih absolut; mudah ditafsirkan.</li>
+              <li><strong>RMSE</strong> &mdash; menghukum kesalahan besar lebih berat.</li>
+              <li><strong>Pilihan</strong> &mdash; RMSE bila kesalahan besar harus dihindari; MAE bila lebih toleran.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Untuk sentimen multimodal,</strong> kedua keluarga dipakai: klasifikasi (Positif/Negatif/Netral) dan regresi (skor polaritas kontinu) &mdash; tergantung bagaimana tugas didefinisikan.</div></div>
+
+        <aside class="notes">
+          Metrik ini sudah dibahas di W11; di sini posisinya dalam peta evaluasi menyeluruh. Tekankan confusion matrix: ia mengubah satu angka menjadi tabel kesalahan per kelas, yang langsung menunjukkan apakah model menyeragamkan jawaban. Untuk regresi, tekankan trade-off MAE/RMSE yang mencerminkan nilai: seberapa buruk kita menganggap kesalahan besar.
+        </aside>
+      </section>
+
+      <!-- SLIDE 9: METRIK RETRIEVAL -->
+      <section>
+        <h2>Metrik Retrieval</h2>
+        <p>Untuk tugas peringkat &mdash; mengukur kualitas urutan hasil:</p>
+
+        <div class="formula-hero" style="margin-top: 10px;">
+          <div class="formula-label">Dua Metrik Peringkat</div>
+          <div class="formula-math">$$\mathrm{MRR} = \frac{1}{|Q|}\sum_{q=1}^{|Q|} \frac{1}{\mathrm{rank}_q},\qquad \mathrm{MAP} = \frac{1}{|Q|}\sum_{q=1}^{|Q|} \mathrm{AP}(q)$$</div>
+        </div>
+
+        <div class="formula-breakdown">
+          <div class="formula-term-box"><strong>Recall@K</strong> Fraksi kueri dengan setidaknya satu item relevan di antara \(K\) teratas. Dilaporkan sebagai R@1, R@5, R@10.</div>
+          <div class="formula-term-box"><strong>MRR</strong> Kebalikan peringkat item relevan pertama &mdash; tinggi bila item benar muncul di posisi teratas.</div>
+          <div class="formula-term-box"><strong>MAP</strong> Rata-rata presisi di seluruh peringkat relevan &mdash; memberi bobot lebih pada item relevan di peringkat atas.</div>
+        </div>
+
+        <aside class="notes">
+          Bedakan ketiganya: R@K mengukur &ldquo;apakah ada yang benar di K teratas&rdquo; (tidak peduli posisi persisnya); MRR mengukur seberapa atas item relevan pertama (berguna bila hanya satu yang relevan); MAP mengukur kualitas seluruh urutan. Tekankan bahwa R@K adalah metrik inti proyek akhir &mdash; dan bahwa melaporkan hanya R@1 tanpa R@5/R@10 dapat menyembunyikan perbedaan antar model.
+        </aside>
+      </section>
+
+      <!-- SLIDE 10: DIVIDER BAGIAN 2 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(136,57,239,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-mauve">Bagian 2</span>
+          <h1>Evaluasi Kualitatif</h1>
+          <p class="subtitle">
+            Analisis kesalahan dan interpretasi: memahami <em>mengapa</em> model gagal.
+          </p>
+        </div>
+        <aside class="notes">Bagian kedua mengisi celah yang tidak bisa ditutup angka: sebab kegagalan. Tekankan bahwa analisis kualitatif bukan &ldquo;melihat beberapa contoh secara santai&rdquo;, melainkan prosedur sistematis &mdash; mengumpulkan kesalahan, mengategorikannya, mencari akar masalah, lalu memverifikasi lewat interpretasi. Ini bagian yang sering dilewatkan mahasiswa saat mengerjakan proyek.</aside>
+      </section>
+
+      <!-- SLIDE 11: MENGAPA KUALITATIF -->
+      <section>
+        <h2>Mengapa Evaluasi Kualitatif Penting?</h2>
+        <p>Angka memberi tahu <em>seberapa banyak</em>, bukan <em>apa</em> dan <em>mengapa</em>:</p>
+
+        <div class="grid-3" style="margin-top: 14px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Menjelaskan Sebab</h4>
+            </div>
+            <p>Metrik kuantitatif tidak menjelaskan mengapa model membuat kesalahan tertentu.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Identifikasi Pola</h4>
+            </div>
+            <p>Membantu menemukan pola kegagalan, kelemahan, dan area perbaikan yang tak terlihat di angka.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Wajib untuk Generatif</h4>
+            </div>
+            <p>Sangat penting untuk model generatif atau tugas kompleks yang jawabannya subjektif.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div><strong>Analisis kualitatif yang baik bersifat sistematis,</strong> bukan anekdotal: sampel kesalahan dipilih dengan kriteria, bukan berdasarkan contoh yang paling dramatis.</div></div>
+
+        <aside class="notes">
+          Tekankan kata &ldquo;sistematis&rdquo;: sampel harus dipilih dengan kriteria (misalnya 20 kesalahan dengan skor kepastian tertinggi, atau semua kesalahan pada satu kelas), bukan contoh yang kebetulan ditemukan. Peringatkan bahaya confirmation bias: manusia cenderung mencari contoh yang menguatkan dugaan. Prosedur berikutnya dirancang untuk mencegahnya.
+        </aside>
+      </section>
+
+      <!-- SLIDE 12: LANGKAH ANALISIS KESALAHAN 1 -->
+      <section>
+        <h2>Langkah Analisis Kesalahan (1)</h2>
+        <p>Dari mengumpulkan contoh hingga menilai perilaku model:</p>
+
+        <div class="narrative-pane" style="max-width: 860px; margin-top: 14px;">
+          <div class="narrative-step"><strong>01. Identifikasi Contoh</strong> Pilih contoh di mana model salah atau tidak optimal &mdash; dengan kriteria yang jelas dan konsisten.</div>
+          <div class="narrative-step"><strong>02. Visualisasikan Input &amp; Output</strong> Tampilkan masukan multimodal dan keluaran model berdampingan agar dapat dibandingkan.</div>
+          <div class="narrative-step"><strong>03. Analisis Perilaku</strong> Apakah model salah memahami satu modalitas? Gagal menangani konflik antar modalitas? Gagal bernalar? Menghasilkan keluaran tidak alami?</div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Pertanyaan pemandu</strong> membantu mengubah &ldquo;model ini salah&rdquo; menjadi diagnosis yang dapat ditindaklanjuti.</div></div>
+
+        <aside class="notes">
+          Tiga langkah ini membentuk prosedur. Tekankan langkah ketiga: pertanyaan-pertanyaan pemandu itulah yang membedakan analisis kualitatif dari sekadar melihat. Contoh: pada model multimodal, tanyakan apakah satu modalitas diabaikan &mdash; ini dapat diverifikasi lewat ablasi. Sampaikan bahwa langkah ini akan dipakai lagi di proyek akhir saat menganalisis kegagalan retrieval.
+        </aside>
+      </section>
+
+      <!-- SLIDE 13: LANGKAH ANALISIS KESALAHAN 2 -->
+      <section>
+        <h2>Langkah Analisis Kesalahan (2)</h2>
+        <p>Dari contoh individual ke diagnosis akar masalah:</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Kategorikan Kesalahan</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Kesalahan objek (salah mengenali benda).</li>
+              <li>Kesalahan atribut (warna, ukuran, sifat).</li>
+              <li>Kesalahan hubungan (posisi, interaksi).</li>
+              <li>Kesalahan tata bahasa atau bias.</li>
+            </ul>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Identifikasi Akar Masalah</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li><strong>Data</strong> &mdash; tidak cukup, tidak seimbang, berlabel salah.</li>
+              <li><strong>Arsitektur</strong> &mdash; kapasitas atau koneksi antar modalitas kurang.</li>
+              <li><strong>Pelatihan</strong> &mdash; jadwal, <em>loss</em>, atau regularisasi.</li>
+              <li><strong>Bias</strong> &mdash; korelasi palsu dari data.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-success" style="margin-top: 14px;"><span class="material-symbols-outlined icon-green">check_circle</span><div><strong>Keluaran yang diinginkan:</strong> distribusi jenis kesalahan (misalnya 60% atribut, 25% hubungan) &mdash; angka ini <em>menunjuk</em> ke arah perbaikan berikutnya.</div></div>
+
+        <aside class="notes">
+          Kategorisasi mengubah daftar anekdot menjadi distribusi yang dapat ditindaklanjuti. Tekankan bahwa akar masalah harus dipisahkan: kesalahan data tidak diperbaiki dengan arsitektur lebih besar, dan sebaliknya. Sebutkan bahwa langkah ini juga strategi debugging: jika kesalahan menumpuk pada satu kategori, kita tahu di mana harus melihat. Sambungkan ke tantangan debugging berikutnya.
+        </aside>
+      </section>
+
+      <!-- SLIDE 14: TEKNIK INTERPRETASI -->
+      <section>
+        <h2>Teknik Interpretasi Model</h2>
+        <p>Membuka &ldquo;kotak hitam&rdquo; untuk melihat dasar keputusan:</p>
+
+        <div class="grid-4" style="margin-top: 14px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Attention Maps</h4>
+            </div>
+            <p>Visualisasi bobot perhatian: bagian mana dari satu modalitas yang dilihat saat memproses modalitas lain.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Feature Visualization</h4>
+            </div>
+            <p>Analisis aktivasi neuron untuk memahami fitur apa yang dideteksi di lapisan tertentu.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Saliency Maps</h4>
+            </div>
+            <p>Menyoroti piksel atau area masukan yang paling memengaruhi keputusan model.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Perturbasi Input</h4>
+            </div>
+            <p>Mengubah sebagian kecil masukan lalu mengamati perubahan keluaran &mdash; uji ketergantungan.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Contoh konkret:</strong> pada captioning, <em>attention map</em> menunjukkan area gambar yang dilihat saat menghasilkan kata &ldquo;merah&rdquo; &mdash; verifikasi langsung apakah model benar-benar melihat objek yang dimaksud.</div></div>
+
+        <aside class="notes">
+          Tekankan bahwa attention maps adalah teknik paling langsung untuk model multimodal: ia menunjukkan penyejajaran yang dipelajari model. Ingatkan kembali rumus perhatian W10/W11 &mdash; bobot \(\alpha\) itulah yang divisualisasikan. Peringatkan bahwa attention maps bukan bukti kausal: bobot tinggi tidak selalu berarti atribusi yang benar. Karena itu perturbasi dan ablasi melengkapinya.
+        </aside>
+      </section>
+
+      <!-- SLIDE 15: TANTANGAN DEBUGGING -->
+      <section>
+        <h2>Tantangan Debugging Model Multimodal</h2>
+        <p>Mengapa bug pada model multimodal lebih sulit ditemukan:</p>
+
+        <div class="grid-3" style="margin-top: 10px;">
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Kompleksitas Arsitektur</h4>
+            </div>
+            <p>Model sangat dalam dengan banyak jalur dan komponen &mdash; sumber kesalahan sulit dilacak.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Lintas Modalitas</h4>
+            </div>
+            <p>Informasi mengalir antar modalitas; sulit menentukan modalitas mana yang menyebabkan kesalahan.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Representasi Abstrak</h4>
+            </div>
+            <p>Fitur lapisan dalam sulit diinterpretasikan; tidak ada &ldquo;nilai tengah&rdquo; yang jelas untuk diperiksa.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Ditambah:</strong> masalah <em>alignment</em>/sinkronisasi yang sulit terdeteksi, bias data yang lolos metrik, kebutuhan sumber daya komputasi besar, dan <strong>non-determinisme</strong> &mdash; bug yang hanya muncul pada kondisi tertentu.</div></div>
+
+        <aside class="notes">
+          Tekankan dua hal yang sering menjebak: non-determinisme (bug sulit direproduksi) dan bias data yang menghasilkan skor tinggi. Sampaikan bahwa konsekuensi praktisnya adalah pentingnya <em>seed</em> tetap, pencatatan konfigurasi, dan pengujian pada subkelompok. Ini juga alasan mengapa strategi evaluasi harus mencakup uji robustness.
+        </aside>
+      </section>
+
+      <!-- SLIDE 16: DIVIDER BAGIAN 3 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(223,142,29,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-peach">Bagian 3</span>
+          <h1>Studi Kasus &amp; Strategi Terpadu</h1>
+          <p class="subtitle">
+            Ketika rata-rata menipu &mdash; merancang evaluasi yang tidak bisa dibohongi.
+          </p>
+        </div>
+        <aside class="notes">Bagian ini mengikat semuanya melalui satu studi kasus: model yang tampak baik secara rata-rata tetapi gagal pada subkelompok tertentu. Tekankan bahwa ini bukan contoh karangan &mdash; fenomena &ldquo;aggregate metric hides subgroup failure&rdquo; sering terjadi pada sistem nyata. Dari kasus ini kita merumuskan strategi evaluasi komprehensif.</aside>
+      </section>
+
+      <!-- SLIDE 17: STUDI KASUS RUMUSAN -->
+      <section>
+        <h2>Studi Kasus: Rumusan Masalah</h2>
+        <p>Sebuah model retrieval dilaporkan mencapai R@1 = 35%. Apakah cukup?</p>
+
+        <table class="c-table" style="margin-top: 10px;">
+          <thead>
+            <tr>
+              <th style="width: 44%;">Subkelompok Data</th>
+              <th style="width: 28%;">R@1</th>
+              <th style="width: 28%;">Ukuran</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Keseluruhan (agregat)</td>
+              <td>35,0%</td>
+              <td>2.763</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Objek umum (hewan, kendaraan)</td>
+              <td>48,0%</td>
+              <td>1.910</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Konteks budaya lokal</td>
+              <td>9,5%</td>
+              <td>853</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">help</span><div><p style="margin: 0; font-size: 0.82em; line-height: 1.5;"><strong style="color: var(--ctp-blue);">Tiga pertanyaan sebelum menyimpulkan</strong> &mdash; diskusikan 3 menit: (1) angka mana yang harus dilaporkan &mdash; agregat atau per subkelompok? (2) apa kemungkinan penyebab kesenjangan? (3) bagaimana angka ini memengaruhi keputusan peluncuran sistem?</p></div></div>
+
+        <aside class="notes">
+          Jangan tampilkan jawaban dulu. Angka-angka ini sengaja dibuat realistis dan konsisten dengan temuan SEA-VL. Arahkan mahasiswa melihat kesenjangan: 48% versus 9,5%. Tanyakan: apakah boleh melaporkan 35% saja? Jawabannya tidak, karena menyesatkan. Biarkan mahasiswa menduga penyebabnya (representasi data, kosakata, distribusi) sebelum slide berikutnya.
+        </aside>
+      </section>
+
+      <!-- SLIDE 18: STUDI KASUS PENERAPAN -->
+      <section>
+        <h2>Studi Kasus: Penerapan</h2>
+        <p>Menguji dugaan dengan stratifikasi dan analisis kesalahan.</p>
+
+        <table class="c-table" style="margin-top: 10px;">
+          <thead>
+            <tr>
+              <th style="width: 30%;">Langkah</th>
+              <th style="width: 70%;">Tindakan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Evaluasi berlapis</td>
+              <td>Hitung R@1, R@5, R@10 untuk tiap subkelompok &mdash; bukan hanya agregat.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Analisis kesalahan</td>
+              <td>Periksa 20 kueri budaya lokal yang gagal; kategorikan kesalahan (objek, atribut, konteks).</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Uji ablasi</td>
+              <td>Hilangkan modalitas atau fitur tertentu; amati penurunan R@1 untuk mengukur ketergantungan.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Cek data</td>
+              <td>Bandingkan distribusi kelas pada data latih dengan distribusi kueri uji.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">calculate</span><div><strong>Temuan:</strong> promosi R@5 pada subkelompok budaya lokal naik jauh lebih besar (9,5% &rarr; 31%) &mdash; artinya model <em>menemukan</em> jawaban benar tetapi gagal memeringkatnya di posisi teratas.</div></div>
+
+        <aside class="notes">
+          Tekankan langkah per-langkah. Kesimpulan penting ada di callout: kenaikan besar dari R@1 ke R@5 menunjukkan masalah <em>peringkat</em>, bukan <em>pencarian</em>. Ini diagnosis yang berbeda dari &ldquo;model tidak tahu&rdquo; &mdash; dan menunjuk ke solusi berbeda (penyetelan ruang embedding versus penambahan data). Ini contoh bagaimana metrik berlapis mengubah diagnosis.
+        </aside>
+      </section>
+
+      <!-- SLIDE 19: STUDI KASUS ANALISIS -->
+      <section>
+        <h2>Studi Kasus: Analisis</h2>
+        <p>Dari diagnosis ke rekomendasi &mdash; dan pelajaran tentang pelaporan.</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Diagnosis</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Penyebab utama: <strong>representasi</strong> &mdash; kueri budaya lokal kurang terwakili di data latih.</li>
+              <li>Masalah <strong>peringkat</strong>, bukan pencarian &mdash; R@5 jauh lebih tinggi dari R@1.</li>
+              <li>Kesenjangan juga menyentuh <strong>fairness</strong>: satu kelompok menerima layanan lebih buruk.</li>
+            </ul>
+          </div>
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Rekomendasi</h4>
+            </div>
+            <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Selalu laporkan metrik <strong>per subkelompok</strong>, bukan hanya agregat.</li>
+              <li>Tambahkan data atau bobot untuk subkelompok yang lemah.</li>
+              <li>Laporkan beberapa metrik (R@1, R@5, R@10) agar diagnosis tepat.</li>
+              <li>Sertakan analisis kesalahan kualitatif sebelum keputusan rilis.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Pelajaran utama:</strong> angka agregat yang tinggi bisa menyembunyikan kegagalan sistematis. Evaluasi yang jujur adalah evaluasi yang <em>memecah</em> rata-rata.</div></div>
+
+        <aside class="notes">
+          Tutup studi kasus dengan dua pesan. Pertama, diagnosis yang tepat bergantung pada metrik berlapis: R@1 vs R@5 mengubah kesimpulan dari &ldquo;tidak tahu&rdquo; menjadi &ldquo;salah peringkat&rdquo;. Kedua, kesenjangan antar subkelompok adalah isu fairness, bukan sekadar teknis &mdash; menyambung W12. Tekankan bahwa rekomendasi ini persis yang diharapkan dari proyek akhir.
+        </aside>
+      </section>
+
+      <!-- SLIDE 20: KETIKA EVALUASI MENYESATKAN -->
+      <section>
+        <h2>Ketika Evaluasi Menyesatkan</h2>
+        <p>Empat jebakan yang membuat evaluasi tampak lebih baik dari kenyataan:</p>
+
+        <div class="grid-4" style="margin-top: 14px;">
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Agregat Saja</h4>
+            </div>
+            <p>Rata-rata menyembunyikan kegagalan pada subkelompok minoritas.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Permainan Metrik</h4>
+            </div>
+            <p>Model dioptimalkan untuk metrik, bukan tujuan &mdash; misalnya caption pendek demi BLEU.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Overfitting Benchmark</h4>
+            </div>
+            <p>Penyetelan berulang pada set uji membuat model menghafalnya, bukan menggeneralisasi.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Kebocoran Data</h4>
+            </div>
+            <p>Contoh uji yang muncul (atau mirip) di data latih menggelembungkan skor.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Ujian kesehatan:</strong> apakah saya melaporkan metrik per subkelompok? Apakah set uji benar-benar belum pernah dilihat model? Apakah ada penilaian manusia?</div></div>
+
+        <aside class="notes">
+          Keempat jebakan ini saling berkait dengan pembahasan sebelumnya. Tekankan permainan metrik: ini konsekuensi langsung dari memilih metrik yang salah (contoh BLEU dari W10). Kebocoran data adalah jebakan paling umum pada proyek mahasiswa &mdash; pastikan set uji benar-benar terpisah. Sebutkan bahwa proyek akhir mensyaratkan pemisahan set uji yang ketat (dan test set privat via LMS).
+        </aside>
+      </section>
+
+      <!-- SLIDE 21: STRATEGI EVALUASI 1 -->
+      <section>
+        <h2>Strategi Evaluasi Komprehensif (1)</h2>
+        <p>Empat langkah pertama:</p>
+
+        <div class="narrative-pane" style="max-width: 880px; margin-top: 14px;">
+          <div class="narrative-step"><strong>01. Definisikan Tujuan</strong> Apa yang ingin dicapai? Perbandingan model? Identifikasi kelemahan? Validasi produksi? Tujuan menentukan metrik.</div>
+          <div class="narrative-step"><strong>02. Pilih Metrik Sesuai</strong> Gunakan kombinasi metrik yang relevan dengan tugas dan karakteristik data &mdash; jangan satu metrik saja.</div>
+          <div class="narrative-step"><strong>03. Analisis Kesalahan Sistematis</strong> Jangan berhenti di angka; pahami mengapa model membuat kesalahan dan kategorikan penyebabnya.</div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div><strong>Langkah keempat</strong> &mdash; gunakan teknik interpretasi model: <em>attention maps</em>, <em>feature maps</em>, atau <em>saliency maps</em> untuk memverifikasi dugaan dari analisis kesalahan.</div></div>
+
+        <aside class="notes">
+          Tekankan bahwa langkah pertama menentukan semua langkah berikutnya: tujuan evaluasi yang tidak jelas menghasilkan metrik yang salah. Bandingkan dua tujuan &mdash; &ldquo;menulis paper&rdquo; (butuh perbandingan ketat dan signifikansi) versus &ldquo;meluncurkan produk&rdquo; (butuh uji robustness dan audit etika). Keduanya membutuhkan rangkaian evaluasi berbeda meski modelnya sama.
+        </aside>
+      </section>
+
+      <!-- SLIDE 22: STRATEGI EVALUASI 2 -->
+      <section>
+        <h2>Strategi Evaluasi Komprehensif (2)</h2>
+        <p>Empat langkah penutup:</p>
+
+        <div class="narrative-pane" style="max-width: 880px; margin-top: 14px;">
+          <div class="narrative-step"><strong>05. Uji Robustness</strong> Evaluasi pada data bervariasi, data ber-<em>noise</em>, dan data dengan modalitas yang hilang.</div>
+          <div class="narrative-step"><strong>06. Audit Etika</strong> Lakukan audit bias dan <em>fairness</em> per subkelompok &mdash; bukan hanya metrik keseluruhan.</div>
+          <div class="narrative-step"><strong>07. Libatkan Manusia</strong> Untuk tugas generatif atau subjektif, penilaian manusia adalah standar emas. Iterasi dan perbaiki berdasarkan temuan.</div>
+        </div>
+
+        <div class="c-callout c-callout-success" style="margin-top: 14px;"><span class="material-symbols-outlined icon-green">check_circle</span><div><strong>Tujuh langkah, satu lingkaran.</strong> Evaluasi bukan langkah sekali jalan di akhir, melainkan siklus: ukur, pahami, perbaiki, ulangi.</div></div>
+
+        <aside class="notes">
+          Lengkapi delapan langkah dari dua slide. Tekankan langkah 5&ndash;7 sebagai yang paling sering dilewatkan: uji robustness, audit etika, dan penilaian manusia. Sambungkan ke proyek akhir: mahasiswa diharapkan memenuhi ketiganya, terutama audit bias per subkelompok. Tutup dengan gagasan bahwa evaluasi membentuk perilaku pengembangan &mdash; metrik yang dilaporkan menjadi insentif bagi tim.
+        </aside>
+      </section>
+
+      <!-- SLIDE 23: RANGKUMAN -->
+      <section>
+        <h2>Rangkuman &amp; Poin Kunci</h2>
+        <p>Mengukur, memahami, lalu memperbaiki:</p>
+
+        <div class="grid-2" style="margin-top: 10px;">
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue);">Kuantitatif &amp; Kualitatif</h4>
+            </div>
+            <ul style="font-size: 0.76em; margin: 0; padding-left: 16px; line-height: 1.55;">
+              <li><strong>Generasi teks</strong> &rarr; BLEU, METEOR, CIDEr, SPICE.</li>
+              <li><strong>Klasifikasi/Regresi</strong> &rarr; Accuracy, Precision, Recall, \(F_1\); MAE, RMSE.</li>
+              <li><strong>Retrieval</strong> &rarr; Recall@K, MAP, MRR.</li>
+              <li><strong>Kualitatif</strong> &rarr; analisis kesalahan + interpretasi (attention maps).</li>
+            </ul>
+          </div>
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach);">Tantangan &amp; Strategi</h4>
+            </div>
+            <ul style="font-size: 0.76em; margin: 0; padding-left: 16px; line-height: 1.55;">
+              <li><strong>Debugging</strong> sulit: lintas modalitas, abstrak, non-deterministik.</li>
+              <li><strong>Jebakan</strong> &rarr; agregat menyembunyikan masalah, permainan metrik, kebocoran data.</li>
+              <li><strong>Strategi</strong> &rarr; beberapa metrik, analisis kesalahan, interpretasi, robustness, audit etika, penilaian manusia.</li>
+            </ul>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Tutup dengan dua gagasan. Pertama, tidak ada metrik tunggal yang cukup; evaluasi komprehensif selalu berlapis. Kedua, evaluasi adalah aktivitas yang membentuk keputusan desain, bukan laporan di akhir. Pertemuan berikutnya menyatukan seluruh materi semester menjadi satu studi kasus terpadu &mdash; dan menerapkan strategi evaluasi ini pada sistem yang utuh.
+        </aside>
+      </section>
+
+      <!-- SLIDE 24: DISKUSI -->
+      <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Diskusi Kelas">
+        <h2 style="text-align: center; margin-bottom: 24px;">Diskusi Kelas</h2>
+        <p style="text-align: center; margin-bottom: 24px;">Diskusikan bersama rekan di samping Anda selama 3&ndash;5 menit:</p>
+        <div style="display: flex; flex-direction: column; gap: 14px; max-width: 860px; margin: 0 auto;">
+          <div class="c-callout c-callout-info"><span class="material-symbols-outlined icon-blue">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-blue);">Pertanyaan 1:</strong> Bagaimana menyeimbangkan metrik otomatis dan penilaian manusia saat mengevaluasi model generatif multimodal?</p></div></div>
+          <div class="c-callout c-callout-warning"><span class="material-symbols-outlined icon-mauve">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-mauve);">Pertanyaan 2:</strong> Apa risiko jika kita hanya mengandalkan metrik kuantitatif tanpa analisis kualitatif sama sekali?</p></div></div>
+          <div class="c-callout c-callout-success"><span class="material-symbols-outlined icon-teal">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-teal);">Pertanyaan 3:</strong> Bagaimana strategi evaluasi diadaptasi untuk aplikasi <em>real-time</em> atau yang sensitif terhadap latensi?</p></div></div>
+        </div>
+        <aside class="notes">Tiga pertanyaan bergerak dari metode (1), ke risiko (2), ke kendala praktis (3). Pertanyaan kedua menyentuh insentif: metrik yang dilaporkan membentuk perilaku tim. Ketiga langsung relevan dengan proyek: evaluasi lengkap memakan waktu, dan aplikasi nyata punya anggaran latensi. Beri waktu 3&ndash;5 menit, lalu minta beberapa kelompok berbagi.</aside>
+      </section>
+
+      <!-- SLIDE 25: REFERENSI -->
+      <section>
+        <h2>Referensi &amp; Bacaan Lanjutan</h2>
+        <p style="margin-bottom: 20px;">Rekomendasi literatur akademik wajib dan bacaan lanjutan:</p>
+        <ol style="list-style: none; padding: 0; margin: 0; counter-reset: ref-counter;">
+          <li style="counter-increment: ref-counter; padding: 13px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[1]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Doshi-Velez, F., &amp; Kim, B. (2017).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Towards a Rigorous Science of Interpretable Machine Learning</em>. arXiv:1702.08608.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 13px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[2]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Zhou, B., et al. (2016).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Learning Deep Features for Discriminative Localization</em>. CVPR. &mdash; Class Activation Mapping (CAM).</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 13px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[3]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Vedantam, R., Lawrence Zitnick, C., &amp; Parikh, D. (2015).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>CIDEr: Consensus-based Image Description Evaluation</em>. CVPR.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 13px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[4]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Liang, P., Zadeh, A., &amp; Morency, L.-P. (2023).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Tutorial on Multimodal Machine Learning</em>. ICML. &mdash; bagian evaluasi.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 13px 0; display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[5]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">VQA Challenge &amp; MS COCO Captioning Challenge (metrik resmi).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;">Acuan implementasi metrik standar komunitas.</p></div></li>
+        </ol>
+        <aside class="notes">Lima referensi: dua tentang interpretabilitas (Doshi-Velez &amp; Kim; Zhou et al. untuk CAM), satu paper CIDEr sebagai contoh metrik yang dirancang baik, tutorial multimodal untuk bagian evaluasi, dan tautan ke metrik resmi kompetisi VQA/MS COCO sebagai acuan implementasi. Sebutkan bahwa implementasi metrik standar (misalnya pycocoevalcap) biasanya sudah tersedia &mdash; jangan mengimplementasikan dari nol.</aside>
+      </section>
+
+      <!-- SLIDE 26: PENUTUP -->
+      <section>
+        <div style="margin: auto 0; text-align: center;">
+          <h2 style="font-size: 1.8em; font-weight: 800; color: var(--ctp-text); margin-bottom: 16px;">Terima Kasih</h2>
+          <p style="font-size: 1.05em; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.6;">Pertemuan selanjutnya:<br><strong style="color: var(--ctp-blue);">Studi Kasus Terpadu</strong></p>
+          <div style="background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-radius: 12px; padding: 18px 24px; display: inline-block; max-width: 480px;"><div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">Pertanyaan &amp; Diskusi</div><div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;"><span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span></div></div>
+        </div>
+        <aside class="notes">Tutup sesi dengan menegaskan bahwa evaluasi adalah keterampilan rekayasa, bukan formalitas. Sampaikan bahwa Pertemuan 14 akan menyatukan semua yang dipelajari &mdash; representasi, penyejajaran, fusi, aplikasi, dan evaluasi &mdash; dalam satu studi kasus terpadu. Ajak mahasiswa menyiapkan pertanyaan tentang proyek akhir mereka untuk sesi klinik di W14.</aside>
+      </section>
+  </div></div>
+  <!-- Persistent Edge-to-Edge Deck Footer -->
+  <footer class="deck-footer">
+    <div class="deck-footer-left">
+      <span class="deck-footer-code">IF25-40304</span>
+      <span class="deck-footer-sep">&bull;</span>
+      <span class="deck-footer-dept">Teknik Informatika ITERA</span>
+    </div>
+
+    <div class="deck-footer-center">
+      <button type="button" id="deck-footer-topic" class="deck-footer-topic" onclick="toggleTopicPopover(event)" title="Daftar Isi & Navigasi Cepat Slide (Klik)">
+        <span id="deck-footer-topic-text" class="deck-footer-topic-text">Pertemuan 13 &bull; Evaluasi Model Multimodal: Kuantitatif &amp; Kualitatif</span>
+        <span class="material-symbols-outlined deck-footer-topic-icon">expand_less</span>
+      </button>
+    </div>
+
+    <div class="deck-footer-right">
+      <button type="button" class="deck-footer-btn" onclick="Reveal.prev()" title="Slide Sebelumnya (← / P)" aria-label="Slide Sebelumnya">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <button type="button" class="deck-counter-btn" onclick="Reveal.toggleOverview()" title="Klik untuk Matriks Seluruh Slide (Esc/O)">
+        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">26</span>
+      </button>
+      <button type="button" class="deck-footer-btn" onclick="Reveal.next()" title="Slide Berikutnya (→ / Space / N)" aria-label="Slide Berikutnya">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </footer>
+  <div class="deck-topic-popover" id="deck-topic-popover"><div class="deck-popover-search-wrap"><input type="text" id="deck-topic-search" class="deck-popover-search" placeholder="Cari slide..." oninput="filterTopicList(this.value)"></div><div class="deck-topic-list" id="deck-topic-list"></div></div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+  <script>
+
+    let currentAspectMode = localStorage.getItem('reveal_aspect_mode') || 'auto';
+
+    function calculateResponsiveDimensions(mode) {
+      const winW = window.innerWidth;
+      const winH = window.innerHeight - 86.5;
+      const ratio = winW / winH;
+
+      if (mode === '16-9') return { width: 1280, height: 720, label: '16:9' };
+      if (mode === '16-10') return { width: 1280, height: 800, label: '16:10' };
+      if (mode === '4-3') return { width: 1024, height: 768, label: '4:3' };
+      if (mode === 'mobile') return { width: 750, height: 1000, label: 'Mobile' };
+      if (mode === 'text-large') return { width: 960, height: 540, label: 'Teks Besar' };
+
+      // Auto mode
+      if (winW <= 768 || ratio < 1.15) {
+        return { width: 750, height: Math.max(900, Math.round(750 / Math.max(0.5, ratio))), label: 'Auto' };
+      } else if (ratio >= 1.65) {
+        return { width: 1280, height: 720, label: 'Auto' };
+      } else if (ratio >= 1.45) {
+        return { width: 1280, height: 800, label: 'Auto' };
+      } else {
+        return { width: 1024, height: 768, label: 'Auto' };
+      }
+    }
+
+    const initialDim = calculateResponsiveDimensions(currentAspectMode);
+
+    Reveal.initialize({
+      width: initialDim.width,
+      height: initialDim.height,
+      margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2.0,
+      hash: true,
+      slideNumber: false,
+      controls: false,
+      progress: false,
+      center: true,
+      touch: true,
+      transition: 'slide',
+      backgroundTransition: 'none',
+      plugins: [ RevealNotes, RevealHighlight, RevealMath.KaTeX ]
+    });
+
+    function updateDeckState(event) {
+      const indices = event ? { h: event.indexh, v: event.indexv } : Reveal.getIndices();
+      const totalSlides = Reveal.getTotalSlides();
+      const currentIdx = indices ? indices.h : 0;
+
+      const progressBar = document.getElementById('deck-progress-bar');
+      if (progressBar) {
+        const progressPercent = totalSlides > 1 ? (currentIdx / (totalSlides - 1)) * 100 : 0;
+        progressBar.style.width = progressPercent + '%';
+      }
+
+      const currentEl = document.getElementById('deck-slide-current');
+      const totalEl = document.getElementById('deck-slide-total');
+      if (currentEl) currentEl.textContent = String(currentIdx + 1).padStart(2, '0');
+      if (totalEl) totalEl.textContent = String(totalSlides).padStart(2, '0');
+
+      const topicEl = document.getElementById('deck-footer-topic-text') || document.getElementById('deck-footer-topic');
+      if (topicEl) {
+        if (currentIdx === 0) {
+          topicEl.textContent = 'Pertemuan 13 \u2022 Evaluasi Model Multimodal: Kuantitatif & Kualitatif';
+        } else {
+          const currentSlide = Reveal.getCurrentSlide();
+          if (currentSlide) {
+            const topicAttr = currentSlide.getAttribute('data-topic');
+            if (topicAttr) {
+              topicEl.textContent = topicAttr;
+            } else {
+              const heading = currentSlide.querySelector('h2') || currentSlide.querySelector('h1');
+              if (heading) {
+                topicEl.textContent = heading.textContent.trim();
+              } else {
+                topicEl.textContent = 'Pertemuan 13 \u2022 Evaluasi Model Multimodal: Kuantitatif & Kualitatif';
+              }
+            }
+          }
+        }
+      }
+
+      updateActiveTopicItem(currentIdx);
+    }
+
+    Reveal.on('ready', event => {
+      document.body.classList.add('reveal-ready');
+      updateDeckState(event);
+      buildTopicIndex();
+    });
+    Reveal.on('slidechanged', updateDeckState);
+
+    // =========================================================
+    // Floating Slide Topic Navigation Popover (Daftar Isi)
+    // =========================================================
+    function buildTopicIndex() {
+      const listEl = document.getElementById('deck-topic-list');
+      if (!listEl) return;
+
+      const slides = document.querySelectorAll('.reveal .slides > section');
+      let html = '';
+
+      slides.forEach((slide, idx) => {
+        const topicAttr = slide.getAttribute('data-topic');
+        const h1 = slide.querySelector('h1');
+        const h2 = slide.querySelector('h2');
+        const partEl = slide.querySelector('.section-part-label');
+        const isSectionSlide = slide.classList.contains('section-slide') || !!slide.querySelector('.section-slide-content');
+        const partText = partEl ? partEl.textContent.trim().replace(/\s+/g, ' ') : '';
+
+        const h1Text = h1 ? h1.textContent.trim().replace(/\s+/g, ' ') : '';
+        const h2Text = h2 ? h2.textContent.trim().replace(/\s+/g, ' ') : '';
+        let title = '';
+
+        if (idx === 0) {
+          title = h1Text || 'Evaluasi Model Multimodal: Kuantitatif & Kualitatif';
+          html += '<div class="deck-topic-section">Pendahuluan & Identitas</div>';
+        } else if (isSectionSlide || partText.startsWith('Bagian')) {
+          const secTitle = h1Text || h2Text || 'Bagian ' + idx;
+          const sectionLabel = partText ? partText + ': ' + secTitle : secTitle;
+          title = secTitle;
+          html += '<div class="deck-topic-section">' + sectionLabel + '</div>';
+        } else if (topicAttr) {
+          title = topicAttr;
+        } else {
+          title = h2Text || h1Text || 'Slide ' + (idx + 1);
+        }
+
+        const numStr = String(idx + 1).padStart(2, '0');
+        html += '<div class="deck-topic-item" data-slide-index="' + idx + '" onclick="jumpToSlide(' + idx + ')"><span class="deck-topic-num">' + numStr + '</span><span class="deck-topic-name" title="' + title + '">' + title + '</span></div>';
+      });
+
+      listEl.innerHTML = html;
+      const currentIdx = Reveal.getIndices ? Reveal.getIndices().h : 0;
+      updateActiveTopicItem(currentIdx);
+    }
+
+    function updateActiveTopicItem(currentIdx) {
+      document.querySelectorAll('.deck-topic-item').forEach(item => {
+        const idx = parseInt(item.getAttribute('data-slide-index'), 10);
+        item.classList.toggle('active', idx === currentIdx);
+      });
+    }
+
+    function toggleTopicPopover(e) {
+      if (e) e.stopPropagation();
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (!popover) return;
+
+      const isActive = popover.classList.toggle('active');
+      if (btn) btn.classList.toggle('active', isActive);
+
+      if (isActive) {
+        const activeItem = popover.querySelector('.deck-topic-item.active');
+        if (activeItem) {
+          activeItem.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }
+        const searchInput = document.getElementById('deck-topic-search');
+        if (searchInput) {
+          searchInput.value = '';
+          filterTopicList('');
+          setTimeout(() => searchInput.focus(), 80);
+        }
+      }
+    }
+
+    function closeTopicPopover() {
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (popover) popover.classList.remove('active');
+      if (btn) btn.classList.remove('active');
+    }
+
+    function jumpToSlide(index) {
+      Reveal.slide(index);
+      closeTopicPopover();
+    }
+
+    function filterTopicList(query) {
+      const q = (query || '').toLowerCase().trim();
+      const items = document.querySelectorAll('.deck-topic-item');
+      const sections = document.querySelectorAll('.deck-topic-section');
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const num = (item.querySelector('.deck-topic-num') || {}).textContent || '';
+        const name = (item.querySelector('.deck-topic-name') || {}).textContent || '';
+        const matches = !q || num.toLowerCase().includes(q) || name.toLowerCase().includes(q);
+        item.style.display = matches ? 'grid' : 'none';
+        if (matches) visibleCount++;
+      });
+
+      sections.forEach(sec => {
+        let nextEl = sec.nextElementSibling;
+        let hasVisibleChild = false;
+        while (nextEl && !nextEl.classList.contains('deck-topic-section')) {
+          if (nextEl.classList.contains('deck-topic-item') && nextEl.style.display !== 'none') {
+            hasVisibleChild = true;
+            break;
+          }
+          nextEl = nextEl.nextElementSibling;
+        }
+        sec.style.display = hasVisibleChild ? 'block' : 'none';
+      });
+
+      const listEl = document.getElementById('deck-topic-list');
+      let emptyMsg = document.getElementById('deck-topic-empty-msg');
+      if (visibleCount === 0) {
+        if (!emptyMsg) {
+          emptyMsg = document.createElement('div');
+          emptyMsg.id = 'deck-topic-empty-msg';
+          emptyMsg.className = 'deck-topic-empty';
+          emptyMsg.textContent = 'Tidak ada slide yang cocok dengan pencarian.';
+          listEl.appendChild(emptyMsg);
+        }
+        emptyMsg.style.display = 'block';
+      } else if (emptyMsg) {
+        emptyMsg.style.display = 'none';
+      }
+    }
+
+    function setAspectMode(mode) {
+      currentAspectMode = mode;
+      localStorage.setItem('reveal_aspect_mode', mode);
+      const dim = calculateResponsiveDimensions(mode);
+
+      Reveal.configure({
+        width: dim.width,
+        height: dim.height,
+        margin: 0.04,
+        minScale: 0.2,
+        maxScale: 2.0
+      });
+
+      document.body.classList.remove('aspect-16-9', 'aspect-16-10', 'aspect-4-3', 'aspect-mobile');
+      if (mode === 'auto') {
+        if (window.innerWidth <= 768) document.body.classList.add('aspect-mobile');
+      } else {
+        document.body.classList.add('aspect-' + mode);
+      }
+
+      const labelEl = document.getElementById('aspect-label');
+      if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+
+      document.querySelectorAll('.dropdown-item').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-aspect') === mode);
+      });
+
+      closeAspectDropdown();
+      setTimeout(() => Reveal.layout(), 50);
+    }
+
+    function toggleAspectDropdown(e) {
+      if (e) e.stopPropagation();
+      document.getElementById('aspect-menu').classList.toggle('active');
+    }
+
+    function closeAspectDropdown() {
+      const menu = document.getElementById('aspect-menu');
+      if (menu) menu.classList.remove('active');
+    }
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-dropdown')) closeAspectDropdown();
+      if (!e.target.closest('#deck-topic-popover') && !e.target.closest('#deck-footer-topic')) closeTopicPopover();
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (currentAspectMode === 'auto') {
+          const dim = calculateResponsiveDimensions('auto');
+          const cfg = Reveal.getConfig();
+          if (cfg.width !== dim.width || cfg.height !== dim.height) {
+            Reveal.configure({ width: dim.width, height: dim.height });
+            const labelEl = document.getElementById('aspect-label');
+            if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+            Reveal.layout();
+          }
+        }
+      }, 200);
+    });
+
+    window.addEventListener('DOMContentLoaded', () => setAspectMode(currentAspectMode));
+
+    function openShortcutsModal() {
+      document.getElementById('shortcuts-modal').classList.add('active');
+    }
+
+    function closeShortcutsModal(event) {
+      if (!event || event.target.id === 'shortcuts-modal' || event.target.classList.contains('modal-close')) {
+        document.getElementById('shortcuts-modal').classList.remove('active');
+      }
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const popover = document.getElementById('deck-topic-popover');
+        if (popover && popover.classList.contains('active')) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeTopicPopover();
+          return;
+        }
+      }
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        document.getElementById('shortcuts-modal').classList.toggle('active');
+      }
+    });
+
+  </script>
+</body></html>
