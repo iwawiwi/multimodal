@@ -617,7 +617,7 @@
 <p>Lingkungan yang diperlukan: Python 3.8+ dengan paket <code>numpy</code> (wajib) serta <code>torch</code>, <code>transformers</code>, dan <code>pillow</code> (untuk Bagian 08&ndash;09).</p>
 <section id="sec-konsep"><h2><span class="sec-num">01</span> Menyelaraskan Dua Ruang</h2>
 <p>Slide 15&ndash;17 (Pertemuan 09) menunjukkan bahwa CLIP tidak pernah menyatukan gambar dan teks di dalam satu lapisan. Keduanya melewati <em>encoder</em> yang terpisah, lalu hanya <em>embedding</em>-nya yang dipertemukan. Pertemuannya bekerja karena kedua <em>embedding</em> hidup di ruang yang sama &mdash; dan ruang itu <em>dibuat</em> serupa lewat tujuan kontrastif.</p>
-<div class="formula">InfoNCE: L = &minus;log [ exp(sim(v_I, v_T) / &tau;) / &Sigma;<sub>j</sub> exp(sim(v_I, v_T<sup>(j)</sup>) / &tau;) ]</div>
+<div class="formula">InfoNCE = &minus;log [ exp(sim(v_I, v_T) / &tau;) / &Sigma;<sub>j</sub> exp(sim(v_I, v_T<sup>(j)</sup>) / &tau;) ]</div>
 <div class="note note-blue"><span class="note-title">Intuisi</span>Pembilang memberi hadiah bila pasangan benar mirip. Penyebut memaksa pasangan benar lebih mirip daripada <strong>semua</strong> kandidat lain dalam satu <em>batch</em>. Setiap pasangan salah otomatis menjadi contoh negatif &mdash; tanpa anotasi tambahan.</div>
 <table><thead><tr><th>Istilah</th><th>Arti</th><th>Peran</th></tr></thead><tbody>
 <tr><td><code>sim(&middot;,&middot;)</code></td><td>Kesamaan kosinus</td><td>Mengukur kedekatan dua vektor</td></tr>
@@ -893,4 +893,3 @@ function flashCopied(btn){var i=btn.querySelector('.material-symbols-outlined'),
 function toggleToc(open){var d=document.getElementById('tocDrawer'),b=document.getElementById('drawerBackdrop'),on=open===undefined?!d.classList.contains('open'):open;d.classList.toggle('open',on);b.classList.toggle('open',on);document.body.style.overflow=on?'hidden':''}function gotoSection(link){var t=document.querySelector(link.getAttribute('href'));toggleToc(false);if(t)setTimeout(function(){t.scrollIntoView({behavior:'smooth',block:'start'})},180);return false}function scrollTop(){window.scrollTo({top:0,behavior:'smooth'})}function toggleTextLarge(){var on=document.documentElement.classList.toggle('text-large'),b=document.getElementById('textLargeBtn');if(b)b.classList.toggle('active',on);try{localStorage.setItem('hands_on_text_large',on?'1':'0')}catch(e){}}(function(){try{if(localStorage.getItem('hands_on_text_large')==='1'){document.documentElement.classList.add('text-large');var b=document.getElementById('textLargeBtn');if(b)b.classList.add('active')}}catch(e){}})();document.addEventListener('keydown',function(e){if(e.key==='Escape')toggleToc(false)});
 </script>
 </body></html>
-

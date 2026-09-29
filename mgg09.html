@@ -192,37 +192,13 @@
         <p>Diperkenalkan lewat <em>&ldquo;Attention Is All You Need&rdquo;</em> (2017) untuk penerjemahan mesin.</p>
 
         <div class="grid-2" style="margin-top: 14px;">
-          <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 12px; overflow: hidden; max-height: 250px;">
-            <svg viewBox="0 0 400 212" role="img" aria-label="Diagram encoder-decoder Transformer: blok encoder di kiri berisi self-attention dan feed-forward, blok decoder di kanan berisi masked self-attention, cross-attention, dan feed-forward, dengan panah dari encoder menuju cross-attention decoder" style="width: 100%; height: auto;">
-              <defs>
-                <marker id="w09-ed" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#1e66f5"/></marker>
-                <marker id="w09-ed-teal" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#179299"/></marker>
-              </defs>
-
-              <text x="88" y="20" text-anchor="middle" fill="#1e66f5" font-size="13" font-family="sans-serif" font-weight="700">Encoder &times; N</text>
-              <text x="306" y="20" text-anchor="middle" fill="#179299" font-size="13" font-family="sans-serif" font-weight="700">Decoder &times; N</text>
-
-              <rect x="16" y="30" width="144" height="78" rx="9" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
-              <text x="88" y="60" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif" font-weight="700">Self-Attention</text>
-              <text x="88" y="86" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif">Feed-Forward</text>
-
-              <rect x="228" y="30" width="156" height="112" rx="9" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
-              <text x="306" y="56" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif" font-weight="700">Masked Self-Attn</text>
-              <text x="306" y="84" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif" font-weight="700">Cross-Attention</text>
-              <text x="306" y="116" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif">Feed-Forward</text>
-
-              <path d="M160 84 H222" fill="none" stroke="#179299" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w09-ed-teal)"/>
-
-              <path d="M88 108 V152" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#w09-ed)"/>
-              <path d="M306 142 V152" fill="none" stroke="#179299" stroke-width="3" marker-end="url(#w09-ed-teal)"/>
-
-              <foreignObject x="16" y="156" width="144" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:12px;color:#4c4f69;">Input \(\mathbf{x}\)</div></foreignObject>
-              <foreignObject x="228" y="156" width="156" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:12px;color:#4c4f69;">Output \(\mathbf{y}\)</div></foreignObject>
-
-              <text x="200" y="202" text-anchor="middle" fill="#179299" font-size="11.5" font-family="sans-serif">Garis putus-putus = cross-attention dari encoder ke decoder</text>
-            </svg>
+          <div class="diagram-canvas figure-hero" style="background: var(--ctp-mantle); border-radius: 10px; padding: 10px; overflow: hidden;">
+            <img src="assets/data/attn-is-all-you-need-2017.webp"
+                 alt="Arsitektur Transformer: blok encoder bertumpuk N kali di kiri dan blok decoder bertumpuk N kali di kanan; tiap blok encoder berisi multi-head attention, add &amp; norm, dan feed-forward, tiap blok decoder berisi masked multi-head attention, cross-attention dari encoder, dan feed-forward, dengan positional encoding ditambahkan pada input dan output embedding"
+                 style="display: block; margin: 0 auto;">
+            <small style="display: block; margin-top: 6px; text-align: center; color: var(--ctp-subtext0);">Sumber: Vaswani dkk. (2017), <em>Attention Is All You Need</em></small>
           </div>
-          <div class="narrative-pane">
+          <div class="narrative-pane" style="gap: 6px;">
             <div class="narrative-step"><strong>01. Encoder</strong> Membaca seluruh sekuens sekaligus lalu menghasilkan representasi kontekstual yang kaya.</div>
             <div class="narrative-step"><strong>02. Decoder</strong> Menghasilkan output token demi token; <em>masked</em> self-attention mencegahnya mengintip token yang belum dihasilkan.</div>
             <div class="narrative-step"><strong>03. Cross-Attention</strong> Jembatan dari encoder ke decoder &mdash; titik yang nanti kita pakai untuk menyambung antar modalitas.</div>
@@ -287,34 +263,11 @@
         <p>Vision Transformer (2020) memotong gambar menjadi potongan tetap.</p>
 
         <div class="grid-2" style="margin-top: 6px;">
-          <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 10px; overflow: hidden;">
-            <svg viewBox="0 0 400 332" role="img" aria-label="Diagram Vision Transformer: gambar dipotong menjadi enam patch, satu patch dicontohkan, lalu patch diratakan dan diproyeksikan menjadi embedding, ditambah embedding posisi, dan diumpankan ke Transformer Encoder" style="width: 100%; height: auto;">
-              <defs>
-                <marker id="w09-vit" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#8839ef"/></marker>
-              </defs>
-
-              <text x="200" y="20" text-anchor="middle" fill="#8839ef" font-size="14" font-family="sans-serif" font-weight="700">Gambar (H &times; W &times; C)</text>
-
-              <rect x="117" y="32" width="50" height="50" rx="6" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
-              <rect x="175" y="32" width="50" height="50" rx="6" fill="#e6e9ef" stroke="#1e66f5" stroke-width="2"/>
-              <rect x="233" y="32" width="50" height="50" rx="6" fill="#e6e9ef" stroke="#1e66f5" stroke-width="2"/>
-              <rect x="117" y="90" width="50" height="50" rx="6" fill="#e6e9ef" stroke="#1e66f5" stroke-width="2"/>
-              <rect x="175" y="90" width="50" height="50" rx="6" fill="#e6e9ef" stroke="#1e66f5" stroke-width="2"/>
-              <rect x="233" y="90" width="50" height="50" rx="6" fill="#e6e9ef" stroke="#1e66f5" stroke-width="2"/>
-
-              <path d="M142 144 V178" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w09-vit)"/>
-
-              <rect x="80" y="182" width="240" height="46" rx="9" fill="#eff1f5" stroke="#8839ef" stroke-width="3"/>
-              <text x="200" y="203" text-anchor="middle" fill="#4c4f69" font-size="12.5" font-family="sans-serif" font-weight="700">Proyeksi Linear + Embedding Posisi</text>
-              <foreignObject x="80" y="207" width="240" height="20"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:12px;color:#8839ef;">\(\mathbf{z}_p = E\mathbf{x}_p + \mathbf{e}_p\)</div></foreignObject>
-
-              <path d="M200 232 V262" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w09-vit)"/>
-
-              <rect x="100" y="266" width="200" height="44" rx="9" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
-              <text x="200" y="294" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif" font-weight="700">Transformer Encoder</text>
-
-              <text x="200" y="326" text-anchor="middle" fill="#179299" font-size="11.5" font-family="sans-serif">Patch bertepi tebal = patch yang dicontohkan</text>
-            </svg>
+                    <div class="diagram-canvas figure-hero" style="background: var(--ctp-mantle); border-radius: 10px; padding: 10px; overflow: hidden;">
+            <img src="assets/data/vit-dosovitsky.png"
+                 alt="Diagram Vision Transformer: gambar dipecah menjadi grid patch, tiap patch diratakan menjadi vektor dan disusun berurutan, token [CLS] disisipkan di depan, embedding posisi ditambahkan, lalu seluruh sekuens masuk ke Transformer Encoder dan keluarannya diolah MLP Head menjadi logits kelas"
+                 style="display: block; margin: 0 auto;">
+            <small style="display: block; margin-top: 6px; text-align: center; color: var(--ctp-subtext0);">Sumber: Dosovitskiy dkk. (2021), <em>An Image is Worth 16&times;16 Words</em></small>
           </div>
           <div class="narrative-pane">
             <div class="narrative-step"><strong>01. Patching</strong> Gambar dipotong menjadi <em>patch</em> berukuran tetap (mis. 16&times;16 piksel), lalu tiap patch diratakan menjadi vektor.</div>
@@ -324,7 +277,7 @@
         </div>
 
         <aside class="notes">
-          Tekankan bahwa tidak ada konvolusi sama sekali dalam langkah ini: gambar cukup diubah menjadi urutan vektor. <em>Embedding</em> posisi menjadi krusial karena self-attention bersifat <em>permutation-invariant</em> &mdash; tanpa informasi posisi, model tidak tahu patch mana berada di sebelah mana. Pada rumus di diagram, <em>E</em> adalah matriks proyeksi yang dipelajari, <em>x-p</em> adalah patch yang diratakan, dan <em>e-p</em> menyatakan <em>embedding</em> posisi.
+          Tekankan bahwa tidak ada konvolusi sama sekali dalam langkah ini: gambar cukup diubah menjadi urutan vektor. <em>Embedding</em> posisi menjadi krusial karena self-attention bersifat <em>permutation-invariant</em> &mdash; tanpa informasi posisi, model tidak tahu patch mana berada di sebelah mana. Pada rumus aslinya, <em>E</em> adalah matriks proyeksi yang dipelajari, <em>x<sub>p</sub></em> adalah patch yang diratakan, dan <em>e<sub>p</sub></em> menyatakan <em>embedding</em> posisi. Gambar di samping memperlihatkan alur yang sama: token [CLS] disisipkan paling depan, <em>embedding</em> posisi ditambahkan sebelum encoder, dan keluaran encoder diolah MLP Head menjadi logits.
         </aside>
       </section>
 
@@ -458,31 +411,11 @@
         <p>Arsitektur <em>dual-stream</em>: dua jalur yang bertukar informasi.</p>
 
         <div class="grid-2" style="margin-top: 6px;">
-          <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 12px; overflow: hidden; max-height: 250px;">
-            <svg viewBox="0 0 400 212" role="img" aria-label="Diagram ViLBERT: dua jalur Transformer terpisah untuk visual dan teks, masing-masing berisi self-attention dan co-attention, dengan panah dua arah antar lapisan co-attention" style="width: 100%; height: auto;">
-              <defs>
-                <marker id="w09-vl" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#8839ef"/></marker>
-                <marker id="w09-vl-rev" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="1" refY="4" orient="auto"><path d="M9 0 L0 4 L9 8 Z" fill="#8839ef"/></marker>
-              </defs>
-
-              <text x="96" y="22" text-anchor="middle" fill="#1e66f5" font-size="13" font-family="sans-serif" font-weight="700">Jalur Visual</text>
-              <text x="304" y="22" text-anchor="middle" fill="#179299" font-size="13" font-family="sans-serif" font-weight="700">Jalur Teks</text>
-
-              <rect x="18" y="34" width="156" height="118" rx="9" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
-              <text x="96" y="62" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif" font-weight="700">Self-Attention</text>
-              <text x="96" y="98" text-anchor="middle" fill="#8839ef" font-size="13" font-family="sans-serif" font-weight="700">Co-Attention</text>
-              <text x="96" y="134" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif">Feed-Forward</text>
-
-              <rect x="226" y="34" width="156" height="118" rx="9" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
-              <text x="304" y="62" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif" font-weight="700">Self-Attention</text>
-              <text x="304" y="98" text-anchor="middle" fill="#8839ef" font-size="13" font-family="sans-serif" font-weight="700">Co-Attention</text>
-              <text x="304" y="134" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif">Feed-Forward</text>
-
-              <path d="M176 88 H224" fill="none" stroke="#8839ef" stroke-width="2.5" marker-end="url(#w09-vl)"/>
-              <path d="M224 106 H176" fill="none" stroke="#8839ef" stroke-width="2.5" marker-end="url(#w09-vl)"/>
-
-              <text x="200" y="186" text-anchor="middle" fill="#8839ef" font-size="11.5" font-family="sans-serif">Co-Attention bertukar arah dua kali tiap lapisan</text>
-            </svg>
+          <div class="diagram-canvas figure-hero figure-matte" style="background: var(--ctp-mantle); border-radius: 10px; padding: 10px; overflow: hidden;">
+            <img src="assets/data/vilbert-arch.webp"
+                 alt="Diagram ViLBERT dengan dua panel: (a) blok encoder Transformer standar berisi multi-head attention, feed-forward, dan add &amp; norm; (b) lapisan co-attention ViLBERT &mdash; blok visual dan blok linguistik yang berdampingan, masing-masing mengirim query, key, dan value ke blok lainnya sehingga kedua modalitas bertukar informasi dua arah"
+                 style="display: block; margin: 0 auto;">
+            <small style="display: block; margin-top: 6px; text-align: center; color: var(--ctp-subtext0);">Sumber: Lu dkk. (2019), <em>ViLBERT</em> (NeurIPS)</small>
           </div>
           <div class="narrative-pane">
             <div class="narrative-step"><strong>01. Dua Jalur</strong> Gambar dan teks diproses oleh jalur Transformer yang terpisah, masing-masing dengan encoder unimodalnya.</div>
@@ -496,7 +429,57 @@
         </aside>
       </section>
 
-      <!-- SLIDE 14: PERBANDINGAN ViLBERT / LXMERT / CLIP -->
+
+
+      <!-- SLIDE 14: LXMERT -->
+      <section>
+        <h2>LXMERT: Tiga Encoder untuk Satu Titik Temu</h2>
+        <p>Pola <em>multi-encoder</em>: dua encoder unimodal, lalu satu encoder lintas modal.</p>
+
+        <div class="grid-2" style="margin-top: 6px;">
+          <div class="diagram-canvas figure-hero figure-matte" style="background: var(--ctp-mantle); border-radius: 10px; padding: 10px; overflow: hidden;">
+            <img src="assets/data/lxmert-arch.webp"
+                 alt="Arsitektur LXMERT dari makalah aslinya: gambar (kiri atas) diolah Faster R-CNN menjadi region beserta fitur posisi (RoI Feat, Pos Feat), dan teks di kiri bawah menjadi word embedding dan indeks; kedua aliran masuk ke Object-Relationship Encoder dan Language Encoder yang masing-masing bertumpuk N kali (blok Self dan FF); kedua keluarannya bertemu di Cross-Modality Encoder bertumpuk N kali yang memuat blok Cross berisi cross-attention dua arah, lalu Self dan FF; arsitektur ini menghasilkan tiga aliran keluaran: Vision Output, Cross-Modality Output, dan Language Output"
+                 style="display: block; margin: 0 auto;">
+            <small style="display: block; margin-top: 6px; text-align: center; color: var(--ctp-subtext0); font-size: 12px;">Sumber: Tan &amp; Bansal (2019), <em>LXMERT</em> (EMNLP)</small>
+          </div>
+          <div class="narrative-pane" style="gap: 6px;">
+            <div class="narrative-step"><strong>01. Dua Encoder Terpisah</strong> Teks diolah <em>text encoder</em> (BERT, 9 lapis); gambar oleh <em>visual encoder</em> (5 lapis) &mdash; masih mandiri.</div>
+            <div class="narrative-step"><strong>02. Satu Encoder Lintas Modal</strong> Keluaran keduanya digabung ke satu <em>cross-modality encoder</em> (5 lapis) berisi <em>cross-attention</em> dua arah.</div>
+            <div class="narrative-step"><strong>03. Interaksi Dipusatkan</strong> Pertukaran informasi dipusatkan di satu blok, bukan disebar ke dua jalur penuh &mdash; sangat kuat untuk VQA.</div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Slide ini sengaja diletakkan setelah ViLBERT agar ketiga pola muncul berurutan sebelum tabel perbandingan. Tekankan pergeseran keputusan: ViLBERT menyebar interaksi ke dua jalur penuh yang bertukar informasi berulang kali, sedangkan LXMERT memusatkannya di satu encoder lintas modal yang khusus. Perhatikan juga bahwa LXMERT punya <em>tiga</em> aliran keluaran &mdash; Vision, Cross-Modality, dan Language &mdash; dan ketiganya dipakai pada tugas pra-latih yang berbeda. Masukan visualnya masih berupa <em>region</em> dari Faster R-CNN &mdash; sama seperti ViLBERT, berbeda dari CLIP yang memakai piksel mentah lewat ViT. Konsekuensinya dua arah: pemakaian <em>region</em> membuat model kuat untuk VQA karena setiap region sudah bermakna (mis. &ldquo;anjing&rdquo;, &ldquo;bola&rdquo;), tetapi ada biaya &mdash; detector objek harus dijalankan lebih dulu dan kosakata visualnya terbatas pada objek yang dikenali detector itu.
+        </aside>
+      </section>
+
+      <!-- SLIDE 15: CLIP -->
+      <section>
+        <h2>CLIP: Menyelaraskan Tanpa Pernah Menyatukan</h2>
+        <p>Dua <em>encoder</em> terpisah yang dilatih agar pasangan benar berdekatan.</p>
+
+        <div class="grid-2" style="margin-top: 6px;">
+          <div class="diagram-canvas figure-hero figure-matte" style="background: var(--ctp-mantle); border-radius: 10px; padding: 10px; overflow: hidden;">
+            <img src="assets/data/CLIP-pretrain.webp"
+                 alt="Tiga tahap CLIP: (1) pra-pelatihan kontrastif dengan encoder teks dan encoder gambar yang terpisah, menghasilkan matriks kemiripan yang diagonalnya adalah pasangan gambar&ndash;teks benar; (2) pembuatan classifier dari teks label seperti &ldquo;A photo of a {object}.&rdquo;; (3) prediksi zero-shot dengan membandingkan embedding gambar terhadap embedding teks tiap kelas"
+                 style="display: block; margin: 0 auto;">
+            <small style="display: block; margin-top: 6px; text-align: center; color: var(--ctp-subtext0);">Sumber: Radford dkk. (2021), <em>Learning Transferable Visual Models From Natural Language Supervision</em></small>
+          </div>
+          <div class="narrative-pane">
+            <div class="narrative-step"><strong>01. Dua Encoder</strong> Gambar dan teks melewati encoder yang benar-benar terpisah; tidak ada lapisan yang dibagi.</div>
+            <div class="narrative-step"><strong>02. Ruang Bersama</strong> Keduanya diproyeksikan ke ruang vektor yang sama, sehingga jarak antar vektor punya makna.</div>
+            <div class="narrative-step"><strong>03. Kontrastif</strong> Pasangan benar didekatkan, pasangan salah dijauhkan &mdash; dilatih pada 400 juta pasangan gambar&ndash;teks.</div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Tekankan paradoksnya: CLIP tidak pernah memakai cross-attention, namun tetap berhasil menyelaraskan modalitas. Yang diselaraskan bukan token demi token, melainkan seluruh gambar dengan seluruh kalimat di ruang embedding. Konsekuensinya penting: karena tidak ada interaksi antar lapisan, embedding dapat dihitung lebih dulu dan diindeks &mdash; inilah yang membuat pencarian lintas modal berskala besar menjadi murah. Sebutkan bahwa <em>I<sub>i</sub></em> dan <em>T<sub>j</sub></em> pada gambar 1 adalah vektor gambar dan teks yang telah dinormalisasi, sedangkan sel matriks pada gambar 1 adalah kemiripan pasangan gambar&ndash;teks.
+        </aside>
+      </section>
+
+      <!-- SLIDE 16: PERBANDINGAN ViLBERT / LXMERT / CLIP -->
       <section>
         <h2>ViLBERT, LXMERT, CLIP: Satu Tabel Perbandingan</h2>
         <p>Tiga model, tiga jawaban berbeda atas pertanyaan &ldquo;di mana modalitas bertemu&rdquo;.</p>
@@ -539,53 +522,10 @@
         </table>
 
         <aside class="notes">
-          Bimbing mahasiswa membaca tabel dari baris pertama: pola arsitektur ditentukan oleh keputusan &ldquo;di mana modalitas bertemu&rdquo;, dan keputusan itu menurunkan konsekuensi pada tugas pra-latih serta kegunaan akhir. CLIP adalah puncak penyederhanaan &mdash; menyingkirkan interaksi antar lapisan sepenuhnya dan menggantinya dengan tujuan kontrastif. Justru karena itulah CLIP sangat efisien untuk pencarian, meskipun lemah untuk penalaran komposisional yang halus.
+          Ketiga model kini sudah dilihat satu per satu &mdash; tabel ini adalah sintesisnya, sekaligus tempat pertanyaan &ldquo;mana yang sebaiknya dipakai&rdquo; dijawab lewat kriteria, bukan lewat selera. Bimbing mahasiswa membaca tabel dari baris pertama: pola arsitektur ditentukan oleh keputusan &ldquo;di mana modalitas bertemu&rdquo;, dan keputusan itu menurunkan konsekuensi pada tugas pra-latih serta kegunaan akhir. CLIP adalah puncak penyederhanaan &mdash; menyingkirkan interaksi antar lapisan sepenuhnya dan menggantinya dengan tujuan kontrastif. Justru karena itulah CLIP sangat efisien untuk pencarian, meskipun lemah untuk penalaran komposisional yang halus.
         </aside>
       </section>
-
-      <!-- SLIDE 15: CLIP -->
-      <section>
-        <h2>CLIP: Menyelaraskan Tanpa Pernah Menyatukan</h2>
-        <p>Dua <em>encoder</em> terpisah yang dilatih agar pasangan benar berdekatan.</p>
-
-        <div class="grid-2" style="margin-top: 6px;">
-          <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 12px; overflow: hidden; max-height: 250px;">
-            <svg viewBox="0 0 400 212" role="img" aria-label="Diagram CLIP: encoder gambar dan encoder teks yang terpisah, masing-masing menghasilkan vektor embedding, dihubungkan oleh panah dua arah yang menyatakan kesamaan kosinus dan tujuan kontrastif" style="width: 100%; height: auto;">
-              <defs>
-                <marker id="w09-clip" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#8839ef"/></marker>
-                <marker id="w09-clip-rev" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="1" refY="4" orient="auto"><path d="M9 0 L0 4 L9 8 Z" fill="#8839ef"/></marker>
-              </defs>
-
-              <rect x="14" y="30" width="152" height="86" rx="9" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
-              <text x="90" y="62" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif" font-weight="700">Encoder Gambar</text>
-              <text x="90" y="88" text-anchor="middle" fill="#4c4f69" font-size="12" font-family="sans-serif">ViT / ResNet</text>
-
-              <rect x="234" y="30" width="152" height="86" rx="9" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
-              <text x="310" y="62" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif" font-weight="700">Encoder Teks</text>
-              <text x="310" y="88" text-anchor="middle" fill="#4c4f69" font-size="12" font-family="sans-serif">Transformer</text>
-
-              <foreignObject x="14" y="120" width="152" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:13px;color:#1e66f5;">\(\mathbf{v}_I\)</div></foreignObject>
-              <foreignObject x="234" y="120" width="152" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:13px;color:#179299;">\(\mathbf{v}_T\)</div></foreignObject>
-
-              <path d="M168 138 H232" fill="none" stroke="#8839ef" stroke-width="2.5" marker-end="url(#w09-clip)"/>
-              <path d="M232 154 H168" fill="none" stroke="#8839ef" stroke-width="2.5" marker-end="url(#w09-clip-rev)"/>
-
-              <text x="200" y="186" text-anchor="middle" fill="#8839ef" font-size="11.5" font-family="sans-serif">Hanya embedding yang dipertemukan, bukan lapisan</text>
-            </svg>
-          </div>
-          <div class="narrative-pane">
-            <div class="narrative-step"><strong>01. Dua Encoder</strong> Gambar dan teks melewati encoder yang benar-benar terpisah; tidak ada lapisan yang dibagi.</div>
-            <div class="narrative-step"><strong>02. Ruang Bersama</strong> Keduanya diproyeksikan ke ruang vektor yang sama, sehingga jarak antar vektor punya makna.</div>
-            <div class="narrative-step"><strong>03. Kontrastif</strong> Pasangan benar didekatkan, pasangan salah dijauhkan &mdash; dilatih pada 400 juta pasangan gambar&ndash;teks.</div>
-          </div>
-        </div>
-
-        <aside class="notes">
-          Tekankan paradoksnya: CLIP tidak pernah memakai cross-attention, namun tetap berhasil menyelaraskan modalitas. Yang diselaraskan bukan token demi token, melainkan seluruh gambar dengan seluruh kalimat di ruang embedding. Konsekuensinya penting: karena tidak ada interaksi antar lapisan, embedding dapat dihitung lebih dulu dan diindeks &mdash; inilah yang membuat pencarian lintas modal berskala besar menjadi murah. Sebutkan bahwa <em>v-I</em> dan <em>v-T</em> adalah vektor gambar dan teks yang telah dinormalisasi.
-        </aside>
-      </section>
-
-      <!-- SLIDE 16: TUGAS PRA-LATIH LINTAS MODAL -->
+      <!-- SLIDE 17: TUGAS PRA-LATIH LINTAS MODAL -->
       <section>
         <h2>Tugas Pra-latih Lintas Modal</h2>
         <p>Tiga jenis tujuan yang biasa dipakai untuk melatih interaksi antar modalitas.</p>
@@ -620,7 +560,7 @@
         </aside>
       </section>
 
-      <!-- SLIDE 17: RUMUS CONTRASTIVE LOSS -->
+      <!-- SLIDE 18: RUMUS CONTRASTIVE LOSS -->
       <section>
         <h2>Rumus Inti: InfoNCE</h2>
         <p>Tujuan kontrastif yang dipakai CLIP, dirumuskan sebagai klasifikasi atas seluruh kandidat dalam satu <em>batch</em>.</p>
@@ -641,19 +581,19 @@
         </aside>
       </section>
 
-      <!-- SLIDE 18: DIVIDER BAGIAN 4 -->
+      <!-- SLIDE 19: DIVIDER BAGIAN 4 -->
       <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(254,100,11,0.06) 0%, transparent 100%);">
         <div class="section-slide-content">
           <span class="section-part-label section-part-peach">Bagian 4</span>
           <h1>Studi Kasus: Pencarian Visual Tanpa Data Latih</h1>
           <p class="subtitle">
-            Menerapkan model pra-latih pada tugas nyata &mdash; lalu menilai batasnya secara jujur.
+            Menerapkan model pra-latih pada tugas nyata &mdash; lalu menilai batas kemampuannya.
           </p>
         </div>
         <aside class="notes">Bagian ini mengubah teori menjadi keputusan rekayasa. Pola pembahasannya sama seperti pada Pertemuan 5 dan 7: rumusan masalah lebih dulu, penerapan kemudian, analisis terakhir. Jangan menampilkan solusi sebelum mahasiswa sempat berpikir &mdash; slide berikutnya sengaja hanya merumuskan masalah.</aside>
       </section>
 
-      <!-- SLIDE 19: STUDI KASUS — RUMUSAN MASALAH -->
+      <!-- SLIDE 20: STUDI KASUS — RUMUSAN MASALAH -->
       <section>
         <h2>Studi Kasus: Rumusan Masalah</h2>
         <p>Sebuah toko daring ingin menambahkan pencarian visual dari deskripsi.</p>
@@ -688,7 +628,7 @@
         </aside>
       </section>
 
-      <!-- SLIDE 20: STUDI KASUS — PENERAPAN -->
+      <!-- SLIDE 21: STUDI KASUS — PENERAPAN -->
       <section>
         <h2>Studi Kasus: Penerapan</h2>
         <p>Rancangan yang dipilih: <em>dual-encoder</em> pra-latih dengan tujuan kontrastif, dipakai tanpa pelatihan ulang.</p>
@@ -723,7 +663,7 @@
         </aside>
       </section>
 
-      <!-- SLIDE 21: STUDI KASUS — ANALISIS -->
+      <!-- SLIDE 22: STUDI KASUS — ANALISIS -->
       <section>
         <h2>Studi Kasus: Analisis Pilihan</h2>
         <p>Apakah rancangan itu benar-benar memenuhi kendala? Mari uji terhadap tiga tuntutan tadi.</p>
@@ -760,14 +700,14 @@
           </tbody>
         </table>
 
-        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Batas yang harus diakui:</strong> dual-encoder unggul pada tiga tuntutan pertama, tetapi kalah pada penalaran halus. Kueri seperti &ldquo;sepatu biru di sebelah kiri tas merah&rdquo; mudah keliru karena relasi antar objek tidak dimodelkan secara eksplisit.</div></div>
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Batas yang harus diakui:</strong> dual-encoder unggul pada tiga tuntutan pertama, tetapi kalah pada penalaran halus. Kueri seperti &ldquo;<em>sepatu biru di sebelah kiri tas merah</em>&rdquo; mudah keliru karena relasi antar objek tidak dimodelkan secara eksplisit.</div></div>
 
         <aside class="notes">
           Slide ini menutup kerangka yang dijanjikan pada rumusan masalah: keempat baris tabel adalah jawaban atas ketiga pertanyaan awal, ditambah satu batas yang harus diakui. Tekankan bahwa keputusan rekayasa jarang berupa kemenangan mutlak &mdash; di sini kita menukar penalaran halus dengan latensi dan biaya. Jika toko kelak membutuhkan pencarian berbasis relasi, jawabannya bukan menambah lapisan pada CLIP, melainkan pola arsitektur yang berbeda dengan konsekuensi biaya yang berbeda pula.
         </aside>
       </section>
 
-      <!-- SLIDE 22: KAPAN TRANSFORMER MULTIMODAL GAGAL -->
+      <!-- SLIDE 23: KAPAN TRANSFORMER MULTIMODAL GAGAL -->
       <section>
         <h2>Ketika Transformer Multimodal Tidak Membantu</h2>
         <p>Mengenal mode kegagalan lebih berguna daripada hanya mengagumi keberhasilannya.</p>
@@ -775,7 +715,7 @@
         <div class="grid-3" style="margin-top: 8px;">
           <div class="c-card c-card-accent-top c-card-maroon">
             <div class="c-card-header">
-              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Data Berpasangan Langka</h4>
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Kelangkaan Data Berpasangan</h4>
             </div>
             <p>Pra-latih kontrastif membutuhkan pasangan dalam jumlah besar. Pada domain khusus dengan ribuan contoh, representasi yang dipelajari terlalu dangkal dan kalah dari fitur tangan.</p>
           </div>
@@ -784,7 +724,7 @@
             <div class="c-card-header">
               <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Biaya Kuadratik</h4>
             </div>
-            <p>Self-attention tumbuh kuadratik terhadap jumlah token. Modalitas beresolusi tinggi &mdash; video, audio panjang, citra medis &mdash; cepat melampaui anggaran komputasi.</p>
+            <p><em>Self-attention</em> tumbuh kuadratik terhadap jumlah token. Modalitas beresolusi tinggi &mdash; video, audio panjang, citra medis &mdash; cepat melampaui anggaran komputasi.</p>
           </div>
 
           <div class="c-card c-card-accent-top c-card-maroon">
@@ -802,7 +742,7 @@
         </aside>
       </section>
 
-      <!-- SLIDE 23: LATIHAN TERBIMBING -->
+      <!-- SLIDE 24: LATIHAN TERBIMBING -->
       <section>
         <h2>Latihan Terbimbing: Zero-Shot CLIP</h2>
         <p>Memakai model multimodal pra-latih untuk mengklasifikasi gambar tanpa melatih apa pun.</p>
@@ -849,7 +789,7 @@
         </aside>
       </section>
 
-      <!-- SLIDE 24: RANGKUMAN -->
+      <!-- SLIDE 25: RANGKUMAN -->
       <section>
         <h2>Rangkuman &amp; Poin Kunci</h2>
         <p>Benang merah dari satu blok attention hingga arsitektur multimodal pra-latih:</p>
@@ -860,7 +800,7 @@
               <h4 style="color: var(--ctp-blue);">Dari Blok ke Arsitektur</h4>
             </div>
             <ul style="font-size: 0.76em; margin: 0; padding-left: 16px; line-height: 1.55;">
-              <li><strong>Encoder&ndash;decoder</strong> &rarr; menggantikan RNN dengan attention; cross-attention menjadi jembatan antar blok.</li>
+              <li><strong>Encoder&ndash;decoder</strong> &rarr; menggantikan RNN dengan attention; <em>cross-attention</em> menjadi jembatan antar blok.</li>
               <li><strong>ViT</strong> &rarr; gambar dipotong menjadi <em>patch</em>, diproyeksikan, ditambah <em>embedding</em> posisi, lalu masuk encoder biasa.</li>
               <li><strong>Kunci penyatu</strong> &rarr; apa pun modalitasnya, masukannya harus berupa sekuens vektor.</li>
             </ul>
@@ -873,7 +813,7 @@
               <li><strong>Dual-stream</strong> (ViLBERT) &rarr; interaksi di dalam lapisan lewat <em>co-attention</em>.</li>
               <li><strong>Multi-encoder</strong> (LXMERT) &rarr; satu encoder khusus untuk interaksi lintas modal.</li>
               <li><strong>Dual-encoder</strong> (CLIP) &rarr; modalitas hanya bertemu di ruang <em>embedding</em>; dilatih dengan tujuan kontrastif InfoNCE.</li>
-              <li><strong>Batannya</strong> &rarr; data langka, biaya kuadratik, dan relasi komposisional.</li>
+              <li><strong>Keterbatasan</strong> &rarr; data langka, biaya kuadratik, dan relasi komposisional.</li>
             </ul>
           </div>
         </div>
@@ -883,7 +823,7 @@
         </aside>
       </section>
 
-      <!-- SLIDE 25: DISKUSI -->
+      <!-- SLIDE 26: DISKUSI -->
       <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Diskusi Kelas">
         <h2 style="text-align: center; margin-bottom: 24px;">Diskusi Kelas</h2>
         <p style="text-align: center; margin-bottom: 24px;">Diskusikan bersama rekan di samping Anda selama 3&ndash;5 menit:</p>
@@ -895,7 +835,7 @@
         <aside class="notes">Tiga pertanyaan ini bergerak dari keputusan rekayasa (Pertanyaan 1), ke diagnosis kegagalan (Pertanyaan 2), lalu ke perpindahan modalitas (Pertanyaan 3). Pertanyaan ketiga adalah yang paling menghubungkan &mdash; ia menuntut mahasiswa memindahkan gagasan arsitektur dari ranah visual-linguistik ke audio-visual, dan menyadari bahwa apa yang bekerja untuk teks belum tentu bekerja untuk isyarat waktu yang padat. Beri waktu 3&ndash;5 menit, lalu minta beberapa kelompok berbagi.</aside>
       </section>
 
-      <!-- SLIDE 26: REFERENSI -->
+      <!-- SLIDE 27: REFERENSI -->
       <section>
         <h2>Referensi &amp; Bacaan Lanjutan</h2>
         <p style="margin-bottom: 20px;">Rekomendasi literatur akademik wajib dan bacaan lanjutan:</p>
@@ -909,7 +849,7 @@
         <aside class="notes">Lima referensi: paper Transformer asli (Vaswani dkk.), paper Vision Transformer (Dosovitskiy dkk.), pola dual-stream (Lu dkk.), pola multi-encoder (Tan &amp; Bansal), dan sumber CLIP sekaligus tujuan kontrastif (Radford dkk.). Bila waktu memungkinkan, tunjukkan bahwa rumus pada slide 17 diambil langsung dari bagian <em>contrastive pre-training</em> paper CLIP.</aside>
       </section>
 
-      <!-- SLIDE 27: PENUTUP -->
+      <!-- SLIDE 28: PENUTUP -->
       <section>
         <div style="margin: auto 0; text-align: center;">
           <h2 style="font-size: 1.8em; font-weight: 800; color: var(--ctp-text); margin-bottom: 16px;">Terima Kasih</h2>
@@ -939,7 +879,7 @@
         <span class="material-symbols-outlined">chevron_left</span>
       </button>
       <button type="button" class="deck-counter-btn" onclick="Reveal.toggleOverview()" title="Klik untuk Matriks Seluruh Slide (Esc/O)">
-        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">27</span>
+        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">28</span>
       </button>
       <button type="button" class="deck-footer-btn" onclick="Reveal.next()" title="Slide Berikutnya (→ / Space / N)" aria-label="Slide Berikutnya">
         <span class="material-symbols-outlined">chevron_right</span>
@@ -1264,4 +1204,3 @@
 
   </script>
 </body></html>
-

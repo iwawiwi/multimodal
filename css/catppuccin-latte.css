@@ -721,6 +721,78 @@ html, body {
   min-height: 0;
 }
 
+/* ── Hero figure: tall raster figure (AR ≈ 0,68) ──────────────────────────
+   Dipakai mgg09 slide 5 (arsitektur Transformer, 1520×2239). Angka di bawah
+   adalah **max-height per mode**, bukan satu nilai global: mode yang canvas-
+   nya lebih tinggi memang punya ruang lebih, dan memaksakan satu nilai berarti
+   gambar jadi kecil di mode yang longgar.
+
+   Angka ditetapkan lewat uji ketat per mode (teknik sama dengan
+   `measure_overflow.js`: transform dinetralkan, section dipaksa `display:block`).
+   Tinggi konten / sisa ruang: 16:9 → 654/66px · 16:10 → 744/56px · 4:3 →
+   714/54px · Teks Besar → 532/8px · Mobile → 972/28px.
+
+   Di **Teks Besar**, yang mengikat bukan gambar melainkan `.narrative-pane`
+   (410px, 3 langkah yang membungkus di kolom sempit): selisih 8px itu sudah ada
+   sebelum gambar ini dipasang. Karena itu batas Teks Besar disetel 366px —
+   gambar terbesar yang masih gratis (blok gambar 403px < pane 410px). Memperbesar
+   lagi baru akan menambah tinggi slide.
+
+   Mobile ≠ mode lain: `.grid-2` di sana menumpuk (pane pindah ke BAWAH gambar),
+   jadi anggaran tingginya sudah dipotong tinggi pane (≈347px).
+
+   Mode "auto" tidak menambahkan kelas apa pun (`setAspectMode`), jadi aturan
+   dasar = 16:9/16:10 — paling longgar kedua.
+
+   Kenapa max-height dan bukan max-width: `measure_overflow.js` menormalkan
+   section menjadi `display:block; height:auto`, sehingga `max-height: 100%`
+   (pola `.is-flow` untuk SVG) tidak punya acuan dan diabaikan — gambar raster
+   lalu tampil seukuran alaminya dan meluber +250px. Nilai px tegas kebal
+   terhadap normalisasi itu. Rasio tetap terjaga karena `max-width: 100%` dari
+   `.diagram-canvas img` masih berlaku, dan browser menyelesaikan kedua batas
+   secara proporsional.                                                D-031 */
+.diagram-canvas.figure-hero img {
+  max-height: 500px;
+}
+
+/* Atribusi gambar (D-019) disetel eksplisit: `<small>` bawaan (~0,83em dari basis
+   besar) terlalu mencolok di bawah gambar portrait, dan membungkus jadi 2 baris
+   di 16:9. 12px membuatnya satu baris di semua mode. */
+.diagram-canvas.figure-hero small {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* Figure yang dikirim dengan **matte putih pekat** (bukan transparan). Diukur
+   dengan dekoder Chrome (lampiran D-031): vilbert-arch.webp & CLIP-pretrain.webp
+   → transparan 0%, putih-opak 65–79%, piksel sudut rgba(255,255,255,255).
+   Tanpa perlakuan, figur tampil sebagai kotak putih di atas kanvas mantle.
+   `multiply` melarutkan putih ke warna kanvas (preseden: gif conv2d di mgg03).
+
+   JANGAN dipakai untuk figur yang sudah transparan (attn-is-all-you-need-2017
+   62,6% transparan; vit-dosovitsky 57,3%): di situ multiply hanya menumpulkan
+   warna tanpa manfaat apa pun. Cek dulu, jangan tebak dari `sips hasAlpha` —
+   kanal alpha bisa ada sementara latarnya tetap opak. */
+.diagram-canvas.figure-hero.figure-matte img {
+  mix-blend-mode: multiply;
+}
+
+.aspect-16-10 .diagram-canvas.figure-hero img {
+  max-height: 590px;
+}
+
+.aspect-4-3 .diagram-canvas.figure-hero img {
+  max-height: 560px;
+}
+
+.aspect-text-large .diagram-canvas.figure-hero img {
+  max-height: 366px;
+}
+
+.aspect-mobile .diagram-canvas.figure-hero img {
+  max-height: 440px;
+}
+
 .diagram-canvas.is-flow svg {
   max-height: 100%;
 }

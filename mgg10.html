@@ -114,15 +114,15 @@
               <span class="c-num-circle c-num-mauve">02</span>
               <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Encoder&ndash;Decoder</h4>
             </div>
-            <p>Memahami arsitektur CNN&ndash;RNN/LSTM dan peran tiap komponennya dalam membangkitkan caption.</p>
+            <p>Memahami arsitektur CNN&ndash;RNN/LSTM dan peran tiap komponennya dalam membangkitkan <em>caption</em>.</p>
           </div>
 
           <div class="c-card c-card-accent-top c-card-teal">
             <div class="c-card-header">
               <span class="c-num-circle c-num-teal">03</span>
-              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Attention</h4>
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Peran Attention</h4>
             </div>
-            <p>Menganalisis peran <em>cross-attention</em> dalam mengarahkan decoder ke area gambar yang relevan.</p>
+            <p>Menganalisis peran <em>attention</em> pada <em>decoder</em> dalam mengarahkan pandangan ke area gambar yang relevan.</p>
           </div>
 
           <div class="c-card c-card-accent-top c-card-peach">
@@ -143,7 +143,7 @@
       <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(30,102,245,0.06) 0%, transparent 100%);">
         <div class="section-slide-content">
           <span class="section-part-label section-part-blue">Bagian 1</span>
-          <h1>Dari Attention ke Generasi</h1>
+          <h1>Dari Attention ke Generatif</h1>
           <p class="subtitle">
             Menyambung Pertemuan 9: encoder&ndash;decoder dan cross-attention kini menjadi alat untuk menghasilkan teks dari gambar.
           </p>
@@ -168,7 +168,7 @@
             <div class="c-card-header">
               <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Decoder</h4>
             </div>
-            <p>Membangkitkan keluaran satu per satu. Pada captioning, ia menghasilkan kata demi kata hingga tanda berhenti.</p>
+            <p>Membangkitkan keluaran satu per satu. Pada <em>captioning</em>, ia menghasilkan kata demi kata hingga tanda berhenti.</p>
           </div>
 
           <div class="c-card c-card-accent-top c-card-teal">
@@ -179,7 +179,7 @@
           </div>
         </div>
 
-        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div><strong>Image captioning = ketiganya sekaligus.</strong> Fusi (gabungan visual&ndash;teks) + penyejajaran (cross-attention) + generasi (decoder). Inilah alasan tugas ini sering disebut ringkasan seluruh semester.</div></div>
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div><strong>Image captioning = ketiganya sekaligus.</strong> Fusi (gabungan visual&ndash;teks) + penyejajaran (<em>cross-attention</em>) + generatif (<em>decoder</em>). Inilah alasan tugas ini sering disebut ringkasan seluruh semester.</div></div>
 
         <aside class="notes">
           Ini bukan pengulangan, melainkan penyambungan. Minta mahasiswa menyebutkan kembali apa yang dilakukan masing-masing blok sebelum Anda menampilkan isi slide. Titik penting: pada captioning, encoder dan decoder berasal dari <em>modalitas yang berbeda</em> &mdash; encoder melihat gambar, decoder menulis bahasa. Jembatannya adalah cross-attention.
@@ -228,7 +228,7 @@
       <!-- SLIDE 7: DEFINISI -->
       <section>
         <h2>Definisi Image Captioning</h2>
-        <p>Tugas dalam pembelajaran mesin multimodal yang menghasilkan deskripsi tekstual secara otomatis.</p>
+        <p>Tugas yang menghasilkan deskripsi tekstual secara otomatis.</p>
 
         <div class="formula-hero" style="margin-top: 12px;">
           <div class="formula-label">Definisi Formal</div>
@@ -241,7 +241,7 @@
           <div class="formula-term-box"><strong>\(P(y \mid I)\)</strong> Probabilitas urutan kata, diberikan gambar. Model mencari urutan yang paling masuk akal.</div>
         </div>
 
-        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Bukan klasifikasi.</strong> Keluaran bukan satu label dari himpunan tetap, melainkan ruang urutan kata yang sangat besar. Contoh: gambar yang sama dapat menghasilkan &ldquo;seekor kucing duduk di keyboard&rdquo; atau &ldquo;kucing di atas laptop&rdquo; &mdash; keduanya benar.</div></div>
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Bukan klasifikasi.</strong> Keluaran bukan satu label dari himpunan tetap, melainkan ruang urutan kata yang sangat besar. Contoh: gambar yang sama dapat menghasilkan &ldquo;<em>seekor kucing duduk di keyboard</em>&rdquo; atau &ldquo;<em>kucing di atas laptop</em>&rdquo; &mdash; keduanya benar.</div></div>
 
         <aside class="notes">
           Bacakan rumus sebagai kalimat: kita mencari urutan kata dengan probabilitas tertinggi, diberikan gambar. Jelaskan bahwa <em>y</em> adalah urutan dengan panjang berubah-ubah, bukan label tunggal &mdash; inilah pembeda paling mendasar dari klasifikasi gambar yang sudah dikenal mahasiswa. Beri satu contoh konkret dua caption valid untuk satu gambar.
@@ -274,7 +274,7 @@
           </div>
           <div class="c-card c-card-accent-top c-card-peach">
             <div class="c-card-header">
-              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Generasi Bahasa Alami</h4>
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Pembangkit Bahasa Alami</h4>
             </div>
             <p>Menguji kemampuan model menghasilkan kalimat yang koheren dan gramatikal.</p>
           </div>
@@ -295,13 +295,13 @@
             <div class="c-card-header">
               <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Pemahaman Konten Visual</h4>
             </div>
-            <p>Model harus mengidentifikasi objek, atribut, dan <em>hubungan antar objek</em> &mdash; bukan sekadar mendaftar label.</p>
+            <p>Model harus mengidentifikasi objek, atribut, dan hubungan antar objek &mdash; bukan sekadar mendaftar label.</p>
           </div>
           <div class="c-card c-card-accent-top c-card-peach">
             <div class="c-card-header">
-              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Generasi Bahasa Alami</h4>
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Pembangkit Bahasa Alami</h4>
             </div>
-            <p>Menghasilkan kalimat yang gramatikal, koheren, dan bervariasi &mdash; bukan templat yang kaku.</p>
+            <p>Menghasilkan kalimat yang gramatikal, koheren, dan bervariasi &mdash; bukan kalimat <em>template</em> yang kaku.</p>
           </div>
           <div class="c-card c-card-accent-top c-card-maroon">
             <div class="c-card-header">
@@ -311,7 +311,7 @@
           </div>
         </div>
 
-        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Ditambah:</strong> variasi &amp; keunikan (satu gambar punya banyak caption valid), ketergantungan jangka panjang (kalimat panjang butuh memori konteks), dan kebutuhan dataset pasangan gambar&ndash;caption besar (MS COCO, Flickr30k).</div></div>
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Ditambah:</strong> <em>variasi &amp; keunikan</em> (satu gambar punya banyak caption valid), <em>ketergantungan jangka panjang</em> (kalimat panjang butuh memori konteks), dan <em>kebutuhan dataset pasangan gambar&ndash;caption yang besar</em> (MS COCO, Flickr30k).</div></div>
 
         <aside class="notes">
           Tiga kartu adalah kesulitan inti; callout menambah tiga beban praktis. Tekankan <em>grounding</em> sebagai tantangan paling halus: model bisa menyebut semua objek dengan benar namun menempelkan atribut ke objek yang salah (&ldquo;kucing di atas sepeda&rdquo; padahal sepeda yang di atas). Kesalahan semacam ini hanya terlihat saat kita membandingkan caption dengan gambar secara teliti, bukan lewat metrik agregat.
@@ -336,48 +336,21 @@
         <p>Pendekatan klasik: CNN mengekstrak fitur, LSTM membangkitkan kata.</p>
 
         <div class="grid-2" style="margin-top: 6px;">
-          <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 10px; overflow: hidden;">
-            <svg viewBox="0 0 400 332" role="img" aria-label="Diagram encoder decoder untuk image captioning: gambar masuk ke encoder CNN yang menghasilkan vektor fitur v, lalu decoder LSTM membangkitkan kata demi kata" style="width: 100%; height: auto;">
-              <defs>
-                <marker id="w10-enc" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#1e66f5"/></marker>
-                <marker id="w10-enc2" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#179299"/></marker>
-              </defs>
-
-              <text x="200" y="18" text-anchor="middle" fill="#4c4f69" font-size="14" font-family="sans-serif" font-weight="700">Gambar (input)</text>
-
-              <rect x="105" y="28" width="190" height="44" rx="9" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
-              <text x="200" y="47" text-anchor="middle" fill="#4c4f69" font-size="12.5" font-family="sans-serif" font-weight="700">Encoder CNN</text>
-              <text x="200" y="63" text-anchor="middle" fill="#6c6f85" font-size="10.5" font-family="sans-serif">ResNet / VGG (pra-latih)</text>
-
-              <path d="M200 76 V96" fill="none" stroke="#1e66f5" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w10-enc)"/>
-
-              <rect x="120" y="100" width="160" height="40" rx="9" fill="#eff1f5" stroke="#8839ef" stroke-width="2.5"/>
-              <text x="200" y="117" text-anchor="middle" fill="#4c4f69" font-size="11.5" font-family="sans-serif" font-weight="700">Vektor Fitur Global</text>
-              <foreignObject x="120" y="120" width="160" height="18"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:13px;color:#8839ef;">\(\mathbf{v}\)</div></foreignObject>
-
-              <path d="M200 144 V164" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w10-enc2)"/>
-
-              <rect x="105" y="168" width="190" height="44" rx="9" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
-              <text x="200" y="187" text-anchor="middle" fill="#4c4f69" font-size="12.5" font-family="sans-serif" font-weight="700">Decoder LSTM</text>
-              <text x="200" y="203" text-anchor="middle" fill="#6c6f85" font-size="10.5" font-family="sans-serif">membangkitkan kata demi kata</text>
-
-              <path d="M200 216 V240" fill="none" stroke="#179299" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w10-enc2)"/>
-
-              <foreignObject x="80" y="244" width="240" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#179299;">\(y_1,\ y_2,\ y_3,\ \dots,\ \langle eos \rangle\)</div></foreignObject>
-
-              <text x="200" y="288" text-anchor="middle" fill="#4c4f69" font-size="12" font-family="sans-serif" font-weight="700">Caption keluaran</text>
-              <text x="200" y="322" text-anchor="middle" fill="#179299" font-size="11" font-family="sans-serif">Kata diumpankan kembali sebagai masukan berikutnya</text>
-            </svg>
+          <div class="diagram-canvas figure-hero figure-matte" style="background: var(--ctp-mantle); border-radius: 10px; padding: 10px; overflow: hidden;">
+            <img src="assets/data/show-tell-arch.webp"
+                 alt="Figure 1 dari Vinyals dkk. (2015): foto pasar sayur di kiri, lalu dua kotak berlabel &ldquo;Vision Deep CNN&rdquo; dan &ldquo;Language Generating RNN&rdquo;, dan di kanan dua kalimat caption untuk gambar yang sama &mdash; &ldquo;A group of people shopping at an outdoor market.&rdquo; dan &ldquo;There are many vegetables at the fruit stand.&rdquo;"
+                 style="display: block; margin: 0 auto;">
+            <small style="display: block; margin-top: 6px; text-align: center; color: var(--ctp-subtext0); font-size: 12px;">Sumber: Vinyals dkk. (2015), <em>Show and Tell</em> (CVPR)</small>
           </div>
-          <div class="narrative-pane">
-            <div class="narrative-step"><strong>01. Ekstraksi</strong> CNN pra-latih mengubah gambar menjadi satu vektor fitur global \(\mathbf{v}\) dari lapisan terakhirnya.</div>
-            <div class="narrative-step"><strong>02. Inisialisasi</strong> \(\mathbf{v}\) menjadi masukan awal decoder &mdash; seluruh konteks visual dipadatkan ke satu titik.</div>
-            <div class="narrative-step"><strong>03. Pembangkitan</strong> LSTM menghasilkan kata demi kata; tiap kata menjadi masukan pada langkah berikutnya.</div>
+          <div class="narrative-pane" style="gap: 6px;">
+            <div class="narrative-step"><strong>01. Ekstraksi</strong> CNN pra-latih memampatkan gambar menjadi satu vektor global \(\mathbf{v}\).</div>
+            <div class="narrative-step"><strong>02. Inisialisasi</strong> Vektor \(\mathbf{v}\) menjadi masukan awal decoder (RNN/LSTM), satu titik untuk seluruh konteks visual.</div>
+            <div class="narrative-step"><strong>03. Pembangkitan</strong> RNN/LSTM menulis kata demi kata &mdash; dan untuk gambar yang sama, kalimatnya bisa <em>berbeda</em>.</div>
           </div>
         </div>
 
         <aside class="notes">
-          Ikuti diagram dari atas ke bawah. Titik kritis ada di kotak tengah: seluruh gambar dipadatkan menjadi satu vektor \(\mathbf{v}\). Keuntungannya sederhana dan cepat; kerugiannya akan terlihat dua slide ke depan. Sebutkan bahwa pola ini diadaptasi dari mesin penerjemah &mdash; encoder menangkap makna, decoder menuliskannya dalam bahasa lain.
+          Baca figur ini dari kiri ke kanan: gambar, Vision Deep CNN, Language Generating RNN, lalu caption. Titik kritisnya sama seperti diagram sebelumnya &mdash; seluruh gambar dipadatkan menjadi satu vektor \(\mathbf{v}\) &mdash; tetapi figur ini menambahkan dua hal yang layak ditunjuk. Pertama, dekodernya LSTM (makalah ini memakai Inception V1/GoogLeNet sebagai encoder dan LSTM sebagai decoder; label di figur sengaja dibuat generik &ldquo;RNN&rdquo;). Kedua, dan ini yang paling penting untuk sisa sesi: untuk gambar yang <em>sama</em>, model menghasilkan <em>dua</em> kalimat yang keduanya benar. Jadi tidak ada satu caption tunggal yang &ldquo;benar&rdquo; &mdash; itu sebabnya metrik evaluasi (BLEU dan kawan-kawan) serta pertanyaan &ldquo;apakah model melihat objek yang benar&rdquo; muncul. Keuntungan pola ini sederhana dan cepat; kerugiannya terlihat dua slide lagi. Sebutkan juga bahwa pola ini diadaptasi dari mesin penerjemah: encoder menangkap makna, decoder menuliskannya sebagai bahasa.
         </aside>
       </section>
 
@@ -463,63 +436,34 @@
       <!-- SLIDE 14: SHOW ATTEND AND TELL -->
       <section>
         <h2>Show, Attend and Tell</h2>
-        <p>Xu et al. (2015): decoder boleh melihat area berbeda untuk setiap kata.</p>
+        <p>Xu dkk. (2015): dekoder <em>LSTM</em> meninjau area gambar yang berbeda untuk setiap kata.</p>
 
         <div class="grid-2" style="margin-top: 6px;">
-          <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 10px; overflow: hidden;">
-            <svg viewBox="0 0 400 332" role="img" aria-label="Diagram Show Attend and Tell: CNN menghasilkan fitur spasial per area, decoder menghitung bobot perhatian alpha terhadap fitur itu, membentuk vektor konteks z topi, lalu membangkitkan kata" style="width: 100%; height: auto;">
-              <defs>
-                <marker id="w10-att" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#8839ef"/></marker>
-                <marker id="w10-att2" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#179299"/></marker>
-              </defs>
-
-              <text x="200" y="18" text-anchor="middle" fill="#4c4f69" font-size="14" font-family="sans-serif" font-weight="700">Gambar (input)</text>
-
-              <rect x="120" y="28" width="160" height="38" rx="9" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
-              <text x="200" y="51" text-anchor="middle" fill="#4c4f69" font-size="12.5" font-family="sans-serif" font-weight="700">Encoder CNN</text>
-
-              <path d="M200 70 V90" fill="none" stroke="#1e66f5" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w10-att)"/>
-
-              <rect x="88" y="94" width="44" height="34" rx="5" fill="#e6e9ef" stroke="#179299" stroke-width="2"/>
-              <rect x="140" y="94" width="44" height="34" rx="5" fill="#e6e9ef" stroke="#179299" stroke-width="2"/>
-              <rect x="192" y="94" width="44" height="34" rx="5" fill="#e6e9ef" stroke="#1e66f5" stroke-width="2.5"/>
-              <rect x="244" y="94" width="44" height="34" rx="5" fill="#e6e9ef" stroke="#179299" stroke-width="2"/>
-              <foreignObject x="84" y="132" width="232" height="20"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:12.5px;color:#4c4f69;">fitur spasial \(\{a_1, a_2, \dots, a_L\}\)</div></foreignObject>
-
-              <path d="M200 156 V176" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w10-att2)"/>
-
-              <rect x="95" y="180" width="210" height="46" rx="9" fill="#eff1f5" stroke="#8839ef" stroke-width="3"/>
-              <text x="200" y="199" text-anchor="middle" fill="#4c4f69" font-size="12.5" font-family="sans-serif" font-weight="700">Cross-Attention</text>
-              <foreignObject x="95" y="202" width="210" height="20"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:12px;color:#8839ef;">\(\alpha_{t,i} = \mathrm{softmax}\!\big(s(h_{t-1}, a_i)\big)\)</div></foreignObject>
-
-              <path d="M200 230 V250" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w10-att2)"/>
-
-              <rect x="120" y="254" width="160" height="36" rx="9" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
-              <text x="200" y="270" text-anchor="middle" fill="#4c4f69" font-size="11.5" font-family="sans-serif" font-weight="700">Vektor Konteks</text>
-              <foreignObject x="120" y="272" width="160" height="16"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:12.5px;color:#179299;">\(\hat{z}_t = \sum_{i} \alpha_{t,i}\, a_i\)</div></foreignObject>
-
-              <foreignObject x="130" y="294" width="140" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:12.5px;color:#4c4f69;">\(\hat{z}_t\) memandu kata \(y_t\)</div></foreignObject>
-            </svg>
+          <div class="diagram-canvas figure-hero figure-matte" style="background: var(--ctp-mantle); border-radius: 10px; padding: 10px; overflow: hidden;">
+            <img src="assets/data/show-attend-tell-arch.webp"
+                 alt="Figure 1 dari Xu dkk. (2015), empat tahap captioning berperhatian: (1) citra masukan berupa burung camar terbang di atas air; (2) ekstraksi fitur konvolusi menghasilkan peta fitur 14&times;14 yang digambarkan sebagai tumpukan peta fitur; (3) RNN dengan perhatian atas citra &mdash; tiga peta perhatian bergaris tepi merah, biru, dan kuning menyorot area yang berbeda dan mengumpan satu sel LSTM; (4) pembangkitan kata demi kata menjadi kalimat &ldquo;A bird flying over a body of water&rdquo;, dengan kata A, bird, dan water ditandai kotak merah, biru, dan kuning yang sama dengan peta perhatiannya"
+                 style="display: block; margin: 0 auto;">
+            <small style="display: block; margin-top: 6px; text-align: center; color: var(--ctp-subtext0); font-size: 12px;">Sumber: Xu dkk. (2015), <em>Show, Attend and Tell</em> (ICML)</small>
           </div>
           <div class="narrative-pane">
-            <div class="narrative-step"><strong>01. Fitur Spasial</strong> CNN menghasilkan fitur per area \(\{a_i\}\) &mdash; bukan satu vektor global, melainkan peta area.</div>
-            <div class="narrative-step"><strong>02. Bobot Perhatian</strong> Setiap langkah \(t\), decoder menghitung bobot \(\alpha_{t,i}\) yang menyatakan pentingnya tiap area.</div>
-            <div class="narrative-step"><strong>03. Vektor Konteks</strong> Gabungan berbobot area yang diperhatikan (\(\hat{z}_t\)) memandu pembangkitan kata \(y_t\).</div>
+            <div class="narrative-step"><strong>01. Peta Fitur, Bukan Satu Vektor</strong> CNN menghasilkan peta fitur \(14\times14\) (196 area) \(\{a_i\}\) &mdash; bukan satu vektor global.</div>
+            <div class="narrative-step"><strong>02. Attention Aditif</strong> Keadaan dekoder \(h_{t-1}\) dicocokkan ke tiap area lewat MLP kecil &rarr; \(\alpha_{t,i}\) . Belum ada arsitekur <em>self-attention</em> Transformer.</div>
+            <div class="narrative-step"><strong>03. Konteks Berpindah Tiap Kata</strong> \(\hat{z}_t=\sum_i \alpha_{t,i}\,a_i\) mengumpan LSTM untuk kata \(y_t\); peta perhatian bergeser tiap kata.</div>
           </div>
         </div>
 
         <aside class="notes">
-          Kontraskan dengan slide 11: yang berubah bukan encoder, melainkan apa yang diteruskan ke decoder &mdash; dari satu vektor menjadi peta fitur per area. Tekankan bahwa bobot \(\alpha\) <em>berbeda untuk setiap kata</em>: kata &ldquo;merah&rdquo; memusatkan bobot ke area objek merah, kata &ldquo;duduk&rdquo; ke area yang menggambarkan posisi. Kotak tebal di tengah adalah inti: cross-attention dari Pertemuan 9 kini dipakai untuk melihat gambar.
+          Bacakan figur ini sebagai empat tahap dari kiri ke kanan: citra masukan, ekstraksi fitur konvolusi, LSTM dengan perhatian atas citra, lalu pembangkitan kata demi kata. Dua hal paling penting di sini. Pertama, peta perhatiannya <em>tidak</em> satu: tiga peta berwarna menyala di area berbeda &mdash; kotak merah menyorot burung saat kata &ldquo;A&rdquo; dibangkitkan, biru menyorot burung pada posisi lain saat kata &ldquo;bird&rdquo;, dan kuning menyorot air saat kata &ldquo;water&rdquo;. Bobot \(\alpha\) memang berbeda untuk setiap kata, dan itulah keunggulan dibanding slide sebelumnya. Kedua, tahunnya 2015: dekodernya LSTM dan skornya dihitung secara <em>aditif</em> &mdash; satu MLP kecil atas pasangan \(a_i\) dan \(h_{t-1}\) &mdash; jauh sebelum Transformer. Istilah <em>cross-attention</em> baru muncul bersama Transformer, jadi jangan sampai mahasiswa menyimpulkan Xu dkk. memakai blok Q/K/V multi-head; yang sama adalah <em>idenya</em>: satu kueri (keadaan decoder) dicocokkan ke banyak area, lalu hasilnya dirata-ratakan berbobot. Pertemuan 9-lah yang memformalkan pola itu sebagai Q/K/V. Perhatikan juga fiturnya diambil dari lapisan konvolusi bawah (14&times;14&times;512), bukan lapisan akhir, justru agar informasi lokasi belum hilang. Paper ini punya dua varian perhatian &mdash; keras (<em>stochastic</em>, dengan sampling) dan lunak (<em>deterministic</em>, softmax); rumus di slide berikutnya adalah varian lunaknya.
         </aside>
       </section>
 
-      <!-- SLIDE 15: MEKANISME CROSS-ATTENTION -->
+      <!-- SLIDE 15: MEKANISME ATTENTION -->
       <section>
-        <h2>Mekanisme Cross-Attention</h2>
+        <h2>Mekanisme Attention: Menghitung Bobot</h2>
         <p>Bobot perhatian dihitung sebagai kesesuaian antara keadaan decoder dan tiap area.</p>
 
         <div class="formula-hero" style="margin-top: 12px;">
-          <div class="formula-label">Bobot Perhatian (Show, Attend and Tell)</div>
+          <div class="formula-label">Bobot Perhatian Aditif (Xu dkk., 2015)</div>
           <div class="formula-math">$$\alpha_{t,i} = \frac{\exp\!\big(s(h_{t-1}, a_i)\big)}{\sum_{k=1}^{L}\exp\!\big(s(h_{t-1}, a_k)\big)}$$</div>
         </div>
 
@@ -586,7 +530,7 @@
             <ul style="font-size: 0.8em; margin: 0; padding-left: 16px; line-height: 1.5;">
               <li>Mengukur <strong>presisi n-gram</strong> antara kandidat dan referensi.</li>
               <li>Semakin banyak n-gram cocok, semakin tinggi skornya.</li>
-              <li>Umumnya dipakai <strong>BLEU-4</strong> (n-gram hingga 4 kata).</li>
+              <li>Umumnya dipakai <strong>\(\mathrm{BLEU}_{4}\)</strong> (n-gram hingga \(4\) kata).</li>
             </ul>
           </div>
           <div class="c-card c-card-accent-top c-card-mauve">
@@ -671,7 +615,7 @@
           </tbody>
         </table>
 
-        <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">help</span><div><p style="margin: 0; font-size: 0.82em; line-height: 1.5;"><strong style="color: var(--ctp-blue);">Tiga pertanyaan sebelum menghitung</strong> &mdash; diskusikan 3 menit: (1) secara kualitatif, model mana yang lebih baik dan mengapa? (2) bagaimana BLEU-1 dan BLEU-2 menilai keduanya? (3) apakah hasil metrik sejalan dengan penilaian manusia?</p></div></div>
+        <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">help</span><div><p style="margin: 0; font-size: 0.82em; line-height: 1.5;"><strong style="color: var(--ctp-blue);">Tiga pertanyaan sebelum menghitung</strong> &mdash; diskusikan \(3\) menit: \((1)\) secara kualitatif, model mana yang lebih baik dan mengapa? \((2)\) bagaimana \(\mathrm{BLEU}_{1}\) dan \(\mathrm{BLEU}_{2}\) menilai keduanya? \((3)\) apakah hasil metrik sejalan dengan penilaian manusia?</p></div></div>
 
         <aside class="notes">
           Jangan tampilkan jawaban dulu. Beri waktu 3 menit untuk diskusi berpasangan. Arahkan mahasiswa memperhatikan dua hal: Model A lebih deskriptif tetapi mengandung kesalahan fakta (&ldquo;tidur&rdquo; padahal &ldquo;duduk&rdquo;), Model B akurat tetapi sangat ringkas. Biarkan dugaan tentang BLEU muncul dulu &mdash; slide berikutnya menghitungnya, dan slide setelahnya mengejutkan banyak mahasiswa.
@@ -681,34 +625,34 @@
       <!-- SLIDE 21: STUDI KASUS PENERAPAN -->
       <section>
         <h2>Studi Kasus: Penerapan BLEU</h2>
-        <p>Menghitung presisi unigram (BLEU-1) dan bigram (BLEU-2) kedua model.</p>
+        <p>Menghitung presisi unigram (\(\mathrm{BLEU}_{1}\)) dan bigram (\(\mathrm{BLEU}_{2}\)) kedua model.</p>
 
         <table class="c-table" style="margin-top: 10px;">
           <thead>
             <tr>
               <th style="width: 26%;">Model</th>
               <th style="width: 30%;">Unigram cocok</th>
-              <th style="width: 22%;">BLEU-1</th>
-              <th style="width: 22%;">BLEU-2</th>
+              <th style="width: 22%;">\(\mathrm{BLEU}_{1}\)</th>
+              <th style="width: 22%;">\(\mathrm{BLEU}_{2}\)</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td class="c-table-criteria">Model A</td>
-              <td>&ldquo;seekor&rdquo;, &ldquo;kucing&rdquo;, &ldquo;di&rdquo;, &ldquo;keyboard&rdquo; = 4 dari 6</td>
-              <td>4/6 = 0,667</td>
-              <td>2/5 = 0,400</td>
+              <td>&ldquo;seekor&rdquo;, &ldquo;kucing&rdquo;, &ldquo;di&rdquo;, &ldquo;keyboard&rdquo; = \(4\) dari \(6\)</td>
+              <td>\(4/6 = 0{,}667\)</td>
+              <td>\(2/5 = 0{,}400\)</td>
             </tr>
             <tr>
               <td class="c-table-criteria">Model B</td>
-              <td>&ldquo;kucing&rdquo;, &ldquo;di&rdquo;, &ldquo;keyboard&rdquo; = 3 dari 3</td>
-              <td>3/3 = 1,000</td>
-              <td>2/2 = 1,000</td>
+              <td>&ldquo;kucing&rdquo;, &ldquo;di&rdquo;, &ldquo;keyboard&rdquo; = \(3\) dari \(3\)</td>
+              <td>\(3/3 = 1{,}000\)</td>
+              <td>\(2/2 = 1{,}000\)</td>
             </tr>
           </tbody>
         </table>
 
-        <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">calculate</span><div><p style="margin: 0; font-size: 0.82em; line-height: 1.5;">Model A: bigram &ldquo;seekor kucing&rdquo; dan &ldquo;di keyboard&rdquo; cocok dari 5 bigram. Model B: &ldquo;kucing di&rdquo; dan &ldquo;di keyboard&rdquo; cocok dari 2 bigram. Huruf besar/kecil diabaikan.</p></div></div>
+        <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">calculate</span><div><p style="margin: 0; font-size: 0.82em; line-height: 1.5;">Model A: bigram &ldquo;seekor kucing&rdquo; dan &ldquo;di keyboard&rdquo; cocok dari \(5\) bigram. Model B: &ldquo;kucing di&rdquo; dan &ldquo;di keyboard&rdquo; cocok dari \(2\) bigram. Huruf besar/kecil diabaikan.</p></div></div>
 
         <aside class="notes">
           Jalan bersama mahasiswa menghitungnya. Perhatikan pola yang muncul: Model B mendapat skor sempurna karena penyebutnya kecil &mdash; semua kata yang ia hasilkan memang cocok, tetapi ia hanya menghasilkan tiga kata. Di sinilah benih kelemahan BLEU terlihat. Sebutkan bahwa BLEU sesungguhnya menerapkan <em>brevity penalty</em> untuk caption yang lebih pendek dari referensi, tetapi contoh ini sengaja menyederhanakan agar polanya tampak jelas.
@@ -736,8 +680,8 @@
             </tr>
             <tr>
               <td class="c-table-criteria">Kuantitatif (BLEU)</td>
-              <td>Kalah: 0,667 (BLEU-1) dan 0,400 (BLEU-2).</td>
-              <td><strong>Menang</strong>: 1,000 (BLEU-1) dan 1,000 (BLEU-2).</td>
+              <td>Kalah: \(0{,}667\) <span style="white-space: nowrap;">(\(\mathrm{BLEU}_{1}\))</span> dan \(0{,}400\) <span style="white-space: nowrap;">(\(\mathrm{BLEU}_{2}\))</span>.</td>
+              <td><strong>Menang</strong>: \(1{,}000\) <span style="white-space: nowrap;">(\(\mathrm{BLEU}_{1}\))</span> dan \(1{,}000\) <span style="white-space: nowrap;">(\(\mathrm{BLEU}_{2}\))</span>.</td>
             </tr>
           </tbody>
         </table>
@@ -833,7 +777,7 @@
         <p style="margin-bottom: 20px;">Rekomendasi literatur akademik wajib dan bacaan lanjutan:</p>
         <ol style="list-style: none; padding: 0; margin: 0; counter-reset: ref-counter;">
           <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[1]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Vinyals, O., et al. (2015).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Show and Tell: A Neural Image Caption Generator</em>. CVPR. &mdash; arsitektur encoder&ndash;decoder CNN&ndash;LSTM pertama yang berpengaruh.</p></div></li>
-          <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[2]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Xu, K., et al. (2015).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Show, Attend and Tell: Neural Image Caption Generation with Visual Attention</em>. ICML. &mdash; sumber mekanisme <em>cross-attention</em> pada captioning.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[2]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Xu, K., et al. (2015).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Show, Attend and Tell: Neural Image Caption Generation with Visual Attention</em>. ICML. &mdash; perhatian visual pertama pada captioning (aditif, dekoder LSTM).</p></div></li>
           <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[3]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Anderson, P., et al. (2018).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Bottom-Up and Top-Down Attention for Image Captioning and Visual Question Answering</em>. CVPR. &mdash; perhatian berbasis objek, bukan grid.</p></div></li>
           <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[4]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Papineni, K., et al. (2002).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>BLEU: a Method for Automatic Evaluation of Machine Translation</em>. ACL. &mdash; sumber metrik BLEU.</p></div></li>
           <li style="counter-increment: ref-counter; padding: 14px 0; display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[5]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Goodfellow, I., Bengio, Y., &amp; Courville, A. (2016).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Deep Learning</em>. MIT Press. &mdash; Bab 12, bagian aplikasi <em>image captioning</em>.</p></div></li>

@@ -187,7 +187,7 @@
       <!-- SLIDE 5: VQA DEFINISI -->
       <section>
         <h2>Definisi Visual Question Answering</h2>
-        <p>Model menerima gambar <em>dan</em> pertanyaan teks, lalu menghasilkan jawaban yang akurat.</p>
+        <p>Model menerima gambar dan pertanyaan teks, lalu menghasilkan jawaban yang akurat.</p>
 
         <div class="formula-hero" style="margin-top: 12px;">
           <div class="formula-label">Definisi Formal</div>
@@ -284,56 +284,57 @@
 
         <div class="grid-2" style="margin-top: 6px;">
           <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 10px; overflow: hidden;">
-            <svg viewBox="0 0 400 330" role="img" aria-label="Diagram VQA konkatenasi: gambar di-encode CNN menjadi v, pertanyaan di-encode LSTM menjadi q, keduanya dikonkatenasi lalu diumpankan ke MLP untuk menghasilkan jawaban" style="width: 100%; height: auto;">
+            <svg viewBox="0 0 400 330" role="img" aria-label="Diagram VQA konkatenasi: gambar di-encode CNN menjadi vektor v berdimensi d-v, pertanyaan di-encode LSTM menjadi vektor q berdimensi d-q, kedua vektor dikonkatenasi menjadi vektor gabungan berdimensi jumlah keduanya, lalu diumpankan ke MLP yang menghasilkan distribusi atas K jawaban tetap" style="width: 100%; height: auto;">
               <defs>
                 <marker id="w11-con" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#1e66f5"/></marker>
                 <marker id="w11-con2" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#179299"/></marker>
+                <marker id="w11-con3" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#8839ef"/></marker>
               </defs>
 
               <text x="100" y="16" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif" font-weight="700">Gambar</text>
               <text x="300" y="16" text-anchor="middle" fill="#4c4f69" font-size="13" font-family="sans-serif" font-weight="700">Pertanyaan</text>
 
-              <rect x="30" y="26" width="140" height="36" rx="8" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+              <rect x="22.5" y="26" width="155" height="36" rx="8" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
               <text x="100" y="49" text-anchor="middle" fill="#4c4f69" font-size="11.5" font-family="sans-serif" font-weight="700">Image Encoder (CNN)</text>
-              <rect x="230" y="26" width="140" height="36" rx="8" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
+              <rect x="222.5" y="26" width="155" height="36" rx="8" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
               <text x="300" y="49" text-anchor="middle" fill="#4c4f69" font-size="11.5" font-family="sans-serif" font-weight="700">Question Encoder (LSTM)</text>
 
               <path d="M100 62 V80" fill="none" stroke="#1e66f5" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w11-con)"/>
               <path d="M300 62 V80" fill="none" stroke="#179299" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w11-con2)"/>
 
-              <rect x="55" y="84" width="90" height="30" rx="7" fill="#eff1f5" stroke="#8839ef" stroke-width="2"/>
-              <foreignObject x="55" y="88" width="90" height="22"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#8839ef;">\(\mathbf{v}\)</div></foreignObject>
-              <rect x="255" y="84" width="90" height="30" rx="7" fill="#eff1f5" stroke="#8839ef" stroke-width="2"/>
-              <foreignObject x="255" y="88" width="90" height="22"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#8839ef;">\(\mathbf{q}\)</div></foreignObject>
+              <rect x="45" y="84" width="110" height="30" rx="7" fill="#eff1f5" stroke="#1e66f5" stroke-width="2"/>
+              <foreignObject x="45" y="88" width="110" height="22"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:12.5px;color:#1e66f5;">\(\mathbf{v}\in\mathbb{R}^{d_v}\)</div></foreignObject>
+              <rect x="245" y="84" width="110" height="30" rx="7" fill="#eff1f5" stroke="#179299" stroke-width="2"/>
+              <foreignObject x="245" y="88" width="110" height="22"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:12.5px;color:#179299;">\(\mathbf{q}\in\mathbb{R}^{d_q}\)</div></foreignObject>
 
-              <path d="M100 114 L165 138" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w11-con)"/>
-              <path d="M300 114 L235 138" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w11-con)"/>
+              <path d="M100 114 L165 142" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w11-con3)"/>
+              <path d="M300 114 L235 142" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w11-con3)"/>
 
-              <rect x="85" y="142" width="230" height="36" rx="8" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
-              <text x="200" y="159" text-anchor="middle" fill="#4c4f69" font-size="11.5" font-family="sans-serif" font-weight="700">Konkatenasi</text>
-              <foreignObject x="85" y="161" width="230" height="18"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:12.5px;color:#8839ef;">\([\mathbf{v};\ \mathbf{q}]\)</div></foreignObject>
+              <rect x="85" y="142" width="230" height="46" rx="8" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
+              <text x="200" y="158" text-anchor="middle" fill="#4c4f69" font-size="11.5" font-family="sans-serif" font-weight="700">Konkatenasi</text>
+              <foreignObject x="85" y="162" width="230" height="22"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:12.5px;color:#8839ef;">\([\mathbf{v};\ \mathbf{q}]\in\mathbb{R}^{d_v+d_q}\)</div></foreignObject>
 
-              <path d="M200 178 V198" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w11-con2)"/>
+              <path d="M200 188 V204" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w11-con3)"/>
 
-              <rect x="85" y="202" width="230" height="36" rx="8" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
-              <text x="200" y="219" text-anchor="middle" fill="#4c4f69" font-size="11.5" font-family="sans-serif" font-weight="700">MLP Classifier</text>
-              <text x="200" y="233" text-anchor="middle" fill="#6c6f85" font-size="10.5" font-family="sans-serif">prediksi jawaban</text>
+              <rect x="85" y="204" width="230" height="36" rx="8" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
+              <text x="200" y="221" text-anchor="middle" fill="#4c4f69" font-size="11.5" font-family="sans-serif" font-weight="700">MLP Classifier</text>
+              <text x="200" y="235" text-anchor="middle" fill="#6c6f85" font-size="10.5" font-family="sans-serif">prediksi jawaban</text>
 
-              <path d="M200 238 V258" fill="none" stroke="#1e66f5" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w11-con)"/>
+              <path d="M200 240 V258" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w11-con3)"/>
 
-              <rect x="120" y="262" width="160" height="34" rx="8" fill="#dff3f2" stroke="#179299" stroke-width="2.5"/>
-              <foreignObject x="120" y="266" width="160" height="26"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#4c4f69;">Jawaban \(\hat{a}\)</div></foreignObject>
+              <rect x="80" y="258" width="240" height="46" rx="8" fill="#dff3f2" stroke="#179299" stroke-width="2.5"/>
+              <foreignObject x="80" y="258" width="240" height="46"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#4c4f69;"><div style="font-size:11.5px;font-weight:700;">Distribusi Jawaban</div><div style="font-size:10.5px;color:#6c6f85;">atas \(K\) jawaban tetap</div></div></foreignObject>
             </svg>
           </div>
           <div class="narrative-pane">
-            <div class="narrative-step"><strong>01. Encode</strong> Gambar dipadatkan menjadi vektor \(\mathbf{v}\) oleh CNN; pertanyaan menjadi vektor \(\mathbf{q}\) oleh LSTM.</div>
-            <div class="narrative-step"><strong>02. Konkatenasi</strong> Kedua vektor disambung menjadi \([\mathbf{v};\mathbf{q}]\) &mdash; fusi paling sederhana.</div>
-            <div class="narrative-step"><strong>03. Klasifikasi</strong> MLP memetakan vektor gabungan ke distribusi jawaban.</div>
+            <div class="narrative-step"><strong>01. Encoder</strong> Gambar dipadatkan menjadi vektor \(\mathbf{v}\) oleh CNN; pertanyaan menjadi vektor \(\mathbf{q}\) oleh LSTM.</div>
+            <div class="narrative-step"><strong>02. Konkatenasi</strong> Kedua vektor disambung menjadi \([\mathbf{v};\mathbf{q}]\in\mathbb{R}^{d_v+d_q}\) &mdash; fusi paling sederhana.</div>
+            <div class="narrative-step"><strong>03. Klasifikasi</strong> MLP memetakan vektor gabungan ke distribusi atas \(K\) jawaban tetap &mdash; bukan generatif bebas.</div>
           </div>
         </div>
 
         <aside class="notes">
-          Ikuti diagram dari atas: dua encoder paralel, lalu konkatenasi, lalu MLP. Ini adalah fusi awal (early fusion) dalam bentuk paling sederhana. Kelemahannya akan menjadi motivasi attention di slide berikutnya: konkatenasi memperlakukan seluruh gambar dan seluruh pertanyaan sebagai satu paket, tanpa interaksi antar bagian. Tunjukkan bahwa ini sama dengan pola encoder&ndash;decoder W10, hanya saja keluaran decoder diganti klasifikasi.
+          Ikuti diagram dari atas: dua encoder paralel, lalu konkatenasi, lalu MLP. Ini fusi awal (early fusion) dalam bentuk paling sederhana. Dua hal yang wajib disebut sebelum pindah slide. Pertama, keluaran model <strong>bukan</strong> satu jawaban bebas, melainkan distribusi atas himpunan jawaban tetap (K jawaban tersering pada data latih) &mdash; itulah sebabnya VQA diperlakukan sebagai klasifikasi, dan mengapa metriknya nanti (slide 11) adalah akurasi \(\min(1, \text{cocok}/3)\), bukan BLEU. Kedua, dimensi: \(d_v\) adalah panjang vektor fitur gambar dari CNN dan \(d_q\) dari encoder pertanyaan. Notasinya sengaja simbolik karena nilainya bergantung pada <em>backbone</em> yang dipakai, tetapi yang penting secara konsep: dimensi vektor gabungan adalah \(d_v+d_q\) &mdash; konkatenasi hanya menyambung, tidak meringkas. Kelemahannya akan menjadi motivasi attention di slide berikutnya: konkatenasi memperlakukan seluruh gambar dan seluruh pertanyaan sebagai satu paket, tanpa interaksi antar bagian. Tunjukkan bahwa ini sama dengan pola encoder&ndash;decoder W10, hanya saja keluaran decoder diganti klasifikasi.
         </aside>
       </section>
 
@@ -353,7 +354,7 @@
           <div class="formula-term-box"><strong>\(\alpha_i,\ \hat{v}\)</strong> Bobot perhatian tiap area dan fitur gambar terfokus (jumlah berbobot).</div>
         </div>
 
-        <div class="c-callout c-callout-success" style="margin-top: 12px;"><span class="material-symbols-outlined icon-green">check_circle</span><div><strong>Mengapa lebih baik?</strong> Pertanyaan &ldquo;Apa warna payung itu?&rdquo; membuat bobot menumpuk di area payung; pertanyaan lain memindahkan fokus ke area lain &mdash; gambar yang sama, perhatian yang berbeda.</div></div>
+        <div class="c-callout c-callout-success" style="margin-top: 12px;"><span class="material-symbols-outlined icon-green">check_circle</span><div><strong>Mengapa lebih baik?</strong> Pertanyaan &ldquo;<em>Apa warna payung itu?</em>&rdquo; membuat bobot menumpuk di area payung; pertanyaan lain memindahkan fokus ke area lain &mdash; gambar yang sama, perhatian yang berbeda.</div></div>
 
         <aside class="notes">
           Ini adalah cross-attention yang sudah dikenal dari W09 dan W10, kini dengan peran baru: memfilter gambar sesuai pertanyaan. Bandingkan dengan slide sebelumnya &mdash; alih-alih mengirim seluruh vektor \(\mathbf{v}\), kita mengirim \(\hat{v}\) yang hanya merangkum area relevan. Jelaskan bahwa skor \(e_i = w^\top\tanh(W_q q + W_v v_i)\) bersifat aditif (bukan dot-product) karena lebih stabil untuk fusi lintas modalitas. Model ini klasik dari Yang et al. (2016).
@@ -412,7 +413,7 @@
             <tr>
               <td class="c-table-criteria">VQA Accuracy</td>
               <td>\(\min\!\left(1,\ \dfrac{\text{cocok dengan manusia}}{3}\right)\)</td>
-              <td>Toleran terhadap variasi; 3+ manusia setuju &rarr; skor 1,0</td>
+              <td>Toleran terhadap variasi; 3 atau lebih manusia setuju &rarr; skor \(1{,}0\)</td>
             </tr>
             <tr>
               <td class="c-table-criteria">WUPS</td>
@@ -427,7 +428,7 @@
           </tbody>
         </table>
 
-        <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">calculate</span><div><strong>Contoh:</strong> 10 manusia menjawab sebuah pertanyaan; 3 di antaranya menulis &ldquo;kucing&rdquo;. Jika model menjawab &ldquo;kucing&rdquo;, skornya \(\min(1, 3/3) = 1{,}0\) &mdash; meski ada 7 jawaban lain yang juga valid.</div></div>
+        <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">calculate</span><div><strong>Contoh:</strong> 10 manusia menjawab sebuah pertanyaan; 3 di antaranya menulis &ldquo;kucing&rdquo;. Jika model menjawab &ldquo;kucing&rdquo;, skornya \(\min(1, \frac{3}{3}) = 1{,}0\) &mdash; meski ada 7 jawaban lain yang juga valid.</div></div>
 
         <aside class="notes">
           VQA Accuracy adalah metrik paling khas: ia mengakui bahwa banyak jawaban bisa benar. Aturannya: ambil jawaban manusia yang paling banyak sepakat (biasanya 10 anotator), hitung seberapa banyak anotator yang menulis jawaban model, bagi tiga, batasi di 1. WUPS melangkah lebih jauh dengan mengukur kedekatan makna lewat WordNet. Tekankan bahwa VQA Accuracy mengasumsikan ada 3 anotator sepakat &mdash; detail teknis yang penting untuk mereproduksi angka dari paper.
@@ -509,7 +510,7 @@
       <!-- SLIDE 15: SENTIMEN TANTANGAN -->
       <section>
         <h2>Tantangan Analisis Sentimen Multimodal</h2>
-        <p>Teknis dan non-teknis, dari fusi konflik hingga privasi:</p>
+        <p>Teknis dan non-teknis, dari konflik fusi hingga privasi:</p>
 
         <div class="grid-3" style="margin-top: 10px;">
           <div class="c-card c-card-accent-top c-card-maroon">
@@ -526,16 +527,16 @@
           </div>
           <div class="c-card c-card-accent-top c-card-maroon">
             <div class="c-card-header">
-              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Fusi Konflik</h4>
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Konflik Fusi</h4>
             </div>
             <p>Bagaimana bila modalitas bertentangan, dan bagaimana mencegah satu mendominasi?</p>
           </div>
         </div>
 
-        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Ditambah tiga beban:</strong> sarkasme &amp; ironi masih sulit; emosi halus (terkejut vs takut) mudah tertukar; dan data multimodal (video, audio) menimbulkan isu <strong>privasi</strong> yang serius.</div></div>
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Ditambah tiga beban:</strong> <em>sarkasme &amp; ironi</em> masih sulit; <em>emosi mudah tertukar</em> (contoh terkejut vs takut) ; dan data multimodal (video, audio) menimbulkan <em>isu privasi</em> yang serius.</div></div>
 
         <aside class="notes">
-          Fusi konflik adalah inti bagian ini &mdash; akan menjadi studi kasus dua slide ke depan. Tekankan bahwa &ldquo;konflik&rdquo; bukan bug melainkan sinyal: ketidaksesuaian antar modalitas justru petunjuk sarkasme. Sebutkan juga beban privasi: mengumpulkan video wajah dan suara jauh lebih sensitif daripada teks, dan anonimisasi penuh sangat sulit karena wajah dan suara bersifat identik dengan individu.
+          Konflik fusi adalah inti bagian ini &mdash; akan menjadi studi kasus dua slide ke depan. Tekankan bahwa &ldquo;konflik&rdquo; bukan bug melainkan sinyal: ketidaksesuaian antar modalitas justru petunjuk sarkasme. Sebutkan juga beban privasi: mengumpulkan video wajah dan suara jauh lebih sensitif daripada teks, dan anonimisasi penuh sangat sulit karena wajah dan suara bersifat identik dengan individu.
         </aside>
       </section>
 
@@ -549,7 +550,7 @@
             <div class="c-card-header">
               <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Late Fusion</h4>
             </div>
-            <p>Classifier terpisah tiap modalitas, lalu probabilitas digabung (voting). Sederhana dan robust bila satu modalitas hilang.</p>
+            <p><em>Classifier</em> terpisah tiap modalitas, lalu probabilitas digabung (voting). Sederhana dan <em>robust</em> bila satu modalitas hilang.</p>
           </div>
           <div class="c-card c-card-accent-top c-card-mauve">
             <div class="c-card-header">
@@ -561,11 +562,11 @@
             <div class="c-card-header">
               <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Attention-based</h4>
             </div>
-            <p>Cross-attention: satu modalitas &ldquo;memperhatikan&rdquo; modalitas lain. Teks memperhatikan ekspresi; audio memperhatikan kata.</p>
+            <p><em>Cross-attention</em>: satu modalitas &ldquo;memperhatikan&rdquo; modalitas lain. Teks memperhatikan ekspresi; audio memperhatikan kata.</p>
           </div>
         </div>
 
-        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div><strong>Ingat tiga strategi ini.</strong> Studi kasus berikutnya membandingkan late fusion (voting) dengan attention-based fusion pada sebuah video ulasan produk.</div></div>
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div><strong>Ingat tiga strategi ini.</strong> Studi kasus berikutnya membandingkan <em>late fusion</em> (voting) dengan <em>attention-based fusion</em> pada sebuah video ulasan produk.</div></div>
 
         <aside class="notes">
           Ketiga strategi sudah dikenal dari W05&ndash;W06 (Early &amp; Late, Intermediate &amp; Hybrid). Sekarang penerapannya pada tiga modalitas. Tekankan bahwa pilihan fusi menentukan kemampuan model menangani konflik: late fusion dengan voting sederhana tidak dapat menangani konflik dengan baik, sedangkan attention dapat belajar memberikan bobot lebih pada modalitas yang lebih ekspresif. Ini menjadi pertanyaan studi kasus.
@@ -614,7 +615,7 @@
       <!-- SLIDE 18: STUDI KASUS PENERAPAN -->
       <section>
         <h2>Studi Kasus: Penerapan</h2>
-        <p>Late fusion (voting) vs attention-based fusion pada konflik yang sama.</p>
+        <p><em>Late fusion</em> (voting) vs <em>attention-based fusion</em> pada konflik yang sama.</p>
 
         <div class="grid-2" style="margin-top: 10px;">
           <div class="c-card c-card-accent-top c-card-blue">
@@ -640,7 +641,7 @@
           </div>
         </div>
 
-        <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">calculate</span><div>Sederhananya: <strong>voting menghitung jumlah suara</strong>, sedangkan <strong>attention menimbang kualitas bukti</strong>. Ketika satu modalitas ambigu, model dapat mengalihkan fokus ke yang lebih jelas &mdash; persis kegunaan cross-attention.</div></div>
+        <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">calculate</span><div>Sederhananya: <strong>voting menghitung jumlah suara</strong>, sedangkan <strong>attention menimbang kualitas bukti</strong>. Ketika satu modalitas ambigu, model dapat mengalihkan fokus ke yang lebih jelas &mdash; persis kegunaan <em>cross-attention</em>.</div></div>
 
         <aside class="notes">
           Bandingkan dua jalur. Voting memberi hasil yang sama (negatif) tetapi dengan alasan yang rapuh: ia menang hanya karena 2 lawan 1. Jika teks lebih panjang atau lebih ekspresif, hasilnya bisa terbalik tanpa alasan yang jelas. Attention memberi jalur yang dapat dijelaskan: bobot perhatian menunjukkan modalitas mana yang mendominasi keputusan. Hubungkan dengan interpretabilitas yang akan dibahas di W13.
@@ -660,7 +661,7 @@
             <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
               <li>Teks positif berbenturan dengan audio negatif/datar.</li>
               <li>Teks positif berbenturan dengan ekspresi wajah negatif/netral.</li>
-              <li>Cross-attention menangkap hubungan kontradiktif ini secara langsung.</li>
+              <li><em>Cross-attention</em> menangkap hubungan kontradiktif ini secara langsung.</li>
             </ul>
           </div>
           <div class="c-card" style="background: var(--ctp-mantle);">
@@ -698,7 +699,7 @@
             <div class="c-card-header">
               <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Emosi Halus Tertukar</h4>
             </div>
-            <p>&ldquo;Terkejut&rdquo; vs &ldquo;takut&rdquo;, atau senyum bahagia vs senyum gugup &mdash; perbedaan yang tipis dan konteks-sensitif.</p>
+            <p>&ldquo;Terkejut&rdquo; vs &ldquo;takut&rdquo;, atau senyum bahagia vs senyum gugup &mdash; perbedaan yang tipis dan sensitif terhadap konteks.</p>
           </div>
           <div class="c-card c-card-accent-top c-card-maroon">
             <div class="c-card-header">
@@ -708,7 +709,7 @@
           </div>
         </div>
 
-        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Pemeriksaan sebelum rilis:</strong> apakah model tetap benar tanpa gambar (shortcut)? apakah satu modalitas mendominasi tak wajar? apakah skor tinggi hanya pada kelas mayoritas?</div></div>
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Pemeriksaan sebelum rilis:</strong> apakah model tetap benar tanpa gambar (<em>shortcut</em>)? apakah satu modalitas mendominasi tak wajar? apakah skor tinggi hanya pada kelas mayoritas?</div></div>
 
         <aside class="notes">
           Tiga mode kegagalan ini melengkapi argumen sesi. Shortcut VQA adalah kegagalan paling halus &mdash; skor tinggi, penalaran nol. Dominasi modalitas mudah dideteksi lewat ablasi: hilangkan satu modalitas, lihat seberapa jauh skor jatuh. Untuk sentimen, uji dengan modalitas yang di-<em>mask</em> (teks saja, audio saja) dan bandingkan. Ini akan menjadi bagian strategi evaluasi komprehensif di W13.
@@ -750,7 +751,7 @@
 
         <div class="formula-breakdown">
           <div class="formula-term-box"><strong>MAE</strong> Rata-rata selisih absolut. Mudah diinterpretasikan dalam satuan skor asli.</div>
-          <div class="formula-term-box"><strong>RMSE</strong> Akar rata-rata kuadrat selisih. Memberi <strong>bobot lebih besar</strong> pada kesalahan besar.</div>
+          <div class="formula-term-box"><strong>RMSE</strong> Akar rata-rata kuadrat selisih. Memberi bobot lebih besar pada kesalahan besar.</div>
           <div class="formula-term-box"><strong>Pilihan</strong> Pakai MAE bila kesalahan besar tidak lebih buruk; RMSE bila kesalahan besar harus dihukum berat.</div>
         </div>
 
