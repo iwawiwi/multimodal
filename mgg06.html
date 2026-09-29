@@ -204,7 +204,7 @@
     <!-- SLIDE 7: KONSEP INTERMEDIATE -->
     <section>
       <h2>Intermediate Fusion: Konsep</h2>
-      <p>Setiap modalitas diproses encoder sendiri hingga lapisan menengah, lalu representasinya digabungkan.</p>
+      <p>Setiap modalitas diproses <em>encoder</em> sendiri hingga lapisan menengah, lalu representasinya digabungkan.</p>
 
       <div class="grid-3" style="margin-top: 16px;">
         <div class="c-card c-card-blue c-card-accent-top">
@@ -231,7 +231,7 @@
     <!-- SLIDE 8: ARSITEKTUR INTERMEDIATE (SVG) -->
     <section>
       <h2>Arsitektur Intermediate Fusion</h2>
-      <p>Penggabungan terjadi setelah encoder, sebelum lapisan bersama.</p>
+      <p>Penggabungan terjadi setelah <em>encoder</em>, sebelum lapisan bersama.</p>
 
       <div class="grid-2" style="margin-top: 16px;">
                 <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px; overflow: hidden;">
@@ -276,7 +276,7 @@
             <!-- Baris 4: titik fusi di lapisan tengah -->
             <rect x="108" y="200" width="184" height="50" rx="10" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
             <text x="200" y="222" text-anchor="middle" fill="#179299" font-size="16" font-family="sans-serif" font-weight="700">Modul Fusi</text>
-            <text x="200" y="242" text-anchor="middle" fill="#4c4f69" font-size="12" font-family="sans-serif">concat · gate</text>
+            <text x="200" y="242" text-anchor="middle" fill="#4c4f69" font-size="12" font-family="sans-serif">concat · gate · attention</text>
 
             <!-- Baris 5: lapisan bersama dan prediksi -->
             <rect x="108" y="264" width="184" height="52" rx="10" fill="#e6e9ef" stroke="#40a02b" stroke-width="3"/>
@@ -392,7 +392,7 @@
         </div>
       </div>
 
-      <div class="c-callout c-callout-info" style="margin-top: 18px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Kekurangan kedua inilah jembatan ke Pertemuan 7: begitu fitur digabungkan di tengah, keduanya <strong>harus membicarakan hal yang sama</strong> pada waktu atau lokasi yang sama.</div></div>
+      <div class="c-callout c-callout-info" style="margin-top: 18px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div>Kekurangan inilah jembatan ke Pertemuan 7: begitu fitur digabungkan di tengah, keduanya <strong>harus membicarakan hal yang sama</strong> pada waktu atau lokasi yang sama.</div></div>
 
       <aside class="notes">
         Poin penting: kekurangan "sensitif penyelarasan" adalah alasan mengapa penyejajaran dibahas setelah fusi, bukan sebelumnya. Sebutkan bahwa pertanyaan "di lapisan ke berapa sebaiknya digabung?" tidak punya jawaban universal — biasanya ditentukan lewat eksperimen validasi.
@@ -747,7 +747,7 @@
           <tr>
             <td class="c-table-criteria">Biaya Komputasi</td>
             <td>Sedang &mdash; satu model besar.</td>
-            <td>Tinggi &mdash; dua encoder.</td>
+            <td>Tinggi &mdash; dua <em>encoder</em>.</td>
             <td>Rendah&ndash;tinggi sesuai varian.</td>
           </tr>
           <tr>

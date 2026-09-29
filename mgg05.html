@@ -746,7 +746,7 @@
       <div class="grid-2">
         <div class="c-card c-card-accent-top c-card-blue">
           <h3 style="color: var(--ctp-blue)">Tugas</h3>
-          <p>Memetakan tiap rekaman ke satu kelas emosi (misalnya senang, sedih, marah, netral) untuk analisis umpan balik pengguna. Padanan publiknya antara lain CMU-MOSEI dan IEMOCAP.</p>
+          <p>Memetakan tiap rekaman ke satu kelas emosi (misalnya senang, sedih, marah, netral) untuk analisis umpan balik pengguna. Padanan dataset publiknya antara lain CMU-MOSEI dan IEMOCAP.</p>
         </div>
         <div class="c-card c-card-accent-top c-card-peach">
           <h3 style="color: var(--ctp-peach)">Kendala Nyata</h3>
@@ -810,7 +810,7 @@
 
     <!-- SLIDE 22: STUDI KASUS — ANALISIS PILIHAN -->
     <section>
-      <h2>Studi Kasus: Analisis Pilihan Strategi</h2>
+      <h2>Studi Kasus: Contoh Analisis Pilihan Strategi</h2>
 
       <table class="c-table">
         <thead>
@@ -833,8 +833,8 @@
           </tr>
           <tr>
             <td class="c-table-criteria">Risiko utama</td>
-            <td>Rekaman dengan laju gagal sinkron menurunkan kinerja.</td>
-            <td>Kehilangan sinyal emosi yang hanya tampak dari kombinasi.</td>
+            <td>Rekaman video-audio yang tidak sinkron menurunkan kinerja.</td>
+            <td>Kehilangan sinyal emosi yang hanya tampak dari kombinasi video-audio.</td>
           </tr>
           <tr>
             <td class="c-table-criteria">Jika satu modalitas hilang</td>
@@ -857,7 +857,7 @@
     <!-- SLIDE 23: EMPAT MASALAH KLASIK VS STRATEGI FUSI -->
     <section>
       <h2>Empat Masalah Klasik vs Strategi Fusi</h2>
-      <p>Menutup kerangka dari awal sesi: bagaimana Early dan Late menghadapi tiap masalah.</p>
+      <p>Bagaimana Early dan Late menghadapi tiap masalah.</p>
 
       <table class="c-table">
         <thead>
@@ -903,16 +903,16 @@
 
       <div class="grid-3" style="margin-top: 16px;">
         <div class="c-card c-card-blue c-card-accent-top">
-          <h3 style="color: var(--ctp-blue)">Dominasi Modalitas</h3>
+          <h3 style="color: var(--ctp-blue)">Dominasi Salah Satu Modalitas</h3>
           <p>Satu modalitas membawa hampir seluruh sinyal; yang lain hanya menambah derau sehingga fusi justru memperburuk prediksi.</p>
         </div>
         <div class="c-card c-card-mauve c-card-accent-top">
           <h3 style="color: var(--ctp-mauve)">Overfitting pada Data Kecil</h3>
-          <p>Parameter tambahan dari lapisan fusi tidak terbayar bila jumlah data berlabel terbatas.</p>
+          <p>Parameter tambahan dari lapisan fusi tidak menambah kemampuan generalisasi bila jumlah data berlabel terbatas.</p>
         </div>
         <div class="c-card c-card-teal c-card-accent-top">
           <h3 style="color: var(--ctp-teal)">Penyelarasan yang Salah</h3>
-          <p>Fitur yang tidak benar-benar berkorespondensi digabungkan, sehingga fusi menyuntikkan derau alih-alih informasi.</p>
+          <p>Fitur yang tidak benar-benar berkorespondensi digabungkan, sehingga fusi menambah derau alih-alih memperkaya informasi.</p>
         </div>
       </div>
 
@@ -938,7 +938,7 @@
           </div>
           <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.7;">
             <li><strong>Fusi</strong> &rarr; menggabungkan informasi untuk keputusan yang lebih baik.</li>
-            <li><strong>Empat masalah</strong> &rarr; redundansi, konflik, dominasi, titik gabung.</li>
+            <li><strong>Empat masalah fusi</strong> &rarr; redundansi, konflik, dominasi, titik gabung.</li>
             <li><strong>Titik gabung</strong> &rarr; penentu utama taksonomi strategi fusi.</li>
             <li><strong>Tidak otomatis lebih baik</strong> &rarr; fusi harus mengalahkan baseline unimodal.</li>
           </ul>

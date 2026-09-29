@@ -200,24 +200,21 @@
         <div class="grid-3" style="margin-top: 16px;">
           <div class="c-card c-card-accent-top c-card-blue">
             <div class="c-card-header">
-              <span class="c-num-circle c-num-blue">1</span>
-              <h3 style="color: var(--ctp-blue); margin: 0;">Temporal Asynchrony</h3>
+              <h3 style="color: var(--ctp-blue); margin: 0;">Asinkron Temporal</h3>
             </div>
             <p>Modalitas bergerak pada laju atau durasi berbeda. Audio direkam pada \(44{,}1\) kHz sementara video hanya \(30\) <em>frame</em> per detik &mdash; rasionya sekitar \(1 : 1470\).</p>
           </div>
 
           <div class="c-card c-card-accent-top c-card-mauve">
             <div class="c-card-header">
-              <span class="c-num-circle c-num-mauve">2</span>
-              <h3 style="color: var(--ctp-mauve); margin: 0;">Structural Mismatch</h3>
+              <h3 style="color: var(--ctp-mauve); margin: 0;">Perbedaan Struktural</h3>
             </div>
             <p>Struktur datanya berbeda jenis. Teks adalah urutan kata, gambar adalah kisi spasial, audio adalah gelombang waktu &mdash; tidak ada indeks yang secara alami bertemu.</p>
           </div>
 
           <div class="c-card c-card-accent-top c-card-peach">
             <div class="c-card-header">
-              <span class="c-num-circle c-num-peach">3</span>
-              <h3 style="color: var(--ctp-peach); margin: 0;">Sparse Correspondence</h3>
+              <h3 style="color: var(--ctp-peach); margin: 0;">Korespondensi Sebagian</h3>
             </div>
             <p>Hanya sebagian kecil data yang benar-benar relevan. Satu kata dalam kalimat mungkin hanya bersesuaian dengan satu region kecil dari keseluruhan gambar.</p>
           </div>
@@ -778,7 +775,7 @@
         <div class="grid-2">
           <div class="c-card c-card-accent-top c-card-blue">
             <h3 style="color: var(--ctp-blue)">Tugas</h3>
-            <p>Memetakan setiap klip ke satu kata pada kamus bahasa isyarat. Padanan publiknya antara lain RWTH-PHOENIX-Weather 2014T dan How2Sign.</p>
+            <p>Memetakan setiap klip ke satu kata pada kamus bahasa isyarat. Padanan dataset publiknya antara lain RWTH-PHOENIX-Weather 2014T dan How2Sign.</p>
           </div>
           <div class="c-card c-card-accent-top c-card-peach">
             <h3 style="color: var(--ctp-peach)">Kendala Nyata</h3>
@@ -817,7 +814,7 @@
               <li>Ekstraksi fitur tangan per <em>frame</em> dan fitur akustik per <em>frame</em>.</li>
               <li>Hitung jarak lokal antarfitur, lalu cari jalur warping monoton termurah.</li>
               <li>Jalur memberi pasangan <em>frame</em>&ndash;<em>frame</em> yang dianggap setara.</li>
-              <li>Pasangan itu digabungkan dan diteruskan ke pengklasifikasi.</li>
+              <li>Pasangan itu digabungkan dan diteruskan ke model klasifikasi.</li>
             </ul>
           </div>
           <div class="case-model-pane">
@@ -825,7 +822,7 @@
               Jalur Cross-Attention
             </div>
             <ul style="margin: 0; padding-left: 16px; font-size: 0.82em; line-height: 1.6;">
-              <li>Setiap modalitas melewati encoder self-attention lebih dulu.</li>
+              <li>Setiap modalitas melewati <em>encoder self-attention</em> lebih dulu.</li>
               <li>Query dari fitur gerakan menghampiri Key dan Value fitur suara.</li>
               <li>Bobot attention dihitung ulang untuk tiap klip, bukan ditetapkan sekali.</li>
               <li>Representasi terfokus diteruskan ke modul fusi dan prediksi.</li>
@@ -894,7 +891,7 @@
         <div class="grid-3" style="margin-top: 16px;">
           <div class="c-card c-card-blue c-card-accent-top">
             <h3 style="color: var(--ctp-blue)">Tidak Ada Korespondensi Nyata</h3>
-            <p>Bila kedua modalitas benar-benar independen, memaksakan penyejajaran hanya menyuntikkan derau dan menurunkan kinerja.</p>
+            <p>Bila kedua modalitas benar-benar independen, memaksakan penyejajaran hanya menambahkan derau dan menurunkan kinerja.</p>
           </div>
           <div class="c-card c-card-mauve c-card-accent-top">
             <h3 style="color: var(--ctp-mauve)">Bobot Ditarik Pencilan</h3>
@@ -927,9 +924,9 @@
               <h4 style="color: var(--ctp-blue);">Masalah &amp; Mekanisme Klasik</h4>
             </div>
             <ul style="font-size: 0.76em; margin: 0; padding-left: 16px; line-height: 1.55;">
-              <li><strong>Tiga masalah</strong> &rarr; asinkronisitas temporal, ketidaksesuaian struktural, korespondensi jarang.</li>
-              <li><strong>DTW</strong> &rarr; jalur warping monoton termurah; jarak ditentukan manusia.</li>
-              <li><strong>HMM</strong> &rarr; menyelaraskan pengamatan ke keadaan tersembunyi lewat Viterbi.</li>
+              <li><strong>Tiga masalah</strong> &rarr; asinkronisitas temporal, perbedaan struktural, korespondensi sebagian.</li>
+              <li><strong>DTW</strong> &rarr; jalur <em>warping</em> monoton termurah; jarak ditentukan manusia.</li>
+              <li><strong>HMM</strong> &rarr; menyelaraskan pengamatan ke keadaan tersembunyi lewat algoritma Viterbi.</li>
               <li><strong>Batas bersama</strong> &rarr; korespondensi dirancang, bukan dipelajari.</li>
             </ul>
           </div>
