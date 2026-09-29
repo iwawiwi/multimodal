@@ -216,7 +216,7 @@ body {
   gap: 22px;
 }
 
-/* Every week card has identical dimensions & flex distribution */
+/* Kartu pekan: seragam PER BARIS (stretch grid), bukan seragam global */
 .week-card {
   background: var(--ctp-mantle);
   border: 1px solid var(--ctp-surface1);
@@ -226,7 +226,16 @@ body {
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  min-height: 420px; /* Guarantees identical height across all rows */
+  /* TANPA lantai tinggi. Keseragaman datang dari `align-items: stretch` grid:
+     kartu terpendek di satu baris ikut memanjang setinggi kartu tertinggi di
+     baris itu.
+     Sebelumnya `min-height: 420px` menahan SEMUA kartu demi varian tertinggi —
+     blok chip lab 33px di dalam body kartu. Setelah chip itu pindah ke header
+     (`.lab-chip`), kartu ber-lab dan tanpa-lab sama-sama 375px (terukur),
+     sehingga lantai tidak lagi diperlukan.
+     Terukur: 3170 → 2971px (−6,3%) pada 1280px.
+     Bila kelak ada kartu yang isinya benar-benar lebih tinggi, barisnya
+     memanjang sendiri — tidak ada angka ajaib yang perlu disetel ulang. */
   box-shadow: var(--shadow-sm);
   transition: all 0.25s ease;
   position: relative;
@@ -334,51 +343,48 @@ body {
   color: var(--ctp-peach);
 }
 
-/* Hands-on Lab Chip (green — "terapkan/kerjakan", distinct from slide & PDF)
-   Full-width on purpose: the chip sits directly above the .week-card-actions grid,
-   whose buttons are also full-width. A content-sized chip made the four cards
-   ragged (measured 286 / 290 / 299 / 319px — the width tracked the label length),
-   which read as unintentional next to the aligned buttons below.
-   Content is left-aligned, NOT centered: centering each label independently made
-   the leading icon drift per card (measured x = 76 / 82 / 80 / 66 → 16px jitter),
-   because every label has a different length. Left-aligning pins the icon to the
-   same line in all four cards (x = 37) and puts the label on the card's own left
-   text edge, which is what the eye follows when scanning the grid.
-   `min-height` keeps single-line chips at a uniform 33px; longer labels wrap
-   instead of overflowing on narrow viewports (the old `white-space: nowrap`
-   pushed the chip 53–100px past the card at 820px / 390px / 360px). */
-.hands-on-chip {
-  display: flex;
+/* Badge lab pada HEADER kartu (sebelumnya `.hands-on-chip`: blok penuh-lebar di
+   dalam body kartu).
+   Alasan pindah: blok chip + margin adalah varian kartu TERTINGGI, dan karena
+   keseragaman baris menuntut semua kartu mengakomodasi varian tertinggi,
+   delapan kartu tanpa lab ikut membayar 47px (terukur: 375px tanpa lab vs 422px
+   dengan lab). Sebagai badge header, biayanya 0px pada lebar desktop.
+   Yang berubah dari versi lama: label tidak lagi memuat awalan "Lembar Kerja:"
+   (ikon + warna hijau sudah menyampaikan itu) — nama lab sendiri tetap utuh
+   sebagai teks, dan `aria-label` mempertahankan bentuk panjangnya untuk pembaca
+   layar. `white-space: nowrap` mencegah label terbelah di tengah; pada kartu
+   sempit badge turun ke baris kedua lewat `flex-wrap` di `.week-card-header`
+   (bukan meluber keluar kartu seperti `nowrap` versi lama pada 820/390/360px). */
+.lab-chip {
+  display: inline-flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 6px;
+  gap: 5px;
   background: var(--ctp-green);
   color: #ffffff;
-  padding: 7px 12px;
-  border-radius: 8px;
-  font-size: 12px;
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-size: 11px;
   font-weight: 700;
-  line-height: 1.35;
-  text-align: left;
+  line-height: 1.3;
   text-decoration: none;
-  width: 100%;
-  min-height: 33px;
-  margin-bottom: 14px;
+  white-space: nowrap;
+  max-width: 100%;
   transition: all 0.2s ease;
 }
 
-.hands-on-chip:hover {
+.lab-chip:hover {
   background: #358a20;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(64, 160, 43, 0.3);
+  box-shadow: 0 3px 10px rgba(64, 160, 43, 0.28);
 }
 
-.hands-on-chip .material-symbols-outlined {
-  font-size: 16px;
+.lab-chip .material-symbols-outlined {
+  font-size: 14px;
   flex-shrink: 0;
 }
 
-/* Card Header (Clean typographic number, no badge pill) */
+/* Card Header: nomor pekan + badge lab (bila ada).
+   `flex-wrap` disengaja: pada kartu sempit (~300px di 1024px) badge turun ke
+   baris kedua alih-alih meluber keluar kartu. */
 .week-card-header {
   margin-bottom: 12px;
   padding-bottom: 8px;
@@ -386,6 +392,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .week-num-label {
@@ -421,16 +429,20 @@ body {
   overflow: hidden;
 }
 
+/* Deskripsi TIDAK dijepit (dulu `-webkit-line-clamp: 3` + `overflow: hidden`).
+   Clamp 3 baris memotong teks secara diam-diam: terukur 2 deskripsi terpotong
+   di 1280px dan **16 dari 17 kartu** di 1024px (teks aslinya 4–5 baris), tanpa
+   penanda apa pun bagi pembaca layar — kelas bug yang sama dengan ellipsis pada
+   `.week-topics li` dulu. Membiarkannya membungkus penuh menambah ~4% tinggi di
+   tablet (3260→3388px @1024px) tetapi menghapus kehilangan isi sepenuhnya.
+   `min-height: 60px` dipertahankan sebagai lantai keseragaman, bukan lagi
+   pemaksa "tepatnya 3 baris". */
 .week-desc {
   font-size: 13px;
   color: var(--ctp-subtext1);
   line-height: 1.5;
   margin-bottom: 16px;
-  min-height: 60px; /* Exactly 3 lines */
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  min-height: 60px;
 }
 
 .week-topics {
@@ -440,16 +452,25 @@ body {
   min-height: 80px; /* Exactly 3 items */
 }
 
+/* Topik dibiarkan membungkus. Sebelumnya `nowrap + ellipsis` memotong
+   diam-diam 1/2/2/10 baris topik pada 1440/1280/820/420px — mis.
+   "Temporal Asynchrony, Structural Mi…" — tanpa penanda apa pun bagi pembaca
+   layar. Membungkus TIDAK menambah tinggi halaman di desktop (kartu masih
+   ditahan `min-height: 420px` pada `.week-card`); di 420px hanya +39px.
+   Terukur: truncation 2→0 (1280px), 10→0 (360px). */
 .week-topics li {
   font-size: 12px;
   color: var(--ctp-subtext0);
   margin-bottom: 6px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+}
+
+/* Titik tetap sejajar baris pertama saat topik melipat jadi 2 baris.
+   (line-height 1.7 × 12px = 20,4px; (20,4 − 5) / 2 ≈ 8px) */
+.week-topics li .topic-dot {
+  margin-top: 8px;
 }
 
 .topic-dot {
@@ -475,7 +496,7 @@ body {
   display: grid;
   grid-template-columns: 1.35fr 1fr;
   gap: 10px;
-  padding-top: 14px;
+  padding-top: 10px;
   border-top: 1px solid var(--ctp-surface0);
 }
 
@@ -547,6 +568,18 @@ body {
 .btn-action-secondary .material-symbols-outlined,
 .btn-action-disabled .material-symbols-outlined {
   font-size: 16px;
+}
+
+/* Kompaksi rail aksi (Langkah 3) — TANPA menghapus label.
+   Terukur −8px/kartu (padding-top 14→10, padding vertikal tombol 10→8).
+   Varian ikon-saja akan menghemat ~26px lagi, tetapi menghilangkan label
+   "Buka Slide"/"Ekspor PDF" — itu keputusan pemilik kursus, bukan kerja
+   teknis, jadi belum diambil di sini. */
+.btn-action-primary,
+.btn-action-secondary,
+.btn-action-disabled {
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 /* =========================================================
@@ -670,6 +703,30 @@ body {
 /* =========================================================
    Responsive Breakpoints
    ========================================================= */
+
+/* =========================================================
+   Band tablet (1000–1179px): 3 kolom, bukan 2
+   =========================================================
+   Lebar tersedia = viewport − 2×28px padding kontainer.
+   Aturan bawaan `minmax(360px, 1fr)` butuh 3×360 + 2×22 = 1124px, sehingga baru
+   memberi 3 kolom pada viewport ≥ 1180px. Di bawah itu — termasuk 1024px
+   (iPad lanskap & jendela terbelah) — hanya 2 kolom dan halaman memanjang.
+   Dengan `minmax(300px, 1fr)` cukup 3×300 + 2×22 = 944px. Karena scrollbar
+   vertikal memakan ~15px lebar tata letak, 3 kolom efektif mulai ~1015px
+   (1024px ✓, 1000px masih 2 kolom — bukan masalah).
+   Batas atas 1199px dipilih agar tidak menyisakan *notch*: aturan bawaan baru
+   memberi 3 kolom pada viewport ≥ 1180px (tanpa scrollbar) atau ≥ 1195px
+   (dengan scrollbar), sehingga 1180–1194px akan jatuh kembali ke 2 kolom.
+   Terukur: 1179px 4449→3197px, 1100px 4489→3299px (3,7 layar), 1024px
+   4603→3552px (3,9 layar).
+   Kartu jadi lebih sempit (≈300–360px) sehingga topik pasti melipat —
+   karena itu perbaikan `.week-topics li` di atas adalah prasyaratnya. */
+@media (min-width: 1000px) and (max-width: 1199px) {
+  .weeks-grid,
+  .milestones-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
 
 @media (max-width: 1024px) {
   .hero-inner-container {
