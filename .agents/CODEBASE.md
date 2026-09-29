@@ -27,9 +27,10 @@ multimodal-v2/
 │   └── catppuccin-latte.css            # Tema Reveal.js (full component system, ~600 baris)
 ├── assets/img/
 │   ├── logo_1.png                      # Logo alternatif
-│   ├── logo_2.png                      # Logo ITERA (digunakan di header)
+│   ├── logo_2.webp                      # Logo ITERA (WebP lossless, dipakai di header)
 │   ├── dikti-saintek-berdampak-black.svg
-│   └── dikti-saintek-berdampak-color.svg  # Logo Kementerian Dikti
+│   ├── dikti-saintek-berdampak-color.svg  # Logo Kementerian Dikti
+│   └── (aset data: figur makalah `.webp` lossless — lihat D-031)
 ├── origin/                             # Sumber PPTX asli (15 file, pertemuan 01-15)
 │   ├── Pembelajaran Mesin Multimodal - Pertemuan 01 v1.0.pptx
 │   ├── Pembelajaran Mesin Multimodal - Pertemuan 01 v0.1.pptx
@@ -115,11 +116,31 @@ multimodal-v2/
 - **Kanan:** Nama dosen & email
 
 ### 5.2 Week Cards Grid
-- Grid responsif: `grid-template-columns: repeat(auto-fill, minmax(360px, 1fr))`
-- Setiap card: `min-height: 420px`, flex column, uniform title/desc/topics/actions
+- Grid responsif: `repeat(auto-fill, minmax(360px, 1fr))`
+- **Band 1000–1199px** dipersempit ke `minmax(300px, 1fr)` supaya 1024px (iPad
+  lanskap / jendela terbelah) tetap **3 kolom**, bukan 2 — terukur 4603→3552px
+  (−23%; 1100px −27%). Batas atas 1199px dipilih agar tidak menyisakan *notch*:
+  aturan bawaan baru memberi 3 kolom di ≥1180px (tanpa scrollbar) / ≥1195px
+  (dengan scrollbar). Prefix lengkap ada di komentar `css/portal.css`.
+- `.week-topics li` **membungkus** (tanpa `nowrap`/`ellipsis`). Sebelumnya teks
+  topik terpotong diam-diam: 1/2/2/10 baris pada 1440/1280/820/420px. Titik
+  topik dijaga sejajar baris pertama lewat `align-items: flex-start` +
+  `margin-top: 8px` pada `.topic-dot`.
+- Kartu pekan: flex column, **tanpa `min-height`** — keseragaman tinggi datang dari
+  `align-items: stretch` grid, jadi seragam **per baris**. Lantai `420px` yang lama
+  menahan semua kartu demi varian tertinggi (blok chip lab 33px di dalam body);
+  setelah chip pindah ke header, kartu ber-lab & tanpa-lab sama-sama 375px.
+  Terukur 3170→2930px (−7,6%) @1280px, dan lebih pendek di **semua** lebar.
+- Badge lab (`.lab-chip`) di **header** kartu, bukan blok di body: nomor pekan di
+  kiri, badge hijau di kanan. Labelnya **seragam "Lembar Kerja"** (terukur 107px di
+  semua kartu) supaya lebar badge dan tinggi header (29–31px) tidak lagi bervariasi;
+  sebelum diseragamkan, nama lab membuat badge 174–217px dan memaksa wrap di
+  1024/360px. Nama lab tetap ada di `title` dan `aria-label` — dan `aria-label`
+  **wajib diawali teks yang tampak** ("Lembar Kerja: …") demi WCAG 2.5.3 *Label in
+  Name*.
 - **3 state:** `active-ready` (biru, interaktif), `disabled` (abu-abu, button disabled), `milestone` (peach, untuk UTS/UAS)
 - Dual action buttons: "Buka Slide" (primary) + "Ekspor PDF" (secondary)
-- **Grid "Jadwal Evaluasi":** `.milestones-grid` (`repeat(auto-fill, minmax(360px, 1fr))`) berisi tiga `.milestone-card` — **UTS**, **PROYEK** (peta milestone M0–M4; boleh tampil sebagai scaffolding, D-A11), dan **UAS**. Kartu proyek hanya menampilkan *jenis* deliverable per minggu; TOR/rubrik/tenggat tetap lewat LMS.
+- **Grid "Jadwal Evaluasi":** `.milestones-grid` (grid yang sama dengan `.weeks-grid`, termasuk band 1000–1199px) berisi tiga `.milestone-card` — **UTS**, **PROYEK**, dan **UAS** — semuanya berskeleton identik: deskripsi + 3 butir + 2 tombol. Isinya **problem-agnostic** (tanpa nama dataset, kode milestone, atau pekan deliverable) agar portal tidak perlu disunting saat soal proyek berganti; peta milestone & tenggat hidup di TOR via LMS (D-A11). Catatan fakta: **UAS = presentasi & pertanggungjawaban proyek kelompok, menggantikan ujian tertulis** (bukan ujian tulis komprehensif).
 
 ### 5.3 Footer
 - Cheatsheet pintasan keyboard (compact, inline flex-wrap chips)
@@ -262,7 +283,7 @@ git update-index --no-skip-worktree pdf/mggXX.pdf  # Unskip saat release
 | `mgg05.html` | ✅ Selesai, 28 slide |
 | `mgg06.html` | ✅ Selesai, 25 slide |
 | `mgg07.html` | ✅ Selesai, 27 slide |
-| `mgg09.html` | ✅ Selesai, 27 slide |
+| `mgg09.html` | ✅ Selesai, 28 slide |
 | `mgg10.html` | ✅ Selesai, 27 slide |
 | `mgg11.html` | ✅ Selesai, 26 slide |
 | `mgg12.html` | ✅ Selesai, 28 slide |

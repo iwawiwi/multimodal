@@ -23,7 +23,7 @@ generating decks.
 | Institution | `Institut Teknologi Sumatera (ITERA)` |
 | Lecturer name | `I Wayan Wiprayoga Wisesa` |
 | Lecturer email | `wayan.wisesa@if.itera.ac.id` |
-| Campus logo (left) | `assets/img/logo_2.png` |
+| Campus logo (left) | `assets/img/logo_2.webp` |
 | Ministry logo (right) | `assets/img/dikti-saintek-berdampak-color.svg` |
 
 ## Placeholder mapping
@@ -40,7 +40,7 @@ These placeholders in `resources/slide-template.html` are substituted from this 
 | `{{FACULTY}}` | `Fakultas Teknologi Industri` |
 | `{{LECTURER_NAME}}` | `I Wayan Wiprayoga Wisesa` |
 | `{{LECTURER_EMAIL}}` | `wayan.wisesa@if.itera.ac.id` |
-| `{{LOGO_CAMPUS}}` | `assets/img/logo_2.png` |
+| `{{LOGO_CAMPUS}}` | `assets/img/logo_2.webp` |
 | `{{LOGO_MINISTRY}}` | `assets/img/dikti-saintek-berdampak-color.svg` |
 | `{{WEEK_NUM}}` | meeting number (e.g. `1`, `2`) |
 | `{{WEEK_NUM_2DIGIT}}` | zero-padded meeting number (e.g. `01`, `02`) |

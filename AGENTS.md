@@ -68,10 +68,18 @@ Keputusan yang sudah disetujui pengguna dan **berlaku sampai diubah eksplisit**:
   - Saat audit melaporkan "tugas tidak bisa ditemukan", itu **perilaku yang
     diharapkan**, bukan gap.
   - Kekecualian sempit untuk **materi ujian** diatur di **D-A12**.
-  - **Peta milestone proyek** (minggu → *jenis* deliverable, mis. M0–M4) **boleh**
-    tampil di portal sebagai *scaffolding* pedagogis — lihat kartu "Proyek Akhir"
-    di `index.html`. Yang **tetap tidak boleh** tampil: berkas TOR, rubrik, contoh
-    pengerjaan, dan tenggat mingguan (semuanya lewat LMS).
+  - **Kartu proyek di portal sengaja *problem-agnostic*** — ditinjau ulang 25 Sep 2026.
+    Sebelumnya (A5) kartu "Proyek Akhir" menampilkan peta milestone M0–M4 beserta
+    pekannya, tetapi itu mengikat portal pada **soal proyek tahun berjalan**: begitu
+    soal/dataset berganti tahun depan, `index.html` harus disunting lagi.
+    - Keputusan sekarang: portal hanya menyatakan **bentuk penilaian** (proyek
+      kelompok, rentang pekan, tahapan umum, presentasi pada sesi UAS) — **tanpa**
+      nama dataset, kode milestone, atau pekan deliverable.
+    - Peta milestone M0–M4 dan tenggat mingguan tetap hidup di **TOR lewat LMS**
+      (D-A11) — di sana memang tempatnya.
+    - ❌ Jangan menuliskan nama dataset/soal proyek tahun berjalan di `index.html`
+      maupun `README.md`. Deck bersifat tahunan (dibangun ulang tiap tahun) sehingga
+      boleh menyebut milestone/datasetnya sendiri.
 - **D-A12 — Materi ujian: kisi-kisi publik lewat portal; soal & kunci rahasia.**
   Perlakuan berbeda dari tugas mingguan (D-A11):
   - **Kisi-kisi UTS** (`dokumen/uts-kisi-kisi.html`) **dipublikasikan**, karena
@@ -191,7 +199,7 @@ Keputusan yang sudah disetujui pengguna dan **berlaku sampai diubah eksplisit**:
 | `mgg05.html` | Strategi Fusi I: Early & Late Fusion | 28 | ✅ selesai |
 | `mgg06.html` | Strategi Fusi II: Intermediate & Hybrid Fusion | 25 | ✅ selesai |
 | `mgg07.html` | Penyejajaran (Alignment): Temporal & Structural | 27 | ✅ selesai |
-| `mgg09.html` | Arsitektur Transformer Multimodal | 27 | ✅ selesai |
+| `mgg09.html` | Arsitektur Transformer Multimodal | 28 | ✅ selesai |
 | `mgg10.html` | Aplikasi 1: Image Captioning | 27 | ✅ selesai |
 | `mgg11.html` | Aplikasi 2: VQA & Analisis Sentimen Multimodal | 26 | ✅ selesai |
 | `mgg12.html` | Topik Lanjutan: Generasi Multimodal & Etika | 28 | ✅ selesai |
@@ -217,7 +225,7 @@ Artefak pendukung:
 
 > Setiap minggu yang punya hands-on **wajib** lengkap: file hands-on, entri
 > `HANDSON_WEEK` di CI, judul di `vivliostyle.config.js`, kolom hands-on di
-> `course-config.md`, dan chip di `index.html`.
+> `course-config.md`, dan badge lab (`.lab-chip`) di header kartu pekan pada `index.html`.
 
 ## 4. Validasi (jalankan sebelum melapor)
 
@@ -237,6 +245,12 @@ python3 scripts/validate_slide.py dokumen/uts-kisi-kisi.html
 ```
 
 Otomatis PDF dokumen = `DOC=<kunci> npm run build:pdf` (lihat D-A12).
+
+Untuk `index.html` (portal) tidak ada `measure_overflow.js`; uji regresinya probe
+lebar di **1440 / 1280 / 1024 / 820 / 420px**: pastikan **0 overflow horizontal**,
+**0 teks topik terpotong** (`scrollWidth > clientWidth`), dan jumlah kolom grid
+sesuai harapan. Ingat: scrollbar vertikal memakan ~15px lebar tata letak,
+sehingga ambang jumlah kolom bergeser ~15px dari perhitungan teoretis.
 
 `measure_overflow.js` **hanya** menguji mode Teks Besar. Untuk memastikan 5 mode
 (16:9, 16:10, 4:3, Teks Besar, Mobile), pakai probe headless Chrome + CDP
@@ -267,6 +281,10 @@ scripts/                       validate_slide.py, measure_overflow.js, export_pd
 - Setiap `<section>` diberi `<aside class="notes">` (catatan dosen).
 - Ekstraksi PPTX: `python3 /tmp/px.py "<file.pptx>"` (parser zip+XML tanpa
   dependensi; `python-pptx` tidak terpasang). Salin ulang bila `/tmp` bersih.
+- Aset raster dirilis sebagai **WebP lossless** (`cwebp -lossless -z 9 -exact
+  -metadata icc -m 6`) — hemat 46–75% dari PNG, aman karena semua konsumen browser
+  (Reveal, hands-on, portal, cetak Chrome, Vivliostyle). Ganti rujukan **dan** nama
+  berkas di seluruh repo; konversi wajib diverifikasi piksel (canvas), bukan ukuran.
 
 ## 6. Jebakan yang Sudah Diketahui
 
@@ -276,6 +294,21 @@ scripts/                       validate_slide.py, measure_overflow.js, export_pd
   "Alur Data Matematis" pakai inline `$...$`.
 - `.diagram-canvas img` sudah punya `max-height: 260px` (css baris ~710).
   Override inline `max-height: none` akan merusak proporsi gambar.
+- Gambar **raster** tinggi (portrait, AR ≲ 0,7) **jangan** diatur dengan
+  `max-height: 100%` (pola `.is-flow` yang dirancang untuk SVG):
+  `measure_overflow.js` menormalkan `section` menjadi `display:block; height:auto`,
+  sehingga persentase kehilangan acuan dan diabaikan — gambar raster lalu tampil
+  seukuran aslinya (mgg09 slide 5 pernah meluber **+250px**). Pakai komponen
+  `.diagram-canvas.figure-hero` (batas `max-height` **px per mode aspek**);
+  setiap gambar baru wajib diukur ulang 5 mode dengan sisa ruang ≥ 15px — D-031.
+- **Latar gambar jangan ditebak dari `sips -g hasAlpha`**: kanal alpha bisa ada
+  sementara latarnya tetap putih pekat. Terukur di mgg09: `vilbert-arch.webp` dan
+  `CLIP-pretrain.webp` **0% transparan** (65–79% putih-opak, sudut
+  `rgba(255,255,255,255)`), sedangkan `attn-is-all-you-need-2017.webp` 62,6% dan
+  `vit-dosovitsky.png` 57,3% transparan. Figur berlatar putih pekat wajib memakai
+  modifier `.figure-matte` (`mix-blend-mode: multiply`) agar menyatu dengan kanvas
+  mantle; figur yang sudah transparan **tidak** boleh memakainya (warnanya hanya
+  akan menumpul tanpa manfaat).
 - Gambar line-art berlatar putih → jadikan transparan + tint `#4c4f69`
   (`--ctp-text`); jangan tempel PNG berlatar putih di kanvas mantle.
 - Token warna terlarang: `--ctp-red`, `--ctp-yellow`, `--ctp-sky`, `--ctp-pink`,
@@ -285,3 +318,12 @@ scripts/                       validate_slide.py, measure_overflow.js, export_pd
 - Referensi **wajib** pakai styled `<ol>` (monospace `[n]` + grid + hairline) — D-002.
 - Penutup **wajib** layout minimal terpusat (bukan label "Selesai" + kartu) — D-004.
 - Diskusi **wajib** 3 `.c-callout-*` bertumpuk (info→warning→success) — D-005.
+- `cwebp -metadata none` membuang profil ICC: 5 dari 7 figur membawa `iCCP`, dan tanpa
+  profil render di Chrome bergeser (Δmax 11 terukur). Selalu `-metadata icc`, lalu
+  bandingkan piksel sebelum menimpa aset asli (deflate ulang aliran IDAT PNG = pilihan
+  lossless bila nama berkas tak boleh berubah).
+- KaTeX: **dua** backslash sebelum `}` (mis. `\(\{a_i\\}\)`) membuat render
+  gagal dan tampil mentah di slide, tetapi lint/measure **tidak** mendeteksinya
+  (lebar tidak berubah) — verifikasi wajib lewat tangkapan layar. Detektor cepat:
+  cari dua backslash berturut di `mgg*.html` (yang sah hanya `\\` pemutus baris di
+  dalam `$$…$$`).
