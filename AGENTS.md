@@ -277,6 +277,7 @@ mggNN.html                     deck Reveal.js (satu file mandiri, boilerplate se
 index.html                     portal: kartu minggu + milestone UTS/UAS
 css/catppuccin-latte.css       tema + komponen (sumber kebenaran komponen)
 hands-on/mggNN-hands-on.html   lembar kerja (Prism baked, gaya code-first)
+hands-on/_template.html        kerangka lembar kerja — sumber salinan (D-033)
 dokumen/*.html                 dokumen non-mingguan (mis. uts-kisi-kisi.html) — jalur cetak sama
 tugas/mggNN-tugas.{md,tex}     tugas mingguan (LaTeX pakai tugas-style.sty)
 origin/*.pptx                  sumber asli (gitignored, TIDAK dipublikasikan)
@@ -287,6 +288,12 @@ scripts/                       validate_slide.py, measure_overflow.js, export_pd
 - Deck baru: **salin boilerplate** dari deck terakhir (`mgg05.html`) — header,
   aspect switcher, footer, topic popover, `Reveal.initialize`, `setAspectMode`.
   Jangan tulis ulang dari nol.
+- Lembar kerja baru: **salin `hands-on/_template.html`** — kerangka yang sudah
+  memuat invarian D-033 (`.code-window .lc { width: 100% }` +
+  `.ln { min-width: 48px }`, komponen `.formula`/`.terminal`/`.note`) — lalu ganti
+  penanda `{{…}}` dan daftarkan di CI (`HANDSON_WEEK`), `course-config.md`,
+  `index.html`, serta slide jembatan D-030. Jangan menggandakan berkas minggu lama:
+  blok CSS `.code-window` harus tetap identik di semua lembar kerja.
 - Total slide: `<span id="deck-slide-total">NN</span>` harus cocok dengan jumlah
   `<section>`. Nomor komentar `<!-- SLIDE N: ... -->` harus berurutan — satu
   komentar per `<section>`, persis di atas section-nya (**ditegakkan linter,
@@ -335,6 +342,15 @@ scripts/                       validate_slide.py, measure_overflow.js, export_pd
   lain (Mocha `#89b4fa`, `#f9e2af`, … pernah bocor ke `mgg03`) atau token terlarang
   `#d20f39`; tint lembut dibuat dari warna palet + `fill-opacity`.
   **Ditegakkan linter:** check #14 (kepala panah) & #15 (palet, khusus deck).
+- **Lembar kerja (hands-on): gutter nomor baris wajib seragam 48px.** Blok CSS
+  `.code-window .ln/.lc` **identik byte-per-byte di keenam berkas** `hands-on/*.html`
+  — ubah keenamnya sekaligus. `.lc` wajib `width: 100%` (kolom kode menyerap sisa
+  lebar tabel) dan `.ln` wajib `min-width: 48px` (batas bawah, bukan `width` mati,
+  agar nomor tiga digit tidak terpotong). Tanpa `width: 100%`, tabel auto membagi
+  kelebihan lebar ke kolom nomor pada blok pendek: `setup.sh` satu baris terukur
+  **147px** di W13, 59–87px di W02/W03/W04/W06/W09. Rumus di badan dokumen wajib
+  memakai `div.formula` (satu rumus satu kotak), ❌ bukan
+  `<span style="font-family: var(--font-mono)">` di dalam `<p>`. D-033.
 - Jangan pakai `.c-badge`, `data-transition="zoom"`, fragment `fade-up/-down/…`,
   atau satuan `cqi`/`vh` di slide.
 - Referensi **wajib** pakai styled `<ol>` (monospace `[n]` + grid + hairline) — D-002.

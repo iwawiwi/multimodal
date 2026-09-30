@@ -428,7 +428,9 @@
       -webkit-user-select: none;
       white-space: nowrap;
       font-size: 12px;
-      min-width: 3em;
+      /* Lebar gutter seragam untuk semua blok kode. Ini batas bawah, bukan
+         lebar mati: nomor tiga digit (blok >99 baris) melebarkan sendiri. */
+      min-width: 48px;
       vertical-align: top;
     }
     .code-window .lc {
@@ -437,6 +439,10 @@
       white-space: pre;
       color: var(--ctp-text);
       font-size: 13px;
+      /* Menyerap seluruh sisa lebar tabel. Tanpa ini, tabel auto membagi
+         kelebihan lebar ke kolom nomor pada blok kode yang pendek: setup.sh
+         satu baris terukur 147px gutter, blok lain hanya 45px. */
+      width: 100%;
       vertical-align: top;
     }
     .code-window .code-line:first-child .ln,

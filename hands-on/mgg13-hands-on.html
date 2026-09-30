@@ -428,7 +428,9 @@
       -webkit-user-select: none;
       white-space: nowrap;
       font-size: 12px;
-      min-width: 3em;
+      /* Lebar gutter seragam untuk semua blok kode. Ini batas bawah, bukan
+         lebar mati: nomor tiga digit (blok >99 baris) melebarkan sendiri. */
+      min-width: 48px;
       vertical-align: top;
     }
     .code-window .lc {
@@ -437,6 +439,10 @@
       white-space: pre;
       color: var(--ctp-text);
       font-size: 13px;
+      /* Menyerap seluruh sisa lebar tabel. Tanpa ini, tabel auto membagi
+         kelebihan lebar ke kolom nomor pada blok kode yang pendek: setup.sh
+         satu baris terukur 147px gutter, blok lain hanya 45px. */
+      width: 100%;
       vertical-align: top;
     }
     .code-window .code-line:first-child .ln,
@@ -710,7 +716,8 @@ Recall@1 bersih= 0.620</div>
 
 <section id="sec-metrik"><h2><span class="sec-num">05</span> Metrik Retrieval: Recall@K &amp; MRR</h2>
 <p>Setelah pemisahan dilakukan dengan benar, kita ukur tiga metrik. <strong>Recall@K</strong> bertanya: berapa bagian kueri yang pasangan benarnya muncul di K peringkat teratas? <strong>MRR</strong> (<em>Mean Reciprocal Rank</em>) memberi bobot lebih pada peringkat teratas.</p>
-<p><span style="font-family: var(--font-mono);">Recall@K = (1/Q) &middot; &Sigma;<sub>i</sub> 1[peringkat<sub>i</sub> &le; K]</span> &nbsp;&nbsp;&middot;&nbsp;&nbsp; <span style="font-family: var(--font-mono);">MRR = (1/Q) &middot; &Sigma;<sub>i</sub> 1/peringkat<sub>i</sub></span></p><div class="code-window"><div class="code-window-header">
+<div class="formula">Recall@K = (1/Q) &middot; &Sigma;<sub>i</sub> 1[peringkat<sub>i</sub> &le; K]</div>
+<div class="formula">MRR = (1/Q) &middot; &Sigma;<sub>i</sub> 1 / peringkat<sub>i</sub></div><div class="code-window"><div class="code-window-header">
       <span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span>
       <span class="code-filename">evaluasi_lab_w13.py</span>
       <button class="copy-btn" type="button" onclick="copyCode(this)" title="Salin kode"><span class="material-symbols-outlined">content_copy</span><span>Salin</span></button>

@@ -22,6 +22,8 @@ Portal terdiri dari:
 multimodal-v2/
 ├── index.html                          # Portal perkuliahan (sticky hero + week cards grid)
 ├── mgg01.html                          # Slide Pertemuan 01 (25 slide Reveal.js)
+├── hands-on/                           # Lembar kerja (mgg02/03/04/06/09/13) + kerangka
+│   └── _template.html                  # Kerangka salinan — invarian D-033 sudah tertanam
 ├── css/
 │   ├── portal.css                      # Styling portal (header, cards, footer, responsive)
 │   └── catppuccin-latte.css            # Tema Reveal.js (full component system, ~600 baris)
@@ -340,3 +342,11 @@ git update-index --no-skip-worktree pdf/mggXX.pdf  # Unskip saat release
    dan **bukan** LaTeX: `xu-cheng/latex-action` adalah Docker action yang menarik
    image TeX Live ~2,4 GB **setiap run** (runner GitHub ephemeral, tanpa cache
    layer), sedangkan Chrome/Vivliostyle sudah tersedia untuk PDF lain. Lihat D-A12.
+
+6. **Invarian lembar kerja (hands-on)** — blok CSS `.code-window .ln/.lc` **identik
+   byte-per-byte di keenam berkas** `hands-on/*.html`, jadi setiap perubahan harus
+   diterapkan ke keenamnya sekaligus. `.lc` wajib `width: 100%` dan `.ln` wajib
+   `min-width: 48px` supaya gutter nomor baris seragam 48px; tanpa `width: 100%`
+   tabel auto membagi kelebihan lebar ke kolom nomor pada blok kode pendek
+   (`setup.sh` satu baris: 147px di W13, 59–87px di W02/W03/W04/W06/W09). Rumus di
+   badan dokumen wajib memakai `div.formula` (satu rumus satu kotak). D-033.
