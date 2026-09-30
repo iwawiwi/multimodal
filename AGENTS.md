@@ -119,8 +119,12 @@ Keputusan yang sudah disetujui pengguna dan **berlaku sampai diubah eksplisit**:
   - Slide "kategori/karakteristik" → `grid-3` 3 kartu
     (`c-card c-card-{blue,mauve,teal} c-card-accent-top` + `<h3 style="color:...">`),
     ditutup `.c-callout-info`.
-  - Slide konsep + gambar → `grid-2` + `.narrative-pane` (maks **3** `narrative-step`;
-    4 langkah = overflow di Teks Besar).
+  - Slide konsep + gambar → `grid-2` + `.narrative-pane` (maks **3** `narrative-step`
+    dengan label `display:block`; **4** langkah boleh bila label dibuat sebaris
+    — `<strong style="display:inline;">` + pemisah `&mdash;` — terukur 98px headroom
+    di Teks Besar, mgg13 s21). Jangan tandai langkah ke-4 dengan komponen berbeda
+    (mis. callout "Langkah keempat"): pembaca membacanya sebagai catatan, bukan
+    bagian urutan.
   - Ringkasan alur matematis → kartu `c-card` berisi grid `auto 1fr`,
     label **"Alur Data Matematis:"** + KaTeX inline (`$...$`, bukan `$$`).
   - Rumus utama → `.formula-hero` + `.formula-breakdown` (3 `.formula-term-box`);
@@ -202,12 +206,19 @@ Keputusan yang sudah disetujui pengguna dan **berlaku sampai diubah eksplisit**:
 | `mgg09.html` | Arsitektur Transformer Multimodal | 28 | ✅ selesai |
 | `mgg10.html` | Aplikasi 1: Image Captioning | 27 | ✅ selesai |
 | `mgg11.html` | Aplikasi 2: VQA & Analisis Sentimen Multimodal | 26 | ✅ selesai |
-| `mgg12.html` | Topik Lanjutan: Generasi Multimodal & Etika | 28 | ✅ selesai |
+| `mgg12.html` | Topik Lanjutan: Generasi Multimodal & Etika | 30 | ✅ selesai |
 | `mgg13.html` | Evaluasi Model Multimodal | 27 | ✅ selesai |
 | `mgg14.html` | Studi Kasus Terpadu | 26 | ✅ selesai |
 | `mgg15.html` | Review Materi | 25 | ✅ selesai |
 | `mgg08.html` | — | — | milestone (UTS, tanpa deck) |
 
+  > `mgg12.html` = **30 slide** (di atas target D-A02): 2 slide etika praktik
+  > ditambahkan 30 Sep 2026 atas permintaan pengguna — *Etika dalam Pengembangan
+  > Model* dan *Etika dalam Penggunaan Model* — karena Bagian 3 semula hanya
+  > memuat bahaya (bias, privasi, fairness, mode kegagalan), tanpa tuntunan
+  > penggunaan. **Disetujui pengguna** (masih di bawah batas keras 35), jadi
+  > tidak perlu digabungkan; bila kelak ingin kembali ke 29, slide 10–11
+  > (Text-to-Video: konsep & tantangan) bisa disatukan.
   > Angka slide di atas diverifikasi terhadap `<section>` tiap berkas. Perbarui
   > tabel ini setiap kali deck berubah — `CODEBASE.md` §10 pernah tertinggal
   > dan melaporkan angka yang salah.
@@ -277,7 +288,9 @@ scripts/                       validate_slide.py, measure_overflow.js, export_pd
   aspect switcher, footer, topic popover, `Reveal.initialize`, `setAspectMode`.
   Jangan tulis ulang dari nol.
 - Total slide: `<span id="deck-slide-total">NN</span>` harus cocok dengan jumlah
-  `<section>`. Nomor komentar `<!-- SLIDE N: ... -->` harus berurutan.
+  `<section>`. Nomor komentar `<!-- SLIDE N: ... -->` harus berurutan — satu
+  komentar per `<section>`, persis di atas section-nya (**ditegakkan linter,
+  check #16**).
 - Setiap `<section>` diberi `<aside class="notes">` (catatan dosen).
 - Ekstraksi PPTX: `python3 /tmp/px.py "<file.pptx>"` (parser zip+XML tanpa
   dependensi; `python-pptx` tidak terpasang). Salin ulang bila `/tmp` bersih.
@@ -313,6 +326,15 @@ scripts/                       validate_slide.py, measure_overflow.js, export_pd
   (`--ctp-text`); jangan tempel PNG berlatar putih di kanvas mantle.
 - Token warna terlarang: `--ctp-red`, `--ctp-yellow`, `--ctp-sky`, `--ctp-pink`,
   `--ctp-rosewater`, `--ctp-flamingo` (linter menolak). Lihat `design-tokens.md`.
+- Semantik warna diagram (D-032): **biru** = modalitas visual, **mauve** =
+  modalitas kedua (teks/audio), **teal** = fusi/ruang bersama/tahap generasi,
+  **hijau** = kotak terminal (hasil/keputusan) beserta panah masuknya. Dua aliran
+  yang bertemu di blok fusi **mempertahankan** warnanya (biru + mauve masuk, teal
+  keluar) — pola W05/W06. Setiap kepala panah **wajib sewarna garisnya** (satu
+  `<marker>` per warna, id unik per slide). ❌ Jangan pakai nilai dari tema
+  lain (Mocha `#89b4fa`, `#f9e2af`, … pernah bocor ke `mgg03`) atau token terlarang
+  `#d20f39`; tint lembut dibuat dari warna palet + `fill-opacity`.
+  **Ditegakkan linter:** check #14 (kepala panah) & #15 (palet, khusus deck).
 - Jangan pakai `.c-badge`, `data-transition="zoom"`, fragment `fade-up/-down/…`,
   atau satuan `cqi`/`vh` di slide.
 - Referensi **wajib** pakai styled `<ol>` (monospace `[n]` + grid + hairline) — D-002.

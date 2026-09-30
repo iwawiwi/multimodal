@@ -245,6 +245,15 @@ Mengambil teks, tabel, dan speaker notes dari file PPTX sumber.
 ```bash
 python3 .agents/skills/lecture-slide-designer/scripts/validate_slide.py mggXX.html
 python3 .agents/skills/lecture-slide-designer/scripts/validate_slide.py index.html
+
+Linter memuat 16 pemeriksaan. Tiga terakhir (D-032, dari audit 29 Sep 2026):
+**#14** setiap kepala panah diagram wajib sewarna garisnya (marker diresolusi
+se-dokumen; isi `<marker>` boleh `<path>`/`<polygon>`/`<circle>`), dan **#15**
+literal hex di deck wajib berasal dari palet Latte + tint turunan `#dff3f2`
+(khusus deck — dokumen hands-on/kisi-kisi memakai palet Prism), serta **#16**
+komentar `<!-- SLIDE N: … -->` wajib tepat satu per `<section>`, bernomor 1..N,
+dan menempel di atas section-nya. Salinan di `scripts/validate_slide.py` dan di
+direktori skill harus identik.
 ```
 Mengecek: tag HTML seimbang, link lokal tidak broken.
 
@@ -286,7 +295,7 @@ git update-index --no-skip-worktree pdf/mggXX.pdf  # Unskip saat release
 | `mgg09.html` | ✅ Selesai, 28 slide |
 | `mgg10.html` | ✅ Selesai, 27 slide |
 | `mgg11.html` | ✅ Selesai, 26 slide |
-| `mgg12.html` | ✅ Selesai, 28 slide |
+| `mgg12.html` | ✅ Selesai, 30 slide (2 slide etika praktik: pengembangan & penggunaan) |
 | `mgg13.html` | ✅ Selesai, 27 slide |
 | `mgg14.html` | ✅ Selesai, 26 slide |
 | `mgg15.html` | ✅ Selesai, 25 slide |
