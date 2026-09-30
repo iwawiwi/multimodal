@@ -65,7 +65,9 @@
   <div class="deck-progress-track"><div class="deck-progress-bar" id="deck-progress-bar"></div></div>
   <div id="shortcuts-modal" onclick="closeShortcutsModal(event)"><div class="modal-content" onclick="event.stopPropagation()"><div class="modal-header"><h4 style="margin:0;font-weight:800"><span class="material-symbols-outlined icon-blue">keyboard</span> Pintasan Navigasi Presentasi</h4><button class="modal-close" onclick="closeShortcutsModal()">&times;</button></div><div class="shortcut-row"><span>Slide berikutnya</span><span><span class="kbd-key">Space</span> / <span class="kbd-key">→</span></span></div><div class="shortcut-row"><span>Slide sebelumnya</span><span><span class="kbd-key">←</span></span></div><div class="shortcut-row"><span>Catatan dosen</span><span><span class="kbd-key">S</span></span></div></div></div>
   <div class="reveal"><div class="slides">
-      <section id="deck-title">
+            <!-- SLIDE 1: COVER -->
+
+<section id="deck-title">
         <div style="margin: auto 0; text-align: left;">
           <h1 style="font-size: 2.3em; line-height: 1.15; font-weight: 800; color: var(--ctp-text); margin-bottom: 12px; letter-spacing: -0.025em;">
             Pembelajaran Mesin Multimodal
@@ -92,7 +94,7 @@
           Buka sesi Pertemuan 3. Hubungkan struktur data gambar dengan kebutuhan CNN sebagai ekstraktor fitur visual.
         </aside>
       </section>
-    <!-- SLIDE 2: CAPAIAN PEMBELAJARAN -->
+        <!-- SLIDE 2: CAPAIAN PEMBELAJARAN -->
     <section>
       <h2>Tujuan Pembelajaran Sesi Ini</h2>
       <p style="margin-bottom: 24px;">Di akhir sesi kuliah ini, mahasiswa diharapkan mampu menguasai kompetensi dasar berikut:</p>
@@ -127,7 +129,7 @@
         Jelaskan tiga kompetensi utama yang akan dicapai mahasiswa setelah sesi ini. Tekankan bahwa sesi ini membangun fondasi untuk memahami representasi visual dalam sistem multimodal.
       </aside>
     </section>
-    <!-- SLIDE 3: SECTION DIVIDER -->
+        <!-- SLIDE 3: SECTION DIVIDER 1 — GAMBAR SEBAGAI DATA -->
     <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(30,102,245,0.06) 0%, transparent 100%);">
       <div class="section-slide-content">
         <span class="section-part-label section-part-blue">Bagian 1</span>
@@ -138,7 +140,9 @@
       </div>
       <aside class="notes">Transisi ke bagian pertama. Fokus pada struktur spasial gambar dan alasan model perlu mempertahankan hubungan lokal.</aside>
     </section>
-    <section>
+        <!-- SLIDE 4: GAMBAR BUKAN SEKADAR MATRIKS -->
+
+<section>
       <h2>Gambar Bukan Sekadar Matriks</h2>
       <p>Setiap gambar RGB direpresentasikan sebagai tensor tiga dimensi: tinggi, lebar, dan kanal warna.</p>
 
@@ -163,7 +167,9 @@
       <aside class="notes">Gunakan ilustrasi seperti pada konsep word embeddings di mgg02. Tunjukkan bahwa H dan W membentuk struktur spasial, sedangkan C menyimpan kanal warna. Tekankan bahwa gambar bukan sekadar daftar angka: hubungan piksel bertetangga penting bagi model dan menjadi dasar receptive field pada CNN.</aside>
     </section>
 
-    <section><h2>Tantangan Representasi Gambar</h2>
+        <!-- SLIDE 5: TANTANGAN REPRESENTASI GAMBAR -->
+
+<section><h2>Tantangan Representasi Gambar</h2>
         <table class="c-table">
             <thead><tr><th style="width:22%">Tantangan</th><th style="width:38%">Mengapa sulit?</th><th style="width:40%">Konsekuensi bagi model</th></tr></thead>
             <tbody>
@@ -173,7 +179,7 @@
             </tbody>
         </table><aside class="notes">Tabel ini memotivasi CNN: model perlu memanfaatkan struktur, bukan memperlakukan semua piksel sebagai fitur independen.</aside></section>
 
-    <!-- SECTION 2: CONVOLUTIONAL NEURAL NETWORKS -->
+        <!-- SLIDE 6: SECTION DIVIDER 2 — CONVOLUTIONAL NEURAL NETWORKS -->
     <section class="section-slide" style="background: radial-gradient(circle at 90% 80%, rgba(136,57,239,0.06) 0%, transparent 100%);">
       <div class="section-slide-content">
         <span class="section-part-label section-part-mauve">Bagian 2</span>
@@ -184,7 +190,9 @@
       </div>
       <aside class="notes">Masuk ke CNN sebagai arsitektur yang sesuai dengan struktur grid data gambar.</aside>
     </section>
-    <section>
+        <!-- SLIDE 7: MENGAPA CNN UNTUK GAMBAR? -->
+
+<section>
       <h2>Mengapa CNN untuk Gambar?</h2>
       <p>CNN dirancang untuk memanfaatkan struktur spasial pada data gambar.</p>
 
@@ -223,7 +231,9 @@
       <aside class="notes">Gunakan ilustrasi untuk membandingkan CNN dengan fully connected layer. CNN memproses area lokal dan memakai kernel yang sama di berbagai lokasi, sehingga struktur spasial tetap dipertahankan dengan jumlah parameter lebih kecil.</aside>
     </section>
 
-    <section>
+        <!-- SLIDE 8: KONVOLUSI: FILTER YANG MENCARI POLA -->
+
+<section>
       <h2>Konvolusi: Filter yang Mencari Pola</h2>
       <p>Kernel bergerak di atas area lokal gambar dan menghitung respons untuk setiap posisi.</p>
 
@@ -251,7 +261,9 @@
       <aside class="notes">Jangan fokus pada hitung manual yang panjang. Jelaskan bahwa setiap nilai feature map berasal dari perkalian antara nilai piksel lokal dan bobot kernel, lalu dijumlahkan. Kernel belajar menjadi detektor pola melalui data. Tekankan bahwa \(u\) dan \(v\) adalah indeks lokal di dalam kernel: \(u\) untuk baris dan \(v\) untuk kolom.</aside>
     </section>
 
-    <section>
+        <!-- SLIDE 9: MENGATUR PERGERAKAN KERNEL -->
+
+<section>
       <h2>Mengatur Pergerakan Kernel</h2>
       <p>Setelah menghitung satu posisi, kernel bergeser untuk membentuk seluruh feature map.</p>
 
@@ -270,7 +282,9 @@
       <aside class="notes">Jelaskan bahwa konvolusi mengulang operasi yang sama pada banyak posisi. Stride mengatur jarak perpindahan kernel, padding mengatur perlakuan terhadap tepi input, dan kumpulan seluruh respons membentuk feature map.</aside>
     </section>
 
-    <section>
+        <!-- SLIDE 10: POOLING: MERANGKUM AKTIVASI -->
+
+<section>
       <h2>Pooling: Merangkum Aktivasi</h2>
       <p>Pooling merangkum area kecil pada feature map untuk mengurangi resolusi spasial.</p>
 
@@ -299,7 +313,9 @@
 
       <aside class="notes">Pooling bukan pengganti konvolusi. Ia merangkum feature map dan mengurangi resolusi spasial. Bandingkan max pooling yang memilih respons terbesar dengan average pooling yang menghitung nilai rata-rata.</aside>
     </section>
-    <section>
+        <!-- SLIDE 11: POLA DASAR ARSITEKTUR CNN -->
+
+<section>
       <h2>Pola Dasar Arsitektur CNN</h2>
       <p>CNN mengubah gambar menjadi representasi fitur secara bertahap sebelum menghasilkan keluaran tugas.</p>
 
@@ -321,7 +337,7 @@
 
       <aside class="notes">Bedakan backbone sebagai ekstraktor fitur dan head sebagai bagian task-specific. Arsitektur CNN modern tidak selalu memakai fungsi aktivasi yang sama: ReLU banyak digunakan pada CNN klasik, sedangkan GELU atau SiLU/Swish dipakai pada sebagian arsitektur modern. Pilihan aktivasi mengikuti desain arsitektur dan karakteristik optimisasinya.</aside>
     </section>
-    <!-- SECTION 3: EVOLUSI ARSITEKTUR CNN -->
+        <!-- SLIDE 12: DARI TEPI KE OBJEK -->
     <section><h2>Dari Tepi ke Objek</h2>
         <div class="pipeline-flow" style="margin-top:30px">
             <div class="pipeline-step"><span class="material-symbols-outlined icon-blue">grid_4x4</span>
@@ -341,7 +357,9 @@
         <aside class="notes">Gunakan analogi komposisional: garis membentuk sudut, sudut membentuk bagian, bagian membentuk objek.</aside>
     </section>
 
-    <section class="section-slide" style="background: radial-gradient(circle at 50% 50%, rgba(23,146,153,0.06) 0%, transparent 100%);">
+        <!-- SLIDE 13: SECTION DIVIDER 3 — EVOLUSI ARSITEKTUR CNN -->
+
+<section class="section-slide" style="background: radial-gradient(circle at 50% 50%, rgba(23,146,153,0.06) 0%, transparent 100%);">
       <div class="section-slide-content">
         <span class="section-part-label section-part-teal">Bagian 3</span>
         <h1>Evolusi Arsitektur CNN</h1>
@@ -351,8 +369,12 @@
       </div>
       <aside class="notes">Masuk ke sejarah singkat CNN dan alasan residual connection diperlukan pada jaringan yang lebih dalam.</aside>
     </section>
-    <section><h2>LeNet, AlexNet, dan VGG</h2><table class="c-table"><thead><tr><th style="width:20%">Model</th><th style="width:40%">Kontribusi</th><th style="width:40%">Pelajaran desain</th></tr></thead><tbody><tr><td class="c-table-criteria">LeNet-5</td><td>CNN awal untuk pengenalan digit.</td><td>Conv → Pool → FC sudah efektif untuk pola sederhana.</td></tr><tr><td class="c-table-criteria">AlexNet</td><td>Mendorong CNN untuk ImageNet skala besar.</td><td>GPU, ReLU, dan augmentasi mengubah skala eksperimen.</td></tr><tr><td class="c-table-criteria">VGG</td><td>Menumpuk kernel kecil 3×3 secara konsisten.</td><td>Kedalaman meningkatkan abstraksi, tetapi biaya komputasi naik.</td></tr></tbody></table><aside class="notes">Fokus pada ide yang dibawa tiap arsitektur, bukan menghafal semua konfigurasi layer.</aside></section>
-    <section>
+        <!-- SLIDE 14: LENET, ALEXNET, DAN VGG -->
+
+<section><h2>LeNet, AlexNet, dan VGG</h2><table class="c-table"><thead><tr><th style="width:20%">Model</th><th style="width:40%">Kontribusi</th><th style="width:40%">Pelajaran desain</th></tr></thead><tbody><tr><td class="c-table-criteria">LeNet-5</td><td>CNN awal untuk pengenalan digit.</td><td>Conv → Pool → FC sudah efektif untuk pola sederhana.</td></tr><tr><td class="c-table-criteria">AlexNet</td><td>Mendorong CNN untuk ImageNet skala besar.</td><td>GPU, ReLU, dan augmentasi mengubah skala eksperimen.</td></tr><tr><td class="c-table-criteria">VGG</td><td>Menumpuk kernel kecil 3×3 secara konsisten.</td><td>Kedalaman meningkatkan abstraksi, tetapi biaya komputasi naik.</td></tr></tbody></table><aside class="notes">Fokus pada ide yang dibawa tiap arsitektur, bukan menghafal semua konfigurasi layer.</aside></section>
+        <!-- SLIDE 15: RESNET: BELAJAR RESIDUAL -->
+
+<section>
       <h2>ResNet: Belajar Residual</h2>
       <p>ResNet membantu jaringan yang sangat dalam belajar perubahan fitur tanpa kehilangan aliran informasi dari input.</p>
 
@@ -369,10 +391,11 @@
             <path d="M106 102V48h288v61" fill="none" stroke="#40a02b" stroke-width="4" marker-end="url(#resnet-skip)"/>
             <text x="250" y="34" text-anchor="middle" fill="#40a02b" font-size="16" font-family="sans-serif" font-weight="700">skip connection</text>
             <path d="M322 134h45" stroke="#8839ef" stroke-width="3" marker-end="url(#resnet-arrow)"/>
-            <path d="M419 134h50" stroke="#179299" stroke-width="3" marker-end="url(#resnet-arrow)"/>
+            <path d="M419 134h50" stroke="#179299" stroke-width="3" marker-end="url(#resnet-out)"/>
             <text x="466" y="124" text-anchor="middle" fill="#179299" font-size="16" font-family="sans-serif" font-weight="700">y</text>
             <defs>
               <marker id="resnet-arrow" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8z" fill="#8839ef"/></marker>
+<marker id="resnet-out" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8z" fill="#179299"/></marker>
               <marker id="resnet-skip" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8z" fill="#40a02b"/></marker>
             </defs>
           </svg>
@@ -389,7 +412,7 @@
       <aside class="notes">Jelaskan bahwa residual block memiliki dua jalur: jalur transformasi yang mempelajari F(x) dan jalur skip connection yang meneruskan input x. Keduanya dijumlahkan menjadi y = F(x) + x. Jalur langsung ini membantu aliran gradien dan memungkinkan backbone yang lebih dalam seperti ResNet-50.</aside>
     </section>
 
-    <!-- SLIDE: BIG IDEA — INDUCTIVE BIAS -->
+        <!-- SLIDE 16: BIG IDEA — INDUCTIVE BIAS -->
     <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Big Idea: Inductive Bias">
       <div class="big-idea-canvas">
         <h2 class="big-idea-question">
@@ -404,7 +427,7 @@
       </aside>
     </section>
 
-    <!-- SLIDE: VISION TRANSFORMER — PERGESERAN INDUCTIVE BIAS -->
+        <!-- SLIDE 17: VISION TRANSFORMER — PERGESERAN INDUCTIVE BIAS -->
     <section>
       <h2>Vision Transformer: Pergeseran Inductive Bias</h2>
       <p><strong>Inductive bias</strong> = asumsi bawaan yang ditanam ke arsitektur agar model belajar efisien dari data terbatas.</p>
@@ -425,7 +448,7 @@
       </aside>
     </section>
 
-    <!-- SECTION 4: PRE-TRAINED MODELS & TRANSFER LEARNING -->
+        <!-- SLIDE 18: SECTION DIVIDER 4 — PRE-TRAINED MODELS & TRANSFER LEARNING -->
     <section class="section-slide" style="background: radial-gradient(circle at 80% 30%, rgba(254,100,11,0.06) 0%, transparent 100%);">
       <div class="section-slide-content">
         <span class="section-part-label section-part-peach">Bagian 4</span>
@@ -437,7 +460,9 @@
       <aside class="notes">Hubungkan ke masalah nyata: dataset khusus sering kecil, sementara model besar mahal dilatih dari awal.</aside>
 
     </section>
-    <section><h2>Dua Cara Memakai Model Pre-trained</h2>
+        <!-- SLIDE 19: DUA CARA MEMAKAI MODEL PRE-TRAINED -->
+
+<section><h2>Dua Cara Memakai Model Pre-trained</h2>
         <div class="grid-2" style="margin-top:25px">
             <div class="c-card c-card-blue c-card-accent-top">
                 <h3 style="color: var(--ctp-blue)">Feature Extraction</h3><p>Bekukan (<em>freeze</em>) backbone, buang layer classifier atau <em>head</em>, gunakan outputnya sebagai vektor fitur.</p>
@@ -455,22 +480,24 @@
         <aside class="notes">Hari ini hands-on memilih feature extraction agar fokus pada representasi, bukan pelatihan.</aside>
     </section>
 
-    <section>
+        <!-- SLIDE 20: DATA AUGMENTATION -->
+
+<section>
       <h2>Data Augmentation</h2>
       <p>Augmentasi menghasilkan variasi (logis) gambar agar model tidak menghafal sampel data latih.</p>
 
       <div class="grid-2" style="margin-top: 16px;">
         <div class="diagram-canvas" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px; overflow: hidden;">
           <svg viewBox="0 0 420 230" role="img" aria-label="Contoh transformasi augmentasi gambar: rotasi, perubahan warna, dan occlusion">
-            <rect x="24" y="42" width="92" height="132" rx="10" fill="#89b4fa" stroke="#1e66f5" stroke-width="3"/>
-            <circle cx="70" cy="88" r="24" fill="#f9e2af"/><path d="M45 145 Q70 112 95 145" fill="none" stroke="#8839ef" stroke-width="8" stroke-linecap="round"/>
+            <rect x="24" y="42" width="92" height="132" rx="10" fill="#1e66f5" fill-opacity="0.14" stroke="#1e66f5" stroke-width="3"/>
+            <circle cx="70" cy="88" r="24" fill="#fe640b" fill-opacity="0.85"/><path d="M45 145 Q70 112 95 145" fill="none" stroke="#8839ef" stroke-width="8" stroke-linecap="round"/>
             <text x="70" y="198" text-anchor="middle" fill="#4c4f69" font-size="15" font-family="sans-serif" font-weight="700">Input</text>
             <path d="M132 108h42" stroke="#8839ef" stroke-width="3" marker-end="url(#aug-arrow)"/>
-            <rect x="190" y="42" width="92" height="132" rx="10" fill="#89dceb" stroke="#179299" stroke-width="3" transform="rotate(8 236 108)"/>
-            <circle cx="236" cy="88" r="24" fill="#f9e2af" transform="rotate(8 236 108)"/><path d="M211 145 Q236 112 261 145" fill="none" stroke="#8839ef" stroke-width="8" stroke-linecap="round" transform="rotate(8 236 108)"/>
+            <rect x="190" y="42" width="92" height="132" rx="10" fill="#179299" fill-opacity="0.14" stroke="#179299" stroke-width="3" transform="rotate(8 236 108)"/>
+            <circle cx="236" cy="88" r="24" fill="#fe640b" fill-opacity="0.85" transform="rotate(8 236 108)"/><path d="M211 145 Q236 112 261 145" fill="none" stroke="#8839ef" stroke-width="8" stroke-linecap="round" transform="rotate(8 236 108)"/>
             <text x="236" y="198" text-anchor="middle" fill="#4c4f69" font-size="15" font-family="sans-serif" font-weight="700">Transformasi</text>
             <path d="M298 108h42" stroke="#8839ef" stroke-width="3" marker-end="url(#aug-arrow)"/>
-            <rect x="356" y="42" width="40" height="132" rx="8" fill="#a6e3a1" stroke="#40a02b" stroke-width="3"/>
+            <rect x="356" y="42" width="40" height="132" rx="8" fill="#40a02b" fill-opacity="0.14" stroke="#40a02b" stroke-width="3"/>
             <path d="M364 145 Q376 112 388 145" fill="none" stroke="#8839ef" stroke-width="7" stroke-linecap="round"/>
             <text x="376" y="198" text-anchor="middle" fill="#4c4f69" font-size="15" font-family="sans-serif" font-weight="700">Variasi</text>
             <defs><marker id="aug-arrow" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8z" fill="#8839ef"/></marker></defs>
@@ -487,7 +514,7 @@
       <div class="c-callout c-callout-success" style="margin-top: 2px;"><span class="material-symbols-outlined icon-green">auto_fix_high</span><div>Transformasi harus mempertahankan label tetap sesuai.</div></div>
       <aside class="notes">Tekankan bahwa augmentasi bukan sekadar memperbanyak data secara acak. Transformasi harus masuk akal untuk domain dan tidak mengubah label. Flip vertikal, misalnya, bisa tidak valid untuk citra medis tertentu.</aside>
     </section>
-    <!-- SLIDE 19: LATIHAN TERBIMBING -->
+        <!-- SLIDE 21: LATIHAN TERBIMBING -->
     <section>
       <h2>Latihan Terbimbing: Mengekstrak Fitur Gambar</h2>
       <p>Dari piksel mentah ke vektor fitur 2048 dimensi dengan model pra-latih.</p>
@@ -534,7 +561,7 @@
       </aside>
     </section>
 
-    <!-- SLIDE 20: RANGKUMAN -->
+        <!-- SLIDE 22: RANGKUMAN -->
     <section>
       <h2>Rangkuman &amp; Poin Kunci</h2>
       <p>Benang merah representasi gambar dari struktur piksel hingga embedding visual berbasis model pre-trained.</p>
@@ -572,7 +599,7 @@
         Rangkum alur dari piksel ke feature map, lalu ke embedding visual. Tekankan bahwa model pre-trained memungkinkan representasi gambar digunakan kembali dalam berbagai tugas multimodal.
       </aside>
     </section>
-    <!-- SLIDE 21: DISKUSI & REFLEKSI -->
+        <!-- SLIDE 23: DISKUSI & REFLEKSI -->
     <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Diskusi Kelas">
       <h2 style="text-align: center; margin-bottom: 24px;">Diskusi Kelas</h2>
       <p style="text-align: center; margin-bottom: 24px;">Diskusikan bersama rekan di samping Anda selama 3-5 menit:</p>
@@ -584,7 +611,7 @@
       <aside class="notes">Tiga pertanyaan diskusi untuk menghubungkan struktur gambar, pilihan arsitektur, dan penggunaan model pre-trained. Beri waktu 3–5 menit, lalu minta beberapa kelompok berbagi jawaban.</aside>
     </section>
 
-    <!-- SLIDE 22: REFERENSI -->
+        <!-- SLIDE 24: REFERENSI -->
     <section>
       <h2>Referensi Utama &amp; Bacaan Lanjutan</h2>
       <p style="margin-bottom: 20px;">Rekomendasi literatur akademik wajib dan bacaan lanjutan:</p>
@@ -598,7 +625,7 @@
       <aside class="notes">Lima referensi utama mencakup fondasi CNN, AlexNet, dan ResNet, serta dokumentasi implementasi model pre-trained.</aside>
     </section>
 
-    <!-- SLIDE 23: PENUTUP -->
+        <!-- SLIDE 25: PENUTUP -->
     <section>
       <div style="margin: auto 0; text-align: center;">
         <h2 style="font-size: 1.8em; font-weight: 800; color: var(--ctp-text); margin-bottom: 16px;">Terima Kasih</h2>

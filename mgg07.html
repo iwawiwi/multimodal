@@ -592,34 +592,32 @@
           <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px; overflow: hidden;">
             <svg viewBox="0 0 400 332" role="img" aria-label="Diagram cross-attention: satu query dari teks dibandingkan dengan tiga patch visual, menghasilkan bobot perhatian alfa satu sampai tiga, lalu bobot itu mencampur nilai visual menjadi satu representasi terkontekstual" style="width: 100%; height: auto;">
               <defs>
-                <marker id="ca-arr" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#1e66f5"/></marker>
-                <marker id="ca-arr2" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#8839ef"/></marker>
+                <marker id="ca-arr" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#8839ef"/></marker>
                 <marker id="ca-arr3" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#179299"/></marker>
-                <marker id="ca-arr4" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#40a02b"/></marker>
               </defs>
 
-              <rect x="100" y="16" width="200" height="54" rx="10" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+              <rect x="100" y="16" width="200" height="54" rx="10" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
               <text x="200" y="38" text-anchor="middle" fill="#4c4f69" font-size="15" font-family="sans-serif" font-weight="700">Teks &mdash; Query</text>
               <foreignObject x="100" y="44" width="200" height="22">
-                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#1e66f5;">\(\mathbf{q}_t\)</div>
+                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#8839ef;">\(\mathbf{q}_t\)</div>
               </foreignObject>
 
-              <rect x="30" y="122" width="104" height="66" rx="10" fill="#eff1f5" stroke="#8839ef" stroke-width="3"/>
-              <text x="82" y="145" text-anchor="middle" fill="#8839ef" font-size="13" font-family="sans-serif" font-weight="700">Patch 1</text>
+              <rect x="30" y="122" width="104" height="66" rx="10" fill="#eff1f5" stroke="#1e66f5" stroke-width="3"/>
+              <text x="82" y="145" text-anchor="middle" fill="#1e66f5" font-size="13" font-family="sans-serif" font-weight="700">Patch 1</text>
               <foreignObject x="30" y="150" width="104" height="24">
-                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:15px;color:#8839ef;">\(\alpha_1 = 0{,}1\)</div>
+                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:15px;color:#1e66f5;">\(\alpha_1 = 0{,}1\)</div>
               </foreignObject>
 
-              <rect x="148" y="122" width="104" height="66" rx="10" fill="#eff1f5" stroke="#8839ef" stroke-width="3"/>
-              <text x="200" y="145" text-anchor="middle" fill="#8839ef" font-size="13" font-family="sans-serif" font-weight="700">Patch 2</text>
+              <rect x="148" y="122" width="104" height="66" rx="10" fill="#eff1f5" stroke="#1e66f5" stroke-width="3"/>
+              <text x="200" y="145" text-anchor="middle" fill="#1e66f5" font-size="13" font-family="sans-serif" font-weight="700">Patch 2</text>
               <foreignObject x="148" y="150" width="104" height="24">
-                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:15px;color:#8839ef;">\(\alpha_2 = 0{,}3\)</div>
+                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:15px;color:#1e66f5;">\(\alpha_2 = 0{,}3\)</div>
               </foreignObject>
 
-              <rect x="266" y="122" width="104" height="66" rx="10" fill="#eff1f5" stroke="#8839ef" stroke-width="3"/>
-              <text x="318" y="145" text-anchor="middle" fill="#8839ef" font-size="13" font-family="sans-serif" font-weight="700">Patch 3</text>
+              <rect x="266" y="122" width="104" height="66" rx="10" fill="#eff1f5" stroke="#1e66f5" stroke-width="3"/>
+              <text x="318" y="145" text-anchor="middle" fill="#1e66f5" font-size="13" font-family="sans-serif" font-weight="700">Patch 3</text>
               <foreignObject x="266" y="150" width="104" height="24">
-                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:15px;color:#8839ef;">\(\alpha_3 = 0{,}6\)</div>
+                <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:15px;color:#1e66f5;">\(\alpha_3 = 0{,}6\)</div>
               </foreignObject>
 
               <rect x="100" y="248" width="200" height="58" rx="10" fill="#e6e9ef" stroke="#40a02b" stroke-width="3"/>
@@ -628,9 +626,9 @@
                 <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:15px;color:#40a02b;">\(\mathbf{h}_t\)</div>
               </foreignObject>
 
-              <path d="M200 70 C200 104 82 100 82 116" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#ca-arr)"/>
-              <path d="M200 70 V116" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#ca-arr)"/>
-              <path d="M200 70 C200 104 318 100 318 116" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#ca-arr)"/>
+              <path d="M200 70 C200 104 82 100 82 116" fill="none" stroke="#8839ef" stroke-width="3" marker-end="url(#ca-arr)"/>
+              <path d="M200 70 V116" fill="none" stroke="#8839ef" stroke-width="3" marker-end="url(#ca-arr)"/>
+              <path d="M200 70 C200 104 318 100 318 116" fill="none" stroke="#8839ef" stroke-width="3" marker-end="url(#ca-arr)"/>
 
               <path d="M82 188 C82 218 200 218 200 242" fill="none" stroke="#179299" stroke-width="3" marker-end="url(#ca-arr3)"/>
               <path d="M200 188 V242" fill="none" stroke="#179299" stroke-width="3" marker-end="url(#ca-arr3)"/>
@@ -658,24 +656,23 @@
           <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 16px; overflow: hidden;">
             <svg viewBox="0 0 400 332" role="img" aria-label="Diagram arsitektur dua tahap: masukan teks dan visual masing-masing melewati encoder self-attention, lalu keduanya bertemu di lapisan cross-attention dengan query dari teks serta key dan value dari visual, dan akhirnya diteruskan ke modul fusi dan prediksi" style="width: 100%; height: auto;">
               <defs>
-                <marker id="mm-arr" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#1e66f5"/></marker>
-                <marker id="mm-arr2" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#8839ef"/></marker>
+                <marker id="mm-arr" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#8839ef"/></marker>
+                <marker id="mm-arr2" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#1e66f5"/></marker>
                 <marker id="mm-arr3" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#179299"/></marker>
-                <marker id="mm-arr4" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#40a02b"/></marker>
               </defs>
 
-              <rect x="26" y="14" width="156" height="46" rx="10" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+              <rect x="26" y="14" width="156" height="46" rx="10" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
               <text x="104" y="43" text-anchor="middle" fill="#4c4f69" font-size="17" font-family="sans-serif" font-weight="700">Teks</text>
 
-              <rect x="218" y="14" width="156" height="46" rx="10" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
+              <rect x="218" y="14" width="156" height="46" rx="10" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
               <text x="296" y="43" text-anchor="middle" fill="#4c4f69" font-size="17" font-family="sans-serif" font-weight="700">Visual</text>
 
-              <rect x="26" y="90" width="156" height="52" rx="10" fill="#eff1f5" stroke="#1e66f5" stroke-width="3"/>
-              <text x="104" y="112" text-anchor="middle" fill="#1e66f5" font-size="13" font-family="sans-serif" font-weight="700">Encoder Teks</text>
+              <rect x="26" y="90" width="156" height="52" rx="10" fill="#eff1f5" stroke="#8839ef" stroke-width="3"/>
+              <text x="104" y="112" text-anchor="middle" fill="#8839ef" font-size="13" font-family="sans-serif" font-weight="700">Encoder Teks</text>
               <text x="104" y="131" text-anchor="middle" fill="#4c4f69" font-size="11" font-family="sans-serif">Self-Attention</text>
 
-              <rect x="218" y="90" width="156" height="52" rx="10" fill="#eff1f5" stroke="#8839ef" stroke-width="3"/>
-              <text x="296" y="112" text-anchor="middle" fill="#8839ef" font-size="13" font-family="sans-serif" font-weight="700">Encoder Visual</text>
+              <rect x="218" y="90" width="156" height="52" rx="10" fill="#eff1f5" stroke="#1e66f5" stroke-width="3"/>
+              <text x="296" y="112" text-anchor="middle" fill="#1e66f5" font-size="13" font-family="sans-serif" font-weight="700">Encoder Visual</text>
               <text x="296" y="131" text-anchor="middle" fill="#4c4f69" font-size="11" font-family="sans-serif">Self-Attention</text>
 
               <rect x="88" y="176" width="224" height="56" rx="10" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
@@ -690,10 +687,10 @@
                 <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:15px;color:#40a02b;">\(\hat{y}\)</div>
               </foreignObject>
 
-              <path d="M104 60 V84" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#mm-arr)"/>
-              <path d="M296 60 V84" fill="none" stroke="#8839ef" stroke-width="3" marker-end="url(#mm-arr2)"/>
-              <path d="M104 142 C104 162 160 158 180 172" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#mm-arr)"/>
-              <path d="M296 142 C296 162 240 158 220 172" fill="none" stroke="#8839ef" stroke-width="3" marker-end="url(#mm-arr2)"/>
+              <path d="M104 60 V84" fill="none" stroke="#8839ef" stroke-width="3" marker-end="url(#mm-arr)"/>
+              <path d="M296 60 V84" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#mm-arr2)"/>
+              <path d="M104 142 C104 162 160 158 180 172" fill="none" stroke="#8839ef" stroke-width="3" marker-end="url(#mm-arr)"/>
+              <path d="M296 142 C296 162 240 158 220 172" fill="none" stroke="#1e66f5" stroke-width="3" marker-end="url(#mm-arr2)"/>
               <path d="M200 232 V260" fill="none" stroke="#179299" stroke-width="3" marker-end="url(#mm-arr3)"/>
             </svg>
           </div>
