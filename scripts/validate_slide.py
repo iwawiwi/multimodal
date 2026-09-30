@@ -50,6 +50,33 @@ FORBIDDEN_CTP_TOKENS = {
     'rosewater', 'flamingo', 'pink', 'red', 'yellow', 'sky',
 }
 
+# Hex literals allowed in a SLIDE deck (D-032): the Latte design system plus
+# the one derived tint documented in design-tokens.md. Anything else — a hex
+# from another flavour (Mocha #89b4fa, …), a forbidden token (#d20f39 = red,
+# #ea76cb = pink, …) or an improvised grey (#ccc) — means the diagram colour
+# code no longer matches the rest of the course.
+ALLOWED_HEX_LITERALS = {
+    '1e66f5',  # blue
+    '8839ef',  # mauve
+    '179299',  # teal
+    '40a02b',  # green
+    'fe640b',  # peach
+    'e64553',  # maroon
+    '4c4f69',  # text
+    '6c6f85',  # subtext0
+    '7c7f93',  # overlay2
+    '9ca0b0',  # overlay0
+    'ccd0da',  # surface0
+    'e6e9ef',  # mantle
+    'eff1f5',  # base
+    'dff3f2',  # derived teal tint for highlight/result boxes
+}
+
+HEX_COLOR_RE = re.compile(r'#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b')
+MARKER_DEF_RE = re.compile(
+    r'<marker\b[^>]*\bid="([^"]+)"[^>]*>(.*?)</marker>', re.DOTALL,
+)
+
 
 class TagValidator(HTMLParser):
     def __init__(self):
@@ -277,6 +304,97 @@ def check_design_compliance(content, doc_type='slide', filename=''):
                 'with .slide-btn links instead (see D-030).'
             )
             break
+
+    # 14. Arrowheads must match the colour of their own line (D-032)
+    # A mauve line ending in a teal head (or in a head that does not exist)
+    # destroys the diagram's colour code. Markers resolve document-wide: a
+    # <defs> block may live in another <svg> of the same deck.
+    marker_fill = {}
+    for marker_id, body in MARKER_DEF_RE.findall(content):
+        fill = re.search(r'fill="#([0-9a-fA-F]{6})"', body)
+        if fill:
+            marker_fill[marker_id.lower()] = fill.group(1).lower()
+
+    group_strokes = []
+    for tag_match in re.finditer(r'<(/?)(\w+)([^>]*?)(/?)>', content, re.DOTALL):
+        closing, tag, attrs, self_closing = (
+            tag_match.group(1), tag_match.group(2).lower(),
+            tag_match.group(3), tag_match.group(4),
+        )
+        if tag == 'g':
+            if closing:
+                if group_strokes:
+                    group_strokes.pop()
+            elif not self_closing:
+                stroke = re.search(r'stroke="#([0-9a-fA-F]{6})"', attrs)
+                group_strokes.append(stroke.group(1).lower() if stroke else None)
+            continue
+        if closing or tag not in (
+            'path', 'line', 'polyline', 'rect', 'circle', 'ellipse',
+        ):
+            continue
+        ref = re.search(r'marker-end="url\(#([^)]+)\)"', attrs)
+        if not ref:
+            continue
+        marker_id = ref.group(1).lower()
+        if marker_id not in marker_fill:
+            violations.append(
+                f'<{tag}> uses marker-end="url(#{ref.group(1)})" but no '
+                f'<marker id="{ref.group(1)}"> defines it (D-032).'
+            )
+            continue
+        stroke = re.search(r'stroke="#([0-9a-fA-F]{6})"', attrs)
+        stroke = stroke.group(1).lower() if stroke else next(
+            (s for s in reversed(group_strokes) if s), None,
+        )
+        if stroke and stroke != marker_fill[marker_id]:
+            violations.append(
+                f'<{tag} stroke="#{stroke}"> ends in marker "{ref.group(1)}" '
+                f'filled #{marker_fill[marker_id]} — an arrowhead must match '
+                f'its own line (D-032).'
+            )
+
+    # 15. Palette hygiene: slide colour literals come from the design system (D-032)
+    # Slide-only: the hands-on/print documents carry the Prism syntax palette
+    # (sky/sapphire/lavender + shading tints), which is documented separately.
+    if doc_type == 'slide':
+        reported = set()
+        for hex_match in HEX_COLOR_RE.finditer(content):
+            value = hex_match.group(1).lower()
+            if len(value) == 3:
+                value = ''.join(c * 2 for c in value)
+            if value in ALLOWED_HEX_LITERALS or value in reported:
+                continue
+            reported.add(value)
+            violations.append(
+                f'Hex #{value} is not part of the Latte design system — use a '
+                f'palette hex or a palette hue with fill-opacity (D-032).'
+            )
+
+    # 16. One sequential SLIDE comment per section (AGENTS.md §5)
+    # The comment is the deck's map: exactly one per <section>, numbered 1..N
+    # and placed directly above the section it describes. mgg03 shipped
+    # fourteen sections all labelled "SLIDE 3: SECTION DIVIDER" and mgg01 had no
+    # comment at all — this check closes that hole.
+    if doc_type == 'slide' and 'class="slides"' in content:
+        sections = re.findall(r'(?m)^[ \t]*<section\b', content)
+        comments = re.findall(r'<!-- SLIDE (\d+): [^>]*?-->\s*<section\b', content)
+        if len(comments) != len(sections):
+            violations.append(
+                f'{len(sections)} <section> but {len(comments)} sequential '
+                f'<!-- SLIDE N: … --> comments placed directly above a section '
+                f'— one comment per section (AGENTS.md §5).'
+            )
+        else:
+            expected = [str(i) for i in range(1, len(sections) + 1)]
+            for i, (got, want) in enumerate(zip(comments, expected)):
+                if got != want:
+                    violations.append(
+                        f'Slide comments out of order: the comment above section '
+                        f'#{i + 1} reads "SLIDE {got}" but should read '
+                        f'"SLIDE {want}" (AGENTS.md §5).'
+                    )
+                    break
 
     return violations
 
