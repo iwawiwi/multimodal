@@ -122,7 +122,7 @@
               <span class="c-num-circle c-num-teal">03</span>
               <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Etika</h4>
             </div>
-            <p>Mengidentifikasi isu bias, privasi, dan <em>fairness</em> dalam sistem multimodal.</p>
+            <p>Mengidentifikasi isu bias, privasi, dan <em>fairness</em>, serta prinsip etika dalam mengembangkan dan menggunakan model generatif.</p>
           </div>
 
           <div class="c-card c-card-accent-top c-card-peach">
@@ -142,32 +142,32 @@
       <!-- SLIDE 3: JEMBATAN PEMAHAMAN KE GENERASI -->
       <section>
         <h2>Dari Pemahaman ke Generasi</h2>
-        <p>Sampai sekarang model kita <em>membaca</em>. Mulai sekarang ia <em>menciptakan</em>.</p>
+        <p>Sampai sekarang kita belajar model yang mampu memahami (<em>comprehend</em>) data. Mulai sekarang ia mampu menciptakan (<em>generative</em>).</p>
 
         <div class="grid-2" style="margin-top: 12px;">
           <div class="c-card" style="background: var(--ctp-mantle);">
             <div class="c-card-header">
-              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Pemahaman (W10&ndash;W11)</h4>
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Model Sebelumnya</h4>
             </div>
             <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
-              <li>Captioning &mdash; mendeskripsikan gambar.</li>
-              <li>VQA &mdash; menjawab pertanyaan tentang gambar.</li>
-              <li>Sentimen &mdash; mengklasifikasi emosi.</li>
+              <li><strong>Captioning</strong> &mdash; mendeskripsikan gambar.</li>
+              <li><strong>VQA</strong> &mdash; menjawab pertanyaan tentang gambar.</li>
+              <li><strong>Sentimen</strong> &mdash; mengklasifikasi emosi.</li>
             </ul>
           </div>
           <div class="c-card" style="background: var(--ctp-mantle);">
             <div class="c-card-header">
-              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Generasi (W12)</h4>
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Model Generatif</h4>
             </div>
             <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
-              <li>Text-to-image &mdash; membuat gambar dari deskripsi.</li>
-              <li>Text-to-video &mdash; membuat video dari deskripsi.</li>
-              <li>Retrieval &mdash; menemukan konten lintas modalitas.</li>
+              <li><strong>Text-to-image</strong> &mdash; membuat gambar dari deskripsi.</li>
+              <li><strong>Text-to-video</strong> &mdash; membuat video dari deskripsi.</li>
+              <li><strong>Retrieval</strong> &mdash; menemukan konten lintas modalitas.</li>
             </ul>
           </div>
         </div>
 
-        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Perbedaan mendasar.</strong> Pemahaman memilih jawaban dari ruang yang terbatas; generasi menciptakan dari ruang yang (hampir) tak terbatas. Kesalahan pada pemahaman bisa menyesatkan; kesalahan pada generasi bisa memproduksi realitas palsu.</div></div>
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Perbedaan mendasar.</strong> <em>Pemahaman</em> memilih jawaban dari ruang yang terbatas; <em>Generasi</em> menciptakan dari ruang yang (hampir) tak terbatas. Kesalahan pada pemahaman bisa <em>menyesatkan</em>; kesalahan pada generasi bisa memproduksi <em>realitas palsu</em> atau <em>halusinasi</em>.</div></div>
 
         <aside class="notes">
           Slide ini menandai peralihan penting. Tanyakan: apa yang lebih berbahaya &mdash; model yang salah mengklasifikasi sentimen, atau model yang menghasilkan gambar palsu yang meyakinkan? Jawabannya menjelaskan mengapa etika menjadi bagian wajib di paruh generatif. Sebutkan bahwa encoder dan cross-attention yang sama tetap dipakai; yang berubah adalah arah aliran informasi (dari teks ke gambar).
@@ -189,7 +189,7 @@
       <!-- SLIDE 5: DEFINISI GENERASI -->
       <section>
         <h2>Definisi Generasi Multimodal</h2>
-        <p>Model menghasilkan konten baru dalam satu modalitas berdasarkan masukan dari modalitas lain.</p>
+        <p>Generasi multimodal (<em>Multimodal Generation</em>): model menghasilkan konten baru dalam satu modalitas berdasarkan masukan dari modalitas lain.</p>
 
         <div class="formula-hero" style="margin-top: 12px;">
           <div class="formula-label">Definisi Formal</div>
@@ -205,7 +205,7 @@
         <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Tugas kreatif, bukan pemahaman.</strong> Berbeda dengan klasifikasi atau VQA, di sini keluaran tidak dinilai benar/salah, melainkan seberapa sesuai dengan kondisi dan seberapa realistis.</div></div>
 
         <aside class="notes">
-          Bacakan rumus sebagai kalimat: hasil generasi adalah sampel dari distribusi bersyarat, diberikan kondisi teks. Tekankan kata &ldquo;sampel&rdquo;: model tidak menghasilkan satu jawaban benar, melainkan salah satu kemungkinan dari banyak. Inilah yang membuat generasi bersifat probabilistik dan mengapa prompt yang sama bisa menghasilkan gambar berbeda setiap kali.
+          Bacakan rumus sebagai kalimat: hasil generasi adalah sampel dari distribusi bersyarat, diberikan kondisi teks. Tekankan kata &ldquo;sampel&rdquo;: model tidak menghasilkan satu jawaban benar, melainkan salah satu kemungkinan dari banyak. Inilah yang membuat generasi bersifat probabilistik dan mengapa prompt yang sama bisa menghasilkan gambar berbeda setiap kali. Padanan istilah yang perlu disampaikan bila mahasiswa bertanya: <em>generasi</em> adalah nama tugasnya, sedangkan <em>generatif</em> adalah sifat modelnya (<em>model generatif</em>) &mdash; karena itu judul sesi memakai &ldquo;generasi multimodal&rdquo;, bukan &ldquo;generatif multimodal&rdquo;.
         </aside>
       </section>
 
@@ -278,7 +278,7 @@
           </div>
         </div>
 
-        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Dominasi difusi.</strong> Model text-to-image terbaik saat ini berbasis difusi karena kualitas dan stabilitasnya; transformer dan CLIP sering menjadi penyedia kondisi teks di dalamnya.</div></div>
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Dominasi difusi.</strong> Model <em>text-to-image</em> terbaik saat ini berbasis difusi karena kualitas dan stabilitasnya; transformer dan CLIP sering menjadi penyedia kondisi teks di dalamnya.</div></div>
 
         <aside class="notes">
           GAN melatih dua jaringan berlawanan &mdash; generator membuat, discriminator menilai; keseimbangan keduanya sulit. VAE memampatkan data ke ruang laten dan menyampel dari sana. Difusi menambahkan noise lalu belajar membalikkannya langkah demi langkah &mdash; lebih stabil. Tekankan bahwa generator modern sering menggabungkan: difusi sebagai mesin gambar, transformer/CLIP sebagai pengkondisi teks. Ini pola fusi yang sudah dikenal.
@@ -296,7 +296,7 @@
               <h4 style="color: var(--ctp-blue); margin-bottom: 0;">DALL-E</h4>
             </div>
             <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
-              <li>Salah satu model text-to-image pertama yang sangat populer.</li>
+              <li>Salah satu model <em>text-to-image</em> pertama yang sangat populer.</li>
               <li>Menggunakan arsitektur <strong>Transformer</strong> besar.</li>
               <li>Menghasilkan gambar yang sangat kreatif dan beragam.</li>
             </ul>
@@ -306,14 +306,14 @@
               <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Stable Diffusion</h4>
             </div>
             <ul style="font-size: 0.78em; margin: 0; padding-left: 16px; line-height: 1.5;">
-              <li>Model text-to-image <strong>open-source</strong> yang efisien.</li>
+              <li>Model <em>text-to-image</em> <strong>open-source</strong> yang efisien.</li>
               <li>Menggunakan arsitektur <strong>Diffusion Model</strong>.</li>
               <li>Kualitas tinggi dengan sumber daya komputasi lebih sedikit.</li>
             </ul>
           </div>
         </div>
 
-        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Inti keduanya sama:</strong> menerima <em>prompt</em> teks (misalnya &ldquo;seekor kucing mengenakan topi astronot di bulan&rdquo;) dan menghasilkan gambar yang sesuai &mdash; menuntut pemahaman hubungan antara bahasa dan visual.</div></div>
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Inti keduanya sama:</strong> menerima <em>prompt</em> teks (misalnya &ldquo;<em>seekor kucing mengenakan topi astronot di bulan</em>&rdquo;) dan menghasilkan gambar yang sesuai &mdash; menuntut pemahaman hubungan antara bahasa dan visual.</div></div>
 
         <aside class="notes">
           Bandingkan dua model: DALL-E memakai transformer untuk memodelkan token gambar, sedangkan Stable Diffusion bekerja di ruang laten gambar dan menghilangkan noise secara iteratif. Sebutkan bahwa keterbukaan Stable Diffusion (open-source) membuatnya banyak diteliti dan dikritik &mdash; sekaligus memunculkan gelombang model turunan. Tekankan bahwa tantangan intinya tetap sama: menyelaraskan makna teks dengan piksel.
@@ -329,32 +329,32 @@
           <div class="diagram-canvas is-flow" style="background: var(--ctp-mantle); border-radius: 10px; padding: 10px; overflow: hidden;">
             <svg viewBox="0 0 400 320" role="img" aria-label="Diagram text-to-image: prompt teks melewati text encoder menjadi embedding c, lalu embedding itu mengondisikan generator gambar melalui cross-attention, menghasilkan gambar" style="width: 100%; height: auto;">
               <defs>
-                <marker id="w12-g" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#1e66f5"/></marker>
-                <marker id="w12-g2" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#179299"/></marker>
+                <marker id="w12-g4" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#40a02b"/></marker>
+                <marker id="w12-g3" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0 L9 4 L0 8 Z" fill="#8839ef"/></marker>
               </defs>
 
               <text x="200" y="18" text-anchor="middle" fill="#4c4f69" font-size="13.5" font-family="sans-serif" font-weight="700">Prompt Teks</text>
               <text x="200" y="36" text-anchor="middle" fill="#6c6f85" font-size="10.5" font-family="sans-serif" font-style="italic">&ldquo;kucing astronot di bulan&rdquo;</text>
 
-              <path d="M200 44 V62" fill="none" stroke="#1e66f5" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w12-g)"/>
+              <path d="M200 44 V62" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w12-g3)"/>
 
-              <rect x="110" y="66" width="180" height="38" rx="8" fill="#e6e9ef" stroke="#1e66f5" stroke-width="3"/>
+              <rect x="110" y="66" width="180" height="38" rx="8" fill="#e6e9ef" stroke="#8839ef" stroke-width="3"/>
               <text x="200" y="90" text-anchor="middle" fill="#4c4f69" font-size="12" font-family="sans-serif" font-weight="700">Text Encoder (CLIP)</text>
 
-              <path d="M200 104 V122" fill="none" stroke="#1e66f5" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w12-g)"/>
+              <path d="M200 104 V122" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w12-g3)"/>
 
               <rect x="130" y="126" width="140" height="30" rx="7" fill="#eff1f5" stroke="#8839ef" stroke-width="2"/>
-              <foreignObject x="130" y="130" width="140" height="22"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:13.5px;color:#8839ef;">\(\mathbf{c}\) (embedding teks)</div></foreignObject>
+              <foreignObject x="130" y="130" width="140" height="22"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;text-align:center;line-height:22px;font-size:13.5px;color:#8839ef;">\(\mathbf{c}\) (embedding teks)</div></foreignObject>
 
-              <path d="M200 156 V174" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w12-g2)"/>
+              <path d="M200 156 V174" fill="none" stroke="#8839ef" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w12-g3)"/>
 
               <rect x="85" y="178" width="230" height="46" rx="8" fill="#e6e9ef" stroke="#179299" stroke-width="3"/>
               <text x="200" y="198" text-anchor="middle" fill="#4c4f69" font-size="12" font-family="sans-serif" font-weight="700">Generator (Diffusion / GAN)</text>
-              <foreignObject x="85" y="202" width="230" height="20"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:11.5px;color:#179299;">dikondisikan lewat cross-attention \(\mathbf{c}\)</div></foreignObject>
+              <foreignObject x="85" y="202" width="230" height="20"><div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;text-align:center;line-height:20px;font-size:11.5px;color:#179299;">dikondisikan lewat cross-attention \(\mathbf{c}\)</div></foreignObject>
 
-              <path d="M200 224 V244" fill="none" stroke="#179299" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w12-g2)"/>
+              <path d="M200 224 V244" fill="none" stroke="#40a02b" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#w12-g4)"/>
 
-              <rect x="120" y="248" width="160" height="36" rx="8" fill="#dff3f2" stroke="#179299" stroke-width="2.5"/>
+              <rect x="120" y="248" width="160" height="36" rx="8" fill="#e6e9ef" stroke="#40a02b" stroke-width="2.5"/>
               <text x="200" y="271" text-anchor="middle" fill="#4c4f69" font-size="12" font-family="sans-serif" font-weight="700">Gambar Hasil</text>
             </svg>
           </div>
@@ -529,7 +529,7 @@
           <span class="section-part-label section-part-maroon">Bagian 3</span>
           <h1>Etika &amp; Dampak Sosial</h1>
           <p class="subtitle">
-            Bias, privasi, dan <em>fairness</em>: tanggung jawab yang datang bersama kemampuan mencipta.
+            Bias, privasi, <em>fairness</em>, sampai etika pengembangan dan penggunaan: tanggung jawab yang datang bersama kemampuan mencipta.
           </p>
         </div>
         <aside class="notes">Bagian terakhir berpindah dari teknis ke etis. Tekankan bahwa ini bukan bagian &ldquo;pelengkap&rdquo;: sistem multimodal yang kuat dapat memperkuat bias dan merusak privasi pada skala besar. Mahasiswa yang akan membangun sistem pada proyek akhir perlu memahami risiko ini sejak awal, bukan setelah sistem dipakai.</aside>
@@ -636,7 +636,73 @@
         </aside>
       </section>
 
-      <!-- SLIDE 20: STUDI KASUS ETIKA RUMUSAN -->
+      <!-- SLIDE 20: ETIKA PENGEMBANGAN MODEL -->
+      <section>
+        <h2>Etika dalam Pengembangan Model</h2>
+        <p>Tanggung jawab yang menyertai setiap tahap pembuatan model generatif:</p>
+
+        <div class="grid-3" style="margin-top: 10px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Data &amp; Izin</h4>
+            </div>
+            <p>Lacak asal data (<em>provenance</em>), pastikan izin dan lisensi karya, serta hormati permintaan <em>opt-out</em> pemilik karya. Audit keterwakilan kelompok <em>sebelum</em> pelatihan dimulai, bukan setelah model terlanjur dirilis.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Audit &amp; Dokumentasi</h4>
+            </div>
+            <p>Uji <em>red-team</em> dan ukur kinerja per kelompok sebelum rilis. Catat asal dataset, tujuan pemakaian, dan keterbatasan model dalam dokumentasi yang bisa dibaca pihak lain &mdash; termasuk pengguna.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Rilis &amp; Pengamanan</h4>
+            </div>
+            <p>Sediakan penyaring keluaran serta penandaan konten (<em>watermark</em>, metadata asal-usul). Hitung juga biaya non-teknis: konsumsi energi dan kerja anotasi manusia di balik model.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Prinsipnya: dokumentasikan dan audit.</strong> Risiko yang tercatat bisa dikelola; risiko yang disembunyikan akan muncul kembali sebagai kerugian nyata &mdash; biasanya menimpa kelompok yang paling lemah posisinya.</div></div>
+
+        <aside class="notes">
+          Slide ini memindahkan etika dari &ldquo;dampak setelah jadi&rdquo; ke &ldquo;keputusan saat membangun&rdquo;. Empat pertanyaan praktis untuk pengembang: dari mana datanya, bolehkah dipakai, untuk siapa model ini gagal, dan apa yang dijanjikan ke pengguna? Tekankan bahwa audit sebelum rilis jauh lebih murah daripada penarikan model setelah dipakai luas. Kartu ketiga menyambung ke referensi Crawford [4]: biaya energi dan tenaga kerja anotasi adalah bagian dari etika, bukan urusan teknis terpisah. Ini juga mulai menyiapkan proyek akhir: dokumentasi dataset dan model akan diminta pada laporan akhir.
+        </aside>
+      </section>
+
+      <!-- SLIDE 21: ETIKA PENGGUNAAN MODEL -->
+      <section>
+        <h2>Etika dalam Penggunaan Model</h2>
+        <p>Tanggung jawab pengguna: dari keterbukaan sampai akuntabilitas:</p>
+
+        <div class="grid-3" style="margin-top: 8px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Transparansi &amp; Pelabelan</h4>
+            </div>
+            <p>Ungkapkan bahwa konten dihasilkan atau disunting AI, dan verifikasi sebelum menyebarkan. AI boleh membantu tugas, tetapi wajib dinyatakan.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Hak &amp; Izin</h4>
+            </div>
+            <p>Hak cipta keluaran dan peniruan gaya seniman masih diperdebatkan; izin atas wajah dan suara (<em>likeness</em>) wajib. Konten intim tanpa persetujuan adalah pelanggaran hukum.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Akuntabilitas &amp; Regulasi</h4>
+            </div>
+            <p>Tanggung jawab berlapis: pengguna, pengembang, penyedia layanan. Jaga pengawasan manusia atas keputusan berdampak, dan patuhi kerangka yang berlaku: UNESCO (2021), UU PDP No. 27/2022, AI Act Uni Eropa (2024).</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Tiga kata kunci pengguna: ungkapkan, verifikasi, tanggung jawab.</strong> Model yang paling canggih sekalipun tidak memindahkan tanggung jawab dari manusia yang memutuskan untuk memakainya.</div></div>
+
+        <aside class="notes">
+          Pasangan slide sebelumnya: kalau slide pengembangan berbicara tentang apa yang boleh dirilis, slide ini tentang apa yang boleh disebarkan. Mulai dari yang paling dekat dengan mahasiswa: pengungkapan penggunaan AI dalam tugas dan laporan. Lanjut ke hak &amp; izin &mdash; tanyakan apakah meniru gaya seorang seniman itu boleh; jawabannya belum seragam antar-yurisdiksi, dan justru itu intinya. Tutup dengan akuntabilitas berlapis: pengguna menanggung keputusan, tetapi pengembang dan penyedia menanggung desain dan kebijakan. Tiga kerangka yang disebut di kartu ketiga adalah rujukan nyata: UNESCO (rekomendasi etika AI), UU PDP (pelindungan data pribadi Indonesia), dan AI Act Uni Eropa (regulasi berbasis risiko).
+        </aside>
+      </section>
+
+      <!-- SLIDE 22: STUDI KASUS ETIKA RUMUSAN -->
       <section>
         <h2>Studi Kasus: Rumusan Masalah</h2>
         <p>Pengguna menulis prompt netral. Mengapa keluaran model tidak netral?</p>
@@ -671,7 +737,7 @@
         </aside>
       </section>
 
-      <!-- SLIDE 21: STUDI KASUS ETIKA PENERAPAN -->
+      <!-- SLIDE 23: STUDI KASUS ETIKA PENERAPAN -->
       <section>
         <h2>Studi Kasus: Penerapan</h2>
         <p>Mengukur bias dan menilai dua strategi mitigasi.</p>
@@ -706,7 +772,7 @@
         </aside>
       </section>
 
-      <!-- SLIDE 22: STUDI KASUS ETIKA ANALISIS -->
+      <!-- SLIDE 24: STUDI KASUS ETIKA ANALISIS -->
       <section>
         <h2>Studi Kasus: Analisis</h2>
         <p>Dari akar masalah ke tindakan mitigasi.</p>
@@ -739,7 +805,7 @@
         </aside>
       </section>
 
-      <!-- SLIDE 23: KETIKA GENERASI GAGAL -->
+      <!-- SLIDE 25: KETIKA GENERASI GAGAL -->
       <section>
         <h2>Ketika Generasi Gagal</h2>
         <p>Mode kegagalan yang menentukan risiko sosial sistem generatif:</p>
@@ -772,7 +838,7 @@
         </aside>
       </section>
 
-      <!-- SLIDE 24: ARAH RISET -->
+      <!-- SLIDE 26: ARAH RISET -->
       <section>
         <h2>Arah Penelitian Masa Depan</h2>
         <p>Tujuh tantangan yang membentuk agenda riset multimodal:</p>
@@ -811,7 +877,7 @@
         </aside>
       </section>
 
-      <!-- SLIDE 25: RANGKUMAN -->
+      <!-- SLIDE 27: RANGKUMAN -->
       <section>
         <h2>Rangkuman &amp; Poin Kunci</h2>
         <p>Kemampuan mencipta dan tanggung jawab yang menyertainya:</p>
@@ -835,6 +901,7 @@
               <li><strong>Bias</strong> &rarr; direplikasi dan diperbesar dari data; bahaya <em>shortcut</em> dan stereotip.</li>
               <li><strong>Privasi</strong> &rarr; data multimodal sulit dianonimkan dan sarat informasi sensitif.</li>
               <li><strong>Fairness</strong> &rarr; definisi dan pengukuran diperdebatkan; mitigasi berkelanjutan.</li>
+              <li><strong>Pengembangan &amp; penggunaan</strong> &rarr; izin dan asal data, audit dan dokumentasi, pengungkapan, serta tanggung jawab berlapis.</li>
             </ul>
           </div>
         </div>
@@ -844,7 +911,7 @@
         </aside>
       </section>
 
-      <!-- SLIDE 26: DISKUSI -->
+      <!-- SLIDE 28: DISKUSI -->
       <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Diskusi Kelas">
         <h2 style="text-align: center; margin-bottom: 24px;">Diskusi Kelas</h2>
         <p style="text-align: center; margin-bottom: 24px;">Diskusikan bersama rekan di samping Anda selama 3&ndash;5 menit:</p>
@@ -856,21 +923,24 @@
         <aside class="notes">Tiga pertanyaan bergerak dari pencegahan (1), ke pertanggungjawaban (2), ke tata kelola (3). Pertanyaan kedua sengaja sulit: jawabannya mencakup pengguna, pengembang, penyedia platform, dan regulator. Ketiga menyentuh ketegangan nyata antara inovasi dan pengamanan. Beri waktu 3&ndash;5 menit, lalu minta beberapa kelompok berbagi pandangan.</aside>
       </section>
 
-      <!-- SLIDE 27: REFERENSI -->
+      <!-- SLIDE 29: REFERENSI -->
       <section>
-        <h2>Referensi &amp; Bacaan Lanjutan</h2>
-        <p style="margin-bottom: 20px;">Rekomendasi literatur akademik wajib dan bacaan lanjutan:</p>
+        <h2 style="margin-bottom: 8px;">Referensi &amp; Bacaan Lanjutan</h2>
+        <p style="font-size: 0.78em; margin-bottom: 6px;">Literatur akademik wajib, ditambah rujukan kebijakan dan panduan etika:</p>
         <ol style="list-style: none; padding: 0; margin: 0; counter-reset: ref-counter;">
-          <li style="counter-increment: ref-counter; padding: 13px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[1]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Ramesh, A., et al. (2021).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Zero-Shot Text-to-Image Generation</em>. ICML. &mdash; paper DALL-E.</p></div></li>
-          <li style="counter-increment: ref-counter; padding: 13px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[2]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Rombach, R., et al. (2022).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>High-Resolution Image Synthesis with Latent Diffusion Models</em>. CVPR. &mdash; dasar Stable Diffusion.</p></div></li>
-          <li style="counter-increment: ref-counter; padding: 13px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[3]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Radford, A., et al. (2021).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Learning Transferable Visual Models From Natural Language Supervision</em>. ICML. &mdash; CLIP, dasar ruang embedding bersama.</p></div></li>
-          <li style="counter-increment: ref-counter; padding: 13px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[4]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Crawford, K. (2021).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Atlas of AI: Power, Politics, and the Planetary Costs of Artificial Intelligence</em>. Yale University Press. &mdash; untuk isu etika yang lebih luas.</p></div></li>
-          <li style="counter-increment: ref-counter; padding: 13px 0; display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[5]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.86em; line-height: 1.35;">Goodfellow, I., Bengio, Y., &amp; Courville, A. (2016).</p><p style="font-size: 0.78em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Deep Learning</em>. MIT Press. &mdash; Bab 20, model generatif.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 8px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[1]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 0; font-size: 0.80em; line-height: 1.32;">Ramesh, A., et al. (2021).</p><p style="font-size: 0.72em; color: var(--ctp-subtext1); margin: 0; line-height: 1.35;"><em>Zero-Shot Text-to-Image Generation</em>. ICML. &mdash; paper DALL-E.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 8px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[2]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 0; font-size: 0.80em; line-height: 1.32;">Rombach, R., et al. (2022).</p><p style="font-size: 0.72em; color: var(--ctp-subtext1); margin: 0; line-height: 1.35;"><em>High-Resolution Image Synthesis with Latent Diffusion Models</em>. CVPR. &mdash; dasar Stable Diffusion.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 8px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[3]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 0; font-size: 0.80em; line-height: 1.32;">Radford, A., et al. (2021).</p><p style="font-size: 0.72em; color: var(--ctp-subtext1); margin: 0; line-height: 1.35;"><em>Learning Transferable Visual Models From Natural Language Supervision</em>. ICML. &mdash; CLIP, dasar ruang embedding bersama.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 8px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[4]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 0; font-size: 0.80em; line-height: 1.32;">Crawford, K. (2021).</p><p style="font-size: 0.72em; color: var(--ctp-subtext1); margin: 0; line-height: 1.35;"><em>Atlas of AI: Power, Politics, and the Planetary Costs of Artificial Intelligence</em>. Yale University Press. &mdash; kritik etika AI.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 8px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[5]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 0; font-size: 0.80em; line-height: 1.32;">UNESCO (2021).</p><p style="font-size: 0.72em; color: var(--ctp-subtext1); margin: 0; line-height: 1.35;"><em>Recommendation on the Ethics of Artificial Intelligence</em>. &mdash; kerangka etika AI internasional.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 8px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[6]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 0; font-size: 0.80em; line-height: 1.32;">Republik Indonesia (2022).</p><p style="font-size: 0.72em; color: var(--ctp-subtext1); margin: 0; line-height: 1.35;"><em>UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi</em>. &mdash; dasar hukum privasi di Indonesia.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 8px 0; display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[7]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 0; font-size: 0.80em; line-height: 1.32;">Uni Eropa (2024).</p><p style="font-size: 0.72em; color: var(--ctp-subtext1); margin: 0; line-height: 1.35;"><em>AI Act</em> (Regulation (EU) 2024/1689). &mdash; regulasi AI berbasis risiko.</p></div></li>
         </ol>
-        <aside class="notes">Lima referensi: dua paper model generatif (DALL-E, Latent Diffusion), satu paper CLIP sebagai dasar retrieval, satu buku etika AI (Crawford), dan buku teks Deep Learning untuk dasar generatif. Sebutkan bahwa Crawford menawarkan perspektif kritis yang melengkapi sisi teknis &mdash; penting agar mahasiswa melihat biaya sosial dari sistem yang mereka bangun.</aside>
+
+        <aside class="notes">Tujuh referensi: tiga paper yang menyokong materi generasi (DALL-E, Latent Diffusion, dan CLIP sebagai dasar ruang embedding bersama), satu buku etika AI (Crawford, yang menawarkan perspektif kritis ~ agar mahasiswa melihat biaya sosial dari sistem yang mereka bangun), ditambah tiga instrumen kebijakan yang disebut pada slide etika pengembangan dan penggunaan: rekomendasi UNESCO (2021), UU Pelindungan Data Pribadi (2022) di Indonesia, dan AI Act Uni Eropa (2024). Tunjukkan bahwa ketiganya nyata dan dapat dirujuk saat menyusun laporan atau TOR proyek.</aside>
       </section>
 
-      <!-- SLIDE 28: PENUTUP -->
+      <!-- SLIDE 30: PENUTUP -->
       <section>
         <div style="margin: auto 0; text-align: center;">
           <h2 style="font-size: 1.8em; font-weight: 800; color: var(--ctp-text); margin-bottom: 16px;">Terima Kasih</h2>
@@ -900,7 +970,7 @@
         <span class="material-symbols-outlined">chevron_left</span>
       </button>
       <button type="button" class="deck-counter-btn" onclick="Reveal.toggleOverview()" title="Klik untuk Matriks Seluruh Slide (Esc/O)">
-        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">28</span>
+        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">30</span>
       </button>
       <button type="button" class="deck-footer-btn" onclick="Reveal.next()" title="Slide Berikutnya (→ / Space / N)" aria-label="Slide Berikutnya">
         <span class="material-symbols-outlined">chevron_right</span>
