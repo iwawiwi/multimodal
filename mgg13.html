@@ -385,7 +385,7 @@
           </div>
           <div class="c-card c-card-accent-top c-card-teal">
             <div class="c-card-header">
-              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Wajib untuk Generatif</h4>
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Wajib untuk Model Generatif</h4>
             </div>
             <p>Sangat penting untuk model generatif atau tugas kompleks yang jawabannya subjektif.</p>
           </div>
@@ -696,33 +696,33 @@
         <p>Empat langkah pertama:</p>
 
         <div class="narrative-pane" style="max-width: 880px; margin-top: 14px;">
-          <div class="narrative-step"><strong>01. Definisikan Tujuan</strong> Apa yang ingin dicapai? Perbandingan model? Identifikasi kelemahan? Validasi produksi? Tujuan menentukan metrik.</div>
-          <div class="narrative-step"><strong>02. Pilih Metrik Sesuai</strong> Gunakan kombinasi metrik yang relevan dengan tugas dan karakteristik data &mdash; jangan satu metrik saja.</div>
-          <div class="narrative-step"><strong>03. Analisis Kesalahan Sistematis</strong> Jangan berhenti di angka; pahami mengapa model membuat kesalahan dan kategorikan penyebabnya.</div>
-        </div>
+          <div class="narrative-step"><strong style="display: inline;">01. Definisikan Tujuan</strong> &mdash; Apa yang ingin dicapai? Perbandingan model? Identifikasi kelemahan? Validasi produksi? Tujuan menentukan metrik.</div>
+          <div class="narrative-step"><strong style="display: inline;">02. Pilih Metrik Sesuai</strong> &mdash; Gunakan kombinasi metrik yang relevan dengan tugas dan karakteristik data &mdash; jangan satu metrik saja.</div>
+          <div class="narrative-step"><strong style="display: inline;">03. Analisis Kesalahan Sistematis</strong> &mdash; Jangan berhenti di angka; pahami mengapa model membuat kesalahan dan kategorikan penyebabnya.</div>
+          <div class="narrative-step"><strong style="display: inline;">04. Verifikasi via Interpretasi</strong> &mdash; Gunakan teknik interpretasi model &mdash; <em>attention maps</em>, <em>feature maps</em>, atau <em>saliency maps</em> &mdash; untuk memverifikasi dugaan dari analisis kesalahan.</div>        </div>
 
-        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div><strong>Langkah keempat</strong> &mdash; gunakan teknik interpretasi model: <em>attention maps</em>, <em>feature maps</em>, atau <em>saliency maps</em> untuk memverifikasi dugaan dari analisis kesalahan.</div></div>
+
 
         <aside class="notes">
-          Tekankan bahwa langkah pertama menentukan semua langkah berikutnya: tujuan evaluasi yang tidak jelas menghasilkan metrik yang salah. Bandingkan dua tujuan &mdash; &ldquo;menulis paper&rdquo; (butuh perbandingan ketat dan signifikansi) versus &ldquo;meluncurkan produk&rdquo; (butuh uji robustness dan audit etika). Keduanya membutuhkan rangkaian evaluasi berbeda meski modelnya sama.
+          Empat langkah ini adalah fase merancang protokol evaluasi. Tekankan bahwa langkah pertama menentukan semua langkah berikutnya: tujuan evaluasi yang tidak jelas menghasilkan metrik yang salah. Bandingkan dua tujuan &mdash; &ldquo;menulis paper&rdquo; (butuh perbandingan ketat dan signifikansi) versus &ldquo;meluncurkan produk&rdquo; (butuh uji robustness dan audit etika). Keduanya membutuhkan rangkaian evaluasi berbeda meski modelnya sama.
         </aside>
       </section>
 
       <!-- SLIDE 22: STRATEGI EVALUASI 2 -->
       <section>
         <h2>Strategi Evaluasi Komprehensif (2)</h2>
-        <p>Empat langkah penutup:</p>
+        <p>Tiga langkah penutup:</p>
 
         <div class="narrative-pane" style="max-width: 880px; margin-top: 14px;">
-          <div class="narrative-step"><strong>05. Uji Robustness</strong> Evaluasi pada data bervariasi, data ber-<em>noise</em>, dan data dengan modalitas yang hilang.</div>
-          <div class="narrative-step"><strong>06. Audit Etika</strong> Lakukan audit bias dan <em>fairness</em> per subkelompok &mdash; bukan hanya metrik keseluruhan.</div>
-          <div class="narrative-step"><strong>07. Libatkan Manusia</strong> Untuk tugas generatif atau subjektif, penilaian manusia adalah standar emas. Iterasi dan perbaiki berdasarkan temuan.</div>
+          <div class="narrative-step"><strong style="display: inline;">05. Uji Robustness</strong> &mdash; Evaluasi pada data bervariasi, data ber-<em>noise</em>, dan data dengan modalitas yang hilang.</div>
+          <div class="narrative-step"><strong style="display: inline;">06. Audit Etika</strong> &mdash; Lakukan audit bias dan <em>fairness</em> per subkelompok &mdash; bukan hanya metrik keseluruhan.</div>
+          <div class="narrative-step"><strong style="display: inline;">07. Libatkan Manusia</strong> &mdash; Untuk tugas generatif atau subjektif, penilaian manusia adalah standar emas. Iterasi dan perbaiki berdasarkan temuan.</div>
         </div>
 
         <div class="c-callout c-callout-success" style="margin-top: 14px;"><span class="material-symbols-outlined icon-green">check_circle</span><div><strong>Tujuh langkah, satu lingkaran.</strong> Evaluasi bukan langkah sekali jalan di akhir, melainkan siklus: ukur, pahami, perbaiki, ulangi.</div></div>
 
         <aside class="notes">
-          Lengkapi delapan langkah dari dua slide. Tekankan langkah 5&ndash;7 sebagai yang paling sering dilewatkan: uji robustness, audit etika, dan penilaian manusia. Sambungkan ke proyek akhir: mahasiswa diharapkan memenuhi ketiganya, terutama audit bias per subkelompok. Tutup dengan gagasan bahwa evaluasi membentuk perilaku pengembangan &mdash; metrik yang dilaporkan menjadi insentif bagi tim.
+          Lengkapi tujuh langkah dari dua slide (4 + 3). Tekankan langkah 5&ndash;7 sebagai yang paling sering dilewatkan: uji robustness, audit etika, dan penilaian manusia. Sambungkan ke proyek akhir: mahasiswa diharapkan memenuhi ketiganya, terutama audit bias per subkelompok. Tutup dengan gagasan bahwa evaluasi membentuk perilaku pengembangan &mdash; metrik yang dilaporkan menjadi insentif bagi tim.
         </aside>
       </section>
 
