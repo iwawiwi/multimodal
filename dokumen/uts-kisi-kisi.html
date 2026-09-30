@@ -659,13 +659,13 @@
 </section>
 
 <section id="sec-cpmk"><h2><span class="sec-num">02</span> Capaian Pembelajaran yang Diuji</h2>
-<p>UTS menguji lima capaian pembelajaran mata kuliah (CPMK) berikut. Kode level kognitif mengikuti taksonomi Bloom (C2 = memahami, C3 = menerapkan, C4 = menganalisis, C5 = mengevaluasi).</p>
+<p>UTS menguji lima sub-capaian pembelajaran mata kuliah (sub-CPMK) berikut. Kode level kognitif mengikuti taksonomi Bloom (C2 = memahami, C3 = menerapkan, C4 = menganalisis, C5 = mengevaluasi).</p>
 <ul>
-  <li><strong>CPMK-1</strong> (C2) &mdash; Menjelaskan konsep dasar pembelajaran mesin multimodal dan tiga pilar utamanya &mdash; <em>representasi</em>, <em>penyejajaran</em>, dan <em>fusi</em> &mdash; beserta tantangannya.</li>
-  <li><strong>CPMK-2</strong> (C3&ndash;C4) &mdash; Menganalisis dan memilih representasi yang tepat untuk tiap modalitas (teks, gambar, audio/video).</li>
-  <li><strong>CPMK-3</strong> (C4) &mdash; Membandingkan dan menerapkan strategi fusi multimodal beserta <em>trade-off</em>-nya.</li>
-  <li><strong>CPMK-4</strong> (C2&ndash;C4) &mdash; Menjelaskan dan menganalisis mekanisme penyejajaran (<em>temporal</em> dan <em>struktural</em>) serta peran <em>attention</em> sebagai penyejajar.</li>
-  <li><strong>CPMK-5</strong> (C5) &mdash; Mengevaluasi rancangan arsitektur multimodal pada suatu studi kasus dan mengusulkan perbaikan berbasis alasan.</li>
+  <li><strong>sub-CPMK-1</strong> (C2) &mdash; Menjelaskan konsep dasar pembelajaran mesin multimodal dan tiga pilar utamanya &mdash; <em>representasi</em>, <em>penyejajaran</em>, dan <em>fusi</em> &mdash; beserta tantangannya.</li>
+  <li><strong>sub-CPMK-2</strong> (C3&ndash;C4) &mdash; Menganalisis dan memilih representasi yang tepat untuk tiap modalitas (teks, gambar, audio/video).</li>
+  <li><strong>sub-CPMK-3</strong> (C4) &mdash; Membandingkan dan menerapkan strategi fusi multimodal beserta <em>trade-off</em>-nya.</li>
+  <li><strong>sub-CPMK-4</strong> (C2&ndash;C4) &mdash; Menjelaskan dan menganalisis mekanisme penyejajaran (<em>temporal</em> dan <em>struktural</em>) serta peran <em>attention</em> sebagai penyejajar.</li>
+  <li><strong>sub-CPMK-5</strong> (C5) &mdash; Mengevaluasi rancangan arsitektur multimodal pada suatu studi kasus dan mengusulkan perbaikan berbasis alasan.</li>
 </ul>
 </section>
 
@@ -683,7 +683,7 @@
 
 <section id="sec-kisi"><h2><span class="sec-num">04</span> Kisi-Kisi Soal</h2>
 <table class="t-kisi">
-<thead><tr><th>No</th><th>Soal</th><th>CPMK</th><th>Materi</th><th>Indikator</th><th>Level</th><th>Bentuk</th><th>Poin</th></tr></thead><tbody>
+<thead><tr><th>No</th><th>Soal</th><th>sub-CPMK</th><th>Materi</th><th>Indikator</th><th>Level</th><th>Bentuk</th><th>Poin</th></tr></thead><tbody>
 <tr><td>1</td><td>A1</td><td>1</td><td>W01</td><td>Menjelaskan tiga pilar beserta contoh dan risiko bila lemah.</td><td>C2</td><td>Esai</td><td>15</td></tr>
 <tr><td>2</td><td>A2</td><td>2</td><td>W02&ndash;04</td><td>Membandingkan representasi teks, gambar, dan audio/video.</td><td>C3</td><td>Esai</td><td>15</td></tr>
 <tr><td>3</td><td>A3</td><td>3</td><td>W05&ndash;06</td><td>Membandingkan empat strategi fusi dan memberi contoh penerapan.</td><td>C4</td><td>Esai</td><td>15</td></tr>
@@ -745,4 +745,3 @@ function flashCopied(btn){var i=btn.querySelector('.material-symbols-outlined'),
 function toggleToc(open){var d=document.getElementById('tocDrawer'),b=document.getElementById('drawerBackdrop'),on=open===undefined?!d.classList.contains('open'):open;d.classList.toggle('open',on);b.classList.toggle('open',on);document.body.style.overflow=on?'hidden':''}function gotoSection(link){var t=document.querySelector(link.getAttribute('href'));toggleToc(false);if(t)setTimeout(function(){t.scrollIntoView({behavior:'smooth',block:'start'})},180);return false}function scrollTop(){window.scrollTo({top:0,behavior:'smooth'})}function toggleTextLarge(){var on=document.documentElement.classList.toggle('text-large'),b=document.getElementById('textLargeBtn');if(b)b.classList.toggle('active',on);try{localStorage.setItem('hands_on_text_large',on?'1':'0')}catch(e){}}(function(){try{if(localStorage.getItem('hands_on_text_large')==='1'){document.documentElement.classList.add('text-large');var b=document.getElementById('textLargeBtn');if(b)b.classList.add('active')}}catch(e){}})();document.addEventListener('keydown',function(e){if(e.key==='Escape')toggleToc(false)});
 </script>
 </body></html>
-
