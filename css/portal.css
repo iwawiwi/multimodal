@@ -332,6 +332,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  /* `flex-wrap` sengaja, mengikuti `.week-card-header`: badge jadwal di kanan
+     turun ke baris kedua pada kartu sempit alih-alih meluber keluar kartu. */
+  flex-wrap: wrap;
 }
 
 .milestone-type-label {
@@ -488,6 +491,47 @@ body {
 
 .milestone-card .topic-dot {
   background: var(--ctp-peach);
+}
+
+/* Badge jadwal ujian di HEADER kartu milestone (opsi A, 2 Oktober 2026).
+   Mengikuti pola `.lab-chip`: badge header biayanya ~0px pada lebar desktop,
+   sedangkan blok penuh-lebar di dalam body kartu terukur menambah 55–105px
+   sehingga kartu milestone (dan seluruh baris „Jadwal Evaluasi") melampaui
+   tinggi kartu pertemuan. `margin-left: auto` menaruh badge di kanan tanpa
+   mengubah `justify-content` header (kartu UAS tanpa badge tetap rata kiri).
+   Yang ditampilkan hanya informasi yang mengikat: slot ruang apa adanya
+   (07.30–09.30 WIB) + status *sementara*; durasi pengerjaan ada di daftar topik.
+   Penyangga administratif (distribusi & pengumpulan lembar) sengaja TIDAK
+   disebut supaya tidak terbaca sebagai tambahan waktu — lembar soal menyatakan
+   "tidak ada perpanjangan waktu". Kalimat penuhnya ada di atribut `title`;
+   baris ini wajib disunting bersama baris *Jadwal* di `dokumen/uts-kisi-kisi.html`. */
+.exam-when {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(254, 100, 11, 0.10);
+  color: var(--ctp-maroon);
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.exam-when .material-symbols-outlined {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* Penanda status, bukan keterangan tambahan: harus tetap terbaca (bukan hanya
+   di `title`) karena jadwal prodi dapat berubah. */
+.exam-when-note {
+  font-weight: 600;
+  font-style: italic;
+  opacity: 0.85;
 }
 
 /* Card Action Buttons (Dual Buttons: Buka Slide & Ekspor PDF) */
