@@ -68,3 +68,12 @@ These placeholders in `resources/slide-template.html` are substituted from this 
 | 14 | Studi Kasus Terpadu | lecture | — |
 | 15 | Review Materi | lecture | — |
 | 16 | UAS | milestone | — |
+
+**Jadwal ujian (per 2 Oktober 2026).** UTS: **Kamis, 22 Oktober 2026, 07.30–09.30 WIB**;
+waktu pengerjaan **100 menit**, sisanya administratif (presensi, distribusi, dan pengumpulan
+lembar jawaban) sehingga **penyangga 3 menit sengaja tidak ditampilkan** ke mahasiswa —
+lembar soal menyatakan "tidak ada perpanjangan waktu". Slot dan durasi ini tampil di dua
+tempat publik yang **wajib disunting bersamaan**: `index.html` (baris jadwal di kartu UTS,
+kelas `.exam-when`) dan `dokumen/uts-kisi-kisi.html` (baris *Jadwal* pada tabel Informasi
+Umum). Statusnya **sementara** sampai prodi mengeluarkan jadwal resmi — pertahankan
+penanda itu. UAS belum dijadwalkan.
