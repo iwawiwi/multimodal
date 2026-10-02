@@ -2,6 +2,11 @@
 
 Portal perkuliahan **Pembelajaran Mesin Multimodal (IF25-40304)** — Institut Teknologi Sumatera (ITERA).
 
+> **Situs kuliah: <https://iwawiwi.github.io/multimodal/>**
+> Slide tiap pertemuan (HTML) beserta PDF-nya, PDF lembar kerja hands-on, dan kisi-kisi UTS
+> tersedia di sana. PDF dibangun otomatis oleh CI dan **tidak disimpan di repositori ini**,
+> sehingga tautan PDF tidak dapat dibuka dari tampilan GitHub — bukalah lewat situs.
+
 ## Identitas Mata Kuliah
 
 | Item | Keterangan |
@@ -39,31 +44,42 @@ Portal perkuliahan **Pembelajaran Mesin Multimodal (IF25-40304)** — Institut T
 
 ## Materi Tersedia
 
+Tabel di bawah mendaftar **nama berkas** materi tiap pertemuan; seluruh berkasnya disajikan
+melalui [**situs kuliah**](https://iwawiwi.github.io/multimodal/). Nama berkas sengaja tidak
+ditautkan: berkas HTML di repositori hanya tampil sebagai kode sumber saat dibuka dari GitHub,
+dan berkas PDF memang tidak ada di repositori (lihat catatan di bawah tabel).
+
 | Pertemuan | Slide Interaktif | Dokumen PDF | Lembar Kerja |
 | :--- | :--- | :--- | :--- |
-| 01 | [mgg01.html](mgg01.html) | [pdf/mgg01.pdf](pdf/mgg01.pdf) | — |
-| 02 | [mgg02.html](mgg02.html) | [pdf/mgg02.pdf](pdf/mgg02.pdf) | [hands-on/mgg02-hands-on.html](hands-on/mgg02-hands-on.html) |
-| 03 | [mgg03.html](mgg03.html) | [pdf/mgg03.pdf](pdf/mgg03.pdf) | [hands-on/mgg03-hands-on.html](hands-on/mgg03-hands-on.html) |
-| 04 | [mgg04.html](mgg04.html) | [pdf/mgg04.pdf](pdf/mgg04.pdf) | [hands-on/mgg04-hands-on.html](hands-on/mgg04-hands-on.html) |
-| 05 | [mgg05.html](mgg05.html) | [pdf/mgg05.pdf](pdf/mgg05.pdf) | — |
-| 06 | [mgg06.html](mgg06.html) | [pdf/mgg06.pdf](pdf/mgg06.pdf) | [hands-on/mgg06-hands-on.html](hands-on/mgg06-hands-on.html) |
-| 07 | [mgg07.html](mgg07.html) | [pdf/mgg07.pdf](pdf/mgg07.pdf) | — |
-| 08 (UTS) | — | [pdf/uts-kisi-kisi.pdf](pdf/uts-kisi-kisi.pdf) *(kisi-kisi)* | — |
-| 09 | [mgg09.html](mgg09.html) | [pdf/mgg09.pdf](pdf/mgg09.pdf) | [hands-on/mgg09-hands-on.html](hands-on/mgg09-hands-on.html) |
-| 10 | [mgg10.html](mgg10.html) | [pdf/mgg10.pdf](pdf/mgg10.pdf) | — |
-| 11 | [mgg11.html](mgg11.html) | [pdf/mgg11.pdf](pdf/mgg11.pdf) | — |
-| 12 | [mgg12.html](mgg12.html) | [pdf/mgg12.pdf](pdf/mgg12.pdf) | — |
-| 13 | [mgg13.html](mgg13.html) | [pdf/mgg13.pdf](pdf/mgg13.pdf) | [hands-on/mgg13-hands-on.html](hands-on/mgg13-hands-on.html) |
-| 14 | [mgg14.html](mgg14.html) | [pdf/mgg14.pdf](pdf/mgg14.pdf) | — |
-| 15 | [mgg15.html](mgg15.html) | [pdf/mgg15.pdf](pdf/mgg15.pdf) | — |
+| 01 | `mgg01.html` | `pdf/mgg01.pdf` | — |
+| 02 | `mgg02.html` | `pdf/mgg02.pdf` | `hands-on/mgg02-hands-on.html` |
+| 03 | `mgg03.html` | `pdf/mgg03.pdf` | `hands-on/mgg03-hands-on.html` |
+| 04 | `mgg04.html` | `pdf/mgg04.pdf` | `hands-on/mgg04-hands-on.html` |
+| 05 | `mgg05.html` | `pdf/mgg05.pdf` | — |
+| 06 | `mgg06.html` | `pdf/mgg06.pdf` | `hands-on/mgg06-hands-on.html` |
+| 07 | `mgg07.html` | `pdf/mgg07.pdf` | — |
+| 08 (UTS) | — | `pdf/uts-kisi-kisi.pdf` *(kisi-kisi)* | — |
+| 09 | `mgg09.html` | `pdf/mgg09.pdf` | `hands-on/mgg09-hands-on.html` |
+| 10 | `mgg10.html` | `pdf/mgg10.pdf` | — |
+| 11 | `mgg11.html` | `pdf/mgg11.pdf` | — |
+| 12 | `mgg12.html` | `pdf/mgg12.pdf` | — |
+| 13 | `mgg13.html` | `pdf/mgg13.pdf` | `hands-on/mgg13-hands-on.html` |
+| 14 | `mgg14.html` | `pdf/mgg14.pdf` | — |
+| 15 | `mgg15.html` | `pdf/mgg15.pdf` | — |
 
-> PDF dirender otomatis oleh CI saat push — tidak disimpan di repositori. Kisi-kisi UTS bersifat publik dan tersedia sebagai PDF *dan* HTML ([dokumen/uts-kisi-kisi.html](dokumen/uts-kisi-kisi.html)); soal dan kunci ujian tidak diterbitkan di repositori ini (lihat `AGENTS.md` D-A12).
+> PDF slide tiap pertemuan dan PDF lembar kerja hands-on dirender otomatis oleh CI saat
+> push, jadi **tidak disimpan di repositori** dan hanya tersedia lewat
+> [situs kuliah](https://iwawiwi.github.io/multimodal/). Kisi-kisi UTS bersifat publik dan
+> tersedia sebagai PDF **dan** HTML (`dokumen/uts-kisi-kisi.html`); soal, kunci, dan rubrik
+> ujian tidak diterbitkan di repositori ini (lihat `AGENTS.md` D-A12).
 
 ## Situs
 
 Situs ini di-deploy ke GitHub Pages dan dapat diakses melalui:
 
 **https://iwawiwi.github.io/multimodal/**
+
+Semua PDF (slide tiap pertemuan dan lembar kerja hands-on) hanya tersedia di sana.
 
 ### Menjalankan secara lokal
 
