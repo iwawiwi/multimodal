@@ -300,7 +300,7 @@ git update-index --no-skip-worktree pdf/mggXX.pdf  # Unskip saat release
 | `mgg12.html` | ✅ Selesai, 30 slide (2 slide etika praktik: pengembangan & penggunaan) |
 | `mgg13.html` | ✅ Selesai, 27 slide |
 | `mgg14.html` | ✅ Selesai, 26 slide |
-| `mgg15.html` | ✅ Selesai, 25 slide |
+| `mgg15.html` | ✅ Selesai, 26 slide |
 | `mgg08.html` | Milestone (UTS, tanpa deck) |
 | Hands-on 02/03/04/06/09/13 | ✅ `hands-on/mggNN-hands-on.html` |
 | Tugas 02/03/04/06/09 | ✅ `.md` + `.tex` (LaTeX, `tugas-style.sty`) — didistribusikan via LMS, tidak lewat portal (D-A11) |

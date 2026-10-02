@@ -115,6 +115,62 @@ Keputusan yang sudah disetujui pengguna dan **berlaku sampai diubah eksplisit**:
   - ❌ Jangan menambahkan tautan/chip soal atau kunci di `index.html`, `README.md`,
     deck, maupun langkah build CI.
   - Aturan `.gitignore`: `tugas/uts-soal.*` dan `tugas/uts-kunci.*`.
+- **D-A13 — W14 (klinik) dan W15 (gladi bersih) wajib tercermin di deck, bukan
+  hanya di TOR.** Tahapan penilaian proyek menurut `tugas/proyek-akhir-tor.tex`:
+  - **W14 / P14 = Klinik.** Setiap kelompok membawa **draf laporan satu halaman**
+    dan melakukan *peer review* terhadap kelompok lain memakai rubrik. Deck W14
+    (slide "Dari Studi Kasus ke Proyek Anda") menyatakan agenda ini eksplisit di
+    callout, dan slide "Peta Perjalanan Satu Semester" memuat **peta proyek**
+    ringkas: `M0–M4 (P09–P13)` → **`P14 Klinik (hari ini)`** → `P15 Gladi` →
+    `P16 UAS` (strip `.pipeline-flow` varian padat — resepnya di
+    `visual-vocabulary.md`).
+  - **W15 / P15 = Gladi bersih.** Demo berjalan penuh dengan pengatur waktu
+    (10′ presentasi + 5′ tanya jawab) dan umpan balik akhir diberikan sebelum
+    penilaian. Deck W15 menyebut gladi di cover, tujuan sesi, divider Bagian 4,
+    dan penutup, serta memiliki satu slide khusus **"Gladi Bersih: Alokasi Waktu
+    & Daftar Periksa"** (alokasi 15 menit + periksa sebelum demo).
+  - Milestone berhenti di **M4** (P13: protokol evaluasi + pengajuan prediksi
+    *test* privat) — ❌ jangan mengarang "M5".
+  - ❌ Portal tetap **problem-agnostic** (D-A11): jangan pindahkan `M0–M4`, nama
+    dataset, atau pekan deliverable ke `index.html`. Deck boleh menyebut
+    milestone-nya sendiri. **Judul minggu tidak berubah** — D-A03 tetap
+    "Studi Kasus Terpadu" (W14) dan "Review Materi" (W15); status gladi
+    dikomunikasikan di dalam deck dan pada topik kartu portal.
+  - **Alasan:** TOR menetapkan P14/P15 sebagai tahapan penilaian; deck yang tidak
+    menyebutkannya membuat mahasiswa datang ke klinik tanpa draf dan ke gladi
+    tanpa pengatur waktu. Sebelumnya W14 hanya berbunyi "bawa pertanyaan konkret"
+    dan W15 berbunyi "waktu ditentukan panitia".
+- **D-A14 — Dokumen ujian (UTS): kode `sub-CPMK`, rubrik biner, dan kebijakan
+  publikasi.** Berlaku untuk dokumen ujian; pola yang sama dipakai bila kelak
+  dibuat kisi-kisi UAS.
+  - **Kode capaian = `sub-CPMK-1…5`** di semua dokumen (kisi-kisi HTML, arsip
+    `.tex`, kunci). Kode ini **turunan internal** dari CPMK mata kuliah: karena
+    mata kuliah ini pilihan, CPMK resminya sangat umum, dan **teks CPMK resmi
+    sengaja TIDAK disimpan di repo** (pemetaannya dicatat di luar repo).
+    ❌ Jangan "melengkapi" kisi-kisi dengan teks CPMK resmi, dan jangan
+    mengembalikan label `CPMK-N`.
+  - **Rubrik = biner (memenuhi/tidak memenuhi)**: `tugas/uts-kunci.tex` memakai
+    kriteria biner dengan bobot yang menjumlah tepat bobot tiap butir.
+    Konsekuensi yang wajib dijaga: kriteria majemuk dipecah ke elemen terkecil,
+    dan bila sebuah butir menuntut klaim beserta alasan, keduanya dinilai
+    sebagai kriteria yang terpisah. ❌ Jangan kembali ke "skala 0–3 + konversi proporsional"
+    tanpa persetujuan pengguna.
+  - **Rincian rubrik TIDAK ditulis di berkas publik.** Jumlah kriteria,
+    susunan kriteria, bobot per kriteria, dan naskah butir hanya boleh hidup
+    di `tugas/uts-soal.*` / `tugas/uts-kunci.*` (D-A12). `AGENTS.md`,
+    `.agents/CODEBASE.md`, kisi-kisi, dan deck **hanya** boleh menyebut
+    *sifat* penilaian (mis. “biner, memenuhi/tidak memenuhi”) — bukan isinya.
+    ❌ Jangan menambahkan contoh kriteria, cuplikan butir soal, atau hitungan
+    jumlah kriteria ke berkas mana pun yang terlacak git.
+  - **Kisi-kisi tetap boleh dibaca mahasiswa, tetapi tidak membocorkan soal**:
+    `dokumen/uts-kisi-kisi.html` memuat cakupan, sub-CPMK, level kognitif, bobot,
+    dan ekspektasi mutu generik — **tanpa** rubrik, tanpa kunci, **tanpa estimasi
+    waktu per butir**, dan indikatornya **parkasar** (jangan menyebut sub-tugas
+    per butir). Naskah soal, kunci, dan rubrik tetap rahasia (D-A12).
+  - **Alasan**: penilaian biner menuntut atomisasi kriteria — tanpa itu
+    subjektivitas hanya berpindah ke ambang; sedangkan indikator rinci plus
+    estimasi waktu per butir membuat kisi-kisi praktis menjadi skenario soal.
+
 - **D-A05 — Pola desain yang dipakai sejak mgg04** (detail di `design-decisions.md`):
   - Slide "kategori/karakteristik" → `grid-3` 3 kartu
     (`c-card c-card-{blue,mauve,teal} c-card-accent-top` + `<h3 style="color:...">`),
@@ -209,7 +265,7 @@ Keputusan yang sudah disetujui pengguna dan **berlaku sampai diubah eksplisit**:
 | `mgg12.html` | Topik Lanjutan: Generasi Multimodal & Etika | 30 | ✅ selesai |
 | `mgg13.html` | Evaluasi Model Multimodal | 27 | ✅ selesai |
 | `mgg14.html` | Studi Kasus Terpadu | 26 | ✅ selesai |
-| `mgg15.html` | Review Materi | 25 | ✅ selesai |
+| `mgg15.html` | Review Materi | 26 | ✅ selesai |
 | `mgg08.html` | — | — | milestone (UTS, tanpa deck) |
 
   > `mgg12.html` = **30 slide** (di atas target D-A02): 2 slide etika praktik

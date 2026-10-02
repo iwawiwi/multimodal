@@ -50,6 +50,11 @@ tugas/*.synctex.gz
 tugas/uts-soal.*
 tugas/uts-kunci.*
 
+# Berkas tanda tangan pengesahan (pribadi -- JANGAN di-commit)
+tugas/ttd-*.png
+tugas/ttd-*.jpg
+tugas/*-ttd.png
+
 # Source PPTX decks (not part of the published site)
 origin/
 
