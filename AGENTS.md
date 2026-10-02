@@ -171,6 +171,30 @@ Keputusan yang sudah disetujui pengguna dan **berlaku sampai diubah eksplisit**:
     subjektivitas hanya berpindah ke ambang; sedangkan indikator rinci plus
     estimasi waktu per butir membuat kisi-kisi praktis menjadi skenario soal.
 
+- **D-A15 — `README.md` = daftar nama berkas; tautannya hanya ke situs.**
+  README dibaca paling dulu di **halaman repo GitHub**, sedangkan PDF (`pdf/`)
+  memang tidak ada di repo — dibangun CI saat push (D-A11/D-A12). Akibatnya
+  tautan relatif ke berkas hasil build **mati (404)** di GitHub, dan tautan
+  relatif ke berkas HTML repo hanya menampilkan **kode sumber** — bukan slide
+  atau lembar kerja yang ter-render. Karena itu:
+  - Kolom tabel materi (`mggNN.html`, `pdf/mggNN.pdf`, `hands-on/…`) ditulis
+    sebagai **teks monospace**, bukan tautan.
+  - Satu-satunya tautan adalah **absolut ke situs produksi**
+    (`https://iwawiwi.github.io/multimodal/`): di puncak README, catatan bawah
+    tabel, dan bagian *Situs*. Ketiga tempat itu yang wajib disunting bila host
+    berubah (mis. repo dipindah ke organisasi lain).
+  - README tetap menyatakan bahwa PDF **hanya** tersedia lewat situs, dan tetap
+    **tidak** menautkan berkas tugas (D-A11).
+  - ❌ Jangan mengembalikan tautan `pdf/…` atau tautan relatif ke berkas HTML
+    dari README; ❌ jangan pula meng-hardcode URL per berkas (14 tautan) — satu
+    tautan situs sudah cukup.
+  - **Alasan**: terukur 33 tautan tak terpakai pada README sebelum perbaikan
+    (PDF → 404; HTML → tampilan kode sumber), sementara audiensnya di GitHub;
+    satu tautan situs memberi akses penuh tanpa URL per berkas yang harus ikut
+    disunting setiap kali host berpindah. Verifikasi: `pandoc -f gfm -t html
+    README.md` untuk struktur render + `curl -I` untuk tautan absolut (CI tidak
+    memeriksa tautan README).
+
 - **D-A05 — Pola desain yang dipakai sejak mgg04** (detail di `design-decisions.md`):
   - Slide "kategori/karakteristik" → `grid-3` 3 kartu
     (`c-card c-card-{blue,mauve,teal} c-card-accent-top` + `<h3 style="color:...">`),
