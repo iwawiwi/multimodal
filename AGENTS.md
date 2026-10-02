@@ -195,6 +195,34 @@ Keputusan yang sudah disetujui pengguna dan **berlaku sampai diubah eksplisit**:
     README.md` untuk struktur render + `curl -I` untuk tautan absolut (CI tidak
     memeriksa tautan README).
 
+- **D-A16 — Jadwal ujian tampil sebagai badge di HEADER kartu milestone.**
+  `index.html` menampilkan jadwal UTS/UAS pada kartu *Jadwal Evaluasi* sebagai
+  **badge di header kartu** (`.exam-when`, sejajar label `UTS`), bukan blok
+  penuh-lebar di badan kartu.
+  - **Isi badge**: hari + tanggal + penanda status — mis. `Kamis, 22 Okt 2026`
+    *(sementara)*; kalimat penuhnya di atribut `title`. Ruang header pada lebar
+    1024px hanya ~255px, jadi teks badge **wajib muat sebaris dengan label**.
+  - **Jam & durasi pengerjaan** ditulis di butir daftar kartu (mis.
+    `Pengerjaan 100 menit · 07.30–09.30 WIB`), bukan di badge.
+  - **Penyangga administratif tidak pernah ditampilkan.** Slot ruang yang
+    diumumkan prodi bisa lebih panjang daripada waktu pengerjaan (mis. 07.30–09.30
+    untuk ujian 100 menit); sisa waktunya urusan panitia (presensi, distribusi,
+    penarikan lembar). ❌ Jangan menuliskan "+3 menit buffer" di berkas publik —
+    lembar soal menyatakan "tidak ada perpanjangan waktu", sehingga angka itu
+    terbaca sebagai tambahan waktu bagi mahasiswa.
+  - **Status *sementara* wajib terlihat**, bukan hanya di `title`, selama jadwal
+    prodi belum final.
+  - **Tiga tempat wajib disunting bersama**: `index.html` (badge + butir),
+    `dokumen/uts-kisi-kisi.html` (baris *Jadwal* pada tabel Informasi Umum), dan
+    `.agents/course-config.md` (catatan jadwal pada baris minggu ujian).
+  - **Alasan**: blok penuh-lebar di badan kartu terukur menambah 55–105px; karena
+    `.milestones-grid` menyeragamkan tinggi baris, seluruh baris *Jadwal Evaluasi*
+    melampaui kartu pertemuan (1440px: +88px) — padahal tanpa blok itu kartu
+    milestone justru 4–29px lebih pendek. Sebagai badge header biayanya **0px**
+    (pola sama dengan `.lab-chip`). Teks penuh (tanggal + jam + status) terukur
+    **314px** sehingga terpotong oleh `max-width: 100%` di lebar 1024px — itulah
+    sebab informasi dipecah antara badge dan butir daftar.
+
 - **D-A05 — Pola desain yang dipakai sejak mgg04** (detail di `design-decisions.md`):
   - Slide "kategori/karakteristik" → `grid-3` 3 kartu
     (`c-card c-card-{blue,mauve,teal} c-card-accent-top` + `<h3 style="color:...">`),
