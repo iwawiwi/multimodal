@@ -1,0 +1,352 @@
+# Codebase Knowledge — Pembelajaran Mesin Multimodal (2026)
+
+> Ringkasan arsitektur, struktur file, konvensi desain, dan workflow otomasi proyek ini.
+> Ditulis otomatis saat onboarding awal.
+
+---
+
+## 1. Visi Proyek
+
+Ini adalah **portal perkuliahan web statis** untuk mata kuliah **Pembelajaran Mesin Multimodal (IF25-40304, 3 SKS)** di Program Studi Teknik Informatika, Institut Teknologi Sumatera (ITERA), semester 2026.
+
+Portal terdiri dari:
+- **Landing page** (`index.html`) — Daftar 16 pertemuan dengan kartu mingguan seragam.
+- **Slide presentasi interaktif** (`mggXX.html`) — Menggunakan **Reveal.js 5.1.0** dengan tema **Catppuccin Latte**.
+- **Desain system & skill** (`.agents/skills/lecture-slide-designer/`) — Template, token desain, script otomasi.
+
+---
+
+## 2. Struktur File
+
+```
+multimodal-v2/
+├── index.html                          # Portal perkuliahan (sticky hero + week cards grid)
+├── mgg01.html                          # Slide Pertemuan 01 (25 slide Reveal.js)
+├── hands-on/                           # Lembar kerja (mgg02/03/04/06/09/13) + kerangka
+│   └── _template.html                  # Kerangka salinan — invarian D-033 sudah tertanam
+├── css/
+│   ├── portal.css                      # Styling portal (header, cards, footer, responsive)
+│   └── catppuccin-latte.css            # Tema Reveal.js (full component system, ~600 baris)
+├── assets/img/
+│   ├── logo_1.png                      # Logo alternatif
+│   ├── logo_2.webp                      # Logo ITERA (WebP lossless, dipakai di header)
+│   ├── dikti-saintek-berdampak-black.svg
+│   ├── dikti-saintek-berdampak-color.svg  # Logo Kementerian Dikti
+│   └── (aset data: figur makalah `.webp` lossless — lihat D-031)
+├── origin/                             # Sumber PPTX asli (15 file, pertemuan 01-15)
+│   ├── Pembelajaran Mesin Multimodal - Pertemuan 01 v1.0.pptx
+│   ├── Pembelajaran Mesin Multimodal - Pertemuan 01 v0.1.pptx
+│   └── ... (sampai Pertemuan 15)
+├── pdf/
+│   └── mgg01.pdf                       # PDF hasil export (78KB, git skip-worktree)
+├── .gitignore
+└── .agents/
+    ├── CODEBASE.md                     # ← File ini
+    └── skills/lecture-slide-designer/
+        ├── SKILL.md                    # Skill definition untuk pi (desain guidelines lengkap)
+        ├── references/
+        │   └── design-tokens.md        # Token warna, tipografi, komponen, layout archetypes
+        ├── resources/
+        │   └── slide-template.html     # Template HTML untuk slide baru (placeholder {{}})
+        └── scripts/
+            ├── extract_pptx.py         # Ekstrak teks & notes dari PPTX
+            ├── validate_slide.py       # Validasi HTML (tag balancing, broken links)
+            └── export_pdf.py           # Export slide ke PDF via headless Chrome
+```
+
+---
+
+## 3. Stack Teknologi
+
+| Layer | Teknologi |
+|:---|:---|
+| Presentasi | **Reveal.js 5.1.0** (CDN) |
+| Tema Warna | **Catppuccin Latte** (custom CSS) |
+| Font | **Plus Jakarta Sans** (sans), **JetBrains Mono** (mono) via Google Fonts |
+| Ikon | **Google Material Symbols Outlined** via Google Fonts |
+| Matematika | **KaTeX 0.16.9** (CDN, via RevealMath plugin) |
+| Syntax Highlight | **highlight.js** (via RevealHighlight plugin) |
+| Speaker Notes | RevealNotes plugin (tekan `S`) |
+| PDF Export | Headless Chrome + local HTTP server (`export_pdf.py`) |
+
+**Zero npm / Zero bundler** — seluruh dependensi dimuat dari CDN. `package.json` hanya dipakai untuk pipeline PDF hands-on (Vivliostyle) dan linter; situs sendiri tidak punya build step.
+
+---
+
+## 4. Design System — Catppuccin Latte
+
+### 4.1 Palet Warna (Semantic Tokens)
+
+| Token | Hex | Peran |
+|:---|:---:|:---|
+| `--ctp-base` | `#eff1f5` | Background utama slide & portal |
+| `--ctp-mantle` | `#e6e9ef` | Background card & container |
+| `--ctp-crust` | `#dce0e8` | Surface dalam, footer |
+| `--ctp-text` | `#4c4f69` | Teks primer & heading |
+| `--ctp-subtext1` | `#5c5f77` | Teks sekunder |
+| `--ctp-blue` | `#1e66f5` | **Aksen primer** (heading, tombol, link) |
+| `--ctp-mauve` | `#8839ef` | Konsep kunci, `<code>` |
+| `--ctp-teal` | `#179299` | Arsitektur, definisi teknis |
+| `--ctp-green` | `#40a02b` | Kelebihan/positif |
+| `--ctp-peach` | `#fe640b` | Peringatan/tantangan |
+| `--ctp-maroon` | `#e64553` | Kekurangan/negatif |
+
+### 4.2 Tipografi
+
+- **Heading:** Plus Jakarta Sans, `font-weight: 800`, `letter-spacing: -0.025em`
+- **Body:** Plus Jakarta Sans, `0.84em`, `line-height: 1.5`
+- **Code/Number:** JetBrains Mono, `font-weight: 700`
+- **Zero CQI policy** — Tidak menggunakan `container-type` atau `cqi` units untuk menghindari bug layout recursion di Chromium DevTools.
+
+### 4.3 Aturan Desain Kritis
+
+1. **Zero-Badge Policy** — Tidak ada pill badge (`.c-badge`) di slide. Gunakan label tipografi bersih.
+2. **Zero-Nested-Flex** — Di dalam `.c-card`, gunakan CSS Grid, bukan nested flexbox (mencegah freeze DevTools).
+3. **Zero Viewport Height Units** — Tidak pakai `vh` di dalam slide (breaks Reveal.js transform scale).
+4. **Fragment `fade-in` Only** — Tidak ada `fade-up`, `fade-left`, dll. (mencegah layout shift).
+5. **Transition `fade` Only** — Tidak ada `zoom` (stutter pada proyektor kelas 30Hz/60Hz).
+6. **Never Fragment Tables/Formulas/Diagrams** — Fragment hanya untuk CPL dan diskusi.
+
+---
+
+## 5. Arsitektur Portal (`index.html`)
+
+### 5.1 Header (Sticky Hero)
+- **Layout:** Edge-to-edge, `position: sticky`, `backdrop-filter: blur(16px)`
+- **Kiri:** Logo ITERA + Logo Dikti (side-by-side, image only)
+- **Tengah:** Kode mata kuliah, SKS, nama prodi, judul mata kuliah
+- **Kanan:** Nama dosen & email
+
+### 5.2 Week Cards Grid
+- Grid responsif: `repeat(auto-fill, minmax(360px, 1fr))`
+- **Band 1000–1199px** dipersempit ke `minmax(300px, 1fr)` supaya 1024px (iPad
+  lanskap / jendela terbelah) tetap **3 kolom**, bukan 2 — terukur 4603→3552px
+  (−23%; 1100px −27%). Batas atas 1199px dipilih agar tidak menyisakan *notch*:
+  aturan bawaan baru memberi 3 kolom di ≥1180px (tanpa scrollbar) / ≥1195px
+  (dengan scrollbar). Prefix lengkap ada di komentar `css/portal.css`.
+- `.week-topics li` **membungkus** (tanpa `nowrap`/`ellipsis`). Sebelumnya teks
+  topik terpotong diam-diam: 1/2/2/10 baris pada 1440/1280/820/420px. Titik
+  topik dijaga sejajar baris pertama lewat `align-items: flex-start` +
+  `margin-top: 8px` pada `.topic-dot`.
+- Kartu pekan: flex column, **tanpa `min-height`** — keseragaman tinggi datang dari
+  `align-items: stretch` grid, jadi seragam **per baris**. Lantai `420px` yang lama
+  menahan semua kartu demi varian tertinggi (blok chip lab 33px di dalam body);
+  setelah chip pindah ke header, kartu ber-lab & tanpa-lab sama-sama 375px.
+  Terukur 3170→2930px (−7,6%) @1280px, dan lebih pendek di **semua** lebar.
+- Badge lab (`.lab-chip`) di **header** kartu, bukan blok di body: nomor pekan di
+  kiri, badge hijau di kanan. Labelnya **seragam "Lembar Kerja"** (terukur 107px di
+  semua kartu) supaya lebar badge dan tinggi header (29–31px) tidak lagi bervariasi;
+  sebelum diseragamkan, nama lab membuat badge 174–217px dan memaksa wrap di
+  1024/360px. Nama lab tetap ada di `title` dan `aria-label` — dan `aria-label`
+  **wajib diawali teks yang tampak** ("Lembar Kerja: …") demi WCAG 2.5.3 *Label in
+  Name*.
+- **3 state:** `active-ready` (biru, interaktif), `disabled` (abu-abu, button disabled), `milestone` (peach, untuk UTS/UAS)
+- Dual action buttons: "Buka Slide" (primary) + "Ekspor PDF" (secondary)
+- **Grid "Jadwal Evaluasi":** `.milestones-grid` (grid yang sama dengan `.weeks-grid`, termasuk band 1000–1199px) berisi tiga `.milestone-card` — **UTS**, **PROYEK**, dan **UAS** — semuanya berskeleton identik: deskripsi + 3 butir + 2 tombol. Isinya **problem-agnostic** (tanpa nama dataset, kode milestone, atau pekan deliverable) agar portal tidak perlu disunting saat soal proyek berganti; peta milestone & tenggat hidup di TOR via LMS (D-A11). Catatan fakta: **UAS = presentasi & pertanggungjawaban proyek kelompok, menggantikan ujian tertulis** (bukan ujian tulis komprehensif).
+
+### 5.3 Footer
+- Cheatsheet pintasan keyboard (compact, inline flex-wrap chips)
+- Footer institusi (copyright ITERA)
+
+---
+
+## 6. Arsitektur Slide (`mggXX.html`)
+
+### 6.1 Persistent Deck Chrome
+- **Header bar** (48px, fixed): Logo kiri, kontrol kanan (aspect ratio switcher, overview, pintasan, portal link)
+- **Progress bar** (2.5px hairline): Gradient biru-sapphire, 0%-100%
+- **Footer bar** (36px, fixed): Kode mata kuliah kiri, topic button tengah (buka popover), navigasi kanan
+
+### 6.2 Aspect Ratio Engine
+5 mode yang tersimpan di `localStorage`:
+
+| Mode | Width × Height | Target |
+|:---|:---:|:---|
+| Auto | Dynamic | Auto-detect berdasarkan rasio viewport |
+| 16:9 | 1280 × 720 | Monitor/TV FHD |
+| 16:10 | 1280 × 800 | MacBook |
+| 4:3 | 1024 × 768 | Proyektor kelas XGA |
+| Mobile | 720 × 1000+ | Smartphone |
+
+Script auto-detect di mode Auto:
+- `ratio >= 1.65` → 16:9
+- `ratio >= 1.45` → 16:10
+- `ratio < 1.15 || width <= 768` → Mobile
+- else → 4:3
+
+### 6.3 Topic Navigation Popover
+- Floating bottom-up popover di atas footer
+- Auto-generate daftar isi dari `<h2>` / `<h1>` di setiap `<section>`
+- Fitur search/filter real-time
+- Active slide highlighting + auto-scroll
+- Dismiss: click-outside atau `Esc`
+
+### 6.4 Struktur Slide Pertemuan 01 (24 slide)
+1. Cover (judul + identitas dosen)
+2. CPL / Tujuan Pembelajaran (3 kompetensi)
+3-8. Bagian 1: Apa Itu Multimodal? (definisi, motivasi, contoh)
+9-16. Bagian 2: Tantangan Fundamental (representasi, alignment, fusion)
+17-20. Bagian 3: Penerapan Model (Image Captioning, VQA, Sentimen, Retrieval, Pipeline)
+21. Rangkuman
+22. Diskusi Aktif
+23. Referensi
+24. Penutup & Teaser
+
+---
+
+## 7. 6 Academic Layout Archetypes
+
+Desain system mendefinisikan 6 pola layout yang harus digunakan secara bervariasi (≤25% card grids, ≥75% archetype lain):
+
+| # | Archetype | Class | Kapan Digunakan |
+|:---|:---|:---|:---|
+| 1 | Hero Diagram & Narrative Split | `.grid-2-1` / `.grid-1-2` + `.diagram-canvas` + `.narrative-pane` | Arsitektur deep learning, embedding space |
+| 2 | Formula Breakout | `.formula-hero` + `.formula-breakdown` + `.formula-term-box` | Fungsi loss, metrik, persamaan matematis |
+| 3 | Analytical Comparison Matrix | `.c-table` | Trade-off antar metode, evaluasi komparatif |
+| 4 | Concrete Case Showcase | `.case-showcase` + `.case-input-pane` + `.case-model-pane` | Studi kasus riil, grounding teori |
+| 5 | Horizontal Pipeline | `.pipeline-flow` + `.pipeline-step` | Alur pemrosesan end-to-end |
+| 6 | Big Idea Canvas | `.big-idea-canvas` + `.big-idea-question` + `.big-idea-takeaway` | Pertanyaan pemantik, paradoks, transisi bagian |
+
+---
+
+## 8. Modular Pedagogical Blueprint
+
+Setiap deck slide mengikuti struktur:
+
+### Invariant Anchors (wajib ada di setiap pertemuan):
+1. **Cover Slide** — Judul + identitas dosen
+2. **CPL (3 kompetensi)** — Dengan `.grid-3` dan `.c-num-circle`
+3. **Rangkuman** — Grid takeaway cards
+4. **Diskusi Aktif** — 3 pertanyaan terbuka
+5. **Referensi** — Sitasi akademik
+6. **Penutup & Teaser** — Preview pertemuan berikutnya
+
+### Fluid Core Modules (12-18 slide inti):
+Dipilih berdasarkan **topik typology**:
+
+| Typology | Topik Contoh | Archetype Chain |
+|:---|:---|:---|
+| Teoritis & Matematis | InfoNCE, Contrastive Loss | Big Idea → Formula → Table |
+| Arsitektur & DL | CLIP, Cross-Attention | Diagram → Pipeline → Table |
+| Sistem & Aplikasi | VQA, Image Captioning | Case → Pipeline → Table |
+| Konseptual & Etika | Bias, Hallucination | Big Idea → Case → Table |
+
+**Volume:** 18-25 slide per pertemuan (~2-3 menit/slide untuk 50-75 menit kuliah).
+
+---
+
+## 9. Workflow Otomasi
+
+### 9.1 Ekstraksi Konten dari PPTX
+```bash
+uv run --with python-pptx python3 .agents/skills/lecture-slide-designer/scripts/extract_pptx.py "origin/<file>.pptx"
+```
+Mengambil teks, tabel, dan speaker notes dari file PPTX sumber.
+
+### 9.2 Validasi HTML
+```bash
+python3 .agents/skills/lecture-slide-designer/scripts/validate_slide.py mggXX.html
+python3 .agents/skills/lecture-slide-designer/scripts/validate_slide.py index.html
+
+Linter memuat 16 pemeriksaan. Tiga terakhir (D-032, dari audit 29 Sep 2026):
+**#14** setiap kepala panah diagram wajib sewarna garisnya (marker diresolusi
+se-dokumen; isi `<marker>` boleh `<path>`/`<polygon>`/`<circle>`), dan **#15**
+literal hex di deck wajib berasal dari palet Latte + tint turunan `#dff3f2`
+(khusus deck — dokumen hands-on/kisi-kisi memakai palet Prism), serta **#16**
+komentar `<!-- SLIDE N: … -->` wajib tepat satu per `<section>`, bernomor 1..N,
+dan menempel di atas section-nya. Salinan di `scripts/validate_slide.py` dan di
+direktori skill harus identik.
+```
+Mengecek: tag HTML seimbang, link lokal tidak broken.
+
+### 9.3 Export PDF
+```bash
+python3 .agents/skills/lecture-slide-designer/scripts/export_pdf.py mggXX.html
+```
+Menggunakan headless Chrome → render `?print-pdf` → simpan ke `pdf/mggXX.pdf`.
+
+### 9.4 Pratinjau Lokal
+```bash
+npm start          # http://127.0.0.1:8080/index.html
+```
+Setara dengan `python3 -m http.server 8080 --bind 127.0.0.1`. Path di semua HTML
+relatif, jadi harus lewat HTTP (bukan `file://`) agar CSS/font/KaTeX termuat.
+Port 8080 sengaja dipilih agar tidak bentrok dengan server sementara di
+`export_pdf.py` (8765/8766).
+
+### 9.5 Git PDF Management
+```bash
+git update-index --skip-worktree pdf/mggXX.pdf    # Hindari bloat repo
+git update-index --no-skip-worktree pdf/mggXX.pdf  # Unskip saat release
+```
+
+---
+
+## 10. Status Saat Ini
+
+| Item | Status |
+|:---|:---|
+| `index.html` (portal) | ✅ Selesai, kartu minggu + milestone UTS/UAS |
+| `mgg01.html` | ✅ Selesai, 25 slide |
+| `mgg02.html` | ✅ Selesai, 30 slide |
+| `mgg03.html` | ✅ Selesai, 25 slide |
+| `mgg04.html` | ✅ Selesai, 30 slide |
+| `mgg05.html` | ✅ Selesai, 28 slide |
+| `mgg06.html` | ✅ Selesai, 25 slide |
+| `mgg07.html` | ✅ Selesai, 27 slide |
+| `mgg09.html` | ✅ Selesai, 28 slide |
+| `mgg10.html` | ✅ Selesai, 27 slide |
+| `mgg11.html` | ✅ Selesai, 26 slide |
+| `mgg12.html` | ✅ Selesai, 30 slide (2 slide etika praktik: pengembangan & penggunaan) |
+| `mgg13.html` | ✅ Selesai, 27 slide |
+| `mgg14.html` | ✅ Selesai, 26 slide |
+| `mgg15.html` | ✅ Selesai, 26 slide |
+| `mgg08.html` | Milestone (UTS, tanpa deck) |
+| Hands-on 02/03/04/06/09/13 | ✅ `hands-on/mggNN-hands-on.html` |
+| Tugas 02/03/04/06/09 | ✅ `.md` + `.tex` (LaTeX, `tugas-style.sty`) — didistribusikan via LMS, tidak lewat portal (D-A11) |
+| Kisi-kisi UTS | ✅ `dokumen/uts-kisi-kisi.html` (terbit) + `tugas/uts-kisi-kisi.tex` (sumber) — ditautkan dari `index.html`, PDF dirender CI (D-A12) |
+| Soal & kunci UTS | ✅ `tugas/uts-soal.tex` + `uts-kunci.tex` — rahasia, di-`.gitignore`, tidak dibangun CI (D-A12) |
+| Skill & design system | ✅ Lengkap (SKILL.md, tokens, template, scripts) |
+| CI (GitHub Pages) | ✅ Export PDF slide (Chrome) + hands-on & kisi-kisi (Vivliostyle, `HANDSON_WEEK=`/`DOC=`) — tanpa TeX Live |
+
+> Status mutakhir, keputusan aktif, dan aturan kerja ada di **`AGENTS.md`**
+> (dimuat otomatis oleh pi). Dokumen ini menjelaskan arsitektur, bukan status.
+
+---
+
+## 11. Konvensi Penamaan File
+
+- Slide: `mgg{XX}.html` (2 digit, zero-padded: `mgg01.html`, `mgg02.html`)
+- PDF: `pdf/mgg{XX}.pdf`
+- Dokumen non-mingguan: `dokumen/{nama}.html` → PDF `pdf/{nama}.pdf`
+  (mis. `dokumen/uts-kisi-kisi.html` → `pdf/uts-kisi-kisi.pdf`)
+- Template placeholder: `{{WEEK_NUM_2DIGIT}}`, `{{TOPIC_TITLE}}`, `{{WEEK_NUM}}`
+
+---
+
+## 12. Catatan Teknis Penting
+
+1. **Reveal.js canvas positioning** — `.reveal` di-positioning absolut dengan `top: 50.5px` dan `bottom: 36px` untuk mengakomodasi persistent header (48px) + progress bar (2.5px) + footer (36px) = offset total ~86.5px.
+
+2. **Aspect mode CSS hooks** — Class `.aspect-mobile`, `.aspect-4-3`, `.aspect-16-10`, `.aspect-16-9` di-attach ke `document.body` oleh JavaScript, dan CSS menggunakannya sebagai responsive override (bukan container queries).
+
+3. **Debounced resize handler** — 200ms debounce dengan dimension guard (`if (cfg.width !== dim.width || cfg.height !== dim.height)`) sebelum `Reveal.configure()` untuk mencegah layout thrashing saat DevTools dibuka/di-resize.
+
+4. **PDF print mode** — URL parameter `?print-pdf&pdfSeparateFragments=false` untuk rendering PDF tanpa fragment animation.
+
+5. **Pipeline PDF dokumen (hands-on & `dokumen/`) tanpa TeX Live** —
+   `vivliostyle.config.js` memilih berkas sumber dari dua env var: `HANDSON_WEEK`
+   (mingguan, `hands-on/mggNN-hands-on.html`) atau `DOC` (non-mingguan, entri di
+   `documents{}`, mis. `DOC=uts-kisi-kisi`). Nama keluaran diturunkan dari nama
+   berkas sumber → `pdf/<namaberkas>.pdf`. Kisi-kisi UTS sengaja memakai jalur ini
+   dan **bukan** LaTeX: `xu-cheng/latex-action` adalah Docker action yang menarik
+   image TeX Live ~2,4 GB **setiap run** (runner GitHub ephemeral, tanpa cache
+   layer), sedangkan Chrome/Vivliostyle sudah tersedia untuk PDF lain. Lihat D-A12.
+
+6. **Invarian lembar kerja (hands-on)** — blok CSS `.code-window .ln/.lc` **identik
+   byte-per-byte di keenam berkas** `hands-on/*.html`, jadi setiap perubahan harus
+   diterapkan ke keenamnya sekaligus. `.lc` wajib `width: 100%` dan `.ln` wajib
+   `min-width: 48px` supaya gutter nomor baris seragam 48px; tanpa `width: 100%`
+   tabel auto membagi kelebihan lebar ke kolom nomor pada blok kode pendek
+   (`setup.sh` satu baris: 147px di W13, 59–87px di W02/W03/W04/W06/W09). Rumus di
+   badan dokumen wajib memakai `div.formula` (satu rumus satu kotak). D-033.

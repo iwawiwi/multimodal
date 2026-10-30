@@ -1,0 +1,171 @@
+/* =========================================================
+   print-formal.css — CSS cetak formal untuk build Vivliostyle.
+   Disuntikkan SETELAH CSS dokumen (menang via cascade).
+   Tidak menyentuh file layar hands-on/mggNN-hands-on.html.
+
+   Pendekatan: mengadaptasi PRINSIP tema "scholarly" Vivliostyle
+   (keterbacaan akademik, kontrol break, TOC berhalaman, running
+   header) ke dokumen computer-science hands-on — TANPA serif
+   Libre Baskerville / small-caps / hyphens yang kurang cocok untuk
+   kode dan teks teknis.
+   ========================================================= */
+
+/* ---------- 1. Page setup formal ---------- */
+@page {
+  size: A4;
+  margin: 24mm 16mm 22mm 16mm;
+
+  @top-center {
+    content: string(section-title, first);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 8pt;
+    color: #6c6f85;
+    letter-spacing: 0.02em;
+  }
+  @bottom-center {
+    content: "Halaman " counter(page) " dari " counter(pages);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 8pt;
+    color: #6c6f85;
+  }
+}
+
+/* Cover: tanpa header/footer, konten terpusat penuh */
+@page cover {
+  margin: 0;
+  @top-center { content: none; }
+  @bottom-center { content: none; }
+}
+.cover { page: cover; }
+
+/* Halaman Daftar Isi: tanpa running header (masih ada nomor halaman) */
+@page toc {
+  @top-center { content: none; }
+}
+.toc-drawer { page: toc; }
+
+/* ---------- 2. Tipografi akademik (adaptasi scholarly → CS) ---------- */
+/* Body cetak: sedikit lebih kecil + line-height longgar untuk keterbacaan
+   dokumen akademik, tanpa hyphens (risiko salah potong kata Bahasa Indonesia). */
+body {
+  font-size: 10.5pt;
+  line-height: 1.75;
+  text-align: justify;
+}
+
+/* Paragraf: indent awal tidak perlu (modern technical report), tapi beri
+   jarak antar paragraf yang jelas. */
+p {
+  margin-bottom: 0.9em;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Heading: hierarki jelas, break-after: avoid agar tidak terpisah dari isi */
+h2, h3 {
+  break-after: avoid;
+  page-break-after: avoid;
+  letter-spacing: 0.01em;
+}
+
+/* ---------- 3. Running header dinamis ---------- */
+h2 {
+  string-set: section-title content();
+}
+
+/* ---------- 4. TOC otomatis dengan nomor halaman ---------- */
+/* Di layar, .toc-drawer adalah drawer fixed. Di print (via @media print di
+   dokumen) berubah jadi blok statis. Di sini kita hanya atur tampilan TOC
+   dan pemisah leader(). */
+.toc-drawer .drawer-header {
+  border-bottom: 2px solid #1e66f5;   /* aksen scholarly: garis tegas */
+  margin-bottom: 6px;
+}
+
+.toc-list a::after {
+  content: leader(dotted) " " target-counter(attr(href url), page);
+  color: #1e66f5;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+/* Pastikan layout TOC tetap flex tanpa merusak leader() */
+.toc-list a {
+  display: flex;
+}
+
+/* ---------- 5. Section: mulai halaman baru agar TOC rapi ---------- */
+h2 {
+  break-before: page;
+}
+
+h2#sec-referensi {
+  break-before: page;
+}
+
+/* ---------- 6. Kontrol break elemen atomik ---------- */
+.code-window-header,
+.terminal-header,
+.note,
+table,
+.formula {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* Code window boleh terbelah antar halaman, header menempel baris pertama */
+.code-window { break-inside: auto; page-break-inside: auto; }
+.code-window-header { break-after: avoid; page-break-after: avoid; }
+pre { break-inside: auto; page-break-inside: auto; }
+
+/* ---------- 7. Cover: aksen scholarly (garis tebal atas) ---------- */
+/* Cover jadi halaman formal: border-top tebal warna aksen sebagai penanda
+   dokumen akademik (adaptasi dari scholarly.css `header { border-top: 8px }`). */
+.cover {
+  border-top: 10px solid #1e66f5;
+}
+
+/* ---------- 8. Warna akurat saat cetak ---------- */
+/* Vivliostyle kadang tidak menghormati `print-color-adjust` dari @media print,
+   jadi kita set warna latar secara eksplisit di sini (di-inject via --style,
+   lebih kuat daripada selector di dalam @media print dokumen). */
+.code-window,
+.code-window pre,
+.code-window pre code.hljs {
+  background: #eff1f5 !important;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.code-window-header,
+.terminal-header {
+  background: #e6e9ef !important;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.hljs-ln td.hljs-ln-numbers {
+  background: #e6e9ef !important;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.hljs-ln td.hljs-ln-code {
+  background: #eff1f5 !important;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.terminal-body {
+  background: #eff1f5 !important;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.note {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* Hapus efek interaktif yang tidak relevan di PDF */
+a:hover,
+.fn-btn:hover {
+  text-decoration: none;
+  color: inherit;
+}

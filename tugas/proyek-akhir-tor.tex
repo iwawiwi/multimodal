@@ -1,0 +1,503 @@
+% =============================================================
+%  Term of Reference — Proyek Akhir Multimodal
+%  IF25-40304 · Pembelajaran Mesin Multimodal · ITERA
+%  Pengganti UAS untuk paruh kedua semester (Pertemuan 09--16)
+% =============================================================
+\documentclass[12pt, a4paper]{article}
+
+\usepackage{tugas-style}
+
+% ── Identitas dokumen ───────────────────────────────────────
+\renewcommand{\doctitle}{Term of Reference Proyek Akhir}
+\renewcommand{\duedate}{\color{ctpBlue}\faCalendarCheck\ \ Rentang proyek: Pertemuan 09--16 \textbar\ Deliverable akhir pada UAS \faCalendarCheck}
+
+% Header: dokumen ini bukan "Tugas Individu", jadi label disesuaikan
+\lhead{{\footnotesize\color{ctpOverlay}\textsc{Proyek Akhir Multimodal}}}
+\rhead{{\footnotesize\color{ctpOverlay}\textsc{\coursenumber\ --\ \coursetitle}}}
+
+\begin{document}
+
+% ── HEADER ──────────────────────────────────────────────────
+\makeassignmentheader
+
+\hrule width0.3\textwidth
+\revisioninfo{%
+  \vhEntry{0.1}{24 September 2026}{I.W.W.}{Draf inisial Term of Reference.}
+  \vhEntry{1.0}{30 Oktober 2026}{I.W.W.}{Perapihan struktur dan bahasa: jadwal per pertemuan, bobot penilaian, pernyataan integritas, dan daftar pengumpulan.}
+}
+\hrule
+\vskip .3in
+
+\tableofcontents
+\clearpage
+
+% =============================================================
+\section{Ringkasan proyek}\label{sec:ringkasan}
+
+Proyek akhir ini menggantikan UAS tertulis. Anda dan kelompok akan membangun sebuah sistem \emph{cross-modal retrieval} pada data budaya Indonesia: diberi sebuah kalimat, sistem mencari gambar yang cocok, dan sebaliknya. Setelah itu Anda mengujinya dan menjelaskan hasilnya kepada Dosen Pengampu.
+
+Bacalah dokumen ini sampai habis sebelum mulai mengerjakan M0, dan tanyakan sejak awal bila ada yang kurang jelas.
+
+\renewcommand{\arraystretch}{1.35}
+\begin{center}\small
+\begin{tabular}{|L{3.9cm}|L{10.5cm}|}
+  \hline
+  \thead{\color{ctpBlue}Aspek} & \thead{\color{ctpBlue}Ketentuan} \\
+  \hline
+  Bentuk & Kelompok 5 mahasiswa; setiap anggota memegang satu peran. \\
+  \hline
+  Data & SEA-VL \emph{Indonesian subset}: gambar budaya Indonesia dengan \emph{caption} bahasa Indonesia dan Inggris. \emph{Split} latih dan validasi dibagikan lewat LMS; \emph{test set} disimpan Dosen Pengampu. \\
+  \hline
+  Tugas & Pencarian dua arah gambar$\leftrightarrow$teks dengan \emph{query} berbahasa Indonesia, dan klasifikasi kategori budaya secara \emph{zero-shot}. \\
+  \hline
+  Metrik & \emph{Recall@1/5/10} dan \emph{mAP@K}. \\
+  \hline
+  Aturan utama & Encoder pra-latih dibekukan; tidak ada pelatihan dari nol; tidak ada data di luar bundel. \\
+  \hline
+  Jangka waktu & Pertemuan 09--16: kick-off, lima milestone (M0--M4), klinik, dan presentasi akhir di kelas (Pertemuan 15--16). \\
+  \hline
+  Bobot & Milestone 25\% + laporan dan kode akhir 15\% + presentasi dan kontribusi 10\% (Bagian~\ref{sec:evaluation}). \\
+  \hline
+\end{tabular}
+\end{center}
+
+% =============================================================
+\section{Tujuan pembelajaran}\label{sec:objectives}
+
+Setelah proyek ini, Anda diharapkan mampu:
+
+\begin{objectives}
+  \item Merancang dan menjalankan proyek multimodal \emph{end-to-end}, dari rumusan masalah, pemilihan encoder, sampai pelaporan hasil.
+  \item Menerapkan tiga pilar mata kuliah (\emph{representasi}, \emph{penyejajaran}, dan \emph{fusi}) pada data budaya nyata, dan mengukur sumbangan masing-masing.
+  \item Mengevaluasi sistem pencarian lintas modal dengan protokol yang bebas \emph{leakage}, termasuk membedakan \emph{random split} dari \emph{grouped split}.
+  \item Menjelaskan \emph{language gap} (selisih kinerja antara \emph{query} bahasa Indonesia dan Inggris) secara kuantitatif, dan menilai dampaknya bagi pengguna berbahasa Indonesia.
+  \item Bekerja dalam tim dengan pembagian peran yang jelas dan kontribusi yang dapat dilihat dari tiap anggota.
+  \item Menjelaskan dan mempertanggungjawabkan keputusan teknis, secara lisan maupun tertulis.
+\end{objectives}
+
+% =============================================================
+\section{Catatan dan batasan}\label{sec:notes}
+
+\begin{minipage}{\linewidth}
+\begin{bclogo}[couleur=ctpBase, arrondi=0.1, logo=\bccrayon, ombre=false, couleurBord=ctpSurface, epBord=0.6]{Aturan dan batasan proyek:}
+  \begin{coloredPen}
+    \item Kelompok: lima mahasiswa, dan setiap anggota memegang satu peran dengan artefak yang dapat diperiksa (lihat Bagian~\ref{sec:peran}). Nama kelompok dan pembagian peran dikunci pada M0; perubahan setelah itu perlu persetujuan Dosen Pengampu.
+    \item Encoder dibekukan. Bobot encoder pra-latih tidak boleh diubah, dan melatih ulang atau memodifikasinya dinilai sebagai kesalahan prosedur. Lapisan kecil di atas representasi beku, seperti proyeksi atau adapter, boleh Anda latih.
+    \item Tidak ada data baru. Jangan mengunduh, membuat, atau menambal dataset, dan jangan menambahkan gambar dari sumber luar. Semua kelompok memakai data yang sama supaya perbandingannya adil.
+    \item Test set privat. Dosen Pengampu menyimpan \emph{test set} sampai Pertemuan 13, supaya angka akhir Anda mengukur kemampuan sistem pada data yang belum pernah dilihat. Mengakses, menebak, atau merekonstruksinya dengan cara apa pun sebelum waktunya dinilai sebagai pelanggaran integritas akademik.
+    \item Pernyataan integritas. Setiap kelompok menandatangani pernyataan integritas pada M0 yang menyatakan bahwa seluruh pekerjaan mengikuti aturan di atas. Formulirnya dibagikan lewat LMS dan dikumpulkan bersama proposal M0.
+    \item Pemeriksaan. Dosen Pengampu dapat menjalankan ulang kode kelompok secara acak, dan pertanyaan pada sesi presentasi dapat menyangkut asal data serta proses yang Anda tempuh. Siapa pun yang mengerjakan sendiri akan menjawabnya dengan mudah.
+    \item Cukup CPU. Semua eksperimen harus dapat dijalankan tanpa GPU, dan hasilnya dapat direproduksi Dosen Pengampu dalam waktu yang wajar, supaya semua orang bisa ikut serta. GPU boleh dipakai bila ada, asalkan hasil akhir tetap dapat dijalankan di CPU.
+    \item Hasil nyata. Semua angka yang Anda laporkan harus berasal dari eksekusi nyata. Angka karangan, atau salinan dari makalah tanpa dijalankan ulang, tidak dihitung.
+    \item Atribusi. Data berlisensi CC BY-SA 4.0. Cantumkan atribusi pada setiap laporan, \emph{notebook}, dan slide.
+  \end{coloredPen}
+\end{bclogo}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+\begin{bclogo}[couleur=ctpMantle, arrondi=0.1, logo=\bcinfo, ombre=false, couleurBord=ctpSurface, epBord=0.6]{Ekspektasi hasil}
+  Angka awal untuk \emph{query} berbahasa Indonesia akan terlihat rendah. Encoder multibahasa bawaan jauh lebih lemah untuk \emph{query} Indonesia daripada Inggris pada gambar yang sama, dan tantangan proyek ini adalah menyempitkan \emph{language gap} itu. Memilih model yang paling besar tidak menyelesaikannya. Sebagai pembanding, tebakan acak menghasilkan \emph{Recall@1} sebesar $1/N$ untuk $N$ gambar validasi. Angka \emph{baseline} yang Anda laporkan harus berasal dari reproduksi Anda sendiri pada M0.
+\end{bclogo}
+\end{minipage}
+
+% =============================================================
+\section{Peran anggota kelompok}\label{sec:peran}
+
+Setiap anggota memegang satu peran. Peran tidak dirangkap, dan setiap peran menghasilkan artefak tersendiri yang diperiksa pada milestone. Anda tetap berdiskusi dan saling membantu; perbedaannya hanya pada siapa yang bertanggung jawab atas artefaknya.
+
+\renewcommand{\arraystretch}{1.35}
+\begin{center}\small
+\begin{tabular}{|c|L{3.6cm}|L{8.6cm}|}
+  \hline
+  \thead{\color{ctpBlue}\#} & \thead{\color{ctpBlue}Peran} & \thead{\color{ctpBlue}Artefak yang diperiksa} \\
+  \hline
+  1 & Data dan Etika Data & Kode pemeriksaan duplikat dan \emph{leakage}, laporan kualitas dan keterwakilan data, penanganan lisensi dan atribusi, draf pernyataan etika. \\
+  \hline
+  2 & Baseline dan Pipeline & Kode \emph{end-to-end} yang berjalan, skrip reproduksi, tabel hasil awal. \\
+  \hline
+  3 & Eksperimen Penyejajaran/Fusi & Matriks eksperimen, kode \emph{ablation}, kurva hasil. \\
+  \hline
+  4 & Evaluasi dan Uji Kasus Sulit & Protokol evaluasi, tabel \emph{Recall@K}/\emph{mAP}, uji kasus sulit (M3), analisis kuantitatif. \\
+  \hline
+  5 & Integrasi dan Koordinasi & Laporan, slide presentasi, demo, \code{README}, log kontribusi. \\
+  \hline
+\end{tabular}
+\end{center}
+
+Patokan kontribusi tiap peran pada tiap milestone ada di tabel berikut. Anggota tetap boleh saling membantu.
+
+\renewcommand{\arraystretch}{1.35}
+\begin{center}\scriptsize
+\begin{tabular}{|L{2.3cm}|L{2.1cm}|L{2.1cm}|L{2.1cm}|L{2.1cm}|L{2.1cm}|}
+  \hline
+  \thead{\color{ctpBlue}Peran} & \thead{\color{ctpBlue}M0} & \thead{\color{ctpBlue}M1} & \thead{\color{ctpBlue}M2} & \thead{\color{ctpBlue}M3} & \thead{\color{ctpBlue}M4} \\
+  \hline
+  1 Data dan Etika Data & Memeriksa bundel (duplikat, sebaran kategori) untuk proposal & Laporan kualitas data & Audit \emph{leakage} untuk varian & Keterwakilan data dan draf etika & Pemeriksaan \emph{leakage} akhir \\
+  \hline
+  2 Baseline dan Pipeline & Reproduksi \emph{baseline} & Pipeline \emph{end-to-end} & Mendukung pipeline varian & Mendukung uji kasus sulit & Skrip reproduksi final \\
+  \hline
+  3 Eksperimen & Usul pendekatan dan hipotesis & Merancang varian M2 & Menjalankan varian dan \emph{ablation} & Menguji kombinasi & Membantu analisis hasil \\
+  \hline
+  4 Evaluasi dan Uji Kasus Sulit & Menetapkan metrik dan cara menghitungnya & Tabel \emph{Recall@K}/\emph{mAP} dan contoh gagal & Tabel perbandingan dan analisis & Uji kasus sulit & Protokol evaluasi dan pengajuan \\
+  \hline
+  5 Integrasi dan Koordinasi & Menyusun proposal, pernyataan integritas, pembagian kerja & Menyatukan laporan M1 & Menyatukan laporan M2 & Pernyataan etika final & Laporan, README, log \\
+  \hline
+\end{tabular}
+\end{center}
+
+\begin{callout}[ctpBlue]
+\textbf{\color{ctpBlue}Akuntabilitas individu}
+\begin{itemize}[itemsep=3pt,parsep=0pt,topsep=2pt,partopsep=2pt]
+  \item[\color{ctpBlue}\faClipboardList] Setiap anggota mengisi log mingguan (satu baris per minggu) yang mencatat pekerjaan, bukti, dan kendala. Log dinilai dari kejujuran dan kelengkapannya; jumlah baris tidak berpengaruh. Catat juga persiapan, tinjauan, dan bantuan kepada anggota lain.
+  \item[\color{ctpBlue}\faComments] Pada sesi tanya jawab, pertanyaan diarahkan langsung kepada pemegang peran terkait, tidak hanya kepada ketua kelompok.
+  \item[\color{ctpBlue}\faUsers] Di akhir proyek, Anda menilai kontribusi anggota lain secara rahasia. Hasilnya hanya menyesuaikan nilai kontribusi individu (maksimal $\pm$15\%); keputusan akhir tetap di Dosen Pengampu berdasarkan log mingguan dan tanya jawab.
+\end{itemize}
+\end{callout}
+
+% =============================================================
+\section{Perangkat lunak dan peralatan yang diperlukan}\label{sec:requiredsw}
+
+\begin{itemize}[itemsep=2pt,parsep=0pt,topsep=2pt,partopsep=2pt]
+  \item[\color{ctpBlue}\faPython] Python 3.10 atau lebih baru.
+  \item[\color{ctpBlue}\faFileCode] Paket wajib: \code{numpy}, \code{torch}, \code{transformers}, \code{sentence-transformers}, \code{pillow}, \code{pandas}.
+  \item[\color{ctpBlue}\faFileCode] Alternatif: \code{open\_clip} sebagai pengganti \code{transformers} untuk encoder CLIP.
+  \item[\color{ctpBlue}\faDownload] Data: bundel SEA-VL Indonesia diunduh dari LMS (berisi \code{images/}, \code{train.csv}, \code{val.csv}, \code{ATTRIBUTION.md}). \emph{Test set} tidak disertakan. Kolom yang paling sering dipakai: \code{file}, \code{caption\_id}, \code{caption\_en}, \code{category}, \code{loc}.
+  \item[\color{ctpBlue}\faFileCode] Perangkat: CPU memadai; semua eksperimen harus dapat dijalankan tanpa GPU.
+\end{itemize}
+
+\begin{codewindow}{setup.sh}
+\begin{lstlisting}[style=pycode]
+pip install numpy torch transformers sentence-transformers pillow pandas
+\end{lstlisting}
+\end{codewindow}
+
+\begin{minipage}{\linewidth}
+\begin{bclogo}[couleur=ctpMantle, arrondi=0.1, logo=\bcinfo, ombre=false, couleurBord=ctpSurface, epBord=0.6]{Batasan cakupan}
+  Proyek ini berfokus pada rekayasa penyejajaran dan fusi di atas representasi beku, tanpa melatih model dari nol. Pertanyaannya: bagaimana menyusun proyeksi, \emph{prompt}, dan \emph{reranking} agar gambar dan teks berbahasa Indonesia berada di tempat yang benar dalam ruang vektor.
+\end{bclogo}
+\end{minipage}
+
+% =============================================================
+\section{Pernyataan masalah}\label{sec:intro}
+
+Dokumentasi budaya Indonesia (rumah adat, tarian, tekstil, kuliner) sebagian besar tersebar sebagai foto dengan deskripsi pendek. Bayangkan seseorang mengetik ``\emph{tari topeng dari Cirebon dengan penari berkostum merah}'' dan berharap sistem mengembalikan foto yang tepat, tanpa perlu kata kunci yang persis sama.
+
+Persoalan intinya adalah penyejajaran lintas modal: gambar dan kalimat yang membicarakan hal yang sama harus berdekatan di ruang vektor. Model \emph{dual-encoder} seperti CLIP melakukannya lewat tujuan kontrastif, seperti yang kita bahas pada Pertemuan 07 dan 09.
+
+Sistem seperti ini dirancang terutama untuk \emph{query} berbahasa Inggris, sehingga kinerjanya turun tajam ketika pengguna mengetik dalam bahasa Indonesia. Tugas Anda adalah menjelaskan mengapa itu terjadi dan apa yang dapat dilakukan untuk mempersempit \emph{language gap} tersebut.
+
+% =============================================================
+\section{Persyaratan}\label{sec:requirements}
+
+Proyek berjalan dalam lima milestone, masing-masing bernilai 5 poin dari 100 poin mata kuliah. Setiap milestone dinilai sendiri-sendiri. Milestone yang terlambat tetap diterima dan dinilai, tetapi dikenai penalti melalui kriteria disiplin tenggat pada rubrik (Bagian~\ref{sec:evaluation}): terlambat mendapat tingkat 1, terlambat lebih dari satu minggu mendapat tingkat 0. Milestone yang tidak dikumpulkan bernilai 0 untuk milestone itu saja dan tidak menghalangi penilaian milestone berikutnya. Setiap milestone dikumpulkan pada pertemuan yang tertera di tabel berikut; batas waktu persisnya diumumkan lewat LMS.
+
+\renewcommand{\arraystretch}{1.35}
+\begin{center}\small
+\begin{tabular}{|c|L{12.4cm}|}
+  \hline
+  \thead{\color{ctpBlue}Pertemuan} & \thead{\color{ctpBlue}Kegiatan (pertemuan = saat milestone dikumpulkan)} \\
+  \hline
+  09 & Kick-off proyek akhir; M0 dibuka \\
+  \hline
+  10 & M0 dikumpulkan: proposal dan reproduksi \emph{baseline} \\
+  \hline
+  11 & M1 dikumpulkan: \emph{baseline} pencarian berjalan \\
+  \hline
+  12 & M2 dikumpulkan: perbandingan strategi penyejajaran/fusi \\
+  \hline
+  13 & M3 dikumpulkan: uji kasus sulit dan etika; \emph{test set} dibuka \\
+  \hline
+  14 & M4 dikumpulkan: protokol evaluasi dan prediksi \emph{test set} privat; Klinik (draf laporan satu halaman dan \emph{peer review}) \\
+  \hline
+  15 & Presentasi, demo, dan tanya jawab di kelas (sebagian kelompok) \\
+  \hline
+  16 & Presentasi, demo, dan tanya jawab di kelas (kelompok lainnya; sesi UAS) \\
+  \hline
+\end{tabular}
+\end{center}
+
+Urutan tampil kelompok pada Pertemuan 15 dan 16 diumumkan Dosen Pengampu lewat LMS.
+
+\renewcommand{\arraystretch}{1.35}
+\begin{center}\small
+\begin{tabular}{|c|L{1.5cm}|L{5.3cm}|L{6.0cm}|}
+  \hline
+  \thead{\color{ctpBlue}Kode} & \thead{\color{ctpBlue}Pertemuan} & \thead{\color{ctpBlue}Fokus} & \thead{\color{ctpBlue}Yang dikumpulkan} \\
+  \hline
+  M0 & 10 & Proposal dan reproduksi \emph{baseline} & 1 halaman proposal + angka \emph{baseline} hasil reproduksi mandiri. \\
+  \hline
+  M1 & 11 & \emph{Baseline} pencarian berjalan & Kode \emph{end-to-end} yang berjalan + tabel \emph{Recall@K} pada \emph{val}. \\
+  \hline
+  M2 & 12 & Perbandingan strategi penyejajaran/fusi & Laporan singkat $\geq$2 varian + tabel perbandingan. \\
+  \hline
+  M3 & 13 & Uji kasus sulit dan etika & Hasil uji kasus sulit + pernyataan limitasi, etika, dan atribusi. \\
+  \hline
+  M4 & 14 & Protokol evaluasi dan \emph{test set} & Protokol evaluasi + prediksi pada \emph{test set} privat. \\
+  \hline
+\end{tabular}
+\end{center}
+
+% ─────────────────────────────────────────────────────────────
+\subsection{M0: proposal dan reproduksi baseline}
+
+Milestone ini membuka proyek dan menunjukkan apakah kelompok Anda siap secara teknis. Hasilnya tidak perlu sempurna, tetapi arahnya harus jelas.
+
+\begin{enumerate}
+  \item Tulis proposal satu halaman: rumusan masalah (satu kalimat), hipotesis, metrik, rencana pendekatan utama (satu dari lima pilihan pada M2, boleh dikombinasikan dengan pendekatan lain; rencana boleh berubah setelah M1), dan pembagian kerja. Contoh hipotesis: ``\emph{prompt ensemble} berbahasa Indonesia akan menaikkan \emph{Recall@1}, karena satu templat saja belum mewakili ragam kalimat pengguna.''
+  \item Jalankan kembali perhitungan \emph{baseline} dari lembar kerja Pertemuan 09 dan laporkan angka Anda sendiri untuk \emph{InfoNCE} dan \emph{Recall@1}.
+  \item Sebutkan lima peran kelompok beserta nama anggotanya.
+  \item Lampirkan pernyataan integritas yang ditandatangani seluruh anggota (Bagian~\ref{sec:notes}).
+\end{enumerate}
+
+% ─────────────────────────────────────────────────────────────
+\subsection{M1: baseline pencarian lintas modal}
+
+\begin{enumerate}
+  \item Bangun \emph{pipeline end-to-end}: baca \code{train.csv}/\code{val.csv}, sematkan gambar dan \emph{caption}, hitung kesamaan kosinus, lalu kembalikan peringkat.
+  \item Laporkan \emph{Recall@1/5/10} dan \emph{mAP@K} pada \emph{split} validasi untuk empat arah: gambar$\rightarrow$teks Indonesia, gambar$\rightarrow$teks Inggris, teks Indonesia$\rightarrow$gambar, dan teks Inggris$\rightarrow$gambar.
+  \item Tampilkan sepuluh contoh \emph{query} berbahasa Indonesia beserta hasil teratasnya, termasuk setidaknya dua contoh yang gagal. Contoh gagal justru bahan analisis, jadi tampilkan apa adanya.
+\end{enumerate}
+
+\begin{codewindow}{latih\_baseline.py}
+\begin{lstlisting}[style=pycode]
+import pandas as pd, torch
+from PIL import Image
+from sentence_transformers import SentenceTransformer
+
+img_model = SentenceTransformer("sentence-transformers/clip-ViT-B-32")
+txt_model = SentenceTransformer("sentence-transformers/clip-ViT-B-32-multilingual-v1")
+
+df = pd.read_csv("val.csv")
+imgs  = [Image.open(f).convert("RGB") for f in df["file"]]
+cap_id = list(df["caption_id"])
+cap_en = list(df["caption_en"])
+
+E  = img_model.encode(imgs,    batch_size=32, normalize_embeddings=True)
+Ti = txt_model.encode(cap_id,  batch_size=64, normalize_embeddings=True)
+Te = img_model.encode(cap_en,  batch_size=64, normalize_embeddings=True)
+
+def recall(A, B, ks=(1, 5, 10)):
+    rank = (A @ B.T).argsort(dim=1, descending=True)
+    truth = torch.arange(len(A)).unsqueeze(1)
+    return {k: float((rank[:, :k] == truth).any(1).float().mean()) for k in ks}
+
+print("gambar -> teks-ID :", recall(torch.tensor(E), torch.tensor(Ti)))
+print("teks-ID -> gambar :", recall(torch.tensor(Ti), torch.tensor(E)))
+\end{lstlisting}
+\end{codewindow}
+
+% ─────────────────────────────────────────────────────────────
+\subsection{M2: perbandingan strategi penyejajaran dan fusi}
+
+Pilih satu pendekatan utama untuk mempersempit \emph{language gap}, lalu bandingkan sekurang-kurangnya dua varian di dalamnya terhadap \emph{baseline} M1. Contoh: bila Anda memilih pendekatan (a), bandingkan dua encoder berbeda; bila memilih (b), bandingkan dua set \emph{prompt}. Anda boleh menggabungkan pendekatan utama dengan pendekatan lain dari daftar, asalkan efek tiap komponen diukur lewat \emph{ablation study}, yaitu dibandingkan dengan dan tanpa komponen tambahan. Beberapa kelompok boleh memilih pendekatan yang sama; Dosen Pengampu menganjurkan varian yang berbeda agar bukti di kelas lebih beragam.
+
+\begin{enumerate}
+  \item Pilih satu pendekatan utama dari daftar berikut, atau ajukan pendekatan sendiri kepada Dosen Pengampu:
+        \begin{alphalist}
+          \item mengganti encoder multibahasa (misalnya model berbasis SigLIP atau \emph{multilingual CLIP} yang lebih baru);
+          \item \emph{prompt ensemble} berbahasa Indonesia, termasuk terjemahan dan variasi templat;
+          \item melatih proyeksi/adapter kecil di atas representasi beku;
+          \item \emph{reranking} dengan \emph{cross-encoder} pada sejumlah kandidat teratas;
+          \item augmentasi data dengan terjemahan.
+        \end{alphalist}
+  \item Laporkan efek tiap varian pada keempat arah pencarian, dalam bentuk tabel dengan \emph{baseline} M1 sebagai pembanding. Bila Anda menggabungkan pendekatan, laporkan juga efek tiap komponen secara terpisah.
+  \item Jelaskan biayanya: waktu komputasi, jumlah parameter yang dilatih, dan kompleksitas penerapan.
+\end{enumerate}
+
+% ─────────────────────────────────────────────────────────────
+\subsection{M3: uji kasus sulit, etika, dan atribusi}
+
+Milestone ini menilai kemampuan Anda mengkritisi sistem yang Anda bangun, selain angka yang dicapai.
+
+\begin{enumerate}
+  \item Rancang uji kasus sulit: gunakan lima gambar dan \emph{query} yang memakai kata serupa tetapi berbeda relasi, negasi, atau penanda budaya. Contoh dari data ini: ``nasi padang dengan perkedel'' versus ``nasi padang tanpa perkedel'' (negasi), atau ``tari topeng dari Cirebon berkostum merah'' versus ``berkostum biru'' (atribut). Laporkan probabilitas tiap kandidat.
+  \item Analisis apakah sistem lebih mudah menangani objek tunggal daripada relasi, dan hubungkan dengan keterbatasan arsitektur \emph{dual-encoder}.
+  \item Tulis pernyataan etika dan limitasi (maksimal satu halaman) yang membahas:
+        \begin{alphalist}
+          \item kesenjangan kinerja antara \emph{query} Indonesia dan Inggris, serta siapa yang dirugikan olehnya;
+          \item keterwakilan wilayah dan kelompok budaya di dalam data;
+          \item kejujuran \emph{benchmark}: mengapa laporan tanpa \emph{split} yang jelas sulit dipercaya.
+        \end{alphalist}
+  \item Cantumkan atribusi CC BY-SA 4.0 dengan benar pada laporan dan kode.
+\end{enumerate}
+
+% ─────────────────────────────────────────────────────────────
+\subsection{M4: protokol evaluasi dan pengajuan test privat}
+
+\begin{enumerate}
+  \item Tulis protokol evaluasi: pembagian data, metrik, jumlah \emph{run}, penanganan kelas yang jarang, dan bentuk tabel hasil akhir.
+  \item Bandingkan \emph{random split} dengan \emph{grouped split} (misalnya dikelompokkan menurut kategori) dan jelaskan selisihnya.
+  \item Kirim prediksi kelompok untuk \emph{test set} privat dalam format yang ditetapkan Dosen Pengampu; \emph{query} uji disiapkan Dosen Pengampu. Setiap kelompok hanya boleh mengajukan satu kali; pengajuan tambahan tidak dilayani.
+\end{enumerate}
+
+\begin{callout}[ctpMauve]
+\textbf{\color{ctpMauve}Peran skor test}
+\par\smallskip
+Skor pada \emph{test set} privat tidak menentukan komponen nilai mana pun. Pengajuan itu dipakai untuk memeriksa kejujuran protokol dan kemampuan generalisasi. Nilai Anda ditentukan oleh kualitas analisis, reproduksibilitas, dan kejujuran pelaporan.
+\end{callout}
+
+\begin{callout}[ctpPeach]
+\textbf{\color{ctpPeach}Peringatan metodologis}
+\par\smallskip
+\emph{Data leakage} adalah kesalahan paling umum pada proyek seperti ini. Periksa kembali: apakah gambar duplikat masih tersisa; apakah \emph{caption} yang sangat mirip muncul di \emph{train} dan \emph{val} sekaligus; apakah Anda mengoptimalkan sesuatu dengan melihat \emph{val}. Laporkan temuan Anda, tidak hanya angka akhirnya.
+\end{callout}
+
+% ─────────────────────────────────────────────────────────────
+\subsection{Klinik}
+
+\begin{itemize}
+  \item Pada Pertemuan 14, setiap kelompok membawa draf laporan satu halaman dan saling meninjau (\emph{peer review}) dengan satu kelompok lain memakai rubrik. Klinik ini juga latihan menerima kritik sebelum penilaian. Karena M4 juga dikumpulkan pada pertemuan ini, siapkan draf laporan dan prediksi \emph{test set} sejak Pertemuan 13.
+\end{itemize}
+% ─────────────────────────────────────────────────────────────
+\subsection{Presentasi akhir dan deliverable (Pertemuan 15--16)}
+
+Pertemuan 15 dan 16 dipakai untuk presentasi, demo, dan tanya jawab di kelas. Laporan, kode, dan slide dikumpulkan paling lambat pada hari kelompok Anda tampil.
+
+\begin{enumerate}
+  \item Laporan teknis (4--6 halaman): rumusan masalah, data dan protokol, metode, hasil, \emph{ablation study}, dan limitasi.
+  \item Kode yang dapat dijalankan ulang, dengan \code{README} singkat dan penetapan \emph{seed}.
+  \item Presentasi 10 menit dengan demo langsung.
+  \item Tanya jawab 5 menit, dengan pertanyaan tertarget kepada pemegang peran.
+\end{enumerate}
+
+\begin{callout}[ctpGreen]
+\textbf{\color{ctpGreen}Leaderboard dan bonus kompetisi}
+\begin{itemize}
+  \item Leaderboard dan bonus dihitung hanya dari \emph{val}; \emph{test set} tidak dipakai. Leaderboard diperbarui pada setiap milestone berdasarkan \emph{Recall@1} dan \emph{mAP@K}, serta menampilkan terpisah peringkat efisiensi (kinerja per biaya komputasi) agar kelompok tanpa GPU tetap punya peluang menang.
+  \item Ada juga penghargaan untuk analisis terbaik dan kelompok yang paling berkembang.
+  \item Bonus kompetisi paling banyak 2,5 poin (5\% dari 50 poin komponen proyek), ditambahkan di atas nilai rubrik; nilai akhir tidak melebihi 100. Bonus tidak dipakai untuk menentukan kelulusan, dan bila bonus membuat nilai akhir melewati batas huruf mutu, kenaikan itu ditinjau Dosen Pengampu terlebih dahulu.
+\end{itemize}
+\end{callout}
+
+\clearpage
+% =============================================================
+\section{Kriteria penilaian}\label{sec:evaluation}
+
+% ─────────────────────────────────────────────────────────────
+\subsection{Bobot mata kuliah}
+
+\renewcommand{\arraystretch}{1.35}
+\begin{center}\small
+\begin{tabular}{|L{10.4cm}|c|}
+  \hline
+  \thead{\color{ctpBlue}Komponen} & \thead{\color{ctpBlue}Bobot} \\
+  \hline
+  UTS (ujian tertulis, Pertemuan 08) & 25\% \\
+  \hline
+  Tugas pra-UTS (Pertemuan 02, 03, 04, 06) & 25\% \\
+  \hline
+  Milestone proyek (M0--M4, masing-masing 5\%) & 25\% \\
+  \hline
+  Laporan dan kode akhir & 15\% \\
+  \hline
+  Presentasi, tanya jawab, dan kontribusi individu & 10\% \\
+  \hline
+  Total & 100\% \\
+  \hline
+\end{tabular}
+\end{center}
+
+% ─────────────────────────────────────────────────────────────
+\subsection{Rubrik milestone (M0--M4)}
+
+Setiap milestone bernilai 5 poin. Tiap kriteria dinilai pada tingkat 0--3; keempat skor dijumlahkan (maksimum 12), lalu dikonversi secara proporsional menjadi 5 poin.
+
+\renewcommand{\arraystretch}{1.35}
+\begin{center}\small
+\begin{tabular}{|L{2.8cm}|L{2.1cm}|L{2.4cm}|L{2.2cm}|L{3.8cm}|}
+  \hline
+  \thead{\color{ctpBlue}Kriteria} & \thead{\color{ctpBlue}Tingkat 0} & \thead{\color{ctpBlue}Tingkat 1} & \thead{\color{ctpBlue}Tingkat 2} & \thead{\color{ctpBlue}Tingkat 3} \\
+  \hline
+  Kelengkapan artefak & Tidak ada & Sebagian, tidak terdokumentasi & Lengkap & Lengkap dan rapi \\
+  \hline
+  Ketepatan teknis & Tidak berjalan & Berjalan dengan bantuan & Berjalan mandiri & Berjalan mandiri dan reproduksibel \\
+  \hline
+  Kualitas analisis & Tidak ada & Deskriptif & Analitis & Analitis dengan bukti kuantitatif \\
+  \hline
+  Disiplin tenggat & Lewat $>$1 minggu & Lewat & Tepat waktu & Tepat waktu dan menindaklanjuti catatan Dosen Pengampu dari milestone sebelumnya (untuk M0: cukup tepat waktu) \\
+  \hline
+\end{tabular}
+\end{center}
+
+% ─────────────────────────────────────────────────────────────
+\subsection{Rubrik laporan dan kode akhir (15\%)}
+
+\renewcommand{\arraystretch}{1.35}
+\begin{center}\small
+\begin{tabular}{|L{9.4cm}|c|}
+  \hline
+  \thead{\color{ctpBlue}Kriteria} & \thead{\color{ctpBlue}Bobot} \\
+  \hline
+  Kebenaran teknis dan reproduksibilitas: eksperimen berjalan dari nol mengikuti \code{README}, \emph{seed} ditetapkan, angka dapat diverifikasi. & 5\% \\
+  \hline
+  Kedalaman analisis dan ablation study: pembandingan sebelum/sesudah, analisis \emph{language gap}, pengujian \emph{leakage}, dan pembahasan limitasi. & 5\% \\
+  \hline
+  Kualitas penulisan: struktur laporan runtut, tabel dan gambar rapi, klaim didukung angka. & 3\% \\
+  \hline
+  Etika dan atribusi: pernyataan limitasi, keterwakilan data, dan atribusi CC BY-SA 4.0 lengkap. & 2\% \\
+  \hline
+  Total & 15\% \\
+  \hline
+\end{tabular}
+\end{center}
+
+% ─────────────────────────────────────────────────────────────
+\subsection{Rubrik presentasi dan kontribusi individu (10\%)}
+
+\renewcommand{\arraystretch}{1.35}
+\begin{center}\small
+\begin{tabular}{|L{9.4cm}|c|}
+  \hline
+  \thead{\color{ctpBlue}Kriteria} & \thead{\color{ctpBlue}Bobot} \\
+  \hline
+  Presentasi dan demo: alur jelas, demo berjalan, waktu 10 menit dipatuhi. & 4\% \\
+  \hline
+  Tanya jawab: penguasaan materi, kemampuan membela keputusan teknis, dan mengakui keterbatasan. & 3\% \\
+  \hline
+  Kontribusi individu: log mingguan lengkap, penilaian sebaya, dan ketepatan menjawab pertanyaan tertarget sesuai peran. & 3\% \\
+  \hline
+  Total & 10\% \\
+  \hline
+\end{tabular}
+\end{center}
+
+% =============================================================
+\section{Apa yang dikumpulkan}\label{sec:submit}
+
+Seluruh artefak dikemas dalam satu arsip bernama \code{proyek\_akhir\_kelompok\_NN.zip}. \code{NN} adalah nomor kelompok dua digit tanpa spasi (untuk kelompok 3: \code{03}). Pengumpulan mengikuti petunjuk di LMS.
+
+Artefak yang wajib ada di dalam arsip:
+
+\begin{borderedsquare}
+  \item \code{laporan\_kelompok\_NN.pdf}: laporan teknis 4--6 halaman.
+  \item \code{kode\_kelompok\_NN.zip} atau \code{kode\_kelompok\_NN.ipynb}: kode \emph{end-to-end}. Notebook wajib sudah dijalankan sehingga seluruh \emph{output} sel tersimpan di dalam berkas.
+  \item \code{README.md}: cara menjalankan kode, daftar dependensi, dan penetapan \emph{seed}.
+  \item \code{slide\_kelompok\_NN.pdf}: materi presentasi.
+  \item \code{log\_kontribusi\_kelompok\_NN.csv}: log mingguan per anggota, dengan kolom: nama, NIM, peran, minggu, kegiatan, bukti.
+  \item \code{hasil\_test\_kelompok\_NN.csv}: prediksi untuk \emph{test set} privat, sesuai format yang ditetapkan Dosen Pengampu.
+\end{borderedsquare}
+
+Semua berkas memakai awalan \code{kelompok\_NN} yang sama dan berada langsung di dalam satu arsip \code{.zip}, tanpa folder bertingkat yang tidak perlu.
+
+\begin{callout}[ctpBlue]
+\textbf{\color{ctpBlue}Catatan pengerjaan}
+\begin{itemize}
+  \item Kode yang tidak dapat dijalankan dinilai tidak memenuhi syarat pada kriteria kebenaran teknis, berapa pun angka yang dilaporkan.
+  \item Perkiraan beban kerja: 2--3 jam per anggota per minggu selama delapan minggu. Mulailah lebih awal dan kerjakan sedikit demi sedikit.
+\end{itemize}
+\end{callout}
+
+\section*{Referensi}
+{\small\color{ctpSubtext}
+\begin{enumerate}[label={[\arabic*]}, leftmargin=2em]
+  \item Cahyawijaya, S., et al. (2025). \emph{Crowdsource, Crawl, or Generate? Creating SEA-VL, a Multicultural Vision-Language Dataset for Southeast Asia}. ACL. --- sumber dataset proyek ini.
+  \item Radford, A., et al. (2021). \emph{Learning Transferable Visual Models From Natural Language Supervision}. ICML. --- arsitektur CLIP dan tujuan kontrastif.
+  \item Carlsson, F., et al. (2022). \emph{Cross-lingual and Multilingual CLIP}. --- dasar teoretis \emph{language gap} pada M2.
+  \item Liang, P., Zadeh, A., \& Morency, L.-P. (2023). \emph{Tutorial on Multimodal Machine Learning}. ICML. --- kerangka pilar representasi, penyejajaran, dan fusi.
+  \item Thakur, N., et al. (2021). \emph{BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models}. NeurIPS Datasets and Benchmarks. --- rujukan protokol evaluasi retrieval.
+  \item Pineau, J., et al. (2021). \emph{Improving Reproducibility in Machine Learning Research}. JMLR. --- dasar syarat reproduksibilitas kode.
+  \item Gebru, T., et al. (2021). \emph{Datasheets for Datasets}. Communications of the ACM. --- kerangka dokumentasi dataset dan sumber pemeriksaan bias.
+  \item Bender, E. M., et al. (2021). \emph{On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?}. FAccT. --- dasar diskusi keterwakilan dan dampak sosial pada M3.
+\end{enumerate}}
+
+\end{document}

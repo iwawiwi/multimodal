@@ -1,0 +1,68 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# Generated artifacts (regenerable from source)
+pdf/
+hands-on/*.docx
+
+# Modul LaTeX (buku per pertemuan) -- SENGAJA hanya di lokal, tidak dipublikasikan.
+# Dibangun lokal via `modul/build.sh` (PDF di modul/pdf/, juga diabaikan); modul
+# TIDAK dibangun CI dan distribusinya lewat LMS. Bila kelak ingin dilacak git,
+# hapus blok ini (atau pakai `git add -f modul/...`).
+modul/
+
+# Node (Vivliostyle build pipeline)
+node_modules/
+.vivliostyle/
+
+# Global skill symlink (machine-specific absolute path -> ~/.agents/skills/)
+.agents/skills/lecture-slide-designer
+.agents/skills/assignment-document-designer
+
+# LaTeX assignment build artifacts (regenerable from .tex source)
+tugas/*.aux
+tugas/*.log
+tugas/*.toc
+tugas/*.ver
+tugas/*.hst
+tugas/*.out
+tugas/*.pdf
+tugas/*.html
+tugas/*.fls
+tugas/*.fdb_latexmk
+tugas/*.synctex.gz
+
+# Materi ujian BERSIFAT RAHASIA (soal + kunci) -- JANGAN di-commit.
+# PDF-nya pun tidak dibangun CI. Kisi-kisi (uts-kisi-kisi.tex) tetap publik
+# karena ditautkan dari index.html dan dirender CI (lihat deploy-pages.yml).
+tugas/uts-soal.*
+tugas/uts-kunci.*
+
+# Berkas tanda tangan pengesahan (pribadi -- JANGAN di-commit)
+tugas/ttd-*.png
+tugas/ttd-*.jpg
+tugas/*-ttd.png
+
+# Source PPTX decks (not part of the published site)
+origin/
+
+# Materi proyek akhir: hanya lokal / LMS (D-A11)
+proyek/

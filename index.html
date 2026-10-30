@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pembelajaran Mesin Multimodal (IF25-40304) | ITERA 2026</title>
+  <link rel="stylesheet" href="css/portal.css">
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+</head>
+<body>
+
+  <!-- Full-Stretch Sticky Hero Header -->
+  <header class="hero-sticky-header">
+    <div class="hero-inner-container">
+      
+      <!-- Institutional Logos Side-by-Side (Campus Left, Dikti Saintek Right, Image Only) -->
+      <div class="hero-brand-logos">
+        <img src="assets/img/logo_2.webp" alt="Logo Institut Teknologi Sumatera" class="brand-logo campus-logo" title="Institut Teknologi Sumatera">
+        <img src="assets/img/dikti-saintek-berdampak-color.svg" alt="Logo Dikti Saintek Berdampak" class="brand-logo dikti-logo" title="Kementerian Pendidikan Tinggi, Sains, dan Teknologi">
+      </div>
+
+      <!-- Center: Course Identity & Academic Code -->
+      <div class="hero-center-content">
+        <div class="course-code-row">
+          <span>IF25-40304</span>
+          <span class="separator">•</span>
+          <span>3 SKS</span>
+          <span class="separator">•</span>
+          <span>Program Studi Teknik Informatika</span>
+        </div>
+        <h1 class="course-title">Pembelajaran Mesin Multimodal</h1>
+      </div>
+
+      <!-- Right: Lecturer Contact & Identity -->
+      <div class="hero-right-meta">
+        <span class="lecturer-name">
+          <span class="material-symbols-outlined" style="font-size: 15px;">person</span>
+          I Wayan Wiprayoga Wisesa
+        </span>
+        <a href="mailto:wayan.wisesa@if.itera.ac.id" class="lecturer-email">wayan.wisesa@if.itera.ac.id</a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Toolbar pencarian & filter: bilah lengket di bawah header (pola .toolbar situs DTD).
+       Logika di <script> bawah halaman; data kartu ada di atribut data-*. -->
+  <div class="toolbar" id="toolbar" role="search" aria-label="Cari dan saring materi">
+    <div class="toolbar-inner">
+      <div class="sheet-head">
+        <strong>Cari &amp; filter</strong>
+        <button type="button" class="clear" id="sheetClose" aria-label="Tutup panel filter"><span class="material-symbols-outlined" aria-hidden="true">close</span></button>
+      </div>
+      <label class="search" for="searchInput">
+        <span class="material-symbols-outlined" aria-hidden="true">search</span>
+        <input id="searchInput" type="search" placeholder="Cari materi, topik, atau nomor pertemuan" autocomplete="off" spellcheck="false" aria-label="Cari materi">
+        <kbd class="search-hint" aria-hidden="true">/</kbd>
+        <button type="button" class="clear" id="clearSearch" aria-label="Hapus pencarian" hidden><span class="material-symbols-outlined" aria-hidden="true">close</span></button>
+      </label>
+      <div class="chips" role="group" aria-label="Filter materi">
+        <button type="button" class="fchip" data-group="periode" data-value="semua" aria-pressed="true">Semua</button>
+        <button type="button" class="fchip" data-group="periode" data-value="pra" aria-pressed="false">Sebelum UTS</button>
+        <button type="button" class="fchip" data-group="periode" data-value="pasca" aria-pressed="false">Setelah UTS</button>
+        <button type="button" class="fchip" data-group="periode" data-value="ujian" aria-pressed="false">Ujian &amp; proyek</button>
+        <button type="button" class="fchip chip-lab" data-group="hands" data-value="1" aria-pressed="false"><span class="material-symbols-outlined" aria-hidden="true">science</span>Hands-on</button>
+        <button type="button" class="fchip chip-more" id="temaToggle" aria-expanded="false" aria-controls="temaRow"><span>Tema</span><span class="more-count" id="temaCount" hidden></span><span class="material-symbols-outlined chevron" aria-hidden="true">expand_more</span></button>
+      </div>
+      <div class="chips chips-tema" id="temaRow" role="group" aria-label="Tema materi" hidden>
+        <button type="button" class="fchip" data-group="tema" data-value="representasi" aria-pressed="false">Representasi</button>
+        <button type="button" class="fchip" data-group="tema" data-value="fusi" aria-pressed="false">Fusi</button>
+        <button type="button" class="fchip" data-group="tema" data-value="penyejajaran" aria-pressed="false">Penyejajaran &amp; Transformer</button>
+        <button type="button" class="fchip" data-group="tema" data-value="aplikasi" aria-pressed="false">Aplikasi</button>
+        <button type="button" class="fchip" data-group="tema" data-value="evaluasi" aria-pressed="false">Evaluasi &amp; kasus</button>
+      </div>
+      <div class="filter-status">
+        <span id="resultCount" class="result-count" aria-live="polite"></span>
+        <button type="button" id="resetFilters" class="reset-btn" hidden>
+          <span class="material-symbols-outlined" aria-hidden="true">restart_alt</span><span>Atur ulang</span>
+        </button>
+      </div>
+      <button type="button" class="sheet-apply" id="sheetApply">Tampilkan materi</button>
+    </div>
+  </div>
+  <div class="sheet-backdrop" id="sheetBackdrop" hidden></div>
+  <button type="button" class="fab" id="fab" aria-label="Buka pencarian dan filter" aria-controls="toolbar" aria-expanded="false">
+    <span class="material-symbols-outlined" aria-hidden="true">tune</span>
+    <span class="fab-badge" id="fabBadge" hidden></span>
+  </button>
+
+  <!-- Main Scrollable Content Area -->
+  <main class="main-content-container">
+
+    <!-- Section Heading -->
+    <div class="section-heading" id="weeksHeading">
+      <h2>Daftar Pertemuan Perkuliahan</h2>
+      <p>Silabus materi perkuliahan 16 minggu beserta slide presentasi interaktif dan unduhan dokumen PDF</p>
+    </div>
+
+    <div class="active-bar" id="activeBar" hidden>
+      <span id="activeText"></span>
+      <button type="button" class="reset-btn" id="activeReset"><span class="material-symbols-outlined" aria-hidden="true">restart_alt</span><span>Atur ulang</span></button>
+    </div>
+
+    <!-- Weeks Grid with Strict Uniform Card Heights -->
+    <div class="weeks-grid" id="weeksGrid">
+
+      <!-- MINGGU 01 (READY) -->
+      <div class="week-card ready" data-kind="pertemuan" data-n="01" data-periode="pra" data-status="tersedia" data-tema="">
+        <div class="week-card-header">
+          <span class="week-num-label">Pertemuan 01</span>
+        </div>
+        <div class="week-card-body">
+          <h3 class="week-title">Pengantar Pembelajaran Mesin Multimodal</h3>
+          <p class="week-desc">
+            Pengenalan komprehensif esensi machine learning multimodal, perbedaan dari sistem unimodal, serta tiga pilar tantangannya.
+          </p>
+          <ul class="week-topics">
+            <li><span class="topic-dot"></span>Definisi & Konsep Interaksi Multimodal Manusia</li>
+            <li><span class="topic-dot"></span>Tiga Pilar: Representasi, Alignment, dan Fusi</li>
+            <li><span class="topic-dot"></span>Aplikasi: Image Captioning, VQA, Sentimen, Retrieval</li>
+          </ul>
+        </div>
+        <div class="week-card-actions">
+          <a href="mgg01.html" class="btn-action-primary" title="Buka Slide Presentasi Interaktif">
+            <span class="material-symbols-outlined">slideshow</span>
+            <span>Buka Slide</span>
+          </a>
+          <a href="pdf/mgg01.pdf" download="Pembelajaran_Mesin_Multimodal_Mgg01.pdf" class="btn-action-secondary" title="Unduh langsung file PDF materi slide">
+            <span class="material-symbols-outlined">picture_as_pdf</span>
+            <span>Ekspor PDF</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- MINGGU 02 -->
+      <div class="week-card ready" data-kind="pertemuan" data-n="02" data-periode="pra" data-status="tersedia" data-tema="representasi" data-handson="1">
+        <div class="week-card-header">
+          <span class="week-num-label">Pertemuan 02</span>
+          <a href="hands-on/mgg02-hands-on.html" class="lab-chip" title="Buka lembar kerja: Eksplorasi Word Embeddings" aria-label="Lembar Kerja: Eksplorasi Word Embeddings"><span class="material-symbols-outlined" aria-hidden="true">science</span><span>Lembar Kerja</span></a>
+        </div>
+        <div class="week-card-body">
+          <h3 class="week-title">Representasi Modalitas I: Teks</h3>
+          <p class="week-desc">
+            Evolusi representasi teks dari bag-of-words, TF-IDF, Word2Vec/GloVe hingga contextual embedding berbasis Transformer (BERT, RoBERTa).
+          </p>
+          <ul class="week-topics">
+            <li><span class="topic-dot"></span>Karakteristik Sekuensial Teks & Tokenisasi</li>
+            <li><span class="topic-dot"></span>Static vs Contextual Word Embeddings</li>
+            <li><span class="topic-dot"></span>Subword Tokenization (BPE & WordPiece)</li>
+          </ul>
+        </div>
+        <div class="week-card-actions">
+          <a href="mgg02.html" class="btn-action-primary" title="Buka Slide Presentasi Interaktif">
+            <span class="material-symbols-outlined">slideshow</span>
+            <span>Buka Slide</span>
+          </a>
+          <a href="pdf/mgg02.pdf" download="Pembelajaran_Mesin_Multimodal_Mgg02.pdf" class="btn-action-secondary" title="Unduh langsung file PDF materi slide">
+            <span class="material-symbols-outlined">picture_as_pdf</span>
+            <span>Ekspor PDF</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- MINGGU 03 -->
+      <div class="week-card ready" data-kind="pertemuan" data-n="03" data-periode="pra" data-status="tersedia" data-tema="representasi" data-handson="1">
+        <div class="week-card-header">
+          <span class="week-num-label">Pertemuan 03</span>
+          <a href="hands-on/mgg03-hands-on.html" class="lab-chip" title="Buka lembar kerja: Feature Extraction Gambar" aria-label="Lembar Kerja: Feature Extraction Gambar"><span class="material-symbols-outlined" aria-hidden="true">science</span><span>Lembar Kerja</span></a>
+        </div>
+        <div class="week-card-body">
+          <h3 class="week-title">Representasi Modalitas II: Gambar</h3>
+          <p class="week-desc">
+            Struktur data gambar, CNN, ResNet, transfer learning, dan feature extraction untuk membangun representasi visual.
+          </p>
+          <ul class="week-topics">
+            <li><span class="topic-dot"></span>Struktur Piksel, Saluran, dan Hierarki Fitur</li>
+            <li><span class="topic-dot"></span>Konvolusi, Pooling, dan Residual Connection</li>
+            <li><span class="topic-dot"></span>Pre-trained Model dan Feature Extraction</li>
+          </ul>
+        </div>
+        <div class="week-card-actions">
+          <a href="mgg03.html" class="btn-action-primary" title="Buka Slide Presentasi Interaktif">
+            <span class="material-symbols-outlined">slideshow</span>
+            <span>Buka Slide</span>
+          </a>
+          <a href="pdf/mgg03.pdf" download="Pembelajaran_Mesin_Multimodal_Mgg03.pdf" class="btn-action-secondary" title="Unduh langsung file PDF materi slide">
+            <span class="material-symbols-outlined">picture_as_pdf</span>
+            <span>Ekspor PDF</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- MINGGU 04 -->
+      <div class="week-card ready" data-kind="pertemuan" data-n="04" data-periode="pra" data-status="tersedia" data-tema="representasi" data-handson="1">
+        <div class="week-card-header">
+          <span class="week-num-label">Pertemuan 04</span>
+          <a href="hands-on/mgg04-hands-on.html" class="lab-chip" title="Buka lembar kerja: Representasi Audio & Video" aria-label="Lembar Kerja: Representasi Audio &amp; Video"><span class="material-symbols-outlined" aria-hidden="true">science</span><span>Lembar Kerja</span></a>
+        </div>
+        <div class="week-card-body">
+          <h3 class="week-title">Representasi Modalitas III: Audio & Video</h3>
+          <p class="week-desc">
+            Ekstraksi fitur gelombang suara temporal (spektrogram, Mel-filterbank) serta integrasi fitur spatiotemporal pada data frame video.
+          </p>
+          <ul class="week-topics">
+            <li><span class="topic-dot"></span>Spektrogram Frekuensi & Audio Transformers</li>
+            <li><span class="topic-dot"></span>3D CNN & Spatiotemporal ViT untuk Video</li>
+            <li><span class="topic-dot"></span>Sinkronisasi Multi-frame Sinyal Temporal</li>
+          </ul>
+        </div>
+        <div class="week-card-actions">
+          <a href="mgg04.html" class="btn-action-primary" title="Buka Slide Presentasi Interaktif">
+            <span class="material-symbols-outlined">slideshow</span>
+            <span>Buka Slide</span>
+          </a>
+          <a href="pdf/mgg04.pdf" download="Pembelajaran_Mesin_Multimodal_Mgg04.pdf" class="btn-action-secondary" title="Unduh langsung file PDF materi slide">
+            <span class="material-symbols-outlined">picture_as_pdf</span>
+            <span>Ekspor PDF</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- MINGGU 05 -->
+      <div class="week-card ready" data-kind="pertemuan" data-n="05" data-periode="pra" data-status="tersedia" data-tema="fusi">
+        <div class="week-card-header">
+          <span class="week-num-label">Pertemuan 05</span>
+        </div>
+        <div class="week-card-body">
+          <h3 class="week-title">Strategi Fusi Multimodal I: Early &amp; Late Fusion</h3>
+          <p class="week-desc">
+            Prinsip integrasi fitur pada tingkat input (Early) versus integrasi keputusan pada tingkat output (Late) beserta trade-off komputasinya.
+          </p>
+          <ul class="week-topics">
+            <li><span class="topic-dot"></span>Penggabungan Vektor Fitur Mentah &amp; Dimensi</li>
+            <li><span class="topic-dot"></span>Voting, Weighted Average, &amp; Decision Ensemble</li>
+            <li><span class="topic-dot"></span>Sensitivitas Desinkronisasi &amp; Noise Robustness</li>
+          </ul>
+        </div>
+        <div class="week-card-actions">
+          <a href="mgg05.html" class="btn-action-primary" title="Buka Slide Presentasi Interaktif">
+            <span class="material-symbols-outlined">slideshow</span>
+            <span>Buka Slide</span>
+          </a>
+          <a href="pdf/mgg05.pdf" download="Pembelajaran_Mesin_Multimodal_Mgg05.pdf" class="btn-action-secondary" title="Unduh langsung file PDF materi slide">
+            <span class="material-symbols-outlined">picture_as_pdf</span>
+            <span>Ekspor PDF</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- MINGGU 06 -->
+      <div class="week-card ready" data-kind="pertemuan" data-n="06" data-periode="pra" data-status="tersedia" data-tema="fusi" data-handson="1">
+        <div class="week-card-header">
+          <span class="week-num-label">Pertemuan 06</span>
+          <a href="hands-on/mgg06-hands-on.html" class="lab-chip" title="Buka lembar kerja: Early, Late & Intermediate Fusion" aria-label="Lembar Kerja: Early, Late &amp; Intermediate Fusion"><span class="material-symbols-outlined" aria-hidden="true">science</span><span>Lembar Kerja</span></a>
+        </div>
+        <div class="week-card-body">
+          <h3 class="week-title">Strategi Fusi Multimodal II: Intermediate &amp; Hybrid Fusion</h3>
+          <p class="week-desc">
+            Peleburan fitur secara bertahap pada lapisan tersembunyi (hidden layers) deep learning untuk menangkap interaksi non-linear yang dinamis.
+          </p>
+          <ul class="week-topics">
+            <li><span class="topic-dot"></span>Deep Fusion Layers &amp; Tensor Fusion Network</li>
+            <li><span class="topic-dot"></span>Gated Multimodal Units (GMU) Interaktif</li>
+            <li><span class="topic-dot"></span>Hybrid Multi-Stage Fusion Architectures</li>
+          </ul>
+        </div>
+        <div class="week-card-actions">
+          <a href="mgg06.html" class="btn-action-primary" title="Buka Slide Presentasi Interaktif">
+            <span class="material-symbols-outlined">slideshow</span>
+            <span>Buka Slide</span>
+          </a>
+          <a href="pdf/mgg06.pdf" download="Pembelajaran_Mesin_Multimodal_Mgg06.pdf" class="btn-action-secondary" title="Unduh langsung file PDF materi slide">
+            <span class="material-symbols-outlined">picture_as_pdf</span>
+            <span>Ekspor PDF</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- MINGGU 07 -->
+      <div class="week-card ready" data-kind="pertemuan" data-n="07" data-periode="pra" data-status="tersedia" data-tema="penyejajaran">
+        <div class="week-card-header">
+          <span class="week-num-label">Pertemuan 07</span>
+        </div>
+        <div class="week-card-body">
+          <h3 class="week-title">Penyejajaran (Alignment): Temporal & Structural</h3>
+          <p class="week-desc">
+            Menghubungkan sub-komponen yang berkorespondensi antar modalitas: dari algoritma klasik DTW dan HMM hingga penyejajaran adaptif berbasis attention.
+          </p>
+          <ul class="week-topics">
+            <li><span class="topic-dot"></span>Temporal Asynchrony, Structural Mismatch & Sparse Correspondence</li>
+            <li><span class="topic-dot"></span>Dynamic Time Warping (DTW) & Hidden Markov Models (HMM)</li>
+            <li><span class="topic-dot"></span>Penyejajaran Adaptif: Self- & Cross-Attention</li>
+          </ul>
+        </div>
+        <div class="week-card-actions">
+          <a href="mgg07.html" class="btn-action-primary" title="Buka Slide Presentasi Interaktif">
+            <span class="material-symbols-outlined">slideshow</span>
+            <span>Buka Slide</span>
+          </a>
+          <a href="pdf/mgg07.pdf" download="Pembelajaran_Mesin_Multimodal_Mgg07.pdf" class="btn-action-secondary" title="Unduh langsung file PDF materi slide">
+            <span class="material-symbols-outlined">picture_as_pdf</span>
+            <span>Ekspor PDF</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- MINGGU 09 -->
+      <div class="week-card ready" data-kind="pertemuan" data-n="09" data-periode="pasca" data-status="tersedia" data-tema="penyejajaran" data-handson="1">
+        <div class="week-card-header">
+          <span class="week-num-label">Pertemuan 09</span>
+          <a href="hands-on/mgg09-hands-on.html" class="lab-chip" title="Buka lembar kerja: Menyelaraskan Dua Ruang" aria-label="Lembar Kerja: Menyelaraskan Dua Ruang"><span class="material-symbols-outlined" aria-hidden="true">science</span><span>Lembar Kerja</span></a>
+        </div>
+        <div class="week-card-body">
+          <h3 class="week-title">Arsitektur Transformer Multimodal</h3>
+          <p class="week-desc">
+            Menyusun mekanisme attention menjadi arsitektur utuh: dari encoder&ndash;decoder dan Vision Transformer hingga model multimodal pra-latih.
+          </p>
+          <ul class="week-topics">
+            <li><span class="topic-dot"></span>Encoder&ndash;Decoder &amp; Vision Transformer (ViT)</li>
+            <li><span class="topic-dot"></span>Pola Dual-Stream, Multi-Encoder &amp; Dual-Encoder</li>
+            <li><span class="topic-dot"></span>Contrastive Pre-training &amp; Zero-shot CLIP</li>
+          </ul>
+        </div>
+        <div class="week-card-actions">
+          <a href="mgg09.html" class="btn-action-primary" title="Buka Slide Presentasi Interaktif">
+            <span class="material-symbols-outlined">slideshow</span>
+            <span>Buka Slide</span>
+          </a>
+          <a href="pdf/mgg09.pdf" download="Pembelajaran_Mesin_Multimodal_Mgg09.pdf" class="btn-action-secondary" title="Unduh langsung file PDF materi slide">
+            <span class="material-symbols-outlined">picture_as_pdf</span>
+            <span>Ekspor PDF</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- MINGGU 10 -->
+      <div class="week-card ready" data-kind="pertemuan" data-n="10" data-periode="pasca" data-status="tersedia" data-tema="aplikasi">
+        <div class="week-card-header">
+          <span class="week-num-label">Pertemuan 10</span>
+        </div>
+        <div class="week-card-body">
+          <h3 class="week-title">Aplikasi 1: Image Captioning</h3>
+          <p class="week-desc">
+            Menghasilkan deskripsi tekstual dari gambar: dari encoder&ndash;decoder CNN&ndash;LSTM hingga cross-attention dan metrik evaluasi.
+          </p>
+          <ul class="week-topics">
+            <li><span class="topic-dot"></span>Arsitektur Encoder&ndash;Decoder (CNN + LSTM)</li>
+            <li><span class="topic-dot"></span>Cross-Attention: Show, Attend and Tell</li>
+            <li><span class="topic-dot"></span>Metrik Evaluasi: BLEU, METEOR, CIDEr, SPICE</li>
+          </ul>
+        </div>
+        <div class="week-card-actions">
+          <a href="mgg10.html" class="btn-action-primary" title="Buka Slide Presentasi Interaktif">
+            <span class="material-symbols-outlined">slideshow</span>
+            <span>Buka Slide</span>
+          </a>
+          <a href="pdf/mgg10.pdf" download="Pembelajaran_Mesin_Multimodal_Mgg10.pdf" class="btn-action-secondary" title="Unduh langsung file PDF materi slide">
+            <span class="material-symbols-outlined">picture_as_pdf</span>
+            <span>Ekspor PDF</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- MINGGU 11 -->
+      <div class="week-card ready" data-kind="pertemuan" data-n="11" data-periode="pasca" data-status="tersedia" data-tema="aplikasi">
+        <div class="week-card-header">
+          <span class="week-num-label">Pertemuan 11</span>
+        </div>
+        <div class="week-card-body">
+          <h3 class="week-title">Aplikasi 2: VQA &amp; Analisis Sentimen Multimodal</h3>
+          <p class="week-desc">
+            Menjawab pertanyaan tentang gambar (VQA) sekaligus mendeteksi sentimen tri-modal (teks, audio, visual) &mdash; termasuk menangani konflik antar modalitas.
+          </p>
+          <ul class="week-topics">
+            <li><span class="topic-dot"></span>Arsitektur VQA: Konkatenasi, Attention, Transformer</li>
+            <li><span class="topic-dot"></span>Sentimen Tri-Modal &amp; Fusi Konflik</li>
+            <li><span class="topic-dot"></span>Metrik: VQA Accuracy, WUPS, F1-score</li>
+          </ul>
+        </div>
+        <div class="week-card-actions">
+          <a href="mgg11.html" class="btn-action-primary" title="Buka Slide Presentasi Interaktif">
+            <span class="material-symbols-outlined">slideshow</span>
+            <span>Buka Slide</span>
+          </a>
+          <a href="pdf/mgg11.pdf" download="Pembelajaran_Mesin_Multimodal_Mgg11.pdf" class="btn-action-secondary" title="Unduh langsung file PDF materi slide">
+            <span class="material-symbols-outlined">picture_as_pdf</span>
+            <span>Ekspor PDF</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- MINGGU 12 -->
+      <div class="week-card ready" data-kind="pertemuan" data-n="12" data-periode="pasca" data-status="tersedia" data-tema="aplikasi">
+        <div class="week-card-header">
+          <span class="week-num-label">Pertemuan 12</span>
+        </div>
+        <div class="week-card-body">
+          <h3 class="week-title">Topik Lanjutan: Generasi Multimodal &amp; Etika</h3>
+          <p class="week-desc">
+            Menciptakan konten dari deskripsi (text-to-image, text-to-video), pencarian lintas modalitas, serta isu etika: bias, privasi, dan fairness.
+          </p>
+          <ul class="week-topics">
+            <li><span class="topic-dot"></span>Text-to-Image &amp; Text-to-Video (GAN, VAE, Diffusion)</li>
+            <li><span class="topic-dot"></span>Cross-modal Retrieval &amp; Contrastive Learning</li>
+            <li><span class="topic-dot"></span>Bias, Privasi &amp; Fairness</li>
+          </ul>
+        </div>
+        <div class="week-card-actions">
+          <a href="mgg12.html" class="btn-action-primary" title="Buka Slide Presentasi Interaktif">
+            <span class="material-symbols-outlined">slideshow</span>
+            <span>Buka Slide</span>
+          </a>
+          <a href="pdf/mgg12.pdf" download="Pembelajaran_Mesin_Multimodal_Mgg12.pdf" class="btn-action-secondary" title="Unduh langsung file PDF materi slide">
+            <span class="material-symbols-outlined">picture_as_pdf</span>
+            <span>Ekspor PDF</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- MINGGU 13 -->
+      <div class="week-card ready" data-kind="pertemuan" data-n="13" data-periode="pasca" data-status="tersedia" data-tema="evaluasi" data-handson="1">
+        <div class="week-card-header">
+          <span class="week-num-label">Pertemuan 13</span>
+          <a href="hands-on/mgg13-hands-on.html" class="lab-chip" title="Buka lembar kerja: Protokol Evaluasi & Uji Signifikansi" aria-label="Lembar Kerja: Protokol Evaluasi &amp; Uji Signifikansi"><span class="material-symbols-outlined" aria-hidden="true">science</span><span>Lembar Kerja</span></a>
+        </div>
+        <div class="week-card-body">
+          <h3 class="week-title">Evaluasi Model Multimodal</h3>
+          <p class="week-desc">
+            Metodologi pengujian komprehensif: metrik kuantitatif per jenis tugas, analisis kesalahan kualitatif, interpretasi model, dan strategi evaluasi terpadu.
+          </p>
+          <ul class="week-topics">
+            <li><span class="topic-dot"></span>Metrik: Generasi, Klasifikasi, Regresi &amp; Retrieval</li>
+            <li><span class="topic-dot"></span>Analisis Kesalahan &amp; Interpretasi (Attention Maps)</li>
+            <li><span class="topic-dot"></span>Strategi Evaluasi Komprehensif &amp; Audit Etika</li>
+          </ul>
+        </div>
+        <div class="week-card-actions">
+          <a href="mgg13.html" class="btn-action-primary" title="Buka Slide Presentasi Interaktif">
+            <span class="material-symbols-outlined">slideshow</span>
+            <span>Buka Slide</span>
+          </a>
+          <a href="pdf/mgg13.pdf" download="Pembelajaran_Mesin_Multimodal_Mgg13.pdf" class="btn-action-secondary" title="Unduh langsung file PDF materi slide">
+            <span class="material-symbols-outlined">picture_as_pdf</span>
+            <span>Ekspor PDF</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- MINGGU 14 -->
+      <div class="week-card ready" data-kind="pertemuan" data-n="14" data-periode="pasca" data-status="tersedia" data-tema="evaluasi">
+        <div class="week-card-header">
+          <span class="week-num-label">Pertemuan 14</span>
+        </div>
+        <div class="week-card-body">
+          <h3 class="week-title">Studi Kasus Terpadu</h3>
+          <p class="week-desc">
+            Menyatukan seluruh pilar &mdash; representasi, penyejajaran, dan fusi &mdash; dalam satu sistem nyata, lengkap dengan evaluasi berlapis dan audit etika.
+          </p>
+          <ul class="week-topics">
+            <li><span class="topic-dot"></span>Pipeline End-to-End: Encode, Cocokkan, Hasilkan</li>
+            <li><span class="topic-dot"></span>Baseline Terukur &amp; Evaluasi Berlapis</li>
+            <li><span class="topic-dot"></span>Etika, Batasan &amp; Rencana Proyek Akhir</li>
+          </ul>
+        </div>
+        <div class="week-card-actions">
+          <a href="mgg14.html" class="btn-action-primary" title="Buka Slide Presentasi Interaktif">
+            <span class="material-symbols-outlined">slideshow</span>
+            <span>Buka Slide</span>
+          </a>
+          <a href="pdf/mgg14.pdf" download="Pembelajaran_Mesin_Multimodal_Mgg14.pdf" class="btn-action-secondary" title="Unduh langsung file PDF materi slide">
+            <span class="material-symbols-outlined">picture_as_pdf</span>
+            <span>Ekspor PDF</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- MINGGU 15 -->
+      <div class="week-card ready" data-kind="pertemuan" data-n="15" data-periode="pasca" data-status="tersedia" data-tema="evaluasi">
+        <div class="week-card-header">
+          <span class="week-num-label">Pertemuan 15</span>
+        </div>
+        <div class="week-card-body">
+          <h3 class="week-title">Review Materi</h3>
+          <p class="week-desc">
+            Sintesis seluruh materi, peta alur pasca-UTS, latihan terintegrasi, dan persiapan presentasi proyek akhir sebagai pengganti UAS tertulis.
+          </p>
+          <ul class="week-topics">
+            <li><span class="topic-dot"></span>Peta Tiga Pilar &amp; Alur Pasca-UTS</li>
+            <li><span class="topic-dot"></span>Rumus Kunci, Teknik Menjawab &amp; Latihan Terintegrasi</li>
+            <li><span class="topic-dot"></span>Format UAS &amp; Persiapan Presentasi Proyek</li>
+          </ul>
+        </div>
+        <div class="week-card-actions">
+          <a href="mgg15.html" class="btn-action-primary" title="Buka Slide Presentasi Interaktif">
+            <span class="material-symbols-outlined">slideshow</span>
+            <span>Buka Slide</span>
+          </a>
+          <a href="pdf/mgg15.pdf" download="Pembelajaran_Mesin_Multimodal_Mgg15.pdf" class="btn-action-secondary" title="Unduh langsung file PDF materi slide">
+            <span class="material-symbols-outlined">picture_as_pdf</span>
+            <span>Ekspor PDF</span>
+          </a>
+        </div>
+      </div>
+
+      </div>
+
+
+    <!-- ============================================================
+         JADWAL EVALUASI (UTS & UAS — terpisah dari grid mingguan)
+         ============================================================ -->
+    <div class="section-heading section-heading-milestones" id="examHeading">
+      <h2>Jadwal Evaluasi</h2>
+      <p>Ujian Tengah Semester, jalur proyek akhir, dan Ujian Akhir Semester beserta berkas pendukungnya</p>
+    </div>
+
+    <div class="milestones-grid" id="examGrid">
+
+      <!-- UTS -->
+      <div class="milestone-card" data-kind="ujian" data-periode="ujian" data-status="tersedia" data-tema="">
+        <div class="milestone-card-header">
+          <span class="milestone-type-label">UTS</span>
+          <span class="exam-when" title="Jadwal sementara &mdash; dapat berubah mengikuti pengumuman resmi Program Studi">
+            <span class="material-symbols-outlined" aria-hidden="true">event</span>
+            <span>Kamis, 22 Okt 2026</span>
+            <span class="exam-when-note">(sementara)</span>
+          </span>
+        </div>
+        <div class="week-card-body">
+          <h3 class="week-title">Ujian Tengah Semester (UTS)</h3>
+          <p class="week-desc">
+            Evaluasi tertulis pemahaman teori, konsep representasi, penyejajaran, dan strategi fusi multimodal (Materi Pertemuan 01&ndash;07).
+          </p>
+          <ul class="week-topics">
+            <li><span class="topic-dot"></span>Cakupan materi Pertemuan 01&ndash;07</li>
+            <li><span class="topic-dot"></span>Esai konseptual &amp; analisis studi kasus</li>
+            <li><span class="topic-dot"></span>Pengerjaan 100 menit &middot; 07.30&ndash;09.30 WIB</li>
+          </ul>
+        </div>
+        <div class="week-card-actions">
+          <a href="dokumen/uts-kisi-kisi.html#sec-info" class="btn-action-secondary" title="Ketentuan ujian: jadwal, bentuk soal, dan alat bantu">
+            <span class="material-symbols-outlined" aria-hidden="true">rule</span>
+            <span>Ketentuan</span>
+          </a>
+          <a href="dokumen/uts-kisi-kisi.html" class="btn-action-primary" title="Buka kisi-kisi UTS (cakupan Pertemuan 01&ndash;07)">
+            <span class="material-symbols-outlined">assignment</span>
+            <span>Kisi-kisi</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- PROYEK AKHIR -->
+      <div class="milestone-card" data-kind="ujian" data-periode="ujian" data-status="tersedia" data-tema="">
+        <div class="milestone-card-header">
+          <span class="milestone-type-label">PROYEK</span>
+        </div>
+        <div class="week-card-body">
+          <h3 class="week-title">Proyek Akhir Multimodal</h3>
+          <p class="week-desc">
+            Proyek kelompok sepanjang Pertemuan 09&ndash;16: membangun, mengevaluasi, dan mempertanggungjawabkan sebuah sistem multimodal, lalu mempresentasikannya pada sesi UAS.
+          </p>
+          <ul class="week-topics">
+            <li><span class="topic-dot"></span>Perumusan masalah &amp; reproduksi baseline</li>
+            <li><span class="topic-dot"></span>Perancangan, pembangunan &amp; perbandingan pendekatan</li>
+            <li><span class="topic-dot"></span>Evaluasi kegagalan, audit etika &amp; pelaporan</li>
+          </ul>
+        </div>
+        <div class="week-card-actions">
+          <a href="dokumen/proyek-akhir-tor.pdf" download="Pembelajaran_Mesin_Multimodal_TOR_Proyek_Akhir.pdf" class="btn-action-secondary" title="Unduh Kerangka Acuan (TOR) proyek akhir dalam format PDF">
+            <span class="material-symbols-outlined">download</span>
+            <span>Unduh TOR</span>
+          </a>
+          <a href="dokumen/proyek-akhir.html" class="btn-action-primary" title="Buka deskripsi proyek akhir (bentuk, tahapan, aturan, dan hasil akhir)">
+            <span class="material-symbols-outlined">description</span>
+            <span>Deskripsi</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- UAS -->
+      <div class="milestone-card" data-kind="ujian" data-periode="ujian" data-status="segera" data-tema="">
+        <div class="milestone-card-header">
+          <span class="milestone-type-label">UAS</span>
+        </div>
+        <div class="week-card-body">
+          <h3 class="week-title">Ujian Akhir Semester (UAS)</h3>
+          <p class="week-desc">
+            Presentasi dan pertanggungjawaban Proyek Akhir secara berkelompok pada Pertemuan 16, menggantikan ujian tertulis.
+          </p>
+          <ul class="week-topics">
+            <li><span class="topic-dot"></span>Presentasi hasil Proyek Akhir</li>
+            <li><span class="topic-dot"></span>Tanya jawab &amp; pertanggungjawaban teknis</li>
+            <li><span class="topic-dot"></span>Rubrik penilaian &amp; tenggat via LMS</li>
+          </ul>
+        </div>
+        <div class="week-card-actions">
+          <button class="btn-action-disabled" disabled title="Jadwal resmi UAS diumumkan tersendiri">
+            <span class="material-symbols-outlined">event</span>
+            <span>Jadwal UAS</span>
+          </button>
+          <button class="btn-action-disabled" disabled title="Rubrik penilaian proyek dibagikan lewat LMS">
+            <span class="material-symbols-outlined">assignment</span>
+            <span>Rubrik Penilaian</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="empty-state" id="emptyState" hidden>
+      <span class="material-symbols-outlined" aria-hidden="true">search_off</span>
+      <h3>Tidak ada materi yang cocok</h3>
+      <p>Coba kata kunci lain atau kurangi filter yang aktif.</p>
+      <button type="button" class="reset-btn" id="emptyReset"><span class="material-symbols-outlined" aria-hidden="true">restart_alt</span><span>Atur ulang filter</span></button>
+    </div>
+
+  </main>
+
+  <!-- Compact Presentation Shortcuts Section (Directly Above Footer) -->
+  <section class="cheatsheet-fullwidth-section">
+    <div class="cheatsheet-inner-container">
+      <div class="cheatsheet-header-row">
+        <div class="cheatsheet-title-group">
+          <span class="material-symbols-outlined" style="color: var(--ctp-blue); font-size: 18px;">keyboard</span>
+          <h3>Panduan Tombol Pintasan Presentasi</h3>
+        </div>
+      </div>
+
+      <div class="shortcuts-grid">
+        <div class="shortcut-item">
+          <span class="shortcut-kbd">Space</span> / <span class="shortcut-kbd">→</span>
+          <span>Slide Selanjutnya</span>
+        </div>
+        <div class="shortcut-item">
+          <span class="shortcut-kbd">←</span>
+          <span>Slide Sebelumnya</span>
+        </div>
+        <div class="shortcut-item">
+          <span class="shortcut-kbd">F</span>
+          <span>Layar Penuh</span>
+        </div>
+        <div class="shortcut-item">
+          <span class="shortcut-kbd">S</span>
+          <span>Speaker Notes</span>
+        </div>
+        <div class="shortcut-item">
+          <span class="shortcut-kbd">O</span> / <span class="shortcut-kbd">Esc</span>
+          <span>Overview Mode</span>
+        </div>
+        <div class="shortcut-item">
+          <span class="shortcut-kbd">B</span> / <span class="shortcut-kbd">.</span>
+          <span>Blackout Diskusi</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Full-Stretch Footer (Seamlessly Grounded) -->
+  <footer class="portal-footer">
+    <div class="footer-inner-container">
+      <p>
+        © 2026 <strong>Teknik Informatika ITERA</strong> — Program Studi Teknik Informatika, Fakultas Teknologi Industri.
+      </p>
+      <p class="footer-sub">
+        Institut Teknologi Sumatera
+      </p>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    var cards = Array.prototype.slice.call(document.querySelectorAll('[data-kind]'));
+    var state = { q: '', periode: 'semua', hands: false, tema: [] };
+    var $ = function (id) { return document.getElementById(id); };
+    var input = $('searchInput'), countEl = $('resultCount');
+    var KEY = 'mmm-portal-filter-v1';
+    var PERIODE = ['semua', 'pra', 'pasca', 'ujian'], TEMA = ['representasi', 'fusi', 'penyejajaran', 'aplikasi', 'evaluasi'];
+    function save() {
+      try { localStorage.setItem(KEY, JSON.stringify({ q: state.q, periode: state.periode, hands: state.hands, tema: state.tema })); } catch (e) {}
+    }
+    function load() {
+      try {
+        var d = JSON.parse(localStorage.getItem(KEY) || 'null');
+        if (!d || typeof d !== 'object') return;
+        if (typeof d.q === 'string') state.q = d.q.slice(0, 80);
+        if (PERIODE.indexOf(d.periode) >= 0) state.periode = d.periode;
+        state.hands = d.hands === true;
+        if (Array.isArray(d.tema)) state.tema = d.tema.filter(function (t) { return TEMA.indexOf(t) >= 0; });
+      } catch (e) {}
+    }
+    var toolbar = $('toolbar'), fab = $('fab'), backdrop = $('sheetBackdrop');
+    function sheet(open) {
+      toolbar.classList.toggle('open', open);
+      backdrop.hidden = !open;
+      fab.setAttribute('aria-expanded', open ? 'true' : 'false');
+      document.body.classList.toggle('sheet-lock', open);
+      if (open) $('sheetClose').focus(); else if (document.activeElement && toolbar.contains(document.activeElement)) fab.focus();
+    }
+    fab.addEventListener('click', function () { sheet(true); });
+    backdrop.addEventListener('click', function () { sheet(false); });
+    $('sheetClose').addEventListener('click', function () { sheet(false); });
+    $('sheetApply').addEventListener('click', function () { sheet(false); });
+    var toggleBtn = $('temaToggle'), temaRow = $('temaRow');
+    function setTema(open) {
+      temaRow.hidden = !open;
+      toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    toggleBtn.addEventListener('click', function () { setTema(temaRow.hidden); });
+    var norm = function (t) {
+      return t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim();
+    };
+    cards.forEach(function (c) {
+      var extra = c.hasAttribute('data-handson') ? ' hands-on lab lembar kerja' : '';
+      c._text = norm(c.textContent + extra + ' ' + (c.getAttribute('data-tema') || '') + ' ' + (c.getAttribute('data-periode') === 'pra' ? 'sebelum uts' : c.getAttribute('data-periode') === 'pasca' ? 'setelah uts' : ''));
+    });
+
+    function matches(c) {
+      var kind = c.getAttribute('data-kind'), per = c.getAttribute('data-periode');
+      if (state.periode !== 'semua' && per !== state.periode) return false;
+      if (state.hands && !c.hasAttribute('data-handson')) return false;
+      if (state.tema.length && state.tema.indexOf(c.getAttribute('data-tema')) < 0) return false;
+      if (state.q) {
+        var toks = norm(state.q).split(' ');
+        for (var i = 0; i < toks.length; i++) if (c._text.indexOf(toks[i]) < 0) return false;
+      }
+      return true;
+    }
+
+    function isDirty() {
+      return !!(state.q || state.hands || state.tema.length || state.periode !== 'semua');
+    }
+
+    function apply() {
+      var weeks = 0, exams = 0;
+      cards.forEach(function (c) {
+        var ok = matches(c);
+        c.hidden = !ok;
+        if (ok) { if (c.getAttribute('data-kind') === 'ujian') exams++; else weeks++; }
+      });
+      $('weeksGrid').hidden = weeks === 0;
+      $('weeksHeading').hidden = weeks === 0 && isDirty();
+      $('examGrid').hidden = exams === 0;
+      $('examHeading').hidden = exams === 0;
+      $('emptyState').hidden = (weeks + exams) !== 0;
+      var parts = [];
+      if (weeks || !exams) parts.push(weeks + ' pertemuan');
+      if (exams) parts.push(exams + ' agenda evaluasi');
+      countEl.textContent = 'Menampilkan ' + parts.join(' · ');
+      $('resetFilters').hidden = !isDirty();
+      var nAct = (state.q ? 1 : 0) + (state.periode !== 'semua' ? 1 : 0) + (state.hands ? 1 : 0) + state.tema.length;
+      $('fabBadge').textContent = nAct;
+      $('fabBadge').hidden = !nAct;
+      $('activeBar').hidden = !nAct;
+      $('activeText').textContent = countEl.textContent;
+      $('sheetApply').textContent = 'Tampilkan ' + (weeks + exams) + ' materi';
+      save();
+      var tc = $('temaCount');
+      tc.textContent = state.tema.length;
+      tc.hidden = !state.tema.length;
+      toggleBtn.classList.toggle('has-active', state.tema.length > 0);
+      Array.prototype.forEach.call(document.querySelectorAll('.fchip[data-group]'), function (b) {
+        var g = b.getAttribute('data-group'), v = b.getAttribute('data-value'), on;
+        if (g === 'periode') on = state.periode === v;
+        else if (g === 'hands') on = state.hands;
+        else on = state.tema.indexOf(v) >= 0;
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+    }
+
+    Array.prototype.forEach.call(document.querySelectorAll('.fchip[data-group]'), function (b) {
+      b.addEventListener('click', function () {
+        var g = b.getAttribute('data-group'), v = b.getAttribute('data-value');
+        if (g === 'periode') state.periode = v;
+        else if (g === 'hands') state.hands = !state.hands;
+        else {
+          var i = state.tema.indexOf(v);
+          if (i >= 0) state.tema.splice(i, 1); else state.tema.push(v);
+        }
+        apply();
+      });
+    });
+
+    function reset() {
+      state = { q: '', periode: 'semua', hands: false, tema: [] };
+      input.value = '';
+      syncClear();
+      setTema(false);
+      apply();
+    }
+    var clearBtn = $('clearSearch');
+    function syncClear() { clearBtn.hidden = !input.value; }
+    input.addEventListener('input', function () { state.q = input.value; syncClear(); apply(); });
+    clearBtn.addEventListener('click', function () { input.value = ''; state.q = ''; syncClear(); apply(); input.focus(); });
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { input.value = ''; state.q = ''; syncClear(); apply(); }
+    });
+    $('resetFilters').addEventListener('click', reset);
+    $('activeReset').addEventListener('click', reset);
+    $('emptyReset').addEventListener('click', reset);
+    document.addEventListener('keydown', function (e) {
+      var t = e.target, typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
+      if (e.key === 'Escape' && toolbar.classList.contains('open')) { sheet(false); return; }
+      if (e.key === '/' && !typing && !e.ctrlKey && !e.metaKey && !e.altKey) { e.preventDefault(); input.focus(); input.select(); }
+    });
+    load();
+    input.value = state.q;
+    syncClear();
+    if (state.tema.length) setTema(true);
+    var hdr = document.querySelector('.hero-sticky-header');
+    function setOffset() { document.documentElement.style.setProperty('--hdr-h', hdr.offsetHeight + 'px'); }
+    setOffset();
+    window.addEventListener('resize', setOffset);
+    if (window.ResizeObserver) new ResizeObserver(setOffset).observe(hdr);
+    apply();
+  })();
+  </script>
+
+</body>
+</html>

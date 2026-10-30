@@ -1,0 +1,1267 @@
+/**
+ * Course Portal Styling - Catppuccin Latte
+ * Full-stretch Sticky Hero Header, Side-by-Side Institutional Logos (Campus Left, Dikti Right),
+ * Uniform Week Cards, and Full-Stretch Bottom Cheatsheet + Footer Deck
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=JetBrains+Mono:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+
+:root {
+  /* Catppuccin Latte Color Tokens */
+  --ctp-rosewater: #dc8a78;
+  --ctp-flamingo: #dd7878;
+  --ctp-pink: #ea76cb;
+  --ctp-mauve: #8839ef;
+  --ctp-red: #d20f39;
+  --ctp-maroon: #e64553;
+  --ctp-peach: #fe640b;
+  --ctp-yellow: #df8e1d;
+  --ctp-green: #40a02b;
+  --ctp-teal: #179299;
+  --ctp-sky: #04a5e5;
+  --ctp-sapphire: #209fb5;
+  --ctp-blue: #1e66f5;
+  --ctp-lavender: #7287fd;
+
+  --ctp-text: #4c4f69;
+  --ctp-subtext1: #5c5f77;
+  --ctp-subtext0: #6c6f85;
+  --ctp-overlay2: #7c7f93;
+  --ctp-overlay1: #8c8fa1;
+  --ctp-overlay0: #9ca0b0;
+  --ctp-surface2: #acb0be;
+  --ctp-surface1: #bcc0cc;
+  --ctp-surface0: #ccd0da;
+  --ctp-base: #eff1f5;
+  --ctp-mantle: #e6e9ef;
+  --ctp-crust: #dce0e8;
+
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --shadow-sm: 0 2px 8px rgba(76, 79, 105, 0.05);
+  --shadow-md: 0 6px 20px rgba(76, 79, 105, 0.08);
+  --shadow-lg: 0 12px 36px rgba(76, 79, 105, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--ctp-base);
+  color: var(--ctp-text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================================================
+   Full-Stretch Sticky Hero Header
+   ========================================================= */
+
+.hero-sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  background: rgba(239, 241, 245, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1.5px solid var(--ctp-surface1);
+  box-shadow: 0 4px 20px rgba(76, 79, 105, 0.06);
+  transition: all 0.25s ease;
+}
+
+.hero-inner-container {
+  width: 100%;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* Side-by-side Institutional Logos (Campus on left, Dikti on right) - NO text */
+.hero-brand-logos {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.brand-logo {
+  height: 48px;
+  width: auto;
+  max-width: 58px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.brand-logo:hover {
+  transform: scale(1.04);
+}
+
+
+/* Center Content: Course Title & Code */
+.hero-center-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.course-code-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ctp-blue);
+  font-family: var(--font-sans);
+  letter-spacing: 0.02em;
+  margin-bottom: 2px;
+}
+
+.course-code-row .separator {
+  color: var(--ctp-surface2);
+  font-weight: 400;
+}
+
+.course-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--ctp-text);
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  margin: 0;
+}
+
+/* Right Section: Lecturer Metadata */
+.hero-right-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  flex-shrink: 0;
+  gap: 2px;
+  font-size: 12.5px;
+  color: var(--ctp-subtext0);
+}
+
+.hero-right-meta .lecturer-name {
+  font-weight: 700;
+  color: var(--ctp-text);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.hero-right-meta .lecturer-email {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--ctp-blue);
+  text-decoration: none;
+}
+
+.hero-right-meta .lecturer-email:hover {
+  text-decoration: underline;
+}
+
+/* =========================================================
+   Main Content Container
+   ========================================================= */
+
+[hidden] {
+  display: none !important;
+}
+
+.main-content-container {
+  width: 100%;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 32px 28px 48px 28px;
+  flex-grow: 1;
+}
+
+/* Section Header */
+.section-heading {
+  margin-bottom: 24px;
+}
+
+.section-heading h2 {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--ctp-text);
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.section-heading p {
+  font-size: 14px;
+  color: var(--ctp-subtext0);
+}
+
+/* =========================================================
+   Uniform Week Grid & Cards
+   ========================================================= */
+
+.weeks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 22px;
+}
+
+/* Kartu pekan: seragam PER BARIS (stretch grid), bukan seragam global */
+.week-card {
+  background: var(--ctp-mantle);
+  border: 1px solid var(--ctp-surface1);
+  border-radius: 16px;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  /* TANPA lantai tinggi. Keseragaman datang dari `align-items: stretch` grid:
+     kartu terpendek di satu baris ikut memanjang setinggi kartu tertinggi di
+     baris itu.
+     Sebelumnya `min-height: 420px` menahan SEMUA kartu demi varian tertinggi —
+     blok chip lab 33px di dalam body kartu. Setelah chip itu pindah ke header
+     (`.lab-chip`), kartu ber-lab dan tanpa-lab sama-sama 375px (terukur),
+     sehingga lantai tidak lagi diperlukan.
+     Terukur: 3170 → 2971px (−6,3%) pada 1280px.
+     Bila kelak ada kartu yang isinya benar-benar lebih tinggi, barisnya
+     memanjang sendiri — tidak ada angka ajaib yang perlu disetel ulang. */
+  box-shadow: var(--shadow-sm);
+  transition: all 0.25s ease;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden; /* Clips top accent line and children flush to rounded corners */
+}
+
+.week-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--ctp-surface2);
+}
+
+/* Active / Ready State */
+.week-card.ready {
+  border-color: var(--ctp-surface1);
+  background: #ffffff;
+  box-shadow: var(--shadow-sm);
+}
+
+.week-card.ready:hover {
+  border-color: var(--ctp-blue);
+  box-shadow: 0 8px 26px rgba(30, 102, 245, 0.12);
+}
+
+/* Aksen warna di tepi atas kartu dihapus (Okt 2026): status kartu cukup dibaca
+   dari warna label pertemuan dan tombol; garis gradien hanya menambah derau. */
+
+/* Upcoming / Not-Yet-Available State */
+.week-card.upcoming {
+  background: var(--ctp-mantle);
+  border: 1px dashed var(--ctp-surface2);
+  box-shadow: none;
+}
+
+.week-card.upcoming .week-title,
+.week-card.upcoming .week-desc,
+.week-card.upcoming .week-topics li {
+  color: var(--ctp-overlay0);
+}
+
+/* Milestone (UTS / UAS) — now a separate card type, no longer a week-card */
+.milestone-card {
+  background: #ffffff;
+  border: 1px solid var(--ctp-surface1);
+  border-radius: 16px;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 300px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.25s ease;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.milestone-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--ctp-peach);
+}
+
+.milestones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 22px;
+}
+
+.section-heading-milestones {
+  margin-top: 40px;
+}
+
+.milestone-card-header {
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--ctp-surface0);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  /* `flex-wrap` sengaja, mengikuti `.week-card-header`: badge jadwal di kanan
+     turun ke baris kedua pada kartu sempit alih-alih meluber keluar kartu. */
+  flex-wrap: wrap;
+}
+
+.milestone-type-label {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ctp-peach);
+}
+
+/* Badge lab pada HEADER kartu (sebelumnya `.hands-on-chip`: blok penuh-lebar di
+   dalam body kartu).
+   Alasan pindah: blok chip + margin adalah varian kartu TERTINGGI, dan karena
+   keseragaman baris menuntut semua kartu mengakomodasi varian tertinggi,
+   delapan kartu tanpa lab ikut membayar 47px (terukur: 375px tanpa lab vs 422px
+   dengan lab). Sebagai badge header, biayanya 0px pada lebar desktop.
+   Yang berubah dari versi lama: label tidak lagi memuat awalan "Lembar Kerja:"
+   (ikon + warna hijau sudah menyampaikan itu) — nama lab sendiri tetap utuh
+   sebagai teks, dan `aria-label` mempertahankan bentuk panjangnya untuk pembaca
+   layar. `white-space: nowrap` mencegah label terbelah di tengah; pada kartu
+   sempit badge turun ke baris kedua lewat `flex-wrap` di `.week-card-header`
+   (bukan meluber keluar kartu seperti `nowrap` versi lama pada 820/390/360px). */
+.lab-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--ctp-green);
+  color: #ffffff;
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-decoration: none;
+  white-space: nowrap;
+  max-width: 100%;
+  transition: all 0.2s ease;
+}
+
+.lab-chip:hover {
+  background: #358a20;
+  box-shadow: 0 3px 10px rgba(64, 160, 43, 0.28);
+}
+
+.lab-chip .material-symbols-outlined {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* Card Header: nomor pekan + badge lab (bila ada).
+   `flex-wrap` disengaja: pada kartu sempit (~300px di 1024px) badge turun ke
+   baris kedua alih-alih meluber keluar kartu. */
+.week-card-header {
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--ctp-surface0);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.week-num-label {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ctp-subtext0);
+}
+
+.week-card.ready .week-num-label {
+  color: var(--ctp-blue);
+}
+
+/* Card Body with strict uniform heights */
+.week-card-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.week-title {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: var(--ctp-text);
+  line-height: 1.35;
+  margin-bottom: 10px;
+  min-height: 46px; /* Exactly 2 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Deskripsi TIDAK dijepit (dulu `-webkit-line-clamp: 3` + `overflow: hidden`).
+   Clamp 3 baris memotong teks secara diam-diam: terukur 2 deskripsi terpotong
+   di 1280px dan **16 dari 17 kartu** di 1024px (teks aslinya 4–5 baris), tanpa
+   penanda apa pun bagi pembaca layar — kelas bug yang sama dengan ellipsis pada
+   `.week-topics li` dulu. Membiarkannya membungkus penuh menambah ~4% tinggi di
+   tablet (3260→3388px @1024px) tetapi menghapus kehilangan isi sepenuhnya.
+   `min-height: 60px` dipertahankan sebagai lantai keseragaman, bukan lagi
+   pemaksa "tepatnya 3 baris". */
+.week-desc {
+  font-size: 13px;
+  color: var(--ctp-subtext1);
+  line-height: 1.5;
+  margin-bottom: 16px;
+  min-height: 60px;
+}
+
+.week-topics {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 18px 0;
+  min-height: 80px; /* Exactly 3 items */
+}
+
+/* Topik dibiarkan membungkus. Sebelumnya `nowrap + ellipsis` memotong
+   diam-diam 1/2/2/10 baris topik pada 1440/1280/820/420px — mis.
+   "Temporal Asynchrony, Structural Mi…" — tanpa penanda apa pun bagi pembaca
+   layar. Membungkus TIDAK menambah tinggi halaman di desktop (kartu masih
+   ditahan `min-height: 420px` pada `.week-card`); di 420px hanya +39px.
+   Terukur: truncation 2→0 (1280px), 10→0 (360px). */
+.week-topics li {
+  font-size: 12px;
+  color: var(--ctp-subtext0);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+/* Titik tetap sejajar baris pertama saat topik melipat jadi 2 baris.
+   (line-height 1.7 × 12px = 20,4px; (20,4 − 5) / 2 ≈ 8px) */
+.week-topics li .topic-dot {
+  margin-top: 8px;
+}
+
+.topic-dot {
+  width: 5px;
+  height: 5px;
+  min-width: 5px;
+  border-radius: 50%;
+  background: var(--ctp-blue);
+  display: inline-block;
+}
+
+.week-card.upcoming .topic-dot {
+  background: var(--ctp-overlay0);
+}
+
+.milestone-card .topic-dot {
+  background: var(--ctp-peach);
+}
+
+/* Badge jadwal ujian di HEADER kartu milestone (opsi A, 2 Oktober 2026).
+   Mengikuti pola `.lab-chip`: badge header biayanya ~0px pada lebar desktop,
+   sedangkan blok penuh-lebar di dalam body kartu terukur menambah 55–105px
+   sehingga kartu milestone (dan seluruh baris „Jadwal Evaluasi") melampaui
+   tinggi kartu pertemuan. `margin-left: auto` menaruh badge di kanan tanpa
+   mengubah `justify-content` header (kartu UAS tanpa badge tetap rata kiri).
+   Yang ditampilkan hanya informasi yang mengikat: slot ruang apa adanya
+   (07.30–09.30 WIB) + status *sementara*; durasi pengerjaan ada di daftar topik.
+   Penyangga administratif (distribusi & pengumpulan lembar) sengaja TIDAK
+   disebut supaya tidak terbaca sebagai tambahan waktu — lembar soal menyatakan
+   "tidak ada perpanjangan waktu". Kalimat penuhnya ada di atribut `title`;
+   baris ini wajib disunting bersama baris *Jadwal* di `dokumen/uts-kisi-kisi.html`. */
+.exam-when {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(254, 100, 11, 0.10);
+  color: var(--ctp-maroon);
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.exam-when .material-symbols-outlined {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* Penanda status, bukan keterangan tambahan: harus tetap terbaca (bukan hanya
+   di `title`) karena jadwal prodi dapat berubah. */
+.exam-when-note {
+  font-weight: 600;
+  font-style: italic;
+  opacity: 0.85;
+}
+
+/* Card Action Buttons (Dual Buttons: Buka Slide & Ekspor PDF) */
+.week-card-actions {
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--ctp-surface0);
+}
+
+.btn-action-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--ctp-blue);
+  color: #ffffff;
+  padding: 10px 14px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 3px 10px rgba(30, 102, 245, 0.25);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-action-primary:hover {
+  background: #1455d9;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(30, 102, 245, 0.35);
+}
+
+.btn-action-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--ctp-base);
+  color: var(--ctp-subtext0);
+  border: 1px solid var(--ctp-surface2);
+  padding: 10px 12px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-action-secondary:hover {
+  background: #ffffff;
+  color: var(--ctp-blue);
+  border-color: var(--ctp-blue);
+  transform: translateY(-1px);
+}
+
+.btn-action-disabled {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--ctp-surface0);
+  color: var(--ctp-overlay1);
+  border: 1px solid transparent;
+  padding: 10px 10px;
+  border-radius: 9px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: not-allowed;
+  white-space: nowrap;
+}
+
+.btn-action-primary .material-symbols-outlined,
+.btn-action-secondary .material-symbols-outlined,
+.btn-action-disabled .material-symbols-outlined {
+  font-size: 16px;
+}
+
+/* Kompaksi rail aksi (Langkah 3) — TANPA menghapus label.
+   Terukur −8px/kartu (padding-top 14→10, padding vertikal tombol 10→8).
+   Varian ikon-saja akan menghemat ~26px lagi, tetapi menghilangkan label
+   "Buka Slide"/"Ekspor PDF" — itu keputusan pemilik kursus, bukan kerja
+   teknis, jadi belum diambil di sini. */
+.btn-action-primary,
+.btn-action-secondary,
+.btn-action-disabled {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+/* =========================================================
+   Compact Presentation Shortcuts Section (Above Footer)
+   ========================================================= */
+
+.cheatsheet-fullwidth-section {
+  width: 100%;
+  background: var(--ctp-mantle);
+  border-top: 1px solid var(--ctp-surface1);
+  padding: 16px 0 18px 0;
+  margin-top: auto;
+}
+
+.cheatsheet-inner-container {
+  width: 100%;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+.cheatsheet-header-row {
+  margin-bottom: 10px;
+}
+
+.cheatsheet-title-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cheatsheet-title-group h3 {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ctp-text);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.shortcuts-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  align-items: center;
+}
+
+.shortcut-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--ctp-subtext1);
+  background: var(--ctp-base);
+  border: 1px solid var(--ctp-surface1);
+  border-radius: 8px;
+  padding: 5px 11px;
+  transition: all 0.2s ease;
+}
+
+.shortcut-item:hover {
+  border-color: var(--ctp-blue);
+  color: var(--ctp-text);
+  background: #ffffff;
+}
+
+.shortcut-kbd {
+  background: var(--ctp-mantle);
+  border: 1px solid var(--ctp-surface2);
+  border-bottom: 2px solid var(--ctp-overlay0);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--ctp-blue);
+  font-size: 11px;
+  min-width: 20px;
+  text-align: center;
+  line-height: 1.35;
+}
+
+/* =========================================================
+   Full-Stretch Footer (Seamlessly Grounded)
+   ========================================================= */
+
+.portal-footer {
+  width: 100%;
+  background: var(--ctp-crust);
+  border-top: 1px solid var(--ctp-surface1);
+  padding: 22px 28px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ctp-subtext0);
+}
+
+.footer-inner-container {
+  width: 100%;
+  max-width: 1380px;
+  margin: 0 auto;
+}
+
+.footer-sub {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--ctp-overlay1);
+}
+
+.portal-footer a {
+  color: var(--ctp-blue);
+  text-decoration: none;
+}
+
+.portal-footer a:hover {
+  text-decoration: underline;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+}
+
+
+/* =========================================================
+   Toolbar pencarian & filter (pola `.toolbar` situs DTD)
+   Bilah lengket di bawah header: kolom cari berbentuk pil tanpa bingkai,
+   chip pil bergaris tepi; chip aktif berisi tonal biru + tanda centang.
+   Logika di <script> index.html.
+   ========================================================= */
+
+.toolbar {
+  position: sticky;
+  top: var(--hdr-h, 79px);
+  z-index: 900;
+  background: rgba(239, 241, 245, 0.92);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--ctp-surface0);
+}
+
+.toolbar-inner {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 12px 28px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+
+.search {
+  flex: 1 1 300px;
+  max-width: 380px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: var(--ctp-crust);
+  color: var(--ctp-subtext0);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search:focus-within {
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(30, 102, 245, 0.45);
+}
+
+.search .material-symbols-outlined {
+  font-size: 22px;
+}
+
+.search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font: 500 15px var(--font-sans);
+  color: var(--ctp-text);
+}
+
+.search input::placeholder {
+  color: var(--ctp-overlay1);
+}
+
+.search input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.search-hint {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ctp-overlay2);
+  background: var(--ctp-mantle);
+  border: 1px solid var(--ctp-surface1);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  padding: 0 6px;
+  line-height: 1.5;
+}
+
+.search:focus-within .search-hint,
+.search input:not(:placeholder-shown) ~ .search-hint {
+  display: none;
+}
+
+.clear {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.clear:hover {
+  background: var(--ctp-surface0);
+}
+
+.clear .material-symbols-outlined {
+  font-size: 20px;
+}
+
+.chips {
+  order: 3;
+  flex: 1 1 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.fchip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 16px;
+  border: 1px solid var(--ctp-surface2);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ctp-text);
+  font: 600 13px var(--font-sans);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.fchip:hover {
+  background: var(--ctp-crust);
+}
+
+.fchip:focus-visible,
+.reset-btn:focus-visible,
+.clear:focus-visible {
+  outline: 3px solid var(--ctp-blue);
+  outline-offset: 2px;
+}
+
+.fchip .material-symbols-outlined {
+  font-size: 18px;
+  margin-left: -4px;
+}
+
+.fchip[aria-pressed="true"] {
+  background: rgba(30, 102, 245, 0.14);
+  color: #1349b8;
+  border-color: transparent;
+  padding-left: 12px;
+}
+
+.fchip[aria-pressed="true"] .material-symbols-outlined {
+  display: none;
+}
+
+.fchip[aria-pressed="true"]::before {
+  content: "check";
+  font-family: 'Material Symbols Outlined';
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1;
+  font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+}
+
+.fchip.chip-lab[aria-pressed="true"] {
+  background: rgba(64, 160, 43, 0.17);
+  color: #28731a;
+}
+
+/* Pengungkapan bertahap (beban kognitif): baris utama hanya memuat 5 pilihan
+   inti + satu pembuka "Tema"; lima tema muncul hanya bila diminta. */
+.chip-more .chevron {
+  font-size: 18px;
+  margin: 0 -4px 0 0;
+  transition: transform 0.2s ease;
+}
+
+.chip-more[aria-expanded="true"] .chevron {
+  transform: rotate(180deg);
+}
+
+.chip-more.has-active,
+.chip-more[aria-expanded="true"] {
+  border-color: var(--ctp-blue);
+  color: #1349b8;
+}
+
+.more-count {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--ctp-blue);
+  color: #ffffff;
+  font: 700 11px/18px var(--font-mono);
+  text-align: center;
+}
+
+.chips-tema {
+  order: 4;
+}
+
+.filter-status {
+  order: 2;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.result-count {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ctp-subtext0);
+  white-space: nowrap;
+}
+
+.reset-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: 1px solid var(--ctp-surface2);
+  color: var(--ctp-subtext1);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font: 700 12px var(--font-sans);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reset-btn:hover {
+  color: var(--ctp-blue);
+  border-color: var(--ctp-blue);
+  background: rgba(30, 102, 245, 0.05);
+}
+
+.reset-btn .material-symbols-outlined {
+  font-size: 15px;
+}
+
+.sheet-head,
+.sheet-apply,
+.fab,
+.sheet-backdrop,
+.active-bar {
+  display: none;
+}
+
+/* Bilah setinggi >1 baris memakan layar pada jendela pendek atau layar sempit
+   (header sendiri sudah lengket): di situ toolbar ikut mengalir biasa. */
+@media (max-width: 1024px), (max-height: 700px) {
+  .toolbar {
+    position: static;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 56px 20px;
+  color: var(--ctp-subtext0);
+}
+
+.empty-state .material-symbols-outlined {
+  font-size: 44px;
+  color: var(--ctp-surface2);
+}
+
+.empty-state h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ctp-text);
+  margin: 6px 0 4px;
+}
+
+.empty-state p {
+  font-size: 13.5px;
+  margin-bottom: 16px;
+}
+
+.empty-state .reset-btn {
+  margin: 0 auto;
+}
+
+/* =========================================================
+   Responsive Breakpoints
+   ========================================================= */
+
+/* =========================================================
+   Band tablet (1000–1179px): 3 kolom, bukan 2
+   =========================================================
+   Lebar tersedia = viewport − 2×28px padding kontainer.
+   Aturan bawaan `minmax(360px, 1fr)` butuh 3×360 + 2×22 = 1124px, sehingga baru
+   memberi 3 kolom pada viewport ≥ 1180px. Di bawah itu — termasuk 1024px
+   (iPad lanskap & jendela terbelah) — hanya 2 kolom dan halaman memanjang.
+   Dengan `minmax(300px, 1fr)` cukup 3×300 + 2×22 = 944px. Karena scrollbar
+   vertikal memakan ~15px lebar tata letak, 3 kolom efektif mulai ~1015px
+   (1024px ✓, 1000px masih 2 kolom — bukan masalah).
+   Batas atas 1199px dipilih agar tidak menyisakan *notch*: aturan bawaan baru
+   memberi 3 kolom pada viewport ≥ 1180px (tanpa scrollbar) atau ≥ 1195px
+   (dengan scrollbar), sehingga 1180–1194px akan jatuh kembali ke 2 kolom.
+   Terukur: 1179px 4449→3197px, 1100px 4489→3299px (3,7 layar), 1024px
+   4603→3552px (3,9 layar).
+   Kartu jadi lebih sempit (≈300–360px) sehingga topik pasti melipat —
+   karena itu perbaikan `.week-topics li` di atas adalah prasyaratnya. */
+@media (min-width: 1000px) and (max-width: 1199px) {
+  .weeks-grid,
+  .milestones-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
+
+@media (max-width: 1024px) {
+  .hero-inner-container {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 14px 20px;
+    gap: 14px;
+  }
+
+  .hero-brand-logos {
+    order: 1;
+  }
+
+  .hero-center-content {
+    order: 2;
+    width: 100%;
+  }
+
+  .hero-right-meta {
+    order: 3;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  .course-title {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content-container {
+    padding: 20px 14px 40px 14px;
+  }
+
+  .weeks-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* Ponsel: toolbar menjadi bottom sheet yang dibuka dari FAB. Markup dan
+     logika filter sama dengan desktop; hanya tampilannya yang berpindah. */
+  .toolbar {
+    position: fixed;
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1100;
+    max-height: 86vh;
+    overflow-y: auto;
+    background: #ffffff;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border: 0;
+    border-radius: 22px 22px 0 0;
+    box-shadow: 0 -12px 40px rgba(76, 79, 105, 0.22);
+    transform: translateY(105%);
+    visibility: hidden;
+    transition: transform 0.26s ease, visibility 0.26s;
+  }
+
+  .toolbar.open {
+    transform: none;
+    visibility: visible;
+  }
+
+  .toolbar-inner {
+    padding: 8px 16px 18px;
+  }
+
+  .sheet-head {
+    order: 0;
+    flex: 1 1 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 15px;
+    color: var(--ctp-text);
+  }
+
+  .search {
+    max-width: none;
+    flex-basis: 100%;
+  }
+
+  .search-hint {
+    display: none;
+  }
+
+  .filter-status {
+    margin-left: 0;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .sheet-apply {
+    order: 5;
+    flex: 1 1 100%;
+    display: block;
+    height: 46px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--ctp-blue);
+    color: #ffffff;
+    font: 700 14px var(--font-sans);
+    box-shadow: 0 4px 14px rgba(30, 102, 245, 0.3);
+    cursor: pointer;
+  }
+
+  .sheet-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 1050;
+    background: rgba(76, 79, 105, 0.38);
+  }
+
+  body.sheet-lock {
+    overflow: hidden;
+  }
+
+  .fab {
+    display: grid;
+    place-items: center;
+    position: fixed;
+    right: 16px;
+    bottom: 18px;
+    z-index: 1000;
+    width: 56px;
+    height: 56px;
+    border: 0;
+    border-radius: 18px;
+    background: var(--ctp-blue);
+    color: #ffffff;
+    box-shadow: 0 8px 22px rgba(30, 102, 245, 0.4);
+    cursor: pointer;
+  }
+
+  .fab:focus-visible {
+    outline: 3px solid var(--ctp-blue);
+    outline-offset: 3px;
+  }
+
+  .fab .material-symbols-outlined {
+    font-size: 26px;
+  }
+
+  .fab-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: var(--ctp-peach);
+    color: #ffffff;
+    font: 700 12px/22px var(--font-mono);
+    text-align: center;
+    border: 2px solid var(--ctp-base);
+  }
+
+  .active-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin: -8px 0 16px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ctp-subtext0);
+  }
+
+  .active-bar[hidden] {
+    display: none;
+  }
+
+  .week-card {
+    min-height: auto;
+  }
+
+  .week-title,
+  .week-desc,
+  .week-topics {
+    min-height: auto;
+  }
+
+  .week-card-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-inner-container {
+    padding: 12px 14px;
+  }
+
+  .brand-logo {
+    height: 40px;
+    max-width: 48px;
+  }
+
+  .course-title {
+    font-size: 19px;
+  }
+
+  .course-code-row {
+    font-size: 11px;
+  }
+
+  .cheatsheet-inner-container {
+    padding: 0 14px;
+  }
+
+  .shortcuts-grid {
+    gap: 6px 8px;
+  }
+}

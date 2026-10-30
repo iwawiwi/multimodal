@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pertemuan 10: Aplikasi 1: Image Captioning | ITERA</title>
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <link rel="stylesheet" href="css/catppuccin-latte.css">
+</head>
+<body>
+  <header class="deck-header">
+    <div class="deck-header-left">
+      <a href="index.html" class="deck-brand-link" title="Kembali ke Portal Kuliah">
+        <img src="assets/img/logo_2.webp" alt="Logo ITERA" class="deck-logo">
+        <img src="assets/img/dikti-saintek-berdampak-color.svg" alt="Logo Dikti Saintek Berdampak" class="deck-logo">
+      </a>
+    </div>
+
+    <div class="deck-header-right">
+      <!-- Aspect Ratio / Projector Switcher -->
+      <div class="nav-dropdown">
+        <button type="button" class="deck-ctrl-btn" id="aspect-btn" onclick="toggleAspectDropdown(event)" title="Sesuaikan Rasio Layar & Proyektor">
+          <span class="material-symbols-outlined">aspect_ratio</span>
+          <span id="aspect-label" class="deck-btn-label">Auto</span>
+          <span class="material-symbols-outlined" style="font-size: 14px;">arrow_drop_down</span>
+        </button>
+        <div class="nav-dropdown-menu" id="aspect-menu">
+          <button type="button" class="dropdown-item active" data-aspect="auto" onclick="setAspectMode('auto')">
+            <span class="item-title">Auto</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-9" onclick="setAspectMode('16-9')">
+            <span class="item-title">16:9</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="16-10" onclick="setAspectMode('16-10')">
+            <span class="item-title">16:10</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="4-3" onclick="setAspectMode('4-3')">
+            <span class="item-title">4:3</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="mobile" onclick="setAspectMode('mobile')">
+            <span class="item-title">Mobile</span>
+          </button>
+          <button type="button" class="dropdown-item" data-aspect="text-large" onclick="setAspectMode('text-large')">
+            <span class="item-title">Teks Besar</span>
+          </button>
+        </div>
+      </div>
+
+      <button type="button" class="deck-ctrl-btn" onclick="Reveal.toggleOverview()" title="Lihat Matriks Seluruh Slide (Esc/O)">
+        <span class="material-symbols-outlined">grid_view</span>
+        <span class="deck-btn-label">Overview</span>
+      </button>
+      <button type="button" class="deck-ctrl-btn" onclick="openShortcutsModal()" title="Panduan Pintasan Keyboard (?)">
+        <span class="material-symbols-outlined">keyboard</span>
+        <span class="deck-btn-label">Pintasan</span>
+      </button>
+      <a href="index.html" class="deck-ctrl-btn" title="Kembali ke Portal Kuliah">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span class="deck-btn-label">Portal</span>
+      </a>
+    </div>
+  </header>
+  <div class="deck-progress-track"><div class="deck-progress-bar" id="deck-progress-bar"></div></div>
+  <div id="shortcuts-modal" onclick="closeShortcutsModal(event)"><div class="modal-content" onclick="event.stopPropagation()"><div class="modal-header"><h4 style="margin:0;font-weight:800"><span class="material-symbols-outlined icon-blue">keyboard</span> Pintasan Navigasi Presentasi</h4><button class="modal-close" onclick="closeShortcutsModal()">&times;</button></div><div class="shortcut-row"><span>Slide berikutnya</span><span><span class="kbd-key">Space</span> / <span class="kbd-key">→</span></span></div><div class="shortcut-row"><span>Slide sebelumnya</span><span><span class="kbd-key">←</span></span></div><div class="shortcut-row"><span>Catatan dosen</span><span><span class="kbd-key">S</span></span></div></div></div>
+  <div class="reveal"><div class="slides">
+
+      <!-- SLIDE 1: COVER -->
+      <section id="deck-title">
+        <div style="margin: auto 0; text-align: left;">
+          <h1 style="font-size: 2.3em; line-height: 1.15; font-weight: 800; color: var(--ctp-text); margin-bottom: 12px; letter-spacing: -0.025em;">
+            Pembelajaran Mesin Multimodal
+          </h1>
+          <div style="font-size: 1.15em; font-weight: 600; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.4;">
+            Pertemuan 10 &bull; Aplikasi 1: Image Captioning
+          </div>
+          <div style="max-width: 620px; background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-left: 3.5px solid var(--ctp-blue); border-radius: 12px; padding: 18px 24px;">
+            <div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">
+              Dosen Pengampu
+            </div>
+            <div style="font-size: 1.1em; font-weight: 800; color: var(--ctp-text); margin-bottom: 6px;">
+              I Wayan Wiprayoga Wisesa
+            </div>
+            <div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;">
+              Program Studi Teknik Informatika<br>
+              Fakultas Teknologi Industri<br>
+              Institut Teknologi Sumatera (ITERA)<br>
+              <span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Buka paruh kedua kuliah. Pertemuan 9 membahas arsitektur transformer multimodal sebagai fondasi. Sesi ini memulai rangkaian aplikasi dengan <em>image captioning</em>, tugas yang memanfaatkan encoder&ndash;decoder dan <em>cross-attention</em> yang sudah dibahas, tetapi dengan tujuan baru: menghasilkan teks. Tekankan bahwa ini adalah pertama kalinya mahasiswa melihat model yang <em>menghasilkan</em> kalimat dari gambar.
+        </aside>
+      </section>
+
+      <!-- SLIDE 2: TUJUAN PEMBELAJARAN -->
+      <section>
+        <h2>Tujuan pembelajaran sesi ini</h2>
+        <p style="margin-bottom: 24px;">Di akhir sesi ini, mahasiswa diharapkan mampu:</p>
+
+        <div class="grid-4">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-blue">01</span>
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Definisi &amp; tujuan</h4>
+            </div>
+            <p>Menjelaskan definisi, tujuan, dan tantangan <em>image captioning</em> sebagai tugas generatif multimodal.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-mauve">02</span>
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Encoder&ndash;Decoder</h4>
+            </div>
+            <p>Memahami arsitektur CNN&ndash;RNN/LSTM dan peran tiap komponennya dalam membangkitkan <em>caption</em>.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-teal">03</span>
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Peran attention</h4>
+            </div>
+            <p>Menganalisis peran <em>attention</em> pada <em>decoder</em> dalam mengarahkan pandangan ke area gambar yang relevan.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <span class="c-num-circle c-num-peach">04</span>
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Metrik evaluasi</h4>
+            </div>
+            <p>Mengidentifikasi BLEU, METEOR, CIDEr, dan SPICE beserta keterbatasan masing-masing.</p>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Bacakan keempat capaian. Urutannya logis: dari memahami apa itu captioning (1), ke arsitektur dasarnya (2), ke mekanisme yang membuatnya akurat (3), lalu ke cara mengukur kualitasnya (4). Capaian ketiga adalah jembatan langsung dari Pertemuan 9; capaian keempat akan diuji lewat studi kasus di akhir sesi.
+        </aside>
+      </section>
+
+      <!-- SLIDE 3: DIVIDER BAGIAN 1 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(30,102,245,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-blue">Bagian 1</span>
+          <h1>Dari attention ke generatif</h1>
+          <p class="subtitle">
+            Menyambung Pertemuan 9: encoder&ndash;decoder dan cross-attention kini menjadi alat untuk menghasilkan teks dari gambar.
+          </p>
+        </div>
+        <aside class="notes">Di Pertemuan 9 kita membahas bagaimana transformer menyusun attention menjadi arsitektur. Sekarang kita pakai gagasan yang sama (encoder, decoder, cross-attention) untuk tugas pertama yang benar-benar <em>menghasilkan</em> sesuatu: image captioning.</aside>
+      </section>
+
+      <!-- SLIDE 4: REKAP ENCODER-DECODER & CROSS-ATTENTION -->
+      <section>
+        <h2>Rekap: tiga blok yang kita butuhkan</h2>
+        <p>Tiga komponen dari Pertemuan 9 akan dipakai ulang sepanjang sesi ini.</p>
+
+        <div class="grid-3" style="margin-top: 16px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Encoder</h4>
+            </div>
+            <p>Mengubah masukan menjadi representasi kontekstual. Pada gambar, tugasnya menangkap isi visual menjadi vektor.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Decoder</h4>
+            </div>
+            <p>Membangkitkan keluaran satu per satu. Pada <em>captioning</em>, ia menghasilkan kata demi kata hingga tanda berhenti.</p>
+          </div>
+
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Cross-attention</h4>
+            </div>
+            <p>Jembatan antar modalitas: <em>query</em> dari satu sisi, <em>key/value</em> dari sisi lain.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">lightbulb</span><div><strong>Image captioning = ketiganya sekaligus.</strong> Fusi (gabungan visual&ndash;teks) + penyejajaran (<em>cross-attention</em>) + generatif (<em>decoder</em>). Inilah alasan tugas ini sering disebut ringkasan seluruh semester.</div></div>
+
+        <aside class="notes">
+          Minta mahasiswa menyebutkan kembali apa yang dilakukan masing-masing blok sebelum Anda menampilkan isi slide. Titik penting: pada captioning, encoder dan decoder berasal dari <em>modalitas yang berbeda</em>: encoder melihat gambar, decoder menulis bahasa. Jembatannya adalah cross-attention.
+        </aside>
+      </section>
+
+      <!-- SLIDE 5: MOTIVASI -->
+      <section>
+        <h2>Apa yang membedakan captioning?</h2>
+        <p>Captioning menuntut model <em>melihat</em> dulu, baru <em>berkata</em>.</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Melihat</h4>
+            </div>
+            <p>Model harus mengidentifikasi objek, atribut, dan relasi antar objek, lalu memutuskan mana yang penting untuk diceritakan.</p>
+          </div>
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Berkata</h4>
+            </div>
+            <p>Model harus menyusun kalimat yang gramatikal, koheren, dan urutannya benar, tidak sekadar menempelkan label objek.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-success" style="margin-top: 14px;"><span class="material-symbols-outlined icon-green">check_circle</span><div>Dari segi pilar mata kuliah, captioning menuntut ketiganya sekaligus: representasi (gambar &amp; teks), penyejajaran (kata terhubung ke objek), dan fusi (informasi visual menyatu ke dalam proses berbahasa).</div></div>
+
+        <aside class="notes">
+          Tekankan kontras dengan Pertemuan 9: pencarian lintas modal hanya perlu <em>menyamakan</em> gambar dan teks; captioning harus <em>menciptakan</em> teks. "Melihat" dan "berkata" adalah dua kemampuan berbeda yang dipaksakan untuk bekerja dalam satu jaringan. Ini juga alasan captioning menjadi tolok ukur pemahaman visual yang ketat.
+        </aside>
+      </section>
+
+      <!-- SLIDE 6: DIVIDER BAGIAN 2 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(136,57,239,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-mauve">Bagian 2</span>
+          <h1>Image captioning: definisi &amp; tujuan</h1>
+          <p class="subtitle">
+            Mendefinisikan tugasnya, menyebutkan manfaatnya, dan mencatat apa yang membuatnya sulit.
+          </p>
+        </div>
+        <aside class="notes">Bagian ini meletakkan fondasi konseptual. Penting agar mahasiswa memahami bahwa captioning adalah tugas <em>generatif</em>: keluarannya urutan kata yang panjangnya bervariasi, bukan label.</aside>
+      </section>
+
+      <!-- SLIDE 7: DEFINISI -->
+      <section>
+        <h2>Definisi image captioning</h2>
+        <p>Tugas yang menghasilkan deskripsi tekstual secara otomatis.</p>
+
+        <div class="formula-hero" style="margin-top: 12px;">
+          <div class="formula-label">Definisi formal</div>
+          <div class="formula-math">$$\text{caption} = \arg\max_{y}\, P(y \mid I)$$</div>
+        </div>
+
+        <div class="formula-breakdown">
+          <div class="formula-term-box"><strong>\(I\)</strong> Gambar masukan. Seluruh isi visual (objek, atribut, relasi) dirangkum menjadi konteks.</div>
+          <div class="formula-term-box"><strong>\(y = (y_1, y_2, \dots, y_T)\)</strong> Urutan kata keluaran. Panjang \(T\) bervariasi dari satu gambar ke gambar lain.</div>
+          <div class="formula-term-box"><strong>\(P(y \mid I)\)</strong> Probabilitas urutan kata, diberikan gambar. Model mencari urutan yang paling masuk akal.</div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Keluarannya urutan kata.</strong> Ruangnya sangat besar, bukan himpunan label yang tetap. Contoh: gambar yang sama dapat menghasilkan &ldquo;<em>seekor kucing duduk di keyboard</em>&rdquo; atau &ldquo;<em>kucing di atas laptop</em>&rdquo;, dan keduanya benar.</div></div>
+
+        <aside class="notes">
+          Bacakan rumus sebagai kalimat: kita mencari urutan kata dengan probabilitas tertinggi, diberikan gambar. Jelaskan bahwa <em>y</em> adalah urutan dengan panjang berubah-ubah, bukan label tunggal; inilah pembeda paling mendasar dari klasifikasi gambar yang sudah dikenal mahasiswa. Beri satu contoh konkret dua caption valid untuk satu gambar.
+        </aside>
+      </section>
+
+      <!-- SLIDE 8: TUJUAN -->
+      <section>
+        <h2>Empat tujuan image captioning</h2>
+        <p>Manfaat yang membuat tugas ini relevan di dunia nyata:</p>
+
+        <div class="grid-4" style="margin-top: 14px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Aksesibilitas</h4>
+            </div>
+            <p>Membantu penyandang disabilitas visual memahami konten gambar lewat pembaca layar.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Pengindeksan &amp; pencarian</h4>
+            </div>
+            <p>Memudahkan pencarian gambar berdasarkan deskripsi teks yang dihasilkan otomatis.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">Pemahaman visual</h4>
+            </div>
+            <p>Menguji kemampuan model untuk benar-benar &ldquo;melihat&rdquo; dan memahami isi gambar.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Pembangkit bahasa alami</h4>
+            </div>
+            <p>Menguji kemampuan model menghasilkan kalimat yang koheren dan gramatikal.</p>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Empat tujuan ini menyentuh dua sisi sekaligus: aksesibilitas dan pencarian adalah nilai praktis, sedangkan pemahaman visual dan generasi bahasa adalah nilai ilmiah. Tekankan bahwa captioning adalah salah satu tugas paling tua dan paling banyak diteliti dalam multimodal; fondasinya dipakai ulang oleh VQA, dialog, hingga model generasi modern.
+        </aside>
+      </section>
+
+      <!-- SLIDE 9: TANTANGAN -->
+      <section>
+        <h2>Tantangan dalam image captioning</h2>
+        <p>Tiga kesulitan inti, ditambah tiga beban praktis:</p>
+
+        <div class="grid-3" style="margin-top: 10px;">
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Pemahaman konten visual</h4>
+            </div>
+            <p>Model harus mengidentifikasi objek, atribut, dan hubungan antar objek, tidak sekadar mendaftar label.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Pembangkit bahasa alami</h4>
+            </div>
+            <p>Menghasilkan kalimat yang gramatikal, koheren, dan bervariasi, bukan kalimat <em>template</em> yang kaku.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Grounding</h4>
+            </div>
+            <p>Setiap kata harus benar-benar merujuk pada objek yang tepat di gambar; tidak boleh salah tempel atribut.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Ditambah:</strong> <em>variasi &amp; keunikan</em> (satu gambar punya banyak caption valid), <em>ketergantungan jangka panjang</em> (kalimat panjang butuh memori konteks), dan <em>kebutuhan dataset pasangan gambar&ndash;caption yang besar</em> (MS COCO, Flickr30k).</div></div>
+
+        <aside class="notes">
+          Tiga kartu adalah kesulitan inti; callout menambah tiga beban praktis. Tekankan <em>grounding</em> sebagai tantangan paling halus: model bisa menyebut semua objek dengan benar namun menempelkan atribut ke objek yang salah (&ldquo;kucing di atas sepeda&rdquo; padahal sepeda yang di atas). Kesalahan semacam ini hanya terlihat saat kita membandingkan caption dengan gambar secara teliti, bukan lewat metrik agregat.
+        </aside>
+      </section>
+
+      <!-- SLIDE 10: DIVIDER BAGIAN 3 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(23,146,153,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-teal">Bagian 3</span>
+          <h1>Arsitektur encoder&ndash;decoder &amp; attention</h1>
+          <p class="subtitle">
+            Dari satu vektor global ke perhatian spasial: evolusi cara model &ldquo;melihat&rdquo; gambar.
+          </p>
+        </div>
+        <aside class="notes">Bagian utama sesi. Urutannya sengaja historis sekaligus pedagogis: mulai dari encoder&ndash;decoder sederhana dengan satu vektor global, tunjukkan keterbatasannya, lalu hadirkan attention sebagai solusinya. Dengan begini mahasiswa melihat <em>mengapa</em> attention dibutuhkan sebelum menerimanya.</aside>
+      </section>
+
+      <!-- SLIDE 11: ARSITEKTUR ENCODER-DECODER -->
+      <section>
+        <h2>Arsitektur encoder&ndash;decoder</h2>
+        <p>Pendekatan klasik: CNN mengekstrak fitur, LSTM membangkitkan kata.</p>
+
+        <div class="grid-2" style="margin-top: 6px;">
+          <div class="diagram-canvas figure-hero figure-matte" style="background: var(--ctp-mantle); border-radius: 10px; padding: 10px; overflow: hidden;">
+            <img src="assets/data/show-tell-arch.webp"
+                 alt="Figure 1 dari Vinyals dkk. (2015): foto pasar sayur di kiri, lalu dua kotak berlabel &ldquo;Vision Deep CNN&rdquo; dan &ldquo;Language Generating RNN&rdquo;, dan di kanan dua kalimat caption untuk gambar yang sama &mdash; &ldquo;A group of people shopping at an outdoor market.&rdquo; dan &ldquo;There are many vegetables at the fruit stand.&rdquo;"
+                 style="display: block; margin: 0 auto;">
+            <small style="display: block; margin-top: 6px; text-align: center; color: var(--ctp-subtext0); font-size: 12px;">Sumber: Vinyals dkk. (2015), <em>Show and Tell</em> (CVPR)</small>
+          </div>
+          <div class="narrative-pane" style="gap: 6px;">
+            <div class="narrative-step"><strong>01. Ekstraksi</strong> CNN pra-latih memampatkan gambar menjadi satu vektor global \(\mathbf{v}\).</div>
+            <div class="narrative-step"><strong>02. Inisialisasi</strong> Vektor \(\mathbf{v}\) menjadi masukan awal decoder (RNN/LSTM), satu titik untuk seluruh konteks visual.</div>
+            <div class="narrative-step"><strong>03. Pembangkitan</strong> RNN/LSTM menulis kata demi kata, dan untuk gambar yang sama, kalimatnya bisa <em>berbeda</em>.</div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Baca figur ini dari kiri ke kanan: gambar, Vision Deep CNN, Language Generating RNN, lalu caption. Titik kritisnya sama seperti diagram sebelumnya: seluruh gambar dipadatkan menjadi satu vektor \(\mathbf{v}\), tetapi figur ini menambahkan dua hal yang layak ditunjuk. Pertama, dekodernya LSTM (makalah ini memakai Inception V1/GoogLeNet sebagai encoder dan LSTM sebagai decoder; label di figur sengaja dibuat generik &ldquo;RNN&rdquo;). Kedua: untuk gambar yang <em>sama</em>, model menghasilkan <em>dua</em> kalimat yang keduanya benar. Jadi tidak ada satu caption tunggal yang &ldquo;benar&rdquo;; itu sebabnya metrik evaluasi (BLEU dan kawan-kawan) serta pertanyaan &ldquo;apakah model melihat objek yang benar&rdquo; muncul. Keuntungan pola ini sederhana dan cepat; kerugiannya terlihat dua slide lagi. Sebutkan juga bahwa pola ini diadaptasi dari mesin penerjemah: encoder menangkap makna, decoder menuliskannya sebagai bahasa.
+        </aside>
+      </section>
+
+      <!-- SLIDE 12: ENCODER VS DECODER -->
+      <section>
+        <h2>Dua komponen, dua peran</h2>
+        <p>Encoder dan decoder berbeda modalitas dan berbeda sifat pelatihannya.</p>
+
+        <table class="c-table" style="margin-top: 14px;">
+          <thead>
+            <tr>
+              <th style="width: 20%;">Aspek</th>
+              <th style="width: 40%;">Encoder visual (CNN)</th>
+              <th style="width: 40%;">Decoder bahasa (LSTM)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Masukan</td>
+              <td>Gambar mentah (piksel)</td>
+              <td>Vektor fitur + kata sebelumnya + <em>hidden state</em></td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Keluaran</td>
+              <td>Vektor fitur \(\mathbf{v}\)</td>
+              <td>Distribusi probabilitas kata berikutnya</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Contoh</td>
+              <td>ResNet, VGG, Inception</td>
+              <td>LSTM, GRU</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Pelatihan</td>
+              <td>Pra-latih di ImageNet, lalu dibekukan</td>
+              <td>Dilatih dari nol pada pasangan gambar&ndash;caption</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Pembagian kerja yang hemat.</strong> Encoder memanfaatkan representasi visual yang sudah jadi dari ImageNet; yang perlu dilatih hanyalah decoder, jauh lebih murah daripada melatih semuanya dari awal.</div></div>
+
+        <aside class="notes">
+          Baris keempat penting: encoder dibekukan karena representasi visual generik sudah tersedia dari pra-latih ImageNet, sedangkan decoder harus belajar menghubungkan visual ke bahasa dari awal. Pola &ldquo;encoder beku + kepala baru&rdquo; ini persis sama dengan yang akan dipakai mahasiswa pada proyek akhir, jadi sambungkan keduanya secara eksplisit.
+        </aside>
+      </section>
+
+      <!-- SLIDE 13: KETERBATASAN TANPA ATTENTION -->
+      <section>
+        <h2>Keterbatasan tanpa attention</h2>
+        <p>Satu vektor global tidak cukup untuk menceritakan gambar secara rinci.</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Informasi terpadatkan</h4>
+            </div>
+            <ul style="font-size: 0.8em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Seluruh gambar dipaksa masuk ke satu vektor berdimensi tetap.</li>
+              <li>Detail spasial (posisi, ukuran, hubungan) melebur dan hilang.</li>
+              <li>Objek kecil atau jauh paling cepat kehilangan representasinya.</li>
+            </ul>
+          </div>
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Decoder tidak tahu arah</h4>
+            </div>
+            <ul style="font-size: 0.8em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Saat membangkitkan kata tertentu, decoder tidak tahu area mana yang relevan.</li>
+              <li>Semua kata lahir dari vektor yang sama; tidak ada fokus yang berpindah.</li>
+              <li>Kalimat panjang cenderung mengulang atau kehilangan jejak.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Contoh:</strong> untuk menghasilkan kata &ldquo;merah&rdquo;, model seharusnya melihat objek yang merah. Dengan satu vektor global, warna merah sudah bercampur dengan seluruh isi gambar.</div></div>
+
+        <aside class="notes">
+          Minta mahasiswa merasakan sendiri kejanggalannya: bagaimana mungkin satu vektor cukup untuk kalimat yang menyebut banyak objek pada posisi berbeda? Jawabannya adalah attention pada slide berikutnya, yang membiarkan decoder <em>melihat</em> area berbeda pada setiap langkah pembangkitan kata.
+        </aside>
+      </section>
+
+      <!-- SLIDE 14: SHOW ATTEND AND TELL -->
+      <section>
+        <h2>Show, Attend and Tell</h2>
+        <p>Xu dkk. (2015): dekoder <em>LSTM</em> meninjau area gambar yang berbeda untuk setiap kata.</p>
+
+        <div class="grid-2" style="margin-top: 6px;">
+          <div class="diagram-canvas figure-hero figure-matte" style="background: var(--ctp-mantle); border-radius: 10px; padding: 10px; overflow: hidden;">
+            <img src="assets/data/show-attend-tell-arch.webp"
+                 alt="Figure 1 dari Xu dkk. (2015), empat tahap captioning berperhatian: (1) citra masukan berupa burung camar terbang di atas air; (2) ekstraksi fitur konvolusi menghasilkan peta fitur 14&times;14 yang digambarkan sebagai tumpukan peta fitur; (3) RNN dengan perhatian atas citra &mdash; tiga peta perhatian bergaris tepi merah, biru, dan kuning menyorot area yang berbeda dan mengumpan satu sel LSTM; (4) pembangkitan kata demi kata menjadi kalimat &ldquo;A bird flying over a body of water&rdquo;, dengan kata A, bird, dan water ditandai kotak merah, biru, dan kuning yang sama dengan peta perhatiannya"
+                 style="display: block; margin: 0 auto;">
+            <small style="display: block; margin-top: 6px; text-align: center; color: var(--ctp-subtext0); font-size: 12px;">Sumber: Xu dkk. (2015), <em>Show, Attend and Tell</em> (ICML)</small>
+          </div>
+          <div class="narrative-pane">
+            <div class="narrative-step"><strong>01. Peta fitur, bukan satu vektor</strong> CNN menghasilkan peta fitur \(14\times14\) (196 area) \(\{a_i\}\).</div>
+            <div class="narrative-step"><strong>02. Attention aditif</strong> Keadaan dekoder \(h_{t-1}\) dicocokkan ke tiap area lewat MLP kecil &rarr; \(\alpha_{t,i}\). Belum ada arsitektur <em>self-attention</em> Transformer.</div>
+            <div class="narrative-step"><strong>03. Konteks berpindah tiap kata</strong> \(\hat{z}_t=\sum_i \alpha_{t,i}\,a_i\) mengumpan LSTM untuk kata \(y_t\); peta perhatian bergeser tiap kata.</div>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Bacakan figur ini sebagai empat tahap dari kiri ke kanan: citra masukan, ekstraksi fitur konvolusi, LSTM dengan perhatian atas citra, lalu pembangkitan kata demi kata. Pertama, peta perhatiannya <em>tidak</em> satu: tiga peta berwarna menyala di area berbeda. Kotak merah menyorot burung saat kata &ldquo;A&rdquo; dibangkitkan, biru menyorot burung pada posisi lain saat kata &ldquo;bird&rdquo;, dan kuning menyorot air saat kata &ldquo;water&rdquo;. Bobot \(\alpha\) memang berbeda untuk setiap kata, dan itulah keunggulan dibanding slide sebelumnya. Kedua, tahunnya 2015: dekodernya LSTM dan skornya dihitung secara <em>aditif</em> (satu MLP kecil atas pasangan \(a_i\) dan \(h_{t-1}\)), jauh sebelum Transformer. Istilah <em>cross-attention</em> baru muncul bersama Transformer, jadi jangan sampai mahasiswa menyimpulkan Xu dkk. memakai blok Q/K/V multi-head; yang sama adalah <em>idenya</em>: satu kueri (keadaan decoder) dicocokkan ke banyak area, lalu hasilnya dirata-ratakan berbobot. Pertemuan 9-lah yang memformalkan pola itu sebagai Q/K/V. Fiturnya juga diambil dari lapisan konvolusi bawah (14&times;14&times;512), bukan lapisan akhir, justru agar informasi lokasi belum hilang. Paper ini punya dua varian perhatian: keras (<em>stochastic</em>, dengan sampling) dan lunak (<em>deterministic</em>, softmax); rumus di slide berikutnya adalah varian lunaknya.
+        </aside>
+      </section>
+
+      <!-- SLIDE 15: MEKANISME ATTENTION -->
+      <section>
+        <h2>Mekanisme attention: menghitung bobot</h2>
+        <p>Bobot perhatian dihitung sebagai kesesuaian antara keadaan decoder dan tiap area.</p>
+
+        <div class="formula-hero" style="margin-top: 12px;">
+          <div class="formula-label">Bobot perhatian aditif (Xu dkk., 2015)</div>
+          <div class="formula-math">$$\alpha_{t,i} = \frac{\exp\!\big(s(h_{t-1}, a_i)\big)}{\sum_{k=1}^{L}\exp\!\big(s(h_{t-1}, a_k)\big)}$$</div>
+        </div>
+
+        <div class="formula-breakdown">
+          <div class="formula-term-box"><strong>\(s(h_{t-1}, a_i)\)</strong> Skor kesesuaian antara <em>hidden state</em> decoder dan fitur area ke-\(i\). Semakin cocok, semakin besar skornya.</div>
+          <div class="formula-term-box"><strong>\(\alpha_{t,i}\)</strong> Bobot perhatian hasil <em>softmax</em>: seberapa penting area \(i\) untuk kata ke-\(t\). Jumlahnya 1.</div>
+          <div class="formula-term-box"><strong>\(\hat{z}_t\)</strong> Vektor konteks: jumlah berbobot fitur area. Hanya area yang diperhatikan yang berkontribusi besar.</div>
+        </div>
+
+        <aside class="notes">
+          Bacakan rumus sebagai kalimat: bobot tiap area adalah softmax dari skor kesesuaiannya dengan keadaan decoder saat ini. Di sini \(h_{t-1}\) adalah keadaan <em>sebelum</em> kata ke-\(t\) dihasilkan, jadi model &ldquo;memutuskan ke mana melihat&rdquo; berdasarkan kata-kata yang sudah ditulisnya. Inilah yang membuat perhatiannya dinamis, berpindah-pindah sepanjang kalimat.
+        </aside>
+      </section>
+
+      <!-- SLIDE 16: DIVIDER BAGIAN 4 -->
+      <section class="section-slide" style="background: radial-gradient(circle at 10% 20%, rgba(254,100,11,0.06) 0%, transparent 100%);">
+        <div class="section-slide-content">
+          <span class="section-part-label section-part-peach">Bagian 4</span>
+          <h1>Metrik evaluasi &amp; studi kasus</h1>
+          <p class="subtitle">
+            Bagaimana mengukur caption yang &ldquo;benar&rdquo;, dan mengapa metrik bisa menyesatkan.
+          </p>
+        </div>
+        <aside class="notes">Bagian ini bergerak dari teori ke pengukuran. Evaluasi captioning lebih sulit daripada klasifikasi karena tidak ada satu jawaban benar. Mahasiswa akan belajar metrik standar, lalu menerapkannya pada studi kasus yang sengaja mempertanyakan apakah metrik sejalan dengan penilaian manusia.</aside>
+      </section>
+
+      <!-- SLIDE 17: TANTANGAN EVALUASI -->
+      <section>
+        <h2>Tantangan evaluasi</h2>
+        <p>Tidak ada satu pun caption &ldquo;benar&rdquo; untuk sebuah gambar.</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">Banyak jawaban valid</h4>
+            </div>
+            <p>Gambar yang sama dapat diceritakan dengan banyak kalimat yang semuanya benar. Tidak ada label tunggal untuk dicocokkan.</p>
+          </div>
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">Kesamaan, bukan kecocokan</h4>
+            </div>
+            <p>Metrik harus mengukur <em>kesamaan</em> antara caption yang dihasilkan dan satu atau lebih caption referensi manusia.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-info" style="margin-top: 14px;"><span class="material-symbols-outlined icon-blue">info</span><div><strong>Akibatnya:</strong> evaluasi captioning bersifat relatif terhadap referensi. Dua keluarga pendekatan muncul: yang menghitung kesamaan n-gram (BLEU, METEOR, CIDEr) dan yang menghitung kesamaan semantik (SPICE).</div></div>
+
+        <aside class="notes">
+          Tekankan akar masalahnya: evaluasi klasifikasi tinggal membandingkan label, sedangkan captioning harus membandingkan <em>makna</em>. Ini membuka dua jalan: pendekatan permukaan (n-gram) yang murah tetapi dangkal, dan pendekatan semantik (SPICE) yang lebih dalam tetapi butuh penguraian makna. Dua slide berikutnya merinci kedua jalan itu.
+        </aside>
+      </section>
+
+      <!-- SLIDE 18: BLEU & METEOR -->
+      <section>
+        <h2>Metrik n-gram: BLEU &amp; METEOR</h2>
+        <p>Mengukur tumpang tindih urutan kata antara kandidat dan referensi.</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card c-card-accent-top c-card-blue">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue); margin-bottom: 0;">BLEU</h4>
+            </div>
+            <ul style="font-size: 0.8em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Mengukur presisi n-gram antara kandidat dan referensi.</li>
+              <li>Semakin banyak n-gram cocok, semakin tinggi skornya.</li>
+              <li>Umumnya dipakai \(\mathrm{BLEU}_{4}\) (n-gram hingga \(4\) kata).</li>
+            </ul>
+          </div>
+          <div class="c-card c-card-accent-top c-card-mauve">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve); margin-bottom: 0;">METEOR</h4>
+            </div>
+            <ul style="font-size: 0.8em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Mencocokkan unigram dengan mempertimbangkan sinonim dan <em>stemming</em>.</li>
+              <li>Menggabungkan recall dan presisi.</li>
+              <li>Lebih peka terhadap variasi kata yang maknanya sama.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Kelemahan BLEU:</strong> caption yang sangat pendek bisa mendapat skor tinggi hanya karena n-gram-nya kebetulan cocok. Studi kasus nanti membuktikannya dengan angka.</div></div>
+
+        <aside class="notes">
+          Bedakan keduanya dengan satu kalimat: BLEU menghitung presisi n-gram murni, METEOR menambahkan sinonim, stemming, dan recall. Peringatkan sejak awal tentang kelemahan BLEU; itu akan menjadi inti studi kasus. Sebutkan bahwa BLEU awalnya dirancang untuk terjemahan mesin, bukan captioning, sehingga pemakaiannya pada captioning perlu kehati-hatian.
+        </aside>
+      </section>
+
+      <!-- SLIDE 19: CIDEr & SPICE -->
+      <section>
+        <h2>Metrik lanjutan: CIDEr &amp; SPICE</h2>
+        <p>Dua upaya untuk mendekatkan skor otomatis ke penilaian manusia.</p>
+
+        <div class="grid-2" style="margin-top: 12px;">
+          <div class="c-card c-card-accent-top c-card-teal">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-teal); margin-bottom: 0;">CIDEr</h4>
+            </div>
+            <ul style="font-size: 0.8em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Mengukur konsensus antara kandidat dan sekelompok referensi.</li>
+              <li>Memberi bobot lebih pada n-gram yang penting dan jarang muncul.</li>
+              <li>Berkorelasi kuat dengan penilaian manusia.</li>
+            </ul>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">SPICE</h4>
+            </div>
+            <ul style="font-size: 0.8em; margin: 0; padding-left: 16px; line-height: 1.5;">
+              <li>Mengukur kesamaan representasi semantik: objek, atribut, relasi.</li>
+              <li>Menangkap makna yang tidak terlihat oleh n-gram.</li>
+              <li>Membutuhkan <em>parser</em> semantik: lebih mahal diterapkan.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-success" style="margin-top: 14px;"><span class="material-symbols-outlined icon-green">lightbulb</span><div><strong>Kaidah praktis:</strong> BLEU/METEOR untuk perbandingan cepat, CIDEr/SPICE untuk keputusan akhir, dan penilaian manusia tetap menjadi standar emas.</div></div>
+
+        <aside class="notes">
+          CIDEr dan SPICE menjawab dua kelemahan n-gram: CIDEr menangkap konsensus antar banyak referensi, SPICE menangkap struktur makna (objek, atribut, relasi). Tekankan bahwa tidak ada metrik sempurna; masing-masing menangkap satu sisi &ldquo;kemiripan&rdquo;. Pada proyek akhir, pola yang sama muncul: metrik otomatis (Recall@K) cepat tetapi tak lengkap, sehingga perlu analisis kegagalan kualitatif.
+        </aside>
+      </section>
+
+      <!-- SLIDE 20: STUDI KASUS RUMUSAN MASALAH -->
+      <section>
+        <h2>Studi kasus: rumusan masalah</h2>
+        <p>Dua model menghasilkan caption berbeda untuk gambar yang sama. Mana yang lebih baik?</p>
+
+        <table class="c-table" style="margin-top: 10px;">
+          <thead>
+            <tr>
+              <th style="width: 24%;">Sumber</th>
+              <th style="width: 76%;">Caption</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Referensi</td>
+              <td>&ldquo;Seekor kucing duduk di atas keyboard laptop.&rdquo;</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Model A</td>
+              <td>&ldquo;Seekor kucing sedang tidur di keyboard.&rdquo;</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Model B</td>
+              <td>&ldquo;kucing di keyboard.&rdquo;</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">help</span><div><p style="margin: 0; font-size: 0.82em; line-height: 1.5;"><strong style="color: var(--ctp-blue);">Tiga pertanyaan sebelum menghitung</strong>. Diskusikan \(3\) menit: \((1)\) secara kualitatif, model mana yang lebih baik dan mengapa? \((2)\) bagaimana \(\mathrm{BLEU}_{1}\) dan \(\mathrm{BLEU}_{2}\) menilai keduanya? \((3)\) apakah hasil metrik sejalan dengan penilaian manusia?</p></div></div>
+
+        <aside class="notes">
+          Jangan tampilkan jawaban dulu. Beri waktu 3 menit untuk diskusi berpasangan. Arahkan mahasiswa memperhatikan dua hal: Model A lebih deskriptif tetapi mengandung kesalahan fakta (&ldquo;tidur&rdquo; padahal &ldquo;duduk&rdquo;), Model B akurat tetapi sangat ringkas. Biarkan dugaan tentang BLEU muncul dulu; slide berikutnya menghitungnya, dan hasilnya berlawanan dengan dugaan awal.
+        </aside>
+      </section>
+
+      <!-- SLIDE 21: STUDI KASUS PENERAPAN -->
+      <section>
+        <h2>Studi kasus: penerapan BLEU</h2>
+        <p>Menghitung presisi unigram (\(\mathrm{BLEU}_{1}\)) dan bigram (\(\mathrm{BLEU}_{2}\)) kedua model.</p>
+
+        <table class="c-table" style="margin-top: 10px;">
+          <thead>
+            <tr>
+              <th style="width: 26%;">Model</th>
+              <th style="width: 30%;">Unigram cocok</th>
+              <th style="width: 22%;">\(\mathrm{BLEU}_{1}\)</th>
+              <th style="width: 22%;">\(\mathrm{BLEU}_{2}\)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Model A</td>
+              <td>&ldquo;seekor&rdquo;, &ldquo;kucing&rdquo;, &ldquo;di&rdquo;, &ldquo;keyboard&rdquo; = \(4\) dari \(6\)</td>
+              <td>\(4/6 = 0{,}667\)</td>
+              <td>\(2/5 = 0{,}400\)</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Model B</td>
+              <td>&ldquo;kucing&rdquo;, &ldquo;di&rdquo;, &ldquo;keyboard&rdquo; = \(3\) dari \(3\)</td>
+              <td>\(3/3 = 1{,}000\)</td>
+              <td>\(2/2 = 1{,}000\)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="c-callout c-callout-info" style="margin-top: 12px;"><span class="material-symbols-outlined icon-blue">calculate</span><div><p style="margin: 0; font-size: 0.82em; line-height: 1.5;">Model A: bigram &ldquo;seekor kucing&rdquo; dan &ldquo;di keyboard&rdquo; cocok dari \(5\) bigram. Model B: &ldquo;kucing di&rdquo; dan &ldquo;di keyboard&rdquo; cocok dari \(2\) bigram. Huruf besar/kecil diabaikan.</p></div></div>
+
+        <aside class="notes">
+          Jalan bersama mahasiswa menghitungnya. Model B mendapat skor sempurna karena penyebutnya kecil. Semua kata yang ia hasilkan memang cocok, tetapi ia hanya menghasilkan tiga kata. Presisi saja tidak melihat kata yang hilang. Sebutkan bahwa BLEU sebenarnya menerapkan <em>brevity penalty</em> untuk caption yang lebih pendek dari referensi, tetapi contoh ini sengaja menyederhanakan agar polanya tampak jelas.
+        </aside>
+      </section>
+
+      <!-- SLIDE 22: STUDI KASUS ANALISIS -->
+      <section>
+        <h2>Studi kasus: analisis</h2>
+        <p>Bila metrik dan penilaian manusia tidak sejalan, curigai metriknya.</p>
+
+        <table class="c-table" style="margin-top: 10px;">
+          <thead>
+            <tr>
+              <th style="width: 24%;">Sudut pandang</th>
+              <th style="width: 38%;">Model A</th>
+              <th style="width: 38%;">Model B</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="c-table-criteria">Kualitatif</td>
+              <td>Lebih deskriptif, tetapi salah fakta (&ldquo;tidur&rdquo; vs &ldquo;duduk&rdquo;).</td>
+              <td>Akurat, tetapi terlalu ringkas dan kurang informatif.</td>
+            </tr>
+            <tr>
+              <td class="c-table-criteria">Kuantitatif (BLEU)</td>
+              <td>Kalah: \(0{,}667\) <span style="white-space: nowrap;">(\(\mathrm{BLEU}_{1}\))</span> dan \(0{,}400\) <span style="white-space: nowrap;">(\(\mathrm{BLEU}_{2}\))</span>.</td>
+              <td>Menang: \(1{,}000\) <span style="white-space: nowrap;">(\(\mathrm{BLEU}_{1}\))</span> dan \(1{,}000\) <span style="white-space: nowrap;">(\(\mathrm{BLEU}_{2}\))</span>.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 12px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Kesimpulan:</strong> metrik n-gram sederhana gagal menangkap kelengkapan dan kebenaran fakta. Untuk keputusan akhir, padukan BLEU/CIDEr dengan pemeriksaan manusia, terutama saat kesalahan faktual berisiko menyesatkan pengguna.</div></div>
+
+        <aside class="notes">
+          Pesan metodologisnya: metrik adalah alat bantu. Model B menang angka justru karena <em>sedikit berbicara</em>, strategi yang tak berguna bagi pengguna. BLEU penuh (dengan <em>brevity penalty</em> dan presisi yang di-<em>clip</em>) sebagian memperbaiki ini, tetapi tetap tidak menangkap kesalahan fakta seperti &ldquo;tidur&rdquo; vs &ldquo;duduk&rdquo;. Rekomendasi bersyarat: metrik cepat untuk iterasi, manusia untuk rilis.
+        </aside>
+      </section>
+
+      <!-- SLIDE 23: KETIKA CAPTIONING GAGAL -->
+      <section>
+        <h2>Ketika image captioning gagal</h2>
+        <p>Tiga mode kegagalan yang perlu dikenali di balik skor tinggi.</p>
+
+        <div class="grid-3" style="margin-top: 8px;">
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Halusinasi</h4>
+            </div>
+            <p>Model menyebut objek yang tidak ada di gambar, karena meniru pola yang sering muncul di data latih.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-peach">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-peach); margin-bottom: 0;">Grounding salah</h4>
+            </div>
+            <p>Atribut menempel ke objek yang keliru: semua objek benar disebut, tetapi hubungannya tertukar.</p>
+          </div>
+          <div class="c-card c-card-accent-top c-card-maroon">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-maroon); margin-bottom: 0;">Buta metrik</h4>
+            </div>
+            <p>Caption yang pendek dan aman mendapat skor tinggi, sementara kesalahan faktual lolos dari metrik n-gram.</p>
+          </div>
+        </div>
+
+        <div class="c-callout c-callout-warning" style="margin-top: 14px;"><span class="material-symbols-outlined icon-warning">warning</span><div><strong>Pemeriksaan sebelum rilis:</strong> apakah caption menyebut objek yang tidak ada? apakah atribut menempel pada objek yang benar? apakah skor tinggi datang dari jawaban yang <em>sedikit</em> alih-alih yang <em>benar</em>?</div></div>
+
+        <aside class="notes">
+          Tiga mode kegagalan ini saling berkait dengan slide sebelumnya. Halusinasi berasal dari bias data (model mengulang pola umum), grounding salah berasal dari keterbatasan penyejajaran, dan buta metrik berasal dari keterbatasan evaluasi. Tekankan bahwa ketiganya sulit tertangkap metrik agregat, sehingga audit kualitatif pada sampel kecil tetap wajib, persis seperti yang akan dilakukan pada proyek akhir.
+        </aside>
+      </section>
+
+      <!-- SLIDE 24: RANGKUMAN -->
+      <section>
+        <h2>Rangkuman &amp; poin kunci</h2>
+        <p>Ringkasan dari definisi hingga evaluasi:</p>
+
+        <div class="grid-2" style="margin-top: 10px;">
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-blue);">Dari melihat ke berkata</h4>
+            </div>
+            <ul style="font-size: 0.76em; margin: 0; padding-left: 16px; line-height: 1.55;">
+              <li><strong>Definisi</strong> &rarr; tugas generatif yang menghasilkan deskripsi teks dari gambar.</li>
+              <li><strong>Encoder&ndash;Decoder</strong> &rarr; CNN mengekstrak fitur, LSTM membangkitkan kata.</li>
+              <li><strong>Attention</strong> &rarr; decoder melihat area berbeda untuk setiap kata (Show, Attend and Tell).</li>
+            </ul>
+          </div>
+          <div class="c-card" style="background: var(--ctp-mantle);">
+            <div class="c-card-header">
+              <h4 style="color: var(--ctp-mauve);">Mengukur kualitas</h4>
+            </div>
+            <ul style="font-size: 0.76em; margin: 0; padding-left: 16px; line-height: 1.55;">
+              <li><strong>BLEU</strong> &rarr; presisi n-gram; <strong>METEOR</strong> &rarr; unigram + sinonim + recall.</li>
+              <li><strong>CIDEr</strong> &rarr; konsensus referensi; <strong>SPICE</strong> &rarr; kesamaan semantik.</li>
+              <li><strong>Batasnya</strong> &rarr; halusinasi, grounding salah, dan metrik yang buta terhadap fakta.</li>
+            </ul>
+          </div>
+        </div>
+
+        <aside class="notes">
+          Ada dua gagasan besar. Pertama, captioning menyatukan tiga pilar: representasi (CNN + embedding), penyejajaran (cross-attention), dan fusi (informasi visual masuk ke proses berbahasa). Kedua, mengukur kualitas generasi lebih sulit daripada mengukur klasifikasi: metrik hanyalah proksi, dan penilaian manusia tetap standar emas. Sambungkan ke Pertemuan 11 (VQA) yang akan memakai pondasi yang sama.
+        </aside>
+      </section>
+
+      <!-- SLIDE 25: DISKUSI -->
+      <section style="display: flex; flex-direction: column; justify-content: center;" data-topic="Diskusi Kelas">
+        <h2 style="text-align: center; margin-bottom: 24px;">Diskusi kelas</h2>
+        <p style="text-align: center; margin-bottom: 24px;">Diskusikan bersama rekan di samping Anda selama 3&ndash;5 menit:</p>
+        <div style="display: flex; flex-direction: column; gap: 14px; max-width: 860px; margin: 0 auto;">
+          <div class="c-callout c-callout-info"><span class="material-symbols-outlined icon-blue">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-blue);">Pertanyaan 1:</strong> Bagaimana Anda memodifikasi model captioning agar menghasilkan caption yang lebih personal atau kreatif, bukan hanya deskripsi yang aman?</p></div></div>
+          <div class="c-callout c-callout-warning"><span class="material-symbols-outlined icon-mauve">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-mauve);">Pertanyaan 2:</strong> Apa tantangan dalam mengumpulkan dan membersihkan dataset pasangan gambar&ndash;caption yang besar dan berkualitas, misalnya untuk bahasa Indonesia?</p></div></div>
+          <div class="c-callout c-callout-success"><span class="material-symbols-outlined icon-teal">help</span><div><p style="margin: 0; font-size: 0.85em; line-height: 1.6;"><strong style="color: var(--ctp-teal);">Pertanyaan 3:</strong> Bagaimana image captioning dapat diintegrasikan dengan sintesis suara untuk aplikasi aksesibilitas yang lebih utuh?</p></div></div>
+        </div>
+        <aside class="notes">Tiga pertanyaan bergerak dari kreativitas (1), ke kualitas data (2), ke integrasi sistem (3). Pertanyaan kedua paling relevan dengan proyek akhir: dataset caption Indonesia masih langka, dan mahasiswa yang mengerjakan SEA-VL akan merasakan langsung tantangan ini. Beri waktu 3&ndash;5 menit, lalu minta beberapa kelompok berbagi.</aside>
+      </section>
+
+      <!-- SLIDE 26: REFERENSI -->
+      <section>
+        <h2>Referensi &amp; bacaan lanjutan</h2>
+        <p style="margin-bottom: 20px;">Rekomendasi literatur akademik wajib dan bacaan lanjutan:</p>
+        <ol style="list-style: none; padding: 0; margin: 0; counter-reset: ref-counter;">
+          <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[1]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Vinyals, O., et al. (2015).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Show and Tell: A Neural Image Caption Generator</em>. CVPR. &mdash; arsitektur encoder&ndash;decoder CNN&ndash;LSTM pertama yang berpengaruh.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[2]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Xu, K., et al. (2015).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Show, Attend and Tell: Neural Image Caption Generation with Visual Attention</em>. ICML. &mdash; perhatian visual pertama pada captioning (aditif, dekoder LSTM).</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[3]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Anderson, P., et al. (2018).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Bottom-Up and Top-Down Attention for Image Captioning and Visual Question Answering</em>. CVPR. &mdash; perhatian berbasis objek, bukan grid.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 14px 0; border-bottom: 1px solid var(--ctp-surface0); display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[4]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Papineni, K., et al. (2002).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>BLEU: a Method for Automatic Evaluation of Machine Translation</em>. ACL. &mdash; sumber metrik BLEU.</p></div></li>
+          <li style="counter-increment: ref-counter; padding: 14px 0; display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start;"><span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1em; color: var(--ctp-blue); text-align: right;">[5]</span><div><p style="font-weight: 700; color: var(--ctp-text); margin-bottom: 3px; font-size: 0.88em; line-height: 1.35;">Goodfellow, I., Bengio, Y., &amp; Courville, A. (2016).</p><p style="font-size: 0.8em; color: var(--ctp-subtext1); margin: 0; line-height: 1.45;"><em>Deep Learning</em>. MIT Press. &mdash; Bab 12, bagian aplikasi <em>image captioning</em>.</p></div></li>
+        </ol>
+        <aside class="notes">Lima referensi: dua paper pendiri captioning (Vinyals; Xu), paper perhatian berbasis objek (Anderson), paper sumber BLEU (Papineni), dan buku teks Deep Learning sebagai rujukan menyeluruh. Bila waktu memungkinkan, tunjukkan bahwa rumus perhatian pada slide 15 diambil langsung dari bagian <em>attention</em> paper Show, Attend and Tell.</aside>
+      </section>
+
+      <!-- SLIDE 27: PENUTUP -->
+      <section>
+        <div style="margin: auto 0; text-align: center;">
+          <h2 style="font-size: 1.8em; font-weight: 800; color: var(--ctp-text); margin-bottom: 16px;">Terima kasih</h2>
+          <p style="font-size: 1.05em; color: var(--ctp-subtext0); margin-bottom: 32px; line-height: 1.6;">Pertemuan selanjutnya:<br><strong style="color: var(--ctp-blue);">Aplikasi 2: VQA &amp; Analisis Sentimen Multimodal</strong></p>
+          <div style="background: var(--ctp-mantle); border: 1px solid var(--ctp-surface1); border-radius: 12px; padding: 18px 24px; display: inline-block; max-width: 480px;"><div style="font-size: 0.72em; font-weight: 700; color: var(--ctp-blue); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">Pertanyaan &amp; diskusi</div><div style="font-size: 0.85em; color: var(--ctp-subtext0); line-height: 1.6;"><span style="font-family: var(--font-mono); color: var(--ctp-blue);">wayan.wisesa@if.itera.ac.id</span></div></div>
+        </div>
+        <aside class="notes">Tutup sesi dengan menegaskan bahwa captioning adalah puncak dari tiga pilar: model harus merepresentasikan gambar, menyejajarkan kata ke objek, dan memfusikan visual ke dalam bahasa. Sampaikan bahwa Pertemuan 11 berlanjut ke VQA: model tidak lagi menulis bebas, melainkan menjawab pertanyaan spesifik tentang gambar, dengan pondasi encoder&ndash;decoder dan cross-attention yang sama.</aside>
+      </section>
+  </div></div>
+  <!-- Persistent Edge-to-Edge Deck Footer -->
+  <footer class="deck-footer">
+    <div class="deck-footer-left">
+      <span class="deck-footer-code">IF25-40304</span>
+      <span class="deck-footer-sep">&bull;</span>
+      <span class="deck-footer-dept">Teknik Informatika ITERA</span>
+    </div>
+
+    <div class="deck-footer-center">
+      <button type="button" id="deck-footer-topic" class="deck-footer-topic" onclick="toggleTopicPopover(event)" title="Daftar Isi & Navigasi Cepat Slide (Klik)">
+        <span id="deck-footer-topic-text" class="deck-footer-topic-text">Pertemuan 10 &bull; Aplikasi 1: Image Captioning</span>
+        <span class="material-symbols-outlined deck-footer-topic-icon">expand_less</span>
+      </button>
+    </div>
+
+    <div class="deck-footer-right">
+      <button type="button" class="deck-footer-btn" onclick="Reveal.prev()" title="Slide Sebelumnya (← / P)" aria-label="Slide Sebelumnya">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      <button type="button" class="deck-counter-btn" onclick="Reveal.toggleOverview()" title="Klik untuk Matriks Seluruh Slide (Esc/O)">
+        <span id="deck-slide-current">01</span><span class="deck-counter-sep">/</span><span id="deck-slide-total">27</span>
+      </button>
+      <button type="button" class="deck-footer-btn" onclick="Reveal.next()" title="Slide Berikutnya (→ / Space / N)" aria-label="Slide Berikutnya">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  </footer>
+  <div class="deck-topic-popover" id="deck-topic-popover"><div class="deck-popover-search-wrap"><input type="text" id="deck-topic-search" class="deck-popover-search" placeholder="Cari slide..." oninput="filterTopicList(this.value)"></div><div class="deck-topic-list" id="deck-topic-list"></div></div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script><script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+  <script>
+
+    let currentAspectMode = localStorage.getItem('reveal_aspect_mode') || 'auto';
+
+    function calculateResponsiveDimensions(mode) {
+      const winW = window.innerWidth;
+      const winH = window.innerHeight - 86.5;
+      const ratio = winW / winH;
+
+      if (mode === '16-9') return { width: 1280, height: 720, label: '16:9' };
+      if (mode === '16-10') return { width: 1280, height: 800, label: '16:10' };
+      if (mode === '4-3') return { width: 1024, height: 768, label: '4:3' };
+      if (mode === 'mobile') return { width: 750, height: 1000, label: 'Mobile' };
+      if (mode === 'text-large') return { width: 960, height: 540, label: 'Teks Besar' };
+
+      // Auto mode
+      if (winW <= 768 || ratio < 1.15) {
+        return { width: 750, height: Math.max(900, Math.round(750 / Math.max(0.5, ratio))), label: 'Auto' };
+      } else if (ratio >= 1.65) {
+        return { width: 1280, height: 720, label: 'Auto' };
+      } else if (ratio >= 1.45) {
+        return { width: 1280, height: 800, label: 'Auto' };
+      } else {
+        return { width: 1024, height: 768, label: 'Auto' };
+      }
+    }
+
+    const initialDim = calculateResponsiveDimensions(currentAspectMode);
+
+    Reveal.initialize({
+      width: initialDim.width,
+      height: initialDim.height,
+      margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2.0,
+      hash: true,
+      slideNumber: false,
+      controls: false,
+      progress: false,
+      center: true,
+      touch: true,
+      transition: 'slide',
+      backgroundTransition: 'none',
+      plugins: [ RevealNotes, RevealHighlight, RevealMath.KaTeX ]
+    });
+
+    function updateDeckState(event) {
+      const indices = event ? { h: event.indexh, v: event.indexv } : Reveal.getIndices();
+      const totalSlides = Reveal.getTotalSlides();
+      const currentIdx = indices ? indices.h : 0;
+
+      const progressBar = document.getElementById('deck-progress-bar');
+      if (progressBar) {
+        const progressPercent = totalSlides > 1 ? (currentIdx / (totalSlides - 1)) * 100 : 0;
+        progressBar.style.width = progressPercent + '%';
+      }
+
+      const currentEl = document.getElementById('deck-slide-current');
+      const totalEl = document.getElementById('deck-slide-total');
+      if (currentEl) currentEl.textContent = String(currentIdx + 1).padStart(2, '0');
+      if (totalEl) totalEl.textContent = String(totalSlides).padStart(2, '0');
+
+      const topicEl = document.getElementById('deck-footer-topic-text') || document.getElementById('deck-footer-topic');
+      if (topicEl) {
+        if (currentIdx === 0) {
+          topicEl.textContent = 'Pertemuan 10 \u2022 Aplikasi 1: Image Captioning';
+        } else {
+          const currentSlide = Reveal.getCurrentSlide();
+          if (currentSlide) {
+            const topicAttr = currentSlide.getAttribute('data-topic');
+            if (topicAttr) {
+              topicEl.textContent = topicAttr;
+            } else {
+              const heading = currentSlide.querySelector('h2') || currentSlide.querySelector('h1');
+              if (heading) {
+                topicEl.textContent = heading.textContent.trim();
+              } else {
+                topicEl.textContent = 'Pertemuan 10 \u2022 Aplikasi 1: Image Captioning';
+              }
+            }
+          }
+        }
+      }
+
+      updateActiveTopicItem(currentIdx);
+    }
+
+    Reveal.on('ready', event => {
+      document.body.classList.add('reveal-ready');
+      updateDeckState(event);
+      buildTopicIndex();
+    });
+    Reveal.on('slidechanged', updateDeckState);
+
+    // =========================================================
+    // Floating Slide Topic Navigation Popover (Daftar Isi)
+    // =========================================================
+    function buildTopicIndex() {
+      const listEl = document.getElementById('deck-topic-list');
+      if (!listEl) return;
+
+      const slides = document.querySelectorAll('.reveal .slides > section');
+      let html = '';
+
+      slides.forEach((slide, idx) => {
+        const topicAttr = slide.getAttribute('data-topic');
+        const h1 = slide.querySelector('h1');
+        const h2 = slide.querySelector('h2');
+        const partEl = slide.querySelector('.section-part-label');
+        const isSectionSlide = slide.classList.contains('section-slide') || !!slide.querySelector('.section-slide-content');
+        const partText = partEl ? partEl.textContent.trim().replace(/\s+/g, ' ') : '';
+
+        const h1Text = h1 ? h1.textContent.trim().replace(/\s+/g, ' ') : '';
+        const h2Text = h2 ? h2.textContent.trim().replace(/\s+/g, ' ') : '';
+        let title = '';
+
+        if (idx === 0) {
+          title = h1Text || 'Aplikasi 1: Image Captioning';
+          html += '<div class="deck-topic-section">Pendahuluan & Identitas</div>';
+        } else if (isSectionSlide || partText.startsWith('Bagian')) {
+          const secTitle = h1Text || h2Text || 'Bagian ' + idx;
+          const sectionLabel = partText ? partText + ': ' + secTitle : secTitle;
+          title = secTitle;
+          html += '<div class="deck-topic-section">' + sectionLabel + '</div>';
+        } else if (topicAttr) {
+          title = topicAttr;
+        } else {
+          title = h2Text || h1Text || 'Slide ' + (idx + 1);
+        }
+
+        const numStr = String(idx + 1).padStart(2, '0');
+        html += '<div class="deck-topic-item" data-slide-index="' + idx + '" onclick="jumpToSlide(' + idx + ')"><span class="deck-topic-num">' + numStr + '</span><span class="deck-topic-name" title="' + title + '">' + title + '</span></div>';
+      });
+
+      listEl.innerHTML = html;
+      const currentIdx = Reveal.getIndices ? Reveal.getIndices().h : 0;
+      updateActiveTopicItem(currentIdx);
+    }
+
+    function updateActiveTopicItem(currentIdx) {
+      document.querySelectorAll('.deck-topic-item').forEach(item => {
+        const idx = parseInt(item.getAttribute('data-slide-index'), 10);
+        item.classList.toggle('active', idx === currentIdx);
+      });
+    }
+
+    function toggleTopicPopover(e) {
+      if (e) e.stopPropagation();
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (!popover) return;
+
+      const isActive = popover.classList.toggle('active');
+      if (btn) btn.classList.toggle('active', isActive);
+
+      if (isActive) {
+        const activeItem = popover.querySelector('.deck-topic-item.active');
+        if (activeItem) {
+          activeItem.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }
+        const searchInput = document.getElementById('deck-topic-search');
+        if (searchInput) {
+          searchInput.value = '';
+          filterTopicList('');
+          setTimeout(() => searchInput.focus(), 80);
+        }
+      }
+    }
+
+    function closeTopicPopover() {
+      const popover = document.getElementById('deck-topic-popover');
+      const btn = document.getElementById('deck-footer-topic');
+      if (popover) popover.classList.remove('active');
+      if (btn) btn.classList.remove('active');
+    }
+
+    function jumpToSlide(index) {
+      Reveal.slide(index);
+      closeTopicPopover();
+    }
+
+    function filterTopicList(query) {
+      const q = (query || '').toLowerCase().trim();
+      const items = document.querySelectorAll('.deck-topic-item');
+      const sections = document.querySelectorAll('.deck-topic-section');
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const num = (item.querySelector('.deck-topic-num') || {}).textContent || '';
+        const name = (item.querySelector('.deck-topic-name') || {}).textContent || '';
+        const matches = !q || num.toLowerCase().includes(q) || name.toLowerCase().includes(q);
+        item.style.display = matches ? 'grid' : 'none';
+        if (matches) visibleCount++;
+      });
+
+      sections.forEach(sec => {
+        let nextEl = sec.nextElementSibling;
+        let hasVisibleChild = false;
+        while (nextEl && !nextEl.classList.contains('deck-topic-section')) {
+          if (nextEl.classList.contains('deck-topic-item') && nextEl.style.display !== 'none') {
+            hasVisibleChild = true;
+            break;
+          }
+          nextEl = nextEl.nextElementSibling;
+        }
+        sec.style.display = hasVisibleChild ? 'block' : 'none';
+      });
+
+      const listEl = document.getElementById('deck-topic-list');
+      let emptyMsg = document.getElementById('deck-topic-empty-msg');
+      if (visibleCount === 0) {
+        if (!emptyMsg) {
+          emptyMsg = document.createElement('div');
+          emptyMsg.id = 'deck-topic-empty-msg';
+          emptyMsg.className = 'deck-topic-empty';
+          emptyMsg.textContent = 'Tidak ada slide yang cocok dengan pencarian.';
+          listEl.appendChild(emptyMsg);
+        }
+        emptyMsg.style.display = 'block';
+      } else if (emptyMsg) {
+        emptyMsg.style.display = 'none';
+      }
+    }
+
+    function setAspectMode(mode) {
+      currentAspectMode = mode;
+      localStorage.setItem('reveal_aspect_mode', mode);
+      const dim = calculateResponsiveDimensions(mode);
+
+      Reveal.configure({
+        width: dim.width,
+        height: dim.height,
+        margin: 0.04,
+        minScale: 0.2,
+        maxScale: 2.0
+      });
+
+      document.body.classList.remove('aspect-16-9', 'aspect-16-10', 'aspect-4-3', 'aspect-mobile');
+      if (mode === 'auto') {
+        if (window.innerWidth <= 768) document.body.classList.add('aspect-mobile');
+      } else {
+        document.body.classList.add('aspect-' + mode);
+      }
+
+      const labelEl = document.getElementById('aspect-label');
+      if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+
+      document.querySelectorAll('.dropdown-item').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-aspect') === mode);
+      });
+
+      closeAspectDropdown();
+      setTimeout(() => Reveal.layout(), 50);
+    }
+
+    function toggleAspectDropdown(e) {
+      if (e) e.stopPropagation();
+      document.getElementById('aspect-menu').classList.toggle('active');
+    }
+
+    function closeAspectDropdown() {
+      const menu = document.getElementById('aspect-menu');
+      if (menu) menu.classList.remove('active');
+    }
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-dropdown')) closeAspectDropdown();
+      if (!e.target.closest('#deck-topic-popover') && !e.target.closest('#deck-footer-topic')) closeTopicPopover();
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (currentAspectMode === 'auto') {
+          const dim = calculateResponsiveDimensions('auto');
+          const cfg = Reveal.getConfig();
+          if (cfg.width !== dim.width || cfg.height !== dim.height) {
+            Reveal.configure({ width: dim.width, height: dim.height });
+            const labelEl = document.getElementById('aspect-label');
+            if (labelEl) labelEl.textContent = 'Rasio: ' + dim.label;
+            Reveal.layout();
+          }
+        }
+      }, 200);
+    });
+
+    window.addEventListener('DOMContentLoaded', () => setAspectMode(currentAspectMode));
+
+    function openShortcutsModal() {
+      document.getElementById('shortcuts-modal').classList.add('active');
+    }
+
+    function closeShortcutsModal(event) {
+      if (!event || event.target.id === 'shortcuts-modal' || event.target.classList.contains('modal-close')) {
+        document.getElementById('shortcuts-modal').classList.remove('active');
+      }
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        const popover = document.getElementById('deck-topic-popover');
+        if (popover && popover.classList.contains('active')) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeTopicPopover();
+          return;
+        }
+      }
+      if (e.key === '?' || (e.shiftKey && e.key === '/')) {
+        document.getElementById('shortcuts-modal').classList.toggle('active');
+      }
+    });
+
+  </script>
+</body></html>

@@ -1,0 +1,515 @@
+# AGENTS.md — Pembelajaran Mesin Multimodal (IF25-40304)
+
+Panduan kerja untuk agen AI di repo ini. Pi memuat file ini otomatis setiap
+sesi (`.agents/course-config.md` **tidak** dimuat otomatis — ia dibaca oleh
+skill, bukan oleh pi).
+
+**Baca ini dulu sebelum mengubah apa pun.** Repo ini dikerjakan beberapa agen
+secara paralel; bagian *Status* dan *Keputusan Aktif* ada di sini supaya
+pekerjaan tidak saling menimpa.
+
+> Detail teknis proyek: `.agents/CODEBASE.md`
+> Aturan desain: `.agents/skills/lecture-slide-designer/references/design-decisions.md`
+> Jadwal & identitas kursus: `.agents/course-config.md`
+> Kosakata visual: `.agents/skills/lecture-slide-designer/references/visual-vocabulary.md`
+
+---
+
+## 1. Aturan Kerja (WAJIB)
+
+1. **JANGAN commit atau push tanpa instruksi eksplisit dari pengguna.**
+   Termasuk `git add` tanpa diminta. Selesaikan pekerjaan, laporkan, tunggu.
+2. **PDF tidak pernah di-commit** (satu pengecualian: `dokumen/proyek-akhir-tor.pdf`, lihat
+   D-A11). Dirender oleh CI (`.github/workflows/deploy-pages.yml`).
+   `tugas/*.pdf|aux|log|toc|ver|hst|out|html` dan `pdf/` sudah di-`.gitignore`.
+3. **Satu branch per minggu** (`mgg03`, `mgg04`, …) bila diminta branch.
+   Jangan merge/push sendiri. Branch yang sudah ter-merge boleh dihapus dengan
+   `git branch -d` (aman, bukan `-D`).
+4. **Bahasa Indonesia** untuk seluruh konten slide, tugas, dan hands-on.
+   Identifier/path/command/error string tetap persis (jangan diterjemahkan).
+5. **Jangan sentuh file di luar lingkup tugas.** Jika terpaksa (mis. `index.html`
+   saat menambah deck), sebutkan di laporan.
+6. **Sebelum melapor, selalu jalankan gate validasi** (§4). Jangan mengklaim
+   "aman" tanpa menjalankan `validate_slide.py` dan `npm run measure`.
+
+## 2. Keputusan Aktif (mengikat agen berikutnya)
+
+Keputusan yang sudah disetujui pengguna dan **berlaku sampai diubah eksplisit**:
+
+- **D-A01 — Rebalancing tiga pilar.** Tiga pilar (Representasi, Alignment, Fusi)
+  harus punya rumah masing-masing di jadwal:
+  - **Representasi** → W02 (Teks), W03 (Gambar), W04 (Audio & Video).
+  - **Fusi** → W05 (Early & Late), W06 (Intermediate & Hybrid).
+  - **Alignment** → **W07** — *bukan* "Mekanisme Attention". Attention diajarkan
+    di dalam W07 sebagai mekanisme penyejajaran (dari DTW/HMM → attention adaptif).
+  - Blok alignment yang ada di deck sumber W06 dipindahkan ke W07.
+  - Aplikasi dipadatkan: W10 (Captioning), W11 (VQA + Sentimen), W12 (Generasi & Etika).
+  - W13 = Evaluasi Model Multimodal, W14 = Studi Kasus Terpadu, W15 = Review Materi.
+  - W08 (UTS) dan W16 (UAS) **tidak bergeser**.
+- **D-A02 — Kepadatan deck = Opsi A.** Target **24–29 slide** per deck (maksimum 35).
+  Deck sumber PPTX (~33–45 slide) harus dipadatkan; jangan salin mentah.
+- **D-A03 — `index.html` dan `.agents/course-config.md` harus sinkron.**
+  Judul minggu di kedua file wajib identik. Bila mengubah salah satu, ubah
+  pasangannya di commit yang sama.
+- **D-A04 — Tugas mingguan punya dua artefak.** `tugas/mggNN-tugas.md` (brief)
+  **dan** `tugas/mggNN-tugas.tex` (dokumen LaTeX). `.md` tidak boleh dilewatkan.
+  Hands-on: `hands-on/mggNN-hands-on.html` + entri CI (`HANDSON_WEEK=NN`).
+- **D-A11 — Tugas didistribusikan lewat LMS, BUKAN lewat portal repo.**
+  `index.html`, `README.md`, dan deck **tidak** menautkan berkas tugas, dan PDF
+  tugas **tidak** dibangun CI (tetap di-`.gitignore`).
+  - **Alasan:** repositori ini publik. Bila tugas diterbitkan lewat portal, berkas
+    terbuka untuk angkatan berikutnya (bocor), padahal contoh dan instruksi tugas
+    **diperbarui setiap tahun** — versi lama yang beredar merusak penilaian dan
+    membuang kerja pembaruan itu.
+  - `tugas/` tetap disimpan di repo untuk pelacakan versi dan riwayat revisi;
+    hanya *jalur terbit*-nya yang sengaja tidak ada.
+  - ❌ Jangan "memperbaiki" ini dengan menambah chip tugas di `index.html`,
+    tautan di `README.md`, atau langkah `lualatex` di CI — itu justru meniadakan
+    alasan di atas.
+  - Saat audit melaporkan "tugas tidak bisa ditemukan", itu **perilaku yang
+    diharapkan**, bukan gap.
+  - Kekecualian sempit untuk **materi ujian** diatur di **D-A12**.
+  - **Kartu proyek di portal sengaja *problem-agnostic*** — ditinjau ulang 25 Sep 2026.
+    Sebelumnya (A5) kartu "Proyek Akhir" menampilkan peta milestone M0–M4 beserta
+    pekannya, tetapi itu mengikat portal pada **soal proyek tahun berjalan**: begitu
+    soal/dataset berganti tahun depan, `index.html` harus disunting lagi.
+    - Keputusan sekarang: portal hanya menyatakan **bentuk penilaian** (proyek
+      kelompok, rentang pekan, tahapan umum, presentasi pada sesi UAS) — **tanpa**
+      nama dataset, kode milestone, atau pekan deliverable.
+    - Peta milestone M0–M4 dan jadwalnya hidup di **TOR proyek**
+      (`dokumen/proyek-akhir-tor.html`), bukan di `index.html`. Amandemen 30 Okt 2026:
+      TOR terbit sebagai PDF `dokumen/proyek-akhir-tor.pdf`, ditautkan dari kartu
+      proyek ("Unduh TOR") serta dokumen deskripsi `dokumen/proyek-akhir.html`.
+      Sumber yang dipelihara adalah `tugas/proyek-akhir-tor.tex`; PDF dibangun
+      **lokal** (`latexmk -lualatex`) lalu **dikomit** — satu-satunya pengecualian
+      aturan 2, karena CI sengaja tanpa TeX Live (D-A12). Setiap revisi `.tex`
+      wajib diikuti bangun ulang + komit PDF. `dokumen/proyek-akhir-tor.html`
+      adalah versi baca di web; isinya wajib selaras dengan `.tex`.
+    - ❌ Jangan menuliskan nama dataset/soal proyek tahun berjalan di `index.html`
+      maupun `README.md`. Deck bersifat tahunan (dibangun ulang tiap tahun) sehingga
+      boleh menyebut milestone/datasetnya sendiri.
+- **D-A12 — Materi ujian: kisi-kisi publik lewat portal; soal & kunci rahasia.**
+  Perlakuan berbeda dari tugas mingguan (D-A11):
+  - **Kisi-kisi UTS** (`dokumen/uts-kisi-kisi.html`) **dipublikasikan**, karena
+    sengaja dibagikan sebagai acuan belajar. Tombol "Kisi-kisi" pada kartu UTS di
+    `index.html` **membuka dokumen HTML-nya** (bisa dibaca langsung di browser);
+    tombol unduh PDF tersedia di dalam dokumen itu sendiri, dan berkasnya
+    `pdf/uts-kisi-kisi.pdf` dirender CI lewat **jalur HTML→PDF yang sama dengan
+    hands-on** (`DOC=uts-kisi-kisi npm run build:pdf`) — bukan TeX Live.
+  - **Amandemen 25 Sep 2026 — jalur terbit kisi-kisi pindah dari LaTeX ke HTML.**
+    Sumber `tugas/uts-kisi-kisi.tex` tetap disimpan (riwayat versi + versi cetak
+    formal), mengikuti pola `origin/*.pptx` → `mggNN.html`: **sumber ≠ yang
+    diterbitkan**. Yang terbit adalah `dokumen/uts-kisi-kisi.html`.
+    - **Alasan:** `xu-cheng/latex-action` adalah *Docker container action*;
+      karena runner GitHub bersifat *ephemeral* (dibuat baru tiap run, tanpa cache
+      layer), image TeX Live ~2,4 GB **ditarik ulang setiap run**. Mesin lokal
+      tidak membantu — CI tidak menyentuh mesin pengembang. Pipeline HTML→PDF
+      (Vivliostyle + `print-formal.css`) sudah ada dan dipakai semua PDF lain.
+    - **Konsekuensi:** **tidak ada langkah LaTeX/TeX Live di CI.** ❌ Jangan
+      menambahkan kembali `xu-cheng/latex-action` atau `apt-get install texlive-*`.
+    - Menambah dokumen baru: buat entri di `documents{}` pada
+      `vivliostyle.config.js` (kunci = nilai `DOC`), lalu bangun dengan
+      `DOC=<kunci> npm run build:pdf`. Keluaran otomatis `pdf/<namaberkas>.pdf`.
+    - ❌ **`.tex` bukan lagi sumber pemeliharaan.** Perubahan kisi-kisi wajib
+      dilakukan di `dokumen/uts-kisi-kisi.html`; menyunting `.tex` saja **tidak**
+      mengubah berkas yang terbit (`.tex` dipertahankan sebagai arsip versi cetak
+      LaTeX, mengikuti pola `origin/*.pptx`).
+  - **Soal & kunci** (`tugas/uts-soal.*`, `tugas/uts-kunci.*`) **rahasia**:
+    di-`.gitignore`, **tidak** ditautkan di mana pun, dan **tidak** dibangun CI.
+    Distribusinya lewat LMS saat jadwal ujian.
+  - **Alasan:** kisi-kisi aman dibagikan (ia hanya memuat cakupan, CPMK, dan
+    bentuk soal), sedangkan membocorkan butir soal/kunci merusak ujian. Repositori
+    publik tidak boleh mengekspos butir soal.
+  - ❌ Jangan menambahkan tautan/chip soal atau kunci di `index.html`, `README.md`,
+    deck, maupun langkah build CI.
+  - Aturan `.gitignore`: `tugas/uts-soal.*` dan `tugas/uts-kunci.*`.
+- **D-A13 — W14 (klinik) wajib tercermin di deck, bukan hanya di TOR.** Tahapan penilaian proyek menurut `tugas/proyek-akhir-tor.tex`:
+  - **W14 / P14 = Klinik.** Setiap kelompok membawa **draf laporan satu halaman**
+    dan melakukan *peer review* terhadap kelompok lain memakai rubrik. Deck W14
+    (slide "Dari Studi Kasus ke Proyek Anda") menyatakan agenda ini eksplisit di
+    callout, dan slide "Peta Perjalanan Satu Semester" memuat **peta proyek**
+    ringkas: `M0–M4 (P10–P14)`, dengan M4 sehari dengan **`P14 Klinik (hari ini)`** →
+    `P15–P16 Presentasi` (strip `.pipeline-flow` varian padat — resepnya di
+    `visual-vocabulary.md`).
+  - **P15–P16 = Presentasi akhir di kelas** (amandemen 30 Okt 2026: **tidak ada
+    gladi bersih**). Presentasi 10′ + tanya jawab 5′ per kelompok, urutan tampil
+    diumumkan lewat LMS. ❌ Jangan menambahkan kembali gladi bersih ke deck, portal,
+    maupun TOR.
+  - Milestone berhenti di **M4** (P14: protokol evaluasi + pengajuan prediksi
+    *test* privat; jadwal digeser satu minggu pada 30 Okt 2026 karena kick-off
+    proyek berlangsung di P09) — ❌ jangan mengarang "M5".
+  - ❌ Portal tetap **problem-agnostic** (D-A11): jangan pindahkan `M0–M4`, nama
+    dataset, atau pekan deliverable ke `index.html`. Deck boleh menyebut
+    milestone-nya sendiri. **Judul minggu tidak berubah** — D-A03 tetap
+    "Studi Kasus Terpadu" (W14) dan "Review Materi" (W15).
+  - **Alasan:** TOR menetapkan P14/P15 sebagai tahapan penilaian; deck yang tidak
+    menyebutkannya membuat mahasiswa datang ke klinik tanpa draf. Sebelumnya W14
+    hanya berbunyi "bawa pertanyaan konkret".
+- **D-A14 — Dokumen ujian (UTS): kode `sub-CPMK`, rubrik biner, dan kebijakan
+  publikasi.** Berlaku untuk dokumen ujian; pola yang sama dipakai bila kelak
+  dibuat kisi-kisi UAS.
+  - **Kode capaian = `sub-CPMK-1…5`** di semua dokumen (kisi-kisi HTML, arsip
+    `.tex`, kunci). Kode ini **turunan internal** dari CPMK mata kuliah: karena
+    mata kuliah ini pilihan, CPMK resminya sangat umum, dan **teks CPMK resmi
+    sengaja TIDAK disimpan di repo** (pemetaannya dicatat di luar repo).
+    ❌ Jangan "melengkapi" kisi-kisi dengan teks CPMK resmi, dan jangan
+    mengembalikan label `CPMK-N`.
+  - **Rubrik = biner (memenuhi/tidak memenuhi)**: `tugas/uts-kunci.tex` memakai
+    kriteria biner dengan bobot yang menjumlah tepat bobot tiap butir.
+    Konsekuensi yang wajib dijaga: kriteria majemuk dipecah ke elemen terkecil,
+    dan bila sebuah butir menuntut klaim beserta alasan, keduanya dinilai
+    sebagai kriteria yang terpisah. ❌ Jangan kembali ke "skala 0–3 + konversi proporsional"
+    tanpa persetujuan pengguna.
+  - **Rincian rubrik TIDAK ditulis di berkas publik.** Jumlah kriteria,
+    susunan kriteria, bobot per kriteria, dan naskah butir hanya boleh hidup
+    di `tugas/uts-soal.*` / `tugas/uts-kunci.*` (D-A12). `AGENTS.md`,
+    `.agents/CODEBASE.md`, kisi-kisi, dan deck **hanya** boleh menyebut
+    *sifat* penilaian (mis. “biner, memenuhi/tidak memenuhi”) — bukan isinya.
+    ❌ Jangan menambahkan contoh kriteria, cuplikan butir soal, atau hitungan
+    jumlah kriteria ke berkas mana pun yang terlacak git.
+  - **Kisi-kisi tetap boleh dibaca mahasiswa, tetapi tidak membocorkan soal**:
+    `dokumen/uts-kisi-kisi.html` memuat cakupan, sub-CPMK, level kognitif, bobot,
+    dan ekspektasi mutu generik — **tanpa** rubrik, tanpa kunci, **tanpa estimasi
+    waktu per butir**, dan indikatornya **parkasar** (jangan menyebut sub-tugas
+    per butir). Naskah soal, kunci, dan rubrik tetap rahasia (D-A12).
+  - **Alasan**: penilaian biner menuntut atomisasi kriteria — tanpa itu
+    subjektivitas hanya berpindah ke ambang; sedangkan indikator rinci plus
+    estimasi waktu per butir membuat kisi-kisi praktis menjadi skenario soal.
+
+- **D-A15 — `README.md` = daftar nama berkas; tautannya hanya ke situs.**
+  README dibaca paling dulu di **halaman repo GitHub**, sedangkan PDF (`pdf/`)
+  memang tidak ada di repo — dibangun CI saat push (D-A11/D-A12). Akibatnya
+  tautan relatif ke berkas hasil build **mati (404)** di GitHub, dan tautan
+  relatif ke berkas HTML repo hanya menampilkan **kode sumber** — bukan slide
+  atau lembar kerja yang ter-render. Karena itu:
+  - Kolom tabel materi (`mggNN.html`, `pdf/mggNN.pdf`, `hands-on/…`) ditulis
+    sebagai **teks monospace**, bukan tautan.
+  - Satu-satunya tautan adalah **absolut ke situs produksi**
+    (`https://iwawiwi.github.io/multimodal/`): di puncak README, catatan bawah
+    tabel, dan bagian *Situs*. Ketiga tempat itu yang wajib disunting bila host
+    berubah (mis. repo dipindah ke organisasi lain).
+  - README tetap menyatakan bahwa PDF **hanya** tersedia lewat situs, dan tetap
+    **tidak** menautkan berkas tugas (D-A11).
+  - ❌ Jangan mengembalikan tautan `pdf/…` atau tautan relatif ke berkas HTML
+    dari README; ❌ jangan pula meng-hardcode URL per berkas (14 tautan) — satu
+    tautan situs sudah cukup.
+  - **Alasan**: terukur 33 tautan tak terpakai pada README sebelum perbaikan
+    (PDF → 404; HTML → tampilan kode sumber), sementara audiensnya di GitHub;
+    satu tautan situs memberi akses penuh tanpa URL per berkas yang harus ikut
+    disunting setiap kali host berpindah. Verifikasi: `pandoc -f gfm -t html
+    README.md` untuk struktur render + `curl -I` untuk tautan absolut (CI tidak
+    memeriksa tautan README).
+
+- **D-A16 — Jadwal ujian tampil sebagai badge di HEADER kartu milestone.**
+  `index.html` menampilkan jadwal UTS/UAS pada kartu *Jadwal Evaluasi* sebagai
+  **badge di header kartu** (`.exam-when`, sejajar label `UTS`), bukan blok
+  penuh-lebar di badan kartu.
+  - **Isi badge**: hari + tanggal + penanda status — mis. `Kamis, 22 Okt 2026`
+    *(sementara)*; kalimat penuhnya di atribut `title`. Ruang header pada lebar
+    1024px hanya ~255px, jadi teks badge **wajib muat sebaris dengan label**.
+  - **Jam & durasi pengerjaan** ditulis di butir daftar kartu (mis.
+    `Pengerjaan 100 menit · 07.30–09.30 WIB`), bukan di badge.
+  - **Penyangga administratif tidak pernah ditampilkan.** Slot ruang yang
+    diumumkan prodi bisa lebih panjang daripada waktu pengerjaan (mis. 07.30–09.30
+    untuk ujian 100 menit); sisa waktunya urusan panitia (presensi, distribusi,
+    penarikan lembar). ❌ Jangan menuliskan "+3 menit buffer" di berkas publik —
+    lembar soal menyatakan "tidak ada perpanjangan waktu", sehingga angka itu
+    terbaca sebagai tambahan waktu bagi mahasiswa.
+  - **Status *sementara* wajib terlihat**, bukan hanya di `title`, selama jadwal
+    prodi belum final.
+  - **Tiga tempat wajib disunting bersama**: `index.html` (badge + butir),
+    `dokumen/uts-kisi-kisi.html` (baris *Jadwal* pada tabel Informasi Umum), dan
+    `.agents/course-config.md` (catatan jadwal pada baris minggu ujian).
+  - **Alasan**: blok penuh-lebar di badan kartu terukur menambah 55–105px; karena
+    `.milestones-grid` menyeragamkan tinggi baris, seluruh baris *Jadwal Evaluasi*
+    melampaui kartu pertemuan (1440px: +88px) — padahal tanpa blok itu kartu
+    milestone justru 4–29px lebih pendek. Sebagai badge header biayanya **0px**
+    (pola sama dengan `.lab-chip`). Teks penuh (tanggal + jam + status) terukur
+    **314px** sehingga terpotong oleh `max-width: 100%` di lebar 1024px — itulah
+    sebab informasi dipecah antara badge dan butir daftar.
+
+- **D-A17 — Portal: pencarian dan filter berbentuk chip, tanpa aksen warna di tepi kartu.**
+  `index.html` memuat toolbar lengket di bawah header (pola `.toolbar` situs DTD),
+  bukan panel di dalam `<main>`.
+  - **Isi:** kolom cari (pintasan `/`, Esc mengosongkan) + lima chip utama (Semua,
+    Sebelum UTS, Setelah UTS, Ujian & proyek, Hands-on) + satu pembuka "Tema" yang
+    menampilkan lima chip tema. Sengaja sedikit pilihan (beban kognitif): jangan
+    menambah chip ke baris utama; kelompok baru masuk ke pembuka.
+  - **Data:** tiap kartu membawa atribut `data-kind`, `data-periode`, `data-status`,
+    `data-tema` (+ `data-handson` bila ada lab). Kartu baru wajib mengisinya; tanpa itu
+    kartu tidak tersaring.
+  - **Ponsel (≤768px):** toolbar menjadi *bottom sheet* yang dibuka FAB (lencana =
+    jumlah filter aktif); di ≤1024px atau tinggi ≤700px bilah tidak lengket.
+  - **State** (kata cari, periode, hands-on, tema) disimpan di `localStorage`
+    (`mmm-portal-filter-v1`), dibungkus `try/catch`, dan divalidasi saat dimuat.
+  - **Kartu:** tidak ada garis gradien di tepi atas; kartu "segera hadir" berbingkai
+    putus-putus. ❌ Jangan mengembalikan aksen warna di tepi atas kartu.
+  - **Favicon** portal dan semua deck = logo ITERA (`assets/img/favicon.png`).
+
+- **D-A18 — Gaya bahasa mengikuti skill *humanizer* (blader/humanizer).** Berlaku untuk
+  deck, lembar kerja, dokumen, tugas, dan README.
+  - Hindari: kontras "bukan X melainkan Y" yang tak membawa informasi, tanda pisah
+    panjang sebagai penyambung, penutup satu-baris yang mengulang, kalimat seolah-dalam,
+    pembuka panggung ("Perhatikan…"), kata promosi/khas AI, triad paksa, tebal dekoratif,
+    dan kalimat yang menulis tentang dokumennya sendiri.
+  - **Judul** slide dan judul kartu memakai huruf kapital di awal kalimat (nama diri,
+    akronim, nama model/metode tetap kapital). Pengecualian yang dijaga:
+    judul minggu dan `<title>` (D-A03), frasa persis `Latihan Terbimbing` (linter D-030),
+    `<title>` dan footer topik.
+  - **Dibiarkan:** KaTeX, SVG, kode dan keluaran terminal, daftar pustaka (anotasi
+    berawalan "—"), rentang angka, serta pemisah `&mdash;` pada langkah naratif ke-4
+    (D-A05).
+  - Perubahan panjang teks tidak boleh melebihi ±3 karakter per elemen: tata letak
+    slide sudah diukur (`npm run measure`).
+
+- **D-A05 — Pola desain yang dipakai sejak mgg04** (detail di `design-decisions.md`):
+  - Slide "kategori/karakteristik" → `grid-3` 3 kartu
+    (`c-card c-card-{blue,mauve,teal} c-card-accent-top` + `<h3 style="color:...">`),
+    ditutup `.c-callout-info`.
+  - Slide konsep + gambar → `grid-2` + `.narrative-pane` (maks **3** `narrative-step`
+    dengan label `display:block`; **4** langkah boleh bila label dibuat sebaris
+    — `<strong style="display:inline;">` + pemisah `&mdash;` — terukur 98px headroom
+    di Teks Besar, mgg13 s21). Jangan tandai langkah ke-4 dengan komponen berbeda
+    (mis. callout "Langkah keempat"): pembaca membacanya sebagai catatan, bukan
+    bagian urutan.
+  - Ringkasan alur matematis → kartu `c-card` berisi grid `auto 1fr`,
+    label **"Alur Data Matematis:"** + KaTeX inline (`$...$`, bukan `$$`).
+  - Rumus utama → `.formula-hero` + `.formula-breakdown` (3 `.formula-term-box`);
+    setiap simbol wajib didefinisikan (D-017).
+  - Atribusi gambar ringkas: `Sumber: [sumber]` (D-019). Jangan mengarang.
+  - Slide kelebihan/kekurangan → `.pro-box` + `.con-box` (D-023); diagram
+    arsitektur → inline SVG (D-024).
+- **D-A06 — Tugas fusion dijadwalkan di akhir W06, bukan W05.**
+  Materi fusion disajikan tuntas lebih dulu (W05: Early & Late; W06:
+  Intermediate & Hybrid), lalu **satu** tugas terpadu diberikan di akhir W06
+  (`T2 + B3 + F3 + H3`): mahasiswa memakai encoder pra-latih **dibekukan** dan
+  menggarap hanya lapisan fusi — mengimplementasikan **dan** membandingkan
+  Early/Late/Intermediate, lalu memberi argumen pemilihan. Hands-on W06 menjadi
+  ajang latihan untuk tugas ini.
+  - ❌ **Jangan** memberi tugas di W05: cakupan baru 2 dari 4 strategi, sehingga
+    "pilih strategi terbaik" tidak adil dan bertabrakan dengan W06.
+  - ❌ **Jangan** menumpuk tugas di W05/W06/W07 sekaligus — UTS mencakup W01–W07,
+    dan 6 tugas berurutan sebelum UTS terlalu berat.
+  - Hands-on berformat **code-first** (D-011); hands-on tanpa kode tidak sah.
+- **D-A07 — W05 tanpa hands-on; penerapannya lewat studi kasus komprehensif.**
+  W05 tidak punya laboratorium. Sebagai gantinya, studi kasus deteksi emosi disajikan
+  dalam tiga langkah (*rumusan masalah* → *penerapan* → *analisis*) dan wajib:
+  - menanyakan lebih dulu, menjawab kemudian (jangan sajikan solusi sebelum soal);
+  - menutup kerangka yang dijanjikan (empat masalah klasik × strategi fusi);
+  - memuat slide "ketika fusi tidak mengalahkan unimodal";
+  - menyertakan jangkar konkret (dataset dan/atau metrik).
+  Rincian: D-026 di `design-decisions.md`.
+  - ❌ Hanya menambah hands-on W05 bila benar-benar diminta; lingkupnya wajib dibatasi
+    pada "implementasikan dan bandingkan early vs late" (bukan "pilih yang terbaik").
+- **D-A08 — Notasi matematika di dalam diagram memakai KaTeX (D-029).**
+  Simbol di dalam SVG **tidak boleh** ditulis sebagai teks literal.
+  Kata yang melabeli kotak tetap `<text>` (`Visual`, `Konkatenasi`); setiap
+  **simbol** memakai `<foreignObject>` + KaTeX `\(...\)`.
+  - ❌ `<text>x_A</text>` → underscore tampil mentah, berbeda dari slide rumus.
+  - ❌ `\(...\)` langsung di dalam `<text>` → KaTeX memberi kotak 0×0 (tak terlihat).
+  - Ditegakkan linter (check #10 & #11). Semua deck **sudah patuh** — daftar
+    pengecualian `MATH_TEXT_GRANDFATHERED` di `scripts/validate_slide.py` kosong;
+    jangan isi ulang kecuali ada deck warisan baru.
+- **D-A09 — Setiap minggu ber-hands-on punya satu slide jembatan**
+  ("Latihan Terbimbing") **tepat SEBELUM** slide Rangkuman, dengan tautan ke
+  `hands-on/mggNN-hands-on.html` dan PDF-nya. Isinya ringkas: tujuan + 3–4 langkah;
+  slide ini **menunjuk** ke lab, bukan menggandakannya. Markup: **2×2 `.bridge-grid`**
+  berisi `.bridge-step` bernomor + `.c-callout-info` + baris `.slide-links` dengan
+  dua tombol (`.slide-btn-primary` "Buka Lembar Kerja", `.slide-btn-secondary`
+  "Unduh PDF").
+  - ❌ Jangan memakai `.pipeline-flow` 4 kolom di sini: deskripsi 100+ karakter
+    terpecah di kolom sempit (kartu ~220px) dan tautan melebar 832px di mode 4:3.
+    Grid 2×2 memangkas tinggi kartu menjadi ~95px.
+  - ❌ Jangan menaruh path mentah (`hands-on/mggNN-…`) sebagai teks isi.
+  - ❌ Jangan menaruhnya setelah Rangkuman: ringkasan harus menutup sesi.
+  - Bila PPTX sumber punya slide hands-on, isinya **dipulihkan** — bukan dikarang.
+    Bila tidak ada (mis. W04), slide boleh baru tetapi wajib mencerminkan isi
+    hands-on yang sebenarnya.
+  - Anggaran slide D-A02 dinaikkan menjadi **24–30** untuk minggu ber-hands-on.
+  - Ditegakkan linter (check #12 & #13); rincian di D-030 `design-decisions.md`.
+- **D-A10 — Tautan di PDF harus absolut ke host produksi.** Chrome membekukan
+  URL server sementara (`http://127.0.0.1:8765/…`) ke anotasi PDF, sehingga PDF
+  yang terbit memuat tautan mati. `scripts/export_pdf.py` menulis ulang **hanya
+  target tautan** `hands-on/` dan `pdf/` menjadi absolut; path aset tetap relatif.
+  Base URL diresolusi berurutan: `SITE_BASE_URL` → `PAGES_BASE_URL` (output
+  `actions/configure-pages`, di-wire di CI) → `https://<owner>.github.io/<repo>`
+  dari `GITHUB_REPOSITORY` → kosong.
+  - ❌ **Jangan hardcode** URL repo. Repo ini akan ditransfer ke organisasi lain;
+    resolusi dari env membuat tautan tetap benar tanpa sunting manual.
+  - CI menjalankan `configure-pages` **sebelum** build PDF agar `base_url` tersedia.
+  - HTML sumber tetap memakai path relatif (agar situs jalan di host mana pun).
+
+## 3. Status Deck (perbarui saat menyelesaikan deck)
+
+| Deck | Topik | Slide | Status |
+| :--- | :--- | :---: | :--- |
+| `mgg01.html` | Pengantar Pembelajaran Mesin Multimodal | 25 | ✅ selesai |
+| `mgg02.html` | Representasi Modalitas I: Teks | 30 | ✅ selesai |
+| `mgg03.html` | Representasi Modalitas II: Gambar | 25 | ✅ selesai |
+| `mgg04.html` | Representasi Modalitas III: Audio & Video | 30 | ✅ selesai |
+| `mgg05.html` | Strategi Fusi I: Early & Late Fusion | 28 | ✅ selesai |
+| `mgg06.html` | Strategi Fusi II: Intermediate & Hybrid Fusion | 25 | ✅ selesai |
+| `mgg07.html` | Penyejajaran (Alignment): Temporal & Structural | 27 | ✅ selesai |
+| `mgg09.html` | Arsitektur Transformer Multimodal | 28 | ✅ selesai |
+| `mgg10.html` | Aplikasi 1: Image Captioning | 27 | ✅ selesai |
+| `mgg11.html` | Aplikasi 2: VQA & Analisis Sentimen Multimodal | 26 | ✅ selesai |
+| `mgg12.html` | Topik Lanjutan: Generasi Multimodal & Etika | 30 | ✅ selesai |
+| `mgg13.html` | Evaluasi Model Multimodal | 27 | ✅ selesai |
+| `mgg14.html` | Studi Kasus Terpadu | 26 | ✅ selesai |
+| `mgg15.html` | Review Materi | 26 | ✅ selesai |
+| `mgg08.html` | — | — | milestone (UTS, tanpa deck) |
+
+  > `mgg12.html` = **30 slide** (di atas target D-A02): 2 slide etika praktik
+  > ditambahkan 30 Sep 2026 atas permintaan pengguna — *Etika dalam Pengembangan
+  > Model* dan *Etika dalam Penggunaan Model* — karena Bagian 3 semula hanya
+  > memuat bahaya (bias, privasi, fairness, mode kegagalan), tanpa tuntunan
+  > penggunaan. **Disetujui pengguna** (masih di bawah batas keras 35), jadi
+  > tidak perlu digabungkan; bila kelak ingin kembali ke 29, slide 10–11
+  > (Text-to-Video: konsep & tantangan) bisa disatukan.
+  > Angka slide di atas diverifikasi terhadap `<section>` tiap berkas. Perbarui
+  > tabel ini setiap kali deck berubah — `CODEBASE.md` §10 pernah tertinggal
+  > dan melaporkan angka yang salah.
+
+Artefak pendukung:
+
+| Artefak | Ada |
+| :--- | :--- |
+| `hands-on/mgg02,03,04,06,09,13-hands-on.html` | ✅ |
+| `tugas/mgg02,03,04,06,09-tugas.md` + `.tex` | ✅ (via LMS — lihat D-A11) |
+| `dokumen/uts-kisi-kisi.html` | ✅ publik (jalur terbit kisi-kisi — D-A12) |
+| `tugas/uts-kisi-kisi.tex` | ✅ sumber/riwayat (tidak dirender CI — D-A12) |
+| `tugas/uts-soal.tex` + `tugas/uts-kunci.tex` | ✅ lokal/LMS saja (rahasia — D-A12) |
+| `dokumen/proyek-akhir.html` + `dokumen/proyek-akhir-tor.html` + `dokumen/proyek-akhir-tor.pdf` | ✅ publik (deskripsi, TOR versi web, TOR PDF dikomit — lihat D-A11) |
+| CI export `mgg01`–`mgg07`, `mgg09`–`mgg15` + hands-on 02/03/04/06/09/13 + kisi-kisi UTS + deskripsi proyek | ✅ |
+
+> Setiap minggu yang punya hands-on **wajib** lengkap: file hands-on, entri
+> `HANDSON_WEEK` di CI, judul di `vivliostyle.config.js`, kolom hands-on di
+> `course-config.md`, dan badge lab (`.lab-chip`) di header kartu pekan pada `index.html`.
+
+## 4. Validasi (jalankan sebelum melapor)
+
+```bash
+python3 scripts/validate_slide.py mggNN.html   # tag, link, pelanggaran desain
+npm run measure -- mggNN.html                  # overflow @ Teks Besar 960×540
+git diff --check                               # whitespace
+```
+
+Linter yang sama juga memvalidasi **dokumen** (`hands-on/*.html` dan
+`dokumen/*.html`): keduanya dikenali sebagai *document* (bukan slide), sehingga
+aturan khusus slide (vh/vw, no-scroll) tidak berlaku — tetapi pemeriksaan tag,
+tautan rusak, dan token warna tetap jalan.
+
+```bash
+python3 scripts/validate_slide.py dokumen/uts-kisi-kisi.html
+```
+
+Otomatis PDF dokumen = `DOC=<kunci> npm run build:pdf` (lihat D-A12).
+
+Untuk `index.html` (portal) tidak ada `measure_overflow.js`; uji regresinya probe
+lebar di **1440 / 1280 / 1024 / 820 / 420px**: pastikan **0 overflow horizontal**,
+**0 teks topik terpotong** (`scrollWidth > clientWidth`), dan jumlah kolom grid
+sesuai harapan. Ingat: scrollbar vertikal memakan ~15px lebar tata letak,
+sehingga ambang jumlah kolom bergeser ~15px dari perhitungan teoretis.
+
+`measure_overflow.js` **hanya** menguji mode Teks Besar. Untuk memastikan 5 mode
+(16:9, 16:10, 4:3, Teks Besar, Mobile), pakai probe headless Chrome + CDP
+(buat sementara di `scripts/`, **hapus setelah selesai**).
+
+**Target: 0 overflow di semua mode, headroom ≥ ~15px di Teks Besar.** Bila mepet,
+rapatkan margin lokal (bukan mengecilkan font global) — atau pecah slide (D-009/D-016).
+
+## 5. Struktur & Konvensi
+
+```text
+mggNN.html                     deck Reveal.js (satu file mandiri, boilerplate seragam)
+index.html                     portal: kartu minggu + milestone UTS/UAS
+css/catppuccin-latte.css       tema + komponen (sumber kebenaran komponen)
+hands-on/mggNN-hands-on.html   lembar kerja (Prism baked, gaya code-first)
+hands-on/_template.html        kerangka lembar kerja — sumber salinan (D-033)
+dokumen/*.html                 dokumen non-mingguan (mis. uts-kisi-kisi.html) — jalur cetak sama
+tugas/mggNN-tugas.{md,tex}     tugas mingguan (LaTeX pakai tugas-style.sty)
+origin/*.pptx                  sumber asli (gitignored, TIDAK dipublikasikan)
+scripts/                       validate_slide.py, measure_overflow.js, export_pdf.py, chrome_print_pdf.js
+.agents/                       konteks proyek (CODEBASE.md, course-config.md)
+```
+
+- Deck baru: **salin boilerplate** dari deck terakhir (`mgg05.html`) — header,
+  aspect switcher, footer, topic popover, `Reveal.initialize`, `setAspectMode`.
+  Jangan tulis ulang dari nol.
+- Lembar kerja baru: **salin `hands-on/_template.html`** — kerangka yang sudah
+  memuat invarian D-033 (`.code-window .lc { width: 100% }` +
+  `.ln { min-width: 48px }`, komponen `.formula`/`.terminal`/`.note`) — lalu ganti
+  penanda `{{…}}` dan daftarkan di CI (`HANDSON_WEEK`), `course-config.md`,
+  `index.html`, serta slide jembatan D-030. Jangan menggandakan berkas minggu lama:
+  blok CSS `.code-window` harus tetap identik di semua lembar kerja.
+- Total slide: `<span id="deck-slide-total">NN</span>` harus cocok dengan jumlah
+  `<section>`. Nomor komentar `<!-- SLIDE N: ... -->` harus berurutan — satu
+  komentar per `<section>`, persis di atas section-nya (**ditegakkan linter,
+  check #16**).
+- Setiap `<section>` diberi `<aside class="notes">` (catatan dosen).
+- Ekstraksi PPTX: `python3 /tmp/px.py "<file.pptx>"` (parser zip+XML tanpa
+  dependensi; `python-pptx` tidak terpasang). Salin ulang bila `/tmp` bersih.
+- Aset raster dirilis sebagai **WebP lossless** (`cwebp -lossless -z 9 -exact
+  -metadata icc -m 6`) — hemat 46–75% dari PNG, aman karena semua konsumen browser
+  (Reveal, hands-on, portal, cetak Chrome, Vivliostyle). Ganti rujukan **dan** nama
+  berkas di seluruh repo; konversi wajib diverifikasi piksel (canvas), bukan ukuran.
+
+## 6. Jebakan yang Sudah Diketahui
+
+- Boilerplate `<html>`/`<head>` **hanya boleh muncul sekali**. Menempel mentah
+  blok boilerplate ke dalam file yang sudah ada menghasilkan tag bersarang.
+- `$...$` = KaTeX inline; `$$...$$` = display (jadi blok terpusat). Untuk kartu
+  "Alur Data Matematis" pakai inline `$...$`.
+- `.diagram-canvas img` sudah punya `max-height: 260px` (css baris ~710).
+  Override inline `max-height: none` akan merusak proporsi gambar.
+- Gambar **raster** tinggi (portrait, AR ≲ 0,7) **jangan** diatur dengan
+  `max-height: 100%` (pola `.is-flow` yang dirancang untuk SVG):
+  `measure_overflow.js` menormalkan `section` menjadi `display:block; height:auto`,
+  sehingga persentase kehilangan acuan dan diabaikan — gambar raster lalu tampil
+  seukuran aslinya (mgg09 slide 5 pernah meluber **+250px**). Pakai komponen
+  `.diagram-canvas.figure-hero` (batas `max-height` **px per mode aspek**);
+  setiap gambar baru wajib diukur ulang 5 mode dengan sisa ruang ≥ 15px — D-031.
+- **Latar gambar jangan ditebak dari `sips -g hasAlpha`**: kanal alpha bisa ada
+  sementara latarnya tetap putih pekat. Terukur di mgg09: `vilbert-arch.webp` dan
+  `CLIP-pretrain.webp` **0% transparan** (65–79% putih-opak, sudut
+  `rgba(255,255,255,255)`), sedangkan `attn-is-all-you-need-2017.webp` 62,6% dan
+  `vit-dosovitsky.png` 57,3% transparan. Figur berlatar putih pekat wajib memakai
+  modifier `.figure-matte` (`mix-blend-mode: multiply`) agar menyatu dengan kanvas
+  mantle; figur yang sudah transparan **tidak** boleh memakainya (warnanya hanya
+  akan menumpul tanpa manfaat).
+- Gambar line-art berlatar putih → jadikan transparan + tint `#4c4f69`
+  (`--ctp-text`); jangan tempel PNG berlatar putih di kanvas mantle.
+- Token warna terlarang: `--ctp-red`, `--ctp-yellow`, `--ctp-sky`, `--ctp-pink`,
+  `--ctp-rosewater`, `--ctp-flamingo` (linter menolak). Lihat `design-tokens.md`.
+- Semantik warna diagram (D-032): **biru** = modalitas visual, **mauve** =
+  modalitas kedua (teks/audio), **teal** = fusi/ruang bersama/tahap generasi,
+  **hijau** = kotak terminal (hasil/keputusan) beserta panah masuknya. Dua aliran
+  yang bertemu di blok fusi **mempertahankan** warnanya (biru + mauve masuk, teal
+  keluar) — pola W05/W06. Setiap kepala panah **wajib sewarna garisnya** (satu
+  `<marker>` per warna, id unik per slide). ❌ Jangan pakai nilai dari tema
+  lain (Mocha `#89b4fa`, `#f9e2af`, … pernah bocor ke `mgg03`) atau token terlarang
+  `#d20f39`; tint lembut dibuat dari warna palet + `fill-opacity`.
+  **Ditegakkan linter:** check #14 (kepala panah) & #15 (palet, khusus deck).
+- **Lembar kerja (hands-on): gutter nomor baris wajib seragam 48px.** Blok CSS
+  `.code-window .ln/.lc` **identik byte-per-byte di keenam berkas** `hands-on/*.html`
+  — ubah keenamnya sekaligus. `.lc` wajib `width: 100%` (kolom kode menyerap sisa
+  lebar tabel) dan `.ln` wajib `min-width: 48px` (batas bawah, bukan `width` mati,
+  agar nomor tiga digit tidak terpotong). Tanpa `width: 100%`, tabel auto membagi
+  kelebihan lebar ke kolom nomor pada blok pendek: `setup.sh` satu baris terukur
+  **147px** di W13, 59–87px di W02/W03/W04/W06/W09. Rumus di badan dokumen wajib
+  memakai `div.formula` (satu rumus satu kotak), ❌ bukan
+  `<span style="font-family: var(--font-mono)">` di dalam `<p>`. D-033.
+- Jangan pakai `.c-badge`, `data-transition="zoom"`, fragment `fade-up/-down/…`,
+  atau satuan `cqi`/`vh` di slide.
+- Referensi **wajib** pakai styled `<ol>` (monospace `[n]` + grid + hairline) — D-002.
+- Penutup **wajib** layout minimal terpusat (bukan label "Selesai" + kartu) — D-004.
+- Diskusi **wajib** 3 `.c-callout-*` bertumpuk (info→warning→success) — D-005.
+- `cwebp -metadata none` membuang profil ICC: 5 dari 7 figur membawa `iCCP`, dan tanpa
+  profil render di Chrome bergeser (Δmax 11 terukur). Selalu `-metadata icc`, lalu
+  bandingkan piksel sebelum menimpa aset asli (deflate ulang aliran IDAT PNG = pilihan
+  lossless bila nama berkas tak boleh berubah).
+- KaTeX: **dua** backslash sebelum `}` (mis. `\(\{a_i\\}\)`) membuat render
+  gagal dan tampil mentah di slide, tetapi lint/measure **tidak** mendeteksinya
+  (lebar tidak berubah) — verifikasi wajib lewat tangkapan layar. Detektor cepat:
+  cari dua backslash berturut di `mgg*.html` (yang sah hanya `\\` pemutus baris di
+  dalam `$$…$$`).

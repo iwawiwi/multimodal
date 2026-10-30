@@ -1,0 +1,79 @@
+# Course Configuration — Pembelajaran Mesin Multimodal
+
+**This file is the single source of truth for course identity.** The global
+`lecture-slide-designer` skill is course-agnostic; it reads this file to
+substitute placeholders (`{{COURSE_CODE}}`, `{{COURSE_TITLE}}`, etc.) when
+generating decks.
+
+> When reusing the skill for another course, create a NEW `.agents/course-config.md`
+> in that project with different values. Never edit the global skill.
+
+---
+
+## Identity
+
+| Key | Value |
+| :--- | :--- |
+| Course code | `IF25-40304` |
+| Course title | `Pembelajaran Mesin Multimodal` |
+| SKS | `3 SKS` |
+| Program study | `Program Studi Teknik Informatika` |
+| Faculty | `Fakultas Teknologi Industri` |
+| Department | `Teknik Informatika ITERA` |
+| Institution | `Institut Teknologi Sumatera (ITERA)` |
+| Lecturer name | `I Wayan Wiprayoga Wisesa` |
+| Lecturer email | `wayan.wisesa@if.itera.ac.id` |
+| Campus logo (left) | `assets/img/logo_2.webp` |
+| Ministry logo (right) | `assets/img/dikti-saintek-berdampak-color.svg` |
+
+## Placeholder mapping
+
+These placeholders in `resources/slide-template.html` are substituted from this file:
+
+| Placeholder | Value |
+| :--- | :--- |
+| `{{COURSE_CODE}}` | `IF25-40304` |
+| `{{COURSE_TITLE}}` | `Pembelajaran Mesin Multimodal` |
+| `{{DEPT}}` | `Teknik Informatika ITERA` |
+| `{{INSTITUTION}}` | `Institut Teknologi Sumatera (ITERA)` |
+| `{{PROGRAM_STUDY}}` | `Program Studi Teknik Informatika` |
+| `{{FACULTY}}` | `Fakultas Teknologi Industri` |
+| `{{LECTURER_NAME}}` | `I Wayan Wiprayoga Wisesa` |
+| `{{LECTURER_EMAIL}}` | `wayan.wisesa@if.itera.ac.id` |
+| `{{LOGO_CAMPUS}}` | `assets/img/logo_2.webp` |
+| `{{LOGO_MINISTRY}}` | `assets/img/dikti-saintek-berdampak-color.svg` |
+| `{{WEEK_NUM}}` | meeting number (e.g. `1`, `2`) |
+| `{{WEEK_NUM_2DIGIT}}` | zero-padded meeting number (e.g. `01`, `02`) |
+| `{{TOPIC_TITLE}}` | meeting topic (e.g. `Representasi Modalitas I: Teks`) |
+
+## Weekly topics (16 meetings)
+
+`kind` column: `lecture` = regular weekly meeting; `milestone` = UTS/UAS exam (rendered as a separate `milestone-card` in `index.html`, NOT in the weeks grid).
+
+| Week | Topic | Kind | Hands-on |
+| :--- | :--- | :--- | :--- |
+| 01 | Pengantar Pembelajaran Mesin Multimodal | lecture | — |
+| 02 | Representasi Modalitas I: Teks | lecture | `Eksplorasi Word Embeddings` (`pdf/mgg02-hands-on.pdf`) |
+| 03 | Representasi Modalitas II: Gambar | lecture | `Feature Extraction Gambar` (`pdf/mgg03-hands-on.pdf`) |
+| 04 | Representasi Modalitas III: Audio & Video | lecture | `Representasi Audio & Video` (`pdf/mgg04-hands-on.pdf`) |
+| 05 | Strategi Fusi Multimodal I: Early & Late Fusion | lecture | — |
+| 06 | Strategi Fusi Multimodal II: Intermediate & Hybrid Fusion | lecture | `Early, Late & Intermediate Fusion` (`pdf/mgg06-hands-on.pdf`) |
+| 07 | Penyejajaran (Alignment): Temporal & Structural | lecture | — |
+| 08 | UTS | milestone | — |
+| 09 | Arsitektur Transformer Multimodal | lecture | `Menyelaraskan Dua Ruang` (`pdf/mgg09-hands-on.pdf`) |
+| 10 | Aplikasi 1: Image Captioning | lecture | — |
+| 11 | Aplikasi 2: VQA & Analisis Sentimen Multimodal | lecture | — |
+| 12 | Topik Lanjutan: Generasi Multimodal & Etika | lecture | — |
+| 13 | Evaluasi Model Multimodal | lecture | `Protokol Evaluasi & Uji Signifikansi` (`pdf/mgg13-hands-on.pdf`) |
+| 14 | Studi Kasus Terpadu | lecture | — |
+| 15 | Review Materi | lecture | — |
+| 16 | UAS | milestone | — |
+
+**Jadwal ujian (per 2 Oktober 2026).** UTS: **Kamis, 22 Oktober 2026, 07.30–09.30 WIB**;
+waktu pengerjaan **100 menit**, sisanya administratif (presensi, distribusi, dan pengumpulan
+lembar jawaban) sehingga **penyangga 3 menit sengaja tidak ditampilkan** ke mahasiswa —
+lembar soal menyatakan "tidak ada perpanjangan waktu". Slot dan durasi ini tampil di dua
+tempat publik yang **wajib disunting bersamaan**: `index.html` (baris jadwal di kartu UTS,
+kelas `.exam-when`) dan `dokumen/uts-kisi-kisi.html` (baris *Jadwal* pada tabel Informasi
+Umum). Statusnya **sementara** sampai prodi mengeluarkan jadwal resmi — pertahankan
+penanda itu. UAS belum dijadwalkan.

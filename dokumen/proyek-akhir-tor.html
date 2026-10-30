@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Term of Reference Proyek Akhir &mdash; Pembelajaran Mesin Multimodal</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+  <style>
+    :root {
+      --ctp-base: #eff1f5;
+      --ctp-mantle: #e6e9ef;
+      --ctp-crust: #dce0e8;
+      --ctp-surface0: #ccd0da;
+      --ctp-surface1: #bcc0cc;
+      --ctp-overlay0: #9ca0b0;
+      --ctp-overlay1: #8c8fa1;
+      --ctp-overlay2: #7c7f93;
+      --ctp-text: #4c4f69;
+      --ctp-subtext1: #5c5f77;
+      --ctp-subtext0: #6c6f85;
+      --ctp-blue: #1e66f5;
+      --ctp-sapphire: #209fb5;
+      --ctp-mauve: #8839ef;
+      --ctp-teal: #179299;
+      --ctp-green: #40a02b;
+      --ctp-peach: #fe640b;
+      --ctp-maroon: #e64553;
+      --ctp-lavender: #7287fd;
+      --ctp-yellow: #df8e1d;
+      --ctp-sky: #04a5e5;
+
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { -webkit-text-size-adjust: 100%; text-rendering: optimizeLegibility; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--ctp-base);
+      color: var(--ctp-text);
+      font-family: var(--font-sans);
+      line-height: 1.7;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* =========================================================
+       Header dokumen akademik (kompak, bukan hero 100vh)
+       ========================================================= */
+    .doc-header-block {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 44px 40px 0 40px;
+    }
+    .doc-logos {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .doc-logos img { height: 34px; width: auto; }
+    .doc-course {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ctp-subtext0);
+      letter-spacing: 0.02em;
+      margin-bottom: 6px;
+    }
+    .doc-kicker {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ctp-blue);
+      margin-bottom: 10px;
+    }
+    .doc-header-block h1 {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.25;
+      color: var(--ctp-text);
+      margin: 0 0 8px 0;
+    }
+    .doc-subtitle {
+      font-size: 16px;
+      color: var(--ctp-subtext0);
+      margin: 0;
+    }
+    .doc-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 20px;
+      font-size: 12.5px;
+      color: var(--ctp-subtext0);
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--ctp-surface0);
+    }
+
+    /* =========================================================
+       Floating Navigation Pill + TOC Drawer
+       ========================================================= */
+    .floating-nav {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .fn-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid var(--ctp-surface1);
+      background: var(--ctp-base);
+      color: var(--ctp-subtext0);
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(76, 79, 105, 0.12);
+      transition: all 0.15s ease;
+    }
+    .fn-btn:hover {
+      border-color: var(--ctp-blue);
+      color: var(--ctp-blue);
+      background: #ffffff;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(30, 102, 245, 0.18);
+    }
+    .fn-btn .material-symbols-outlined {
+      font-size: 21px;
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .fn-btn.fn-toc {
+      background: var(--ctp-blue);
+      border-color: var(--ctp-blue);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(30, 102, 245, 0.28);
+    }
+    .fn-btn.fn-toc:hover { background: #1455d9; border-color: #1455d9; color: #fff; }
+    .fn-btn.fn-pdf { color: var(--ctp-blue); }
+    .fn-btn.fn-text-large { color: var(--ctp-mauve); }
+    .fn-btn.fn-text-large.active {
+      background: var(--ctp-mauve);
+      border-color: var(--ctp-mauve);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(136, 57, 239, 0.28);
+    }
+
+    /* --- Mode Teks Besar (HTML only; PDF tidak terpengaruh) --- */
+    html.text-large {
+      zoom: 1.35;
+    }
+
+    /* --- Drawer --- */
+    .toc-drawer {
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      width: 340px;
+      max-width: 88vw;
+      z-index: 110;
+      background: var(--ctp-base);
+      border-left: 1px solid var(--ctp-surface1);
+      box-shadow: -8px 0 24px rgba(76, 79, 105, 0.18);
+      transform: translateX(100%);
+      transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    .toc-drawer.open { transform: translateX(0); }
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--ctp-surface1);
+      position: sticky;
+      top: 0;
+      background: var(--ctp-base);
+      z-index: 1;
+    }
+    .drawer-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ctp-blue);
+    }
+    .drawer-title .material-symbols-outlined { font-size: 18px; }
+    .drawer-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: var(--ctp-subtext0);
+      cursor: pointer;
+    }
+    .drawer-close:hover { background: var(--ctp-surface0); color: var(--ctp-text); }
+    .drawer-close .material-symbols-outlined { font-size: 20px; }
+    .toc-drawer .toc-list { list-style: none; margin: 8px 0; padding: 0 12px; }
+    .toc-drawer .toc-list li { margin: 0; border-bottom: 1px solid var(--ctp-surface0); }
+    .toc-drawer .toc-list li:last-child { border-bottom: none; }
+    .toc-drawer .toc-list a {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 11px 8px;
+      text-decoration: none;
+      color: var(--ctp-text);
+      font-size: 14px;
+      border-radius: 6px;
+    }
+    .toc-drawer .toc-list a:hover { color: var(--ctp-blue); background: var(--ctp-mantle); }
+    .toc-drawer .toc-num {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--ctp-blue);
+      min-width: 22px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .toc-drawer .toc-label { flex-grow: 1; }
+
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 105;
+      background: rgba(76, 79, 105, 0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.28s ease;
+    }
+    .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+
+    /* =========================================================
+       Isi dokumen
+       ========================================================= */
+    .page {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 28px 40px 90px 40px;
+    }
+
+    h2 {
+      font-size: 21px;
+      font-weight: 800;
+      color: var(--ctp-text);
+      letter-spacing: -0.015em;
+      margin: 44px 0 10px 0;
+      padding-top: 8px;
+    }
+    h2 .sec-num {
+      font-family: var(--font-mono);
+      color: var(--ctp-blue);
+      font-size: 17px;
+      margin-right: 8px;
+      font-weight: 700;
+    }
+    h3 {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--ctp-subtext0);
+      margin: 24px 0 8px 0;
+    }
+    p { margin: 0 0 14px 0; color: var(--ctp-text); }
+    ul, ol { margin: 0 0 16px 0; padding-left: 24px; }
+    li { margin-bottom: 6px; }
+    strong { color: var(--ctp-text); }
+    em { color: var(--ctp-subtext0); }
+    a { color: var(--ctp-blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Inline code */
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.9em;
+      background: var(--ctp-mantle);
+      border: 1px solid var(--ctp-surface0);
+      border-radius: 5px;
+      padding: 1px 6px;
+      color: var(--ctp-mauve);
+    }
+
+    /* =========================================================
+       Notes (thin left border — bukan kartu)
+       ========================================================= */
+    .note {
+      border-left: 3px solid;
+      padding: 2px 0 2px 14px;
+      margin: 18px 0;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+    .note .note-title { font-weight: 800; display: block; margin-bottom: 2px; }
+    .note-blue   { border-left-color: var(--ctp-blue); }
+    .note-blue   .note-title { color: var(--ctp-blue); }
+    .note-peach  { border-left-color: var(--ctp-peach); }
+    .note-peach  .note-title { color: var(--ctp-peach); }
+    .note-green  { border-left-color: var(--ctp-green); }
+    .note-green  .note-title { color: var(--ctp-green); }
+    .note-mauve  { border-left-color: var(--ctp-mauve); }
+    .note-mauve  .note-title { color: var(--ctp-mauve); }
+
+    /* =========================================================
+       Code Window (IDE framing — light)
+       ========================================================= */
+    .code-window {
+      border: 1px solid var(--ctp-surface0);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 18px 0;
+      background: var(--ctp-base);
+      box-shadow: 0 1px 2px rgba(76, 79, 105, 0.06);
+    }
+    .code-window-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--ctp-mantle);
+      border-bottom: 1px solid var(--ctp-surface0);
+      padding: 9px 14px;
+    }
+    .window-dots { display: flex; gap: 6px; flex-shrink: 0; }
+    .window-dots .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+    .dot-red    { background: var(--ctp-maroon); }
+    .dot-yellow { background: var(--ctp-yellow); }
+    .dot-green  { background: var(--ctp-green); }
+    .code-filename {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ctp-subtext0);
+      flex-grow: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--ctp-surface1);
+      background: var(--ctp-base);
+      color: var(--ctp-subtext0);
+      font-size: 11.5px;
+      font-weight: 600;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+    .copy-btn:hover { border-color: var(--ctp-blue); color: var(--ctp-blue); background: #fff; }
+    .copy-btn .material-symbols-outlined { font-size: 15px; }
+    .copy-btn.copied { border-color: var(--ctp-green); color: var(--ctp-green); background: #fff; }
+
+    .code-window pre {
+      margin: 0;
+      padding: 0;
+      background: var(--ctp-base);
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--ctp-surface1) transparent;
+    }
+    .code-window pre::-webkit-scrollbar { height: 8px; }
+    .code-window pre::-webkit-scrollbar-thumb { background: var(--ctp-surface1); border-radius: 4px; }
+    .code-window pre::-webkit-scrollbar-track { background: transparent; }
+
+    .code-window pre[class*="language-"],
+    .code-window code[class*="language-"] {
+      color: var(--ctp-text);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.6;
+      direction: ltr;
+      text-align: left;
+      white-space: pre;
+      word-spacing: normal;
+      word-break: normal;
+      tab-size: 4;
+      hyphens: none;
+    }
+    .code-window pre[class*="language-"] > code[class*="language-"] {
+      display: block;
+      padding: 12px 0;
+    }
+
+    /* --- Baked line numbers (statis) --- */
+    .code-window pre.code-baked > code {
+      display: table;
+      width: 100%;
+      padding: 0;
+      border-collapse: collapse;
+    }
+    .code-window .code-line {
+      display: table-row;
+    }
+    .code-window .ln {
+      display: table-cell;
+      text-align: right;
+      padding: 3px 14px 3px 16px;
+      color: var(--ctp-overlay1);
+      background: var(--ctp-mantle);
+      border-right: 1px solid var(--ctp-surface0);
+      user-select: none;
+      -webkit-user-select: none;
+      white-space: nowrap;
+      font-size: 12px;
+      min-width: 3em;
+      vertical-align: top;
+    }
+    .code-window .lc {
+      display: table-cell;
+      padding: 3px 18px;
+      white-space: pre;
+      color: var(--ctp-text);
+      font-size: 13px;
+      vertical-align: top;
+    }
+    .code-window .code-line:first-child .ln,
+    .code-window .code-line:first-child .lc { padding-top: 12px; }
+    .code-window .code-line:last-child .ln,
+    .code-window .code-line:last-child .lc { padding-bottom: 12px; }
+
+    /* Prism token colors (Catppuccin Latte) */
+    .token.comment, .token.prolog, .token.doctype, .token.cdata { color: var(--ctp-overlay2); font-style: italic; }
+    .token.punctuation { color: var(--ctp-subtext1); }
+    .token.keyword { color: var(--ctp-mauve); }
+    .token.string, .token.char { color: var(--ctp-green); }
+    .token.number, .token.boolean { color: var(--ctp-peach); }
+    .token.function { color: var(--ctp-blue); }
+    .token.builtin { color: var(--ctp-maroon); }
+    .token.class-name { color: var(--ctp-yellow); }
+    .token.operator { color: var(--ctp-sky); }
+    .token.property { color: var(--ctp-teal); }
+    .token.decorator { color: var(--ctp-mauve); }
+    .token.interpolation { color: var(--ctp-peach); }
+
+    /* =========================================================
+       Terminal (output)
+       ========================================================= */
+    .terminal {
+      border: 1px solid var(--ctp-surface0);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 18px 0;
+    }
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--ctp-mantle);
+      border-bottom: 1px solid var(--ctp-surface0);
+      padding: 8px 14px;
+    }
+    .terminal-header .material-symbols-outlined { font-size: 15px; color: var(--ctp-teal); }
+    .terminal-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ctp-overlay1);
+    }
+    .terminal-body {
+      background: var(--ctp-base);
+      padding: 14px 18px;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      color: var(--ctp-subtext1);
+      white-space: pre-wrap;
+      line-height: 1.5;
+      overflow-x: auto;
+    }
+
+    /* Formula */
+    .formula {
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--ctp-blue);
+      background: var(--ctp-mantle);
+      border: 1px solid var(--ctp-surface0);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 16px 0;
+      letter-spacing: 0.01em;
+    }
+
+    hr { border: none; border-top: 1px solid var(--ctp-surface0); margin: 36px 0; }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+    th {
+      background: var(--ctp-mantle);
+      text-align: left;
+      font-weight: 700;
+      padding: 10px 14px;
+      border: 1px solid var(--ctp-surface0);
+      color: var(--ctp-text);
+    }
+    td { padding: 10px 14px; border: 1px solid var(--ctp-surface0); color: var(--ctp-subtext1); }
+    tr:nth-child(even) td { background: var(--ctp-mantle); }
+
+    .reference-list {
+      font-size: 13px;
+      color: var(--ctp-subtext0);
+      list-style: none;
+      padding: 0;
+    }
+    .reference-list li {
+      padding: 9px 0;
+      border-bottom: 1px solid var(--ctp-surface0);
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 12px;
+    }
+    .reference-list .ref-num {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--ctp-blue);
+      text-align: right;
+    }
+
+    @media (max-width: 640px) {
+      .floating-nav { bottom: 16px; right: 16px; }
+      .fn-btn { width: 42px; height: 42px; }
+      .doc-header-block { padding: 28px 16px 0 16px; }
+      .page { padding: 20px 16px 80px 16px; }
+      .doc-header-block h1 { font-size: 24px; }
+    }
+
+    /* Print */
+    @media print {
+      body { background: #fff; }
+      .floating-nav { display: none; }
+      .drawer-backdrop { display: none; }
+      .copy-btn { display: none; }
+      .page { max-width: 100%; padding: 0; }
+
+      .toc-drawer {
+        position: static;
+        width: 100%;
+        max-width: 100%;
+        transform: none;
+        border-left: none;
+        box-shadow: none;
+        background: transparent;
+        display: block;
+        overflow: visible;
+        break-after: page;
+        page-break-after: always;
+      }
+      .toc-drawer .drawer-header { position: static; background: transparent; }
+      .toc-drawer .drawer-close { display: none; }
+
+      .doc-header-block { break-after: page; page-break-after: always; }
+
+      p, li { orphans: 3; widows: 3; }
+      h2, h3 { break-after: avoid; page-break-after: avoid; }
+
+      .code-window { break-inside: auto; page-break-inside: auto; }
+      .code-window-header { break-after: avoid; page-break-after: avoid; }
+      pre { break-inside: auto; page-break-inside: auto; }
+      .terminal, .note, table, .formula { break-inside: avoid; page-break-inside: avoid; }
+    }
+
+    /* =========================================================
+       TOR: tata letak mengikuti template dokumen tugas
+       ========================================================= */
+    .sc { font-variant: small-caps; letter-spacing: 0.03em; }
+    .tugas-head { max-width: 880px; margin: 0 auto; padding: 40px 40px 0 40px; }
+    .th-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+    .th-logos { display: flex; align-items: center; gap: 14px; padding-top: 14px; }
+    .th-logos img { height: 40px; width: auto; }
+    .th-course { text-align: right; flex: 1; }
+    .th-course-name { font-variant: small-caps; font-size: 21px; letter-spacing: 0.03em; line-height: 1.3; padding-bottom: 8px; border-bottom: 3px double var(--ctp-text); }
+    .th-dosen { font-size: 13px; margin-top: 6px; }
+    .th-title { margin-top: 30px; padding: 8px 0; text-align: center; border-top: 1px solid var(--ctp-text); border-bottom: 1px solid var(--ctp-text); }
+    .th-title h1 { margin: 0; font-size: 24px; font-weight: 500; font-variant: small-caps; letter-spacing: 0.03em; color: var(--ctp-blue); }
+    .th-sem { font-size: 0.78em; font-weight: 700; }
+    .th-due { text-align: center; margin-top: 18px; color: var(--ctp-blue); font-size: 14px; }
+    .th-due .material-symbols-outlined { font-size: 18px; vertical-align: -4px; }
+    .th-rev { margin-top: 22px; }
+    .th-rev::before { content: ""; display: block; width: 30%; border-top: 1px solid var(--ctp-text); margin-bottom: 12px; }
+    .th-h { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+    .t-rev { margin: 0 0 6px 0; font-size: 13px; border-bottom: 1px solid var(--ctp-text); }
+    .t-rev th, .t-rev td, body.tor .t-rev th, body.tor .t-rev td { border: none; background: none; padding: 5px 16px 5px 0; color: var(--ctp-text); font-size: 13px; }
+    .t-rev th { font-weight: 800; }
+    .t-rev td:nth-child(2) { white-space: nowrap; }
+    body.tor th, body.tor td { text-align: left; }
+
+    body.tor th { background: none; color: var(--ctp-blue); border: 1px solid var(--ctp-text); }
+    body.tor td { background: none; color: var(--ctp-text); border: 1px solid var(--ctp-text); }
+    body.tor tr:nth-child(even) td { background: none; }
+    body.tor .note { background: var(--ctp-mantle); border: 1px solid var(--ctp-surface0); border-left: 3px solid var(--ctp-text); border-radius: 8px; padding: 12px 16px; }
+    body.tor .note .note-title { color: var(--ctp-text); }
+    body.tor h2 { font-size: 22px; font-weight: 800; }
+    body.tor h2 .sec-num { font-family: var(--font-sans); color: var(--ctp-text); font-size: inherit; margin-right: 14px; }
+    body.tor h3 { color: var(--ctp-text); font-size: 17px; font-weight: 800; }
+    body.tor h3 .sec-num { margin-right: 10px; }
+    body.tor .toc-drawer .toc-list .toc-sub a { padding-left: 38px; font-size: 13px; }
+
+    .icon-list { list-style: none; padding-left: 0; margin: 8px 0 4px 0; }
+    .icon-list li { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 8px; }
+    .icon-list .material-symbols-outlined { flex: none; font-size: 22px; line-height: 1.5; color: var(--ctp-blue); }
+    .t-peta { font-size: 12px; }
+    .t-peta th, .t-peta td { padding: 6px 7px; }
+    .t-peta th:first-child, .t-peta td:first-child { width: 17%; }
+    .t-tabel { table-layout: fixed; }
+    .t-jadwal th:first-child, .t-jadwal td:first-child { width: 20%; }
+    .t-info th:first-child, .t-info td:first-child { width: 28%; }
+    .t-peran th:nth-child(1), .t-peran td:nth-child(1) { width: 6%; }
+    .t-peran th:nth-child(2), .t-peran td:nth-child(2) { width: 30%; }
+    .t-mil th:nth-child(1), .t-mil td:nth-child(1) { width: 10%; }
+    .t-mil th:nth-child(2), .t-mil td:nth-child(2) { width: 17%; }
+    .t-mil th:nth-child(3), .t-mil td:nth-child(3) { width: 31%; }
+    .t-rubrik { font-size: 12.5px; }
+    .t-rubrik th, .t-rubrik td { padding: 7px 8px; }
+    .t-bobot td:last-child, .t-bobot th:last-child { width: 14%; text-align: center; }
+    body.tor .code-window pre[class*="language-"] > code { display: block; padding: 12px 18px; white-space: pre; font-size: 12.5px; line-height: 1.6; }
+
+    @media print {
+      table, th, td { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      body.tor { page: tor; }
+      .tugas-head { max-width: 100%; padding: 0; }
+      .toc-drawer { break-after: page; page-break-after: always; }
+      body.tor .toc-drawer { page: auto; }
+      body.tor .toc-drawer .drawer-header { border-bottom: none; padding: 0; margin: 10pt 0 2pt 0; position: static; background: none; }
+      body.tor .toc-drawer .drawer-title { font-size: 20pt; font-weight: 800; letter-spacing: 0; text-transform: none; color: var(--ctp-text); }
+      body.tor .toc-drawer .drawer-title .material-symbols-outlined { display: none; }
+      body.tor .toc-drawer .toc-list { padding: 0; margin: 4pt 0 0 0; }
+      body.tor .toc-drawer .toc-list li { border-bottom: none; }
+      body.tor .toc-drawer .toc-list a { padding: 1.2pt 0; font-size: 10.5pt; line-height: 1.5; }
+      body.tor .toc-drawer .toc-list a::after { font-family: var(--font-sans); font-size: 10pt; font-weight: 500; }
+      body.tor .toc-drawer .toc-list li:not(.toc-sub) a { font-weight: 700; color: var(--ctp-blue); margin-top: 2pt; }
+      body.tor .toc-drawer .toc-list li:not(.toc-sub) a::after { content: " " target-counter(attr(href url), page); }
+      body.tor .toc-drawer .toc-list .toc-sub a { padding-left: 24pt; font-size: 10pt; color: var(--ctp-blue); }
+      body.tor .toc-drawer .toc-num { min-width: 26pt; text-align: left; font-family: var(--font-sans); font-size: inherit; }
+      body.tor h2 { break-before: auto; page-break-before: auto; margin-top: 22pt; }
+      body.tor .page > section:first-of-type h2 { margin-top: 0; }
+      .page h2 { break-before: auto; page-break-before: auto; }
+    }
+    @page tor {
+      size: A4;
+      margin: 26mm 20mm 24mm 20mm;
+      @top-left { content: "Term of Reference Proyek Akhir"; font-family: 'Plus Jakarta Sans', sans-serif; font-variant: small-caps; font-size: 8.5pt; color: #7c7f93; width: 50%; border-bottom: 0.5pt solid #bcc0cc; padding-bottom: 3pt; }
+      @top-center { content: none; }
+      @top-right { content: "IF25-40304 \2013  Pembelajaran Mesin Multimodal"; font-family: 'Plus Jakarta Sans', sans-serif; font-variant: small-caps; font-size: 8.5pt; color: #7c7f93; width: 50%; border-bottom: 0.5pt solid #bcc0cc; padding-bottom: 3pt; }
+      @bottom-left { content: "Institut Teknologi Sumatera"; font-family: 'Plus Jakarta Sans', sans-serif; font-variant: small-caps; font-size: 8.5pt; color: #7c7f93; width: 50%; border-top: 0.5pt solid #bcc0cc; padding-top: 3pt; }
+      @bottom-center { content: none; }
+      @bottom-right { content: "Halaman " counter(page) " dari " counter(pages); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 8.5pt; color: #7c7f93; width: 50%; border-top: 0.5pt solid #bcc0cc; padding-top: 3pt; }
+    }
+    @page tor:first {
+      @top-left { content: none; border: none; }
+      @top-right { content: none; border: none; }
+    }
+  </style>
+</head>
+<body class="tor">
+<header class="tugas-head">
+    <div class="th-top">
+      <div class="th-logos">
+        <img src="../assets/img/logo_2.webp" alt="Logo ITERA">
+        <img src="../assets/img/dikti-saintek-berdampak-color.svg" alt="Logo Kemdiktisaintek">
+      </div>
+      <div class="th-course">
+        <div class="th-course-name">IF25-40304 Pembelajaran Mesin Multimodal</div>
+        <div class="th-dosen"><span class="sc">Dosen:</span> I Wayan Wiprayoga Wisesa</div>
+      </div>
+    </div>
+    <div class="th-title"><h1>Term of Reference Proyek Akhir <span class="th-sem">&mdash; Ganjil 2026/2027</span></h1></div>
+    <div class="th-due"><span class="material-symbols-outlined" aria-hidden="true">event_available</span> Rentang proyek: Pertemuan 09&ndash;16 &nbsp;|&nbsp; Deliverable akhir pada UAS <span class="material-symbols-outlined" aria-hidden="true">event_available</span></div>
+    <div class="th-rev">
+      <div class="th-h">Riwayat Revisi</div>
+      <table class="t-rev"><thead><tr><th>Revisi</th><th>Tanggal</th><th>Penulis</th><th>Deskripsi</th></tr></thead><tbody>
+        <tr><td>0.1</td><td>24 September 2026</td><td>I.W.W.</td><td>Draf inisial Term of Reference.</td></tr>
+        <tr><td>1.0</td><td>30 Oktober 2026</td><td>I.W.W.</td><td>Perapihan struktur dan bahasa: jadwal per pertemuan, bobot penilaian, pernyataan integritas, dan daftar pengumpulan.</td></tr>
+      </tbody></table>
+    </div>
+  </header>
+
+  <div class="page">
+
+  <aside class="toc-drawer" id="tocDrawer" aria-label="Daftar isi"><div class="drawer-header"><span class="drawer-title"><span class="material-symbols-outlined">list</span> Daftar Isi</span><button class="drawer-close" type="button" onclick="toggleToc(false)" title="Tutup"><span class="material-symbols-outlined">close</span></button></div><ul class="toc-list"><li class=""><a href="#sec-ringkasan" onclick="gotoSection(this)"><span class="toc-num">1</span><span class="toc-label">Ringkasan proyek</span></a></li><li class=""><a href="#sec-objectives" onclick="gotoSection(this)"><span class="toc-num">2</span><span class="toc-label">Tujuan pembelajaran</span></a></li><li class=""><a href="#sec-notes" onclick="gotoSection(this)"><span class="toc-num">3</span><span class="toc-label">Catatan dan batasan</span></a></li><li class=""><a href="#sec-peran" onclick="gotoSection(this)"><span class="toc-num">4</span><span class="toc-label">Peran anggota kelompok</span></a></li><li class=""><a href="#sec-requiredsw" onclick="gotoSection(this)"><span class="toc-num">5</span><span class="toc-label">Perangkat lunak dan peralatan yang diperlukan</span></a></li><li class=""><a href="#sec-intro" onclick="gotoSection(this)"><span class="toc-num">6</span><span class="toc-label">Pernyataan masalah</span></a></li><li class=""><a href="#sec-requirements" onclick="gotoSection(this)"><span class="toc-num">7</span><span class="toc-label">Persyaratan</span></a></li><li class="toc-sub"><a href="#sec-m0" onclick="gotoSection(this)"><span class="toc-num">7.1</span><span class="toc-label">M0: proposal dan reproduksi baseline</span></a></li><li class="toc-sub"><a href="#sec-m1" onclick="gotoSection(this)"><span class="toc-num">7.2</span><span class="toc-label">M1: baseline pencarian lintas modal</span></a></li><li class="toc-sub"><a href="#sec-m2" onclick="gotoSection(this)"><span class="toc-num">7.3</span><span class="toc-label">M2: perbandingan strategi penyejajaran dan fusi</span></a></li><li class="toc-sub"><a href="#sec-m3" onclick="gotoSection(this)"><span class="toc-num">7.4</span><span class="toc-label">M3: uji kasus sulit, etika, dan atribusi</span></a></li><li class="toc-sub"><a href="#sec-m4" onclick="gotoSection(this)"><span class="toc-num">7.5</span><span class="toc-label">M4: protokol evaluasi dan pengajuan test privat</span></a></li><li class=""><a href="#sec-evaluation" onclick="gotoSection(this)"><span class="toc-num">8</span><span class="toc-label">Kriteria penilaian</span></a></li><li class=""><a href="#sec-submit" onclick="gotoSection(this)"><span class="toc-num">9</span><span class="toc-label">Apa yang dikumpulkan</span></a></li><li class=""><a href="#sec-referensi" onclick="gotoSection(this)"><span class="toc-num"></span><span class="toc-label">Referensi</span></a></li></ul></aside><div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleToc(false)"></div>
+<section id="sec-ringkasan"><h2><span class="sec-num">1</span> Ringkasan proyek</h2>
+<p>Proyek akhir ini menggantikan UAS tertulis. Anda dan kelompok akan membangun sebuah sistem <em>cross-modal retrieval</em> pada data budaya Indonesia: diberi sebuah kalimat, sistem mencari gambar yang cocok, dan sebaliknya. Setelah itu Anda mengujinya dan menjelaskan hasilnya kepada Dosen Pengampu.</p>
+<p>Bacalah dokumen ini sampai habis sebelum mulai mengerjakan M0, dan tanyakan sejak awal bila ada yang kurang jelas.</p>
+<table class="t-tabel t-info"><thead><tr><th>Aspek</th><th>Ketentuan</th></tr></thead><tbody>
+<tr><td>Bentuk</td><td>Kelompok 5 mahasiswa; setiap anggota memegang satu peran.</td></tr>
+<tr><td>Data</td><td>SEA-VL <em>Indonesian subset</em>: gambar budaya Indonesia dengan <em>caption</em> bahasa Indonesia dan Inggris. <em>Split</em> latih dan validasi dibagikan lewat LMS; <em>test set</em> disimpan Dosen Pengampu.</td></tr>
+<tr><td>Tugas</td><td>Pencarian dua arah gambar↔teks dengan <em>query</em> berbahasa Indonesia, dan klasifikasi kategori budaya secara <em>zero-shot</em>.</td></tr>
+<tr><td>Metrik</td><td><em>Recall@1/5/10</em> dan <em>mAP@K</em>.</td></tr>
+<tr><td>Aturan utama</td><td>Encoder pra-latih dibekukan; tidak ada pelatihan dari nol; tidak ada data di luar bundel.</td></tr>
+<tr><td>Jangka waktu</td><td>Pertemuan 09&ndash;16: kick-off, lima milestone (M0&ndash;M4), klinik, dan presentasi akhir di kelas (Pertemuan 15&ndash;16).</td></tr>
+<tr><td>Bobot</td><td>Milestone 25% + laporan dan kode akhir 15% + presentasi dan kontribusi 10% (Bagian 8).</td></tr>
+</tbody></table>
+</section>
+
+<section id="sec-objectives"><h2><span class="sec-num">2</span> Tujuan pembelajaran</h2>
+<p>Setelah proyek ini, Anda diharapkan mampu:</p>
+<ul>
+  <li>Merancang dan menjalankan proyek multimodal <em>end-to-end</em>, dari rumusan masalah, pemilihan encoder, sampai pelaporan hasil.</li>
+  <li>Menerapkan tiga pilar mata kuliah (<em>representasi</em>, <em>penyejajaran</em>, dan <em>fusi</em>) pada data budaya nyata, dan mengukur sumbangan masing-masing.</li>
+  <li>Mengevaluasi sistem pencarian lintas modal dengan protokol yang bebas <em>leakage</em>, termasuk membedakan <em>random split</em> dari <em>grouped split</em>.</li>
+  <li>Menjelaskan <em>language gap</em> (selisih kinerja antara <em>query</em> bahasa Indonesia dan Inggris) secara kuantitatif, dan menilai dampaknya bagi pengguna berbahasa Indonesia.</li>
+  <li>Bekerja dalam tim dengan pembagian peran yang jelas dan kontribusi yang dapat dilihat dari tiap anggota.</li>
+  <li>Menjelaskan dan mempertanggungjawabkan keputusan teknis, secara lisan maupun tertulis.</li>
+</ul>
+</section>
+
+<section id="sec-notes"><h2><span class="sec-num">3</span> Catatan dan batasan</h2>
+<div class="note note-peach"><span class="note-title">Aturan dan batasan proyek:</span>
+<ul>
+  <li>Kelompok: lima mahasiswa, dan setiap anggota memegang satu peran dengan artefak yang dapat diperiksa (lihat Bagian 4). Nama kelompok dan pembagian peran dikunci pada M0; perubahan setelah itu perlu persetujuan Dosen Pengampu.</li>
+  <li>Encoder dibekukan. Bobot encoder pra-latih tidak boleh diubah, dan melatih ulang atau memodifikasinya dinilai sebagai kesalahan prosedur. Lapisan kecil di atas representasi beku, seperti proyeksi atau adapter, boleh Anda latih.</li>
+  <li>Tidak ada data baru. Jangan mengunduh, membuat, atau menambal dataset, dan jangan menambahkan gambar dari sumber luar. Semua kelompok memakai data yang sama supaya perbandingannya adil.</li>
+  <li>Test set privat. Dosen Pengampu menyimpan <em>test set</em> sampai Pertemuan 13, supaya angka akhir Anda mengukur kemampuan sistem pada data yang belum pernah dilihat. Mengakses, menebak, atau merekonstruksinya dengan cara apa pun sebelum waktunya dinilai sebagai pelanggaran integritas akademik.</li>
+  <li>Pernyataan integritas. Setiap kelompok menandatangani pernyataan integritas pada M0 yang menyatakan bahwa seluruh pekerjaan mengikuti aturan di atas. Formulirnya dibagikan lewat LMS dan dikumpulkan bersama proposal M0.</li>
+  <li>Pemeriksaan. Dosen Pengampu dapat menjalankan ulang kode kelompok secara acak, dan pertanyaan pada sesi presentasi dapat menyangkut asal data serta proses yang Anda tempuh. Siapa pun yang mengerjakan sendiri akan menjawabnya dengan mudah.</li>
+  <li>Cukup CPU. Semua eksperimen harus dapat dijalankan tanpa GPU, dan hasilnya dapat direproduksi Dosen Pengampu dalam waktu yang wajar, supaya semua orang bisa ikut serta. GPU boleh dipakai bila ada, asalkan hasil akhir tetap dapat dijalankan di CPU.</li>
+  <li>Hasil nyata. Semua angka yang Anda laporkan harus berasal dari eksekusi nyata. Angka karangan, atau salinan dari makalah tanpa dijalankan ulang, tidak dihitung.</li>
+  <li>Atribusi. Data berlisensi CC BY-SA 4.0. Cantumkan atribusi pada setiap laporan, <em>notebook</em>, dan slide.</li>
+</ul></div>
+<div class="note note-blue"><span class="note-title">Ekspektasi hasil</span>Angka awal untuk <em>query</em> berbahasa Indonesia akan terlihat rendah. Encoder multibahasa bawaan jauh lebih lemah untuk <em>query</em> Indonesia daripada Inggris pada gambar yang sama, dan tantangan proyek ini adalah menyempitkan <em>language gap</em> itu. Memilih model yang paling besar tidak menyelesaikannya. Sebagai pembanding, tebakan acak menghasilkan <em>Recall@1</em> sebesar 1/<em>N</em> untuk <em>N</em> gambar validasi. Angka <em>baseline</em> yang Anda laporkan harus berasal dari reproduksi Anda sendiri pada M0.</div>
+</section>
+
+<section id="sec-peran"><h2><span class="sec-num">4</span> Peran anggota kelompok</h2>
+<p>Setiap anggota memegang satu peran. Peran tidak dirangkap, dan setiap peran menghasilkan artefak tersendiri yang diperiksa pada milestone. Anda tetap berdiskusi dan saling membantu; perbedaannya hanya pada siapa yang bertanggung jawab atas artefaknya.</p>
+<table class="t-tabel t-peran"><thead><tr><th>#</th><th>Peran</th><th>Artefak yang diperiksa</th></tr></thead><tbody>
+<tr><td>1</td><td>Data dan Etika Data</td><td>Kode pemeriksaan duplikat dan <em>leakage</em>, laporan kualitas dan keterwakilan data, penanganan lisensi dan atribusi, draf pernyataan etika.</td></tr>
+<tr><td>2</td><td>Baseline dan Pipeline</td><td>Kode <em>end-to-end</em> yang berjalan, skrip reproduksi, tabel hasil awal.</td></tr>
+<tr><td>3</td><td>Eksperimen Penyejajaran/Fusi</td><td>Matriks eksperimen, kode <em>ablation</em>, kurva hasil.</td></tr>
+<tr><td>4</td><td>Evaluasi dan Uji Kasus Sulit</td><td>Protokol evaluasi, tabel <em>Recall@K</em>/<em>mAP</em>, uji kasus sulit (M3), analisis kuantitatif.</td></tr>
+<tr><td>5</td><td>Integrasi dan Koordinasi</td><td>Laporan, slide presentasi, demo, <code>README</code>, log kontribusi.</td></tr>
+</tbody></table>
+<p>Patokan kontribusi tiap peran pada tiap milestone ada di tabel berikut. Anggota tetap boleh saling membantu.</p>
+<table class="t-tabel t-peta"><thead><tr><th>Peran</th><th>M0</th><th>M1</th><th>M2</th><th>M3</th><th>M4</th></tr></thead><tbody>
+<tr><td>1 Data dan Etika Data</td><td>Memeriksa bundel (duplikat, sebaran kategori) untuk proposal</td><td>Laporan kualitas data</td><td>Audit <em>leakage</em> untuk varian</td><td>Keterwakilan data dan draf etika</td><td>Pemeriksaan <em>leakage</em> akhir</td></tr>
+<tr><td>2 Baseline dan Pipeline</td><td>Reproduksi <em>baseline</em></td><td>Pipeline <em>end-to-end</em></td><td>Mendukung pipeline varian</td><td>Mendukung uji kasus sulit</td><td>Skrip reproduksi final</td></tr>
+<tr><td>3 Eksperimen</td><td>Usul pendekatan dan hipotesis</td><td>Merancang varian M2</td><td>Menjalankan varian dan <em>ablation</em></td><td>Menguji kombinasi</td><td>Membantu analisis hasil</td></tr>
+<tr><td>4 Evaluasi dan Uji Kasus Sulit</td><td>Menetapkan metrik dan cara menghitungnya</td><td>Tabel <em>Recall@K</em>/<em>mAP</em> dan contoh gagal</td><td>Tabel perbandingan dan analisis</td><td>Uji kasus sulit</td><td>Protokol evaluasi dan pengajuan</td></tr>
+<tr><td>5 Integrasi dan Koordinasi</td><td>Menyusun proposal, pernyataan integritas, pembagian kerja</td><td>Menyatukan laporan M1</td><td>Menyatukan laporan M2</td><td>Pernyataan etika final</td><td>Laporan, README, log</td></tr>
+</tbody></table>
+<div class="note note-blue"><span class="note-title">Akuntabilitas individu</span>
+<ul class="icon-list">
+  <li><span class="material-symbols-outlined" aria-hidden="true">edit_note</span><span>Setiap anggota mengisi log mingguan (satu baris per minggu) yang mencatat pekerjaan, bukti, dan kendala. Log dinilai dari kejujuran dan kelengkapannya; jumlah baris tidak berpengaruh. Catat juga persiapan, tinjauan, dan bantuan kepada anggota lain.</span></li>
+  <li><span class="material-symbols-outlined" aria-hidden="true">forum</span><span>Pada sesi tanya jawab, pertanyaan diarahkan langsung kepada pemegang peran terkait, tidak hanya kepada ketua kelompok.</span></li>
+  <li><span class="material-symbols-outlined" aria-hidden="true">groups</span><span>Di akhir proyek, Anda menilai kontribusi anggota lain secara rahasia. Hasilnya hanya menyesuaikan nilai kontribusi individu (maksimal ±15%); keputusan akhir tetap di Dosen Pengampu berdasarkan log mingguan dan tanya jawab.</span></li>
+</ul>
+</div>
+</section>
+
+<section id="sec-requiredsw"><h2><span class="sec-num">5</span> Perangkat lunak dan peralatan yang diperlukan</h2>
+<ul>
+  <li>Python 3.10 atau lebih baru.</li>
+  <li>Paket wajib: <code>numpy</code>, <code>torch</code>, <code>transformers</code>, <code>sentence-transformers</code>, <code>pillow</code>, <code>pandas</code>.</li>
+  <li>Alternatif: <code>open_clip</code> sebagai pengganti <code>transformers</code> untuk encoder CLIP.</li>
+  <li>Data: bundel SEA-VL Indonesia diunduh dari LMS (berisi <code>images/</code>, <code>train.csv</code>, <code>val.csv</code>, <code>ATTRIBUTION.md</code>). <em>Test set</em> tidak disertakan. Kolom yang paling sering dipakai: <code>file</code>, <code>caption_id</code>, <code>caption_en</code>, <code>category</code>, <code>loc</code>.</li>
+  <li>Perangkat: CPU memadai; semua eksperimen harus dapat dijalankan tanpa GPU.</li>
+</ul>
+<div class="code-window"><div class="code-window-header"><span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span><span class="code-filename">setup.sh</span></div><pre class="language-bash"><code class="language-bash">pip install numpy torch transformers sentence-transformers pillow pandas</code></pre></div>
+<div class="note note-mauve"><span class="note-title">Batasan cakupan</span>Proyek ini berfokus pada rekayasa penyejajaran dan fusi di atas representasi beku, tanpa melatih model dari nol. Pertanyaannya: bagaimana menyusun proyeksi, <em>prompt</em>, dan <em>reranking</em> agar gambar dan teks berbahasa Indonesia berada di tempat yang benar dalam ruang vektor.</div>
+</section>
+
+<section id="sec-intro"><h2><span class="sec-num">6</span> Pernyataan masalah</h2>
+<p>Dokumentasi budaya Indonesia (rumah adat, tarian, tekstil, kuliner) sebagian besar tersebar sebagai foto dengan deskripsi pendek. Bayangkan seseorang mengetik “<em>tari topeng dari Cirebon dengan penari berkostum merah</em>” dan berharap sistem mengembalikan foto yang tepat, tanpa perlu kata kunci yang persis sama.</p>
+<p>Persoalan intinya adalah penyejajaran lintas modal: gambar dan kalimat yang membicarakan hal yang sama harus berdekatan di ruang vektor. Model <em>dual-encoder</em> seperti CLIP melakukannya lewat tujuan kontrastif, seperti yang kita bahas pada Pertemuan 07 dan 09.</p>
+<p>Sistem seperti ini dirancang terutama untuk <em>query</em> berbahasa Inggris, sehingga kinerjanya turun tajam ketika pengguna mengetik dalam bahasa Indonesia. Tugas Anda adalah menjelaskan mengapa itu terjadi dan apa yang dapat dilakukan untuk mempersempit <em>language gap</em> tersebut.</p>
+</section>
+
+<section id="sec-requirements"><h2><span class="sec-num">7</span> Persyaratan</h2>
+<p>Proyek berjalan dalam lima milestone, masing-masing bernilai 5 poin dari 100 poin mata kuliah. Setiap milestone dinilai sendiri-sendiri. Milestone yang terlambat tetap diterima dan dinilai, tetapi dikenai penalti melalui kriteria disiplin tenggat pada rubrik (Bagian 8): terlambat mendapat tingkat 1, terlambat lebih dari satu minggu mendapat tingkat 0. Milestone yang tidak dikumpulkan bernilai 0 untuk milestone itu saja dan tidak menghalangi penilaian milestone berikutnya. Setiap milestone dikumpulkan pada pertemuan yang tertera di tabel berikut; batas waktu persisnya diumumkan lewat LMS.</p>
+<table class="t-tabel t-jadwal"><thead><tr><th>Pertemuan</th><th>Kegiatan (pertemuan = saat milestone dikumpulkan)</th></tr></thead><tbody>
+<tr><td>09</td><td>Kick-off proyek akhir; M0 dibuka</td></tr>
+<tr><td>10</td><td>M0 dikumpulkan: proposal dan reproduksi <em>baseline</em></td></tr>
+<tr><td>11</td><td>M1 dikumpulkan: <em>baseline</em> pencarian berjalan</td></tr>
+<tr><td>12</td><td>M2 dikumpulkan: perbandingan strategi penyejajaran/fusi</td></tr>
+<tr><td>13</td><td>M3 dikumpulkan: uji kasus sulit dan etika; <em>test set</em> dibuka</td></tr>
+<tr><td>14</td><td>M4 dikumpulkan: protokol evaluasi dan prediksi <em>test set</em> privat; Klinik (draf laporan satu halaman dan <em>peer review</em>)</td></tr>
+<tr><td>15</td><td>Presentasi, demo, dan tanya jawab di kelas (sebagian kelompok)</td></tr>
+<tr><td>16</td><td>Presentasi, demo, dan tanya jawab di kelas (kelompok lainnya; sesi UAS)</td></tr>
+</tbody></table>
+<p>Urutan tampil kelompok pada Pertemuan 15 dan 16 diumumkan Dosen Pengampu lewat LMS.</p>
+<table class="t-tabel t-mil"><thead><tr><th>Kode</th><th>Pertemuan</th><th>Fokus</th><th>Yang dikumpulkan</th></tr></thead><tbody>
+<tr><td>M0</td><td>10</td><td>Proposal dan reproduksi <em>baseline</em></td><td>1 halaman proposal + angka <em>baseline</em> hasil reproduksi mandiri.</td></tr>
+<tr><td>M1</td><td>11</td><td><em>Baseline</em> pencarian berjalan</td><td>Kode <em>end-to-end</em> yang berjalan + tabel <em>Recall@K</em> pada <em>val</em>.</td></tr>
+<tr><td>M2</td><td>12</td><td>Perbandingan strategi penyejajaran/fusi</td><td>Laporan singkat ≥2 varian + tabel perbandingan.</td></tr>
+<tr><td>M3</td><td>13</td><td>Uji kasus sulit dan etika</td><td>Hasil uji kasus sulit + pernyataan limitasi, etika, dan atribusi.</td></tr>
+<tr><td>M4</td><td>14</td><td>Protokol evaluasi dan <em>test set</em></td><td>Protokol evaluasi + prediksi pada <em>test set</em> privat.</td></tr>
+</tbody></table>
+<h3 id="sec-m0"><span class="sec-num">7.1</span> M0: proposal dan reproduksi baseline</h3>
+<p>Milestone ini membuka proyek dan menunjukkan apakah kelompok Anda siap secara teknis. Hasilnya tidak perlu sempurna, tetapi arahnya harus jelas.</p>
+<ol>
+  <li>Tulis proposal satu halaman: rumusan masalah (satu kalimat), hipotesis, metrik, rencana pendekatan utama (satu dari lima pilihan pada M2, boleh dikombinasikan dengan pendekatan lain; rencana boleh berubah setelah M1), dan pembagian kerja. Contoh hipotesis: “<em>prompt ensemble</em> berbahasa Indonesia akan menaikkan <em>Recall@1</em>, karena satu templat saja belum mewakili ragam kalimat pengguna.”</li>
+  <li>Jalankan kembali perhitungan <em>baseline</em> dari lembar kerja Pertemuan 09 dan laporkan angka Anda sendiri untuk <em>InfoNCE</em> dan <em>Recall@1</em>.</li>
+  <li>Sebutkan lima peran kelompok beserta nama anggotanya.</li>
+  <li>Lampirkan pernyataan integritas yang ditandatangani seluruh anggota (Bagian 3).</li>
+</ol>
+<h3 id="sec-m1"><span class="sec-num">7.2</span> M1: baseline pencarian lintas modal</h3>
+<ol>
+  <li>Bangun <em>pipeline end-to-end</em>: baca <code>train.csv</code>/<code>val.csv</code>, sematkan gambar dan <em>caption</em>, hitung kesamaan kosinus, lalu kembalikan peringkat.</li>
+  <li>Laporkan <em>Recall@1/5/10</em> dan <em>mAP@K</em> pada <em>split</em> validasi untuk empat arah: gambar→teks Indonesia, gambar→teks Inggris, teks Indonesia→gambar, dan teks Inggris→gambar.</li>
+  <li>Tampilkan sepuluh contoh <em>query</em> berbahasa Indonesia beserta hasil teratasnya, termasuk setidaknya dua contoh yang gagal. Contoh gagal justru bahan analisis, jadi tampilkan apa adanya.</li>
+</ol>
+<div class="code-window"><div class="code-window-header"><span class="window-dots"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span></span><span class="code-filename">latih_baseline.py</span></div><pre class="language-python"><code class="language-python">import pandas as pd, torch
+from PIL import Image
+from sentence_transformers import SentenceTransformer
+
+img_model = SentenceTransformer("sentence-transformers/clip-ViT-B-32")
+txt_model = SentenceTransformer("sentence-transformers/clip-ViT-B-32-multilingual-v1")
+
+df = pd.read_csv("val.csv")
+imgs  = [Image.open(f).convert("RGB") for f in df["file"]]
+cap_id = list(df["caption_id"])
+cap_en = list(df["caption_en"])
+
+E  = img_model.encode(imgs,    batch_size=32, normalize_embeddings=True)
+Ti = txt_model.encode(cap_id,  batch_size=64, normalize_embeddings=True)
+Te = img_model.encode(cap_en,  batch_size=64, normalize_embeddings=True)
+
+def recall(A, B, ks=(1, 5, 10)):
+    rank = (A @ B.T).argsort(dim=1, descending=True)
+    truth = torch.arange(len(A)).unsqueeze(1)
+    return {k: float((rank[:, :k] == truth).any(1).float().mean()) for k in ks}
+
+print("gambar -&gt; teks-ID :", recall(torch.tensor(E), torch.tensor(Ti)))
+print("teks-ID -&gt; gambar :", recall(torch.tensor(Ti), torch.tensor(E)))</code></pre></div>
+<h3 id="sec-m2"><span class="sec-num">7.3</span> M2: perbandingan strategi penyejajaran dan fusi</h3>
+<p>Pilih satu pendekatan utama untuk mempersempit <em>language gap</em>, lalu bandingkan sekurang-kurangnya dua varian di dalamnya terhadap <em>baseline</em> M1. Contoh: bila Anda memilih pendekatan (a), bandingkan dua encoder berbeda; bila memilih (b), bandingkan dua set <em>prompt</em>. Anda boleh menggabungkan pendekatan utama dengan pendekatan lain dari daftar, asalkan efek tiap komponen diukur lewat <em>ablation study</em>, yaitu dibandingkan dengan dan tanpa komponen tambahan. Beberapa kelompok boleh memilih pendekatan yang sama; Dosen Pengampu menganjurkan varian yang berbeda agar bukti di kelas lebih beragam.</p>
+<ol>
+  <li>Pilih satu pendekatan utama dari daftar berikut, atau ajukan pendekatan sendiri kepada Dosen Pengampu:
+    <ol type="a">
+      <li>mengganti encoder multibahasa (misalnya model berbasis SigLIP atau <em>multilingual CLIP</em> yang lebih baru);</li>
+      <li><em>prompt ensemble</em> berbahasa Indonesia, termasuk terjemahan dan variasi templat;</li>
+      <li>melatih proyeksi/adapter kecil di atas representasi beku;</li>
+      <li><em>reranking</em> dengan <em>cross-encoder</em> pada sejumlah kandidat teratas;</li>
+      <li>augmentasi data dengan terjemahan.</li>
+    </ol></li>
+  <li>Laporkan efek tiap varian pada keempat arah pencarian, dalam bentuk tabel dengan <em>baseline</em> M1 sebagai pembanding. Bila Anda menggabungkan pendekatan, laporkan juga efek tiap komponen secara terpisah.</li>
+  <li>Jelaskan biayanya: waktu komputasi, jumlah parameter yang dilatih, dan kompleksitas penerapan.</li>
+</ol>
+<h3 id="sec-m3"><span class="sec-num">7.4</span> M3: uji kasus sulit, etika, dan atribusi</h3>
+<p>Milestone ini menilai kemampuan Anda mengkritisi sistem yang Anda bangun, selain angka yang dicapai.</p>
+<ol>
+  <li>Rancang uji kasus sulit: gunakan lima gambar dan <em>query</em> yang memakai kata serupa tetapi berbeda relasi, negasi, atau penanda budaya. Contoh dari data ini: “nasi padang dengan perkedel” versus “nasi padang tanpa perkedel” (negasi), atau “tari topeng dari Cirebon berkostum merah” versus “berkostum biru” (atribut). Laporkan probabilitas tiap kandidat.</li>
+  <li>Analisis apakah sistem lebih mudah menangani objek tunggal daripada relasi, dan hubungkan dengan keterbatasan arsitektur <em>dual-encoder</em>.</li>
+  <li>Tulis pernyataan etika dan limitasi (maksimal satu halaman) yang membahas:
+    <ol type="a">
+      <li>kesenjangan kinerja antara <em>query</em> Indonesia dan Inggris, serta siapa yang dirugikan olehnya;</li>
+      <li>keterwakilan wilayah dan kelompok budaya di dalam data;</li>
+      <li>kejujuran <em>benchmark</em>: mengapa laporan tanpa <em>split</em> yang jelas sulit dipercaya.</li>
+    </ol></li>
+  <li>Cantumkan atribusi CC BY-SA 4.0 dengan benar pada laporan dan kode.</li>
+</ol>
+<h3 id="sec-m4"><span class="sec-num">7.5</span> M4: protokol evaluasi dan pengajuan test privat</h3>
+<ol>
+  <li>Tulis protokol evaluasi: pembagian data, metrik, jumlah <em>run</em>, penanganan kelas yang jarang, dan bentuk tabel hasil akhir.</li>
+  <li>Bandingkan <em>random split</em> dengan <em>grouped split</em> (misalnya dikelompokkan menurut kategori) dan jelaskan selisihnya.</li>
+  <li>Kirim prediksi kelompok untuk <em>test set</em> privat dalam format yang ditetapkan Dosen Pengampu; <em>query</em> uji disiapkan Dosen Pengampu. Setiap kelompok hanya boleh mengajukan satu kali; pengajuan tambahan tidak dilayani.</li>
+</ol>
+<div class="note note-mauve"><span class="note-title">Peran skor test</span>
+<p>Skor pada <em>test set</em> privat tidak menentukan komponen nilai mana pun. Pengajuan itu dipakai untuk memeriksa kejujuran protokol dan kemampuan generalisasi. Nilai Anda ditentukan oleh kualitas analisis, reproduksibilitas, dan kejujuran pelaporan.</p>
+</div>
+<div class="note note-peach"><span class="note-title">Peringatan metodologis</span>
+<p><em>Data leakage</em> adalah kesalahan paling umum pada proyek seperti ini. Periksa kembali: apakah gambar duplikat masih tersisa; apakah <em>caption</em> yang sangat mirip muncul di <em>train</em> dan <em>val</em> sekaligus; apakah Anda mengoptimalkan sesuatu dengan melihat <em>val</em>. Laporkan temuan Anda, tidak hanya angka akhirnya.</p>
+</div>
+<h3 id="sec-klinik"><span class="sec-num">7.6</span> Klinik</h3>
+<ul>
+  <li>Pada Pertemuan 14, setiap kelompok membawa draf laporan satu halaman dan saling meninjau (<em>peer review</em>) dengan satu kelompok lain memakai rubrik. Klinik ini juga latihan menerima kritik sebelum penilaian. Karena M4 juga dikumpulkan pada pertemuan ini, siapkan draf laporan dan prediksi <em>test set</em> sejak Pertemuan 13.</li>
+</ul>
+<h3 id="sec-deliv"><span class="sec-num">7.7</span> Presentasi akhir dan deliverable (Pertemuan 15&ndash;16)</h3>
+<p>Pertemuan 15 dan 16 dipakai untuk presentasi, demo, dan tanya jawab di kelas. Laporan, kode, dan slide dikumpulkan paling lambat pada hari kelompok Anda tampil.</p>
+<ol>
+  <li>Laporan teknis (4&ndash;6 halaman): rumusan masalah, data dan protokol, metode, hasil, <em>ablation study</em>, dan limitasi.</li>
+  <li>Kode yang dapat dijalankan ulang, dengan <code>README</code> singkat dan penetapan <em>seed</em>.</li>
+  <li>Presentasi 10 menit dengan demo langsung.</li>
+  <li>Tanya jawab 5 menit, dengan pertanyaan tertarget kepada pemegang peran.</li>
+</ol>
+<div class="note note-green"><span class="note-title">Leaderboard dan bonus kompetisi</span>
+<ul>
+  <li>Leaderboard dan bonus dihitung hanya dari <em>val</em>; <em>test set</em> tidak dipakai. Leaderboard diperbarui pada setiap milestone berdasarkan <em>Recall@1</em> dan <em>mAP@K</em>, serta menampilkan terpisah peringkat efisiensi (kinerja per biaya komputasi) agar kelompok tanpa GPU tetap punya peluang menang.</li>
+  <li>Ada juga penghargaan untuk analisis terbaik dan kelompok yang paling berkembang.</li>
+  <li>Bonus kompetisi paling banyak 2,5 poin (5% dari 50 poin komponen proyek), ditambahkan di atas nilai rubrik; nilai akhir tidak melebihi 100. Bonus tidak dipakai untuk menentukan kelulusan, dan bila bonus membuat nilai akhir melewati batas huruf mutu, kenaikan itu ditinjau Dosen Pengampu terlebih dahulu.</li>
+</ul>
+</div>
+</section>
+
+<section id="sec-evaluation"><h2><span class="sec-num">8</span> Kriteria penilaian</h2>
+<h3 id="sec-bobot"><span class="sec-num">8.1</span> Bobot mata kuliah</h3>
+<table class="t-tabel t-bobot"><thead><tr><th>Komponen</th><th>Bobot</th></tr></thead><tbody>
+<tr><td>UTS (ujian tertulis, Pertemuan 08)</td><td>25%</td></tr>
+<tr><td>Tugas pra-UTS (Pertemuan 02, 03, 04, 06)</td><td>25%</td></tr>
+<tr><td>Milestone proyek (M0&ndash;M4, masing-masing 5%)</td><td>25%</td></tr>
+<tr><td>Laporan dan kode akhir</td><td>15%</td></tr>
+<tr><td>Presentasi, tanya jawab, dan kontribusi individu</td><td>10%</td></tr>
+<tr><td>Total</td><td>100%</td></tr>
+</tbody></table>
+<h3 id="sec-rub-cp"><span class="sec-num">8.2</span> Rubrik milestone (M0&ndash;M4)</h3>
+<p>Setiap milestone bernilai 5 poin. Tiap kriteria dinilai pada tingkat 0&ndash;3; keempat skor dijumlahkan (maksimum 12), lalu dikonversi secara proporsional menjadi 5 poin.</p>
+<table class="t-tabel t-rubrik"><thead><tr><th>Kriteria</th><th>Tingkat 0</th><th>Tingkat 1</th><th>Tingkat 2</th><th>Tingkat 3</th></tr></thead><tbody>
+<tr><td>Kelengkapan artefak</td><td>Tidak ada</td><td>Sebagian, tidak terdokumentasi</td><td>Lengkap</td><td>Lengkap dan rapi</td></tr>
+<tr><td>Ketepatan teknis</td><td>Tidak berjalan</td><td>Berjalan dengan bantuan</td><td>Berjalan mandiri</td><td>Berjalan mandiri dan reproduksibel</td></tr>
+<tr><td>Kualitas analisis</td><td>Tidak ada</td><td>Deskriptif</td><td>Analitis</td><td>Analitis dengan bukti kuantitatif</td></tr>
+<tr><td>Disiplin tenggat</td><td>Lewat &gt;1 minggu</td><td>Lewat</td><td>Tepat waktu</td><td>Tepat waktu dan menindaklanjuti catatan Dosen Pengampu dari milestone sebelumnya (untuk M0: cukup tepat waktu)</td></tr>
+</tbody></table>
+<h3 id="sec-rub-lap"><span class="sec-num">8.3</span> Rubrik laporan dan kode akhir (15%)</h3>
+<table class="t-tabel t-bobot"><thead><tr><th>Kriteria</th><th>Bobot</th></tr></thead><tbody>
+<tr><td>Kebenaran teknis dan reproduksibilitas: eksperimen berjalan dari nol mengikuti <code>README</code>, <em>seed</em> ditetapkan, angka dapat diverifikasi.</td><td>5%</td></tr>
+<tr><td>Kedalaman analisis dan ablation study: pembandingan sebelum/sesudah, analisis <em>language gap</em>, pengujian <em>leakage</em>, dan pembahasan limitasi.</td><td>5%</td></tr>
+<tr><td>Kualitas penulisan: struktur laporan runtut, tabel dan gambar rapi, klaim didukung angka.</td><td>3%</td></tr>
+<tr><td>Etika dan atribusi: pernyataan limitasi, keterwakilan data, dan atribusi CC BY-SA 4.0 lengkap.</td><td>2%</td></tr>
+<tr><td>Total</td><td>15%</td></tr>
+</tbody></table>
+<h3 id="sec-rub-pres"><span class="sec-num">8.4</span> Rubrik presentasi dan kontribusi individu (10%)</h3>
+<table class="t-tabel t-bobot"><thead><tr><th>Kriteria</th><th>Bobot</th></tr></thead><tbody>
+<tr><td>Presentasi dan demo: alur jelas, demo berjalan, waktu 10 menit dipatuhi.</td><td>4%</td></tr>
+<tr><td>Tanya jawab: penguasaan materi, kemampuan membela keputusan teknis, dan mengakui keterbatasan.</td><td>3%</td></tr>
+<tr><td>Kontribusi individu: log mingguan lengkap, penilaian sebaya, dan ketepatan menjawab pertanyaan tertarget sesuai peran.</td><td>3%</td></tr>
+<tr><td>Total</td><td>10%</td></tr>
+</tbody></table>
+</section>
+
+<section id="sec-submit"><h2><span class="sec-num">9</span> Apa yang dikumpulkan</h2>
+<p>Seluruh artefak dikemas dalam satu arsip bernama <code>proyek_akhir_kelompok_NN.zip</code>. <code>NN</code> adalah nomor kelompok dua digit tanpa spasi (untuk kelompok 3: <code>03</code>). Pengumpulan mengikuti petunjuk di LMS.</p>
+<p>Artefak yang wajib ada di dalam arsip:</p>
+<ul>
+  <li><code>laporan_kelompok_NN.pdf</code>: laporan teknis 4&ndash;6 halaman.</li>
+  <li><code>kode_kelompok_NN.zip</code> atau <code>kode_kelompok_NN.ipynb</code>: kode <em>end-to-end</em>. Notebook wajib sudah dijalankan sehingga seluruh <em>output</em> sel tersimpan di dalam berkas.</li>
+  <li><code>README.md</code>: cara menjalankan kode, daftar dependensi, dan penetapan <em>seed</em>.</li>
+  <li><code>slide_kelompok_NN.pdf</code>: materi presentasi.</li>
+  <li><code>log_kontribusi_kelompok_NN.csv</code>: log mingguan per anggota, dengan kolom: nama, NIM, peran, minggu, kegiatan, bukti.</li>
+  <li><code>hasil_test_kelompok_NN.csv</code>: prediksi untuk <em>test set</em> privat, sesuai format yang ditetapkan Dosen Pengampu.</li>
+</ul>
+<p>Semua berkas memakai awalan <code>kelompok_NN</code> yang sama dan berada langsung di dalam satu arsip <code>.zip</code>, tanpa folder bertingkat yang tidak perlu.</p>
+<div class="note note-blue"><span class="note-title">Catatan pengerjaan</span>
+<ul>
+  <li>Kode yang tidak dapat dijalankan dinilai tidak memenuhi syarat pada kriteria kebenaran teknis, berapa pun angka yang dilaporkan.</li>
+  <li>Perkiraan beban kerja: 2&ndash;3 jam per anggota per minggu selama delapan minggu. Mulailah lebih awal dan kerjakan sedikit demi sedikit.</li>
+</ul>
+</div>
+</section>
+
+<section id="sec-referensi"><h2><span>Referensi</span></h2>
+<ul class="reference-list">
+<li><span class="ref-num">[1]</span><span><strong>Cahyawijaya, S., et al.</strong> (2025). <em>Crowdsource, Crawl, or Generate? Creating SEA-VL, a Multicultural Vision-Language Dataset for Southeast Asia</em>. ACL. &mdash; sumber dataset proyek.</span></li>
+<li><span class="ref-num">[2]</span><span><strong>Radford, A., et al.</strong> (2021). <em>Learning Transferable Visual Models From Natural Language Supervision</em>. ICML. &mdash; arsitektur CLIP dan tujuan kontrastif.</span></li>
+<li><span class="ref-num">[3]</span><span><strong>Carlsson, F., et al.</strong> (2022). <em>Cross-lingual and Multilingual CLIP</em>. &mdash; dasar teoretis <em>language gap</em> (M2).</span></li>
+<li><span class="ref-num">[4]</span><span><strong>Liang, P., Zadeh, A., &amp; Morency, L.-P.</strong> (2023). <em>Tutorial on Multimodal Machine Learning</em>. ICML. &mdash; kerangka tiga pilar.</span></li>
+<li><span class="ref-num">[5]</span><span><strong>Thakur, N., et al.</strong> (2021). <em>BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models</em>. NeurIPS Datasets and Benchmarks. &mdash; protokol evaluasi <em>retrieval</em>.</span></li>
+<li><span class="ref-num">[6]</span><span><strong>Pineau, J., et al.</strong> (2021). <em>Improving Reproducibility in Machine Learning Research</em>. JMLR. &mdash; syarat reproduksibilitas kode.</span></li>
+<li><span class="ref-num">[7]</span><span><strong>Gebru, T., et al.</strong> (2021). <em>Datasheets for Datasets</em>. Communications of the ACM. &mdash; dokumentasi dataset dan pemeriksaan bias.</span></li>
+<li><span class="ref-num">[8]</span><span><strong>Bender, E. M., et al.</strong> (2021). <em>On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?</em>. FAccT. &mdash; keterwakilan dan dampak sosial (M3).</span></li>
+</ul>
+</section>
+</div>
+<nav class="floating-nav" aria-label="Navigasi dokumen">
+  <button class="fn-btn fn-toc" type="button" onclick="toggleToc(true)" title="Daftar isi"><span class="material-symbols-outlined">toc</span></button>
+  <button class="fn-btn fn-text-large" id="textLargeBtn" type="button" onclick="toggleTextLarge()" title="Teks Besar (untuk proyektor)"><span class="material-symbols-outlined">text_increase</span></button>
+  <a href="#" class="fn-btn fn-top" title="Kembali ke atas" onclick="scrollTop();return false;"><span class="material-symbols-outlined">arrow_upward</span></a>
+  <a href="../index.html" class="fn-btn fn-portal" title="Kembali ke Portal Kuliah"><span class="material-symbols-outlined">arrow_back</span></a>
+  <a href="proyek-akhir-tor.pdf" class="fn-btn fn-pdf" download title="Unduh versi PDF"><span class="material-symbols-outlined">picture_as_pdf</span></a>
+</nav>
+<script>
+function copyCode(btn){var codeEl=btn.closest('.code-window').querySelector('pre code');var lines=codeEl.querySelectorAll('.lc');var text=lines.length?Array.from(lines).map(function(x){return x.textContent}).join('\n'):codeEl.textContent;if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(function(){flashCopied(btn)}).catch(function(){fallbackCopy(text,btn)});else fallbackCopy(text,btn)}
+function fallbackCopy(text,btn){var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');flashCopied(btn)}catch(e){}document.body.removeChild(ta)}
+function flashCopied(btn){var i=btn.querySelector('.material-symbols-outlined'),l=btn.querySelector('span:last-child');if(i)i.textContent='check';if(l)l.textContent='Tersalin';setTimeout(function(){if(i)i.textContent='content_copy';if(l)l.textContent='Salin'},2000)}
+function toggleToc(open){var d=document.getElementById('tocDrawer'),b=document.getElementById('drawerBackdrop'),on=open===undefined?!d.classList.contains('open'):open;d.classList.toggle('open',on);b.classList.toggle('open',on);document.body.style.overflow=on?'hidden':''}function gotoSection(link){var t=document.querySelector(link.getAttribute('href'));toggleToc(false);if(t)setTimeout(function(){t.scrollIntoView({behavior:'smooth',block:'start'})},180);return false}function scrollTop(){window.scrollTo({top:0,behavior:'smooth'})}function toggleTextLarge(){var on=document.documentElement.classList.toggle('text-large'),b=document.getElementById('textLargeBtn');if(b)b.classList.toggle('active',on);try{localStorage.setItem('hands_on_text_large',on?'1':'0')}catch(e){}}(function(){try{if(localStorage.getItem('hands_on_text_large')==='1'){document.documentElement.classList.add('text-large');var b=document.getElementById('textLargeBtn');if(b)b.classList.add('active')}}catch(e){}})();document.addEventListener('keydown',function(e){if(e.key==='Escape')toggleToc(false)});
+</script>
+</body></html>

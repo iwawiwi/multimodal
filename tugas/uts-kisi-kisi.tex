@@ -1,0 +1,247 @@
+% =============================================================
+%  Kisi-Kisi Ujian Tengah Semester (UTS)
+%  IF25-40304 · Pembelajaran Mesin Multimodal · ITERA
+%  Cakupan: Pertemuan 01--07
+%
+%  ARSIP, bukan sumber pemeliharaan (D-A12).
+%  Versi terbit & dipelihara: dokumen/uts-kisi-kisi.html (HTML -> PDF lewat CI).
+%  Isi arsip ini diselaraskan dengan versi HTML pada 30 Okt 2026.
+% =============================================================
+\documentclass[12pt, a4paper]{article}
+
+\usepackage{tugas-style}
+
+% ── Identitas dokumen ───────────────────────────────────────
+\renewcommand{\doctitle}{Kisi-Kisi Ujian Tengah Semester}
+\renewcommand{\duedate}{\color{ctpBlue}\faCalendarCheck\ Ujian Tengah Semester (Pertemuan 08) \textbar\ Cakupan Pertemuan 01--07 \faCalendarCheck}
+
+\lhead{{\footnotesize\color{ctpOverlay}\textsc{Kisi-Kisi UTS}}}
+\rhead{{\footnotesize\color{ctpOverlay}\textsc{\coursenumber\ --\ \coursetitle}}}
+
+\begin{document}
+
+% ── HEADER ──────────────────────────────────────────────────
+\makeassignmentheader
+
+\hrule width0.3\textwidth
+\revisioninfo{%
+  \vhEntry{0.1}{25 September 2026}{I.W.W.}{Draf inisial kisi-kisi UTS.}
+}
+\hrule
+\vskip .3in
+
+\tableofcontents
+\clearpage
+
+% =============================================================
+\section{Informasi umum}\label{sec:info}
+
+Dokumen ini memuat kisi-kisi Ujian Tengah Semester (UTS) mata kuliah
+Pembelajaran Mesin Multimodal. Kisi-kisi disusun dari capaian
+pembelajaran dan materi Pertemuan 01--07, dan menjadi acuan baik bagi dosen
+dalam menyusun soal maupun bagi mahasiswa dalam mempersiapkan diri.
+
+\begin{minipage}{\linewidth}
+\begin{bclogo}[couleur=ctpMantle, arrondi=0.1, logo=\bcinfo, ombre=false, couleurBord=ctpSurface, epBord=0.6]{Batas dokumen ini}
+  Kisi-kisi memuat cakupan, bobot, dan level kognitif tiap butir, bukan teks
+  soal. Naskah soal beserta kunci dan rubriknya tidak dibagikan.
+\end{bclogo}
+\end{minipage}
+
+\renewcommand{\arraystretch}{1.35}
+\begin{center}\small
+\begin{tabular}{|L{4.2cm}|L{10.2cm}|}
+  \hline
+  \thead{\color{ctpBlue} Aspek} & \thead{\color{ctpBlue}Keterangan} \\
+  \hline
+  Mata kuliah & Pembelajaran Mesin Multimodal (IF25-40304), 3 SKS \\
+  \hline
+  Semester & Ganjil 2026/2027 \\
+  \hline
+  Bentuk ujian & Ujian tertulis individu, tutup buku, dengan satu lembar catatan yang diperbolehkan \\
+  \hline
+  Alat bantu & Satu lembar catatan A4 (bolak-balik, \textbf{tulis tangan}, bukan hasil cetak/salinan), boleh berisi ringkasan atau rumus apa pun; dikumpulkan bersama lembar jawaban. \textbf{Tanpa kalkulator}, tanpa internet, tanpa perangkat komputasi. \\
+  \hline
+  Jadwal & Kamis, 22 Oktober 2026, 07.30--09.30 WIB, \emph{jadwal sementara, dapat berubah mengikuti pengumuman resmi Program Studi} \\
+  \hline
+  Waktu & 100 menit \\
+  \hline
+  Cakupan & Pertemuan 01--07 (paruh pertama semester) \\
+  \hline
+  Jumlah butir & 6 butir: 4 esai konseptual + 2 analisis/studi kasus \\
+  \hline
+  Total poin & 100 poin \\
+  \hline
+  Bobot nilai akhir & 25\% \\
+  \hline
+\end{tabular}
+\end{center}
+
+% =============================================================
+\section{Capaian pembelajaran yang diuji}\label{sec:cpmk}
+
+UTS menguji lima sub-capaian pembelajaran mata kuliah (sub-CPMK) berikut.
+Penomoran \textbf{sub-CPMK-1\ldots5} adalah kode internal kisi-kisi yang
+menurunkan CPMK mata kuliah menjadi capaian yang dapat diuji pada ujian ini.
+Kode level kognitif mengikuti taksonomi Bloom (C2 = memahami, C3 = menerapkan,
+C4 = menganalisis, C5 = mengevaluasi).
+
+\begin{objectives}
+  \item \textbf{sub-CPMK-1} (C2): Menjelaskan konsep dasar pembelajaran mesin
+        multimodal dan tiga pilar utamanya (\emph{representasi},
+        \emph{penyejajaran}, dan \emph{fusi}) beserta tantangannya.
+  \item \textbf{sub-CPMK-2} (C3--C4): Menganalisis dan memilih representasi yang
+        tepat untuk tiap modalitas (teks, gambar, audio/video).
+  \item \textbf{sub-CPMK-3} (C4): Membandingkan dan menerapkan strategi fusi
+        multimodal beserta \emph{trade-off}-nya.
+  \item \textbf{sub-CPMK-4} (C2--C4): Menjelaskan dan menganalisis mekanisme
+        penyejajaran (\emph{temporal} dan \emph{struktural}) serta peran
+        \emph{attention} sebagai penyejajar.
+  \item \textbf{sub-CPMK-5} (C5): Mengevaluasi rancangan arsitektur multimodal
+        pada suatu studi kasus dan mengusulkan perbaikan berbasis alasan.
+\end{objectives}
+
+% =============================================================
+\section{Cakupan materi}\label{sec:cakupan}
+
+\renewcommand{\arraystretch}{1.3}
+\begin{center}\small
+\begin{tabular}{|C{1.4cm}|L{5.4cm}|L{7.4cm}|}
+  \hline
+  \thead{\color{ctpBlue}W} & \thead{\color{ctpBlue}Topik} & \thead{\color{ctpBlue}Butir esensial yang diuji} \\
+  \hline
+  01 & Pengantar PM Multimodal & Definisi dan motivasi multimodal; tiga pilar (representasi, penyejajaran, fusi) dan tantangannya. \\
+  \hline
+  02 & Representasi Teks & \emph{Word embeddings}, \emph{contextual embeddings} (BERT), RNN/LSTM, \emph{transformer encoder}. \\
+  \hline
+  03 & Representasi Gambar & CNN (ResNet) untuk fitur hierarkis; Vision Transformer (ViT) berbasis \emph{patch}. \\
+  \hline
+  04 & Representasi Audio \& Video & Spektrogram, MFCC, 3D CNN, RNN/LSTM untuk sekuens. \\
+  \hline
+  05 & Fusi I: Early \& Late & Titik penggabungan, kelebihan, dan kelemahan masing-masing. \\
+  \hline
+  06 & Fusi II: Intermediate \& Hybrid & Penggabungan fitur terenkode; kombinasi beberapa titik; \emph{trade-off}. \\
+  \hline
+  07 & Penyejajaran (Alignment) & Penyejajaran temporal dan struktural; attention sebagai penyejajar adaptif. \\
+  \hline
+\end{tabular}
+\end{center}
+
+% =============================================================
+\section{Kisi-kisi soal}\label{sec:kisi}
+
+\renewcommand{\arraystretch}{1.35}
+\setlength{\tabcolsep}{4pt}
+\begin{center}\footnotesize
+\begin{tabular}{|C{0.7cm}|C{1.0cm}|C{1.2cm}|L{2.1cm}|L{4.3cm}|C{1.0cm}|C{1.7cm}|C{0.8cm}|}
+  \hline
+  \thead{\color{ctpBlue}No} & \thead{\color{ctpBlue}Soal} & \thead{\color{ctpBlue}sub-CPMK} & \thead{\color{ctpBlue}Materi} & \thead{\color{ctpBlue}Indikator} & \thead{\color{ctpBlue}Level} & \thead{\color{ctpBlue}Bentuk} & \thead{\color{ctpBlue}Poin} \\
+  \hline
+  1 & A1 & 1 & W01 & Tiga pilar dan tantangannya. & C2 & Esai & 15 \\
+  \hline
+  2 & A2 & 2 & W02--04 & Representasi tiap modalitas. & C3 & Esai & 15 \\
+  \hline
+  3 & A3 & 3 & W05--06 & Strategi fusi dan \emph{trade-off}-nya. & C4 & Esai & 15 \\
+  \hline
+  4 & A4 & 4 & W07 & Penyejajaran dan mekanisme penyejajarnya. & C2--C3 & Esai & 15 \\
+  \hline
+  5 & B1 & 2, 5 & W02--04, W05--06 & Analisis diagram arsitektur multimodal. & C4 & Analisis & 20 \\
+  \hline
+  6 & B2 & 2, 3, 4, 5 & W02--07 & Perancangan pipeline multimodal. & C5 & Studi kasus & 20 \\
+  \hline
+  \multicolumn{7}{|r|}{\bfseries Total} & \bfseries 100 \\
+  \hline
+\end{tabular}
+\end{center}
+\setlength{\tabcolsep}{6pt}
+
+\begin{minipage}{\linewidth}
+\begin{bclogo}[couleur=ctpMantle, arrondi=0.1, logo=\bcinfo, ombre=false, couleurBord=ctpSurface, epBord=0.6]{Bagian A dan B berbeda tuntutan}
+  Bagian A (A1--A4) menguji pemahaman dan perbandingan konsep; Bagian B
+  (B1--B2) menuntut analisis diagram dan perancangan; alasan di balik keputusan
+  desain dinilai lebih tinggi daripada jawaban singkat. Kolom sub-CPMK pada
+  tabel menyatakan capaian yang benar-benar dinilai pada butir tersebut; karena
+  sifatnya terpadu, butir B2 menyentuh hampir semua capaian.
+\end{bclogo}
+\end{minipage}
+
+% =============================================================
+\section{Distribusi level kognitif}\label{sec:distribusi}
+
+\renewcommand{\arraystretch}{1.3}
+\begin{center}\small
+\begin{tabular}{|L{3.2cm}|C{2.2cm}|C{2.6cm}|C{2.6cm}|}
+  \hline
+  \thead{\color{ctpBlue}Level} & \thead{\color{ctpBlue}Soal} & \thead{\color{ctpBlue}Poin} & \thead{\color{ctpBlue}Porsi} \\
+  \hline
+  C2 (memahami) & A1, A4 & 30 & 30\% \\
+  \hline
+  C3 (menerapkan) & A2 & 15 & 15\% \\
+  \hline
+  C4 (menganalisis) & A3, B1 & 35 & 35\% \\
+  \hline
+  C5 (mengevaluasi) & B2 & 20 & 20\% \\
+  \hline
+  \multicolumn{2}{|r|}{\bfseries Total} & \bfseries 100 & \bfseries 100\% \\
+  \hline
+\end{tabular}
+\end{center}
+
+\vspace{0.2cm}
+\begin{minipage}{\linewidth}
+\begin{bclogo}[couleur=ctpMantle, arrondi=0.1, logo=\bcinfo, ombre=false, couleurBord=ctpSurface, epBord=0.6]{Catatan penskoran}
+  Penilaian menekankan ketepatan konsep, kelengkapan, dan kualitas alasan;
+  setiap kriteria dinilai \emph{memenuhi} atau \emph{tidak memenuhi}.
+\end{bclogo}
+\end{minipage}
+
+% =============================================================
+\section{Panduan belajar}\label{sec:panduan}
+
+Persiapkan \emph{pemahaman} dan \emph{analisis}: UTS menuntut kemampuan
+menjelaskan alasan di balik pilihan desain.
+
+\begin{filledstarlist}
+  \item Kuasai kerangka tiga pilar dan mampu memetakan setiap tugas
+        multimodal ke dalamnya.
+  \item Pahami intuisi di balik tiap representasi: mengapa CNN untuk
+        gambar, mengapa MFCC/spektrogram untuk audio, mengapa transformer untuk
+        konteks teks.
+  \item Kuasai \emph{trade-off} keempat strategi fusi dan kapan masing-masing
+        lebih tepat.
+  \item Pahami mengapa penyejajaran itu sulit dan bagaimana attention
+        menyelesaikannya secara adaptif.
+  \item Latih membaca dan menggambar ulang diagram arsitektur:
+        keterampilan ini langsung diuji pada Butir B1.
+  \item Tinjau kembali hasil hands-on Pertemuan 02, 03, 04, dan 06;
+        soal dapat menyentuh keputusan implementasi nyata.
+  \item Siapkan lembar catatan Anda sendiri sejak awal (A4, bolak-balik, tulis
+        tangan): menuliskan ulang rumus dan \emph{trade-off} adalah cara belajar
+        yang efektif, dan lembar itu yang boleh dibawa ke ruang ujian.
+\end{filledstarlist}
+
+% =============================================================
+\section{Referensi utama}\label{sec:referensi}
+
+\begin{enumerate}
+  \item Baltrušaitis, T., Ahuja, C., \& Morency, L.-P. (2018).
+        \emph{Multimodal Machine Learning: A Survey and Taxonomy}.
+        IEEE TPAMI, 40(2), 421--443. Taksonomi tiga pilar dan kerangka
+        penyejajaran/fusi.
+  \item Liang, P., Zadeh, A., \& Morency, L.-P. (2023).
+        \emph{Tutorial on Multimodal Machine Learning}. ICML. Ringkasan strategi
+        fusi dan tantangan multimodal.
+  \item Goodfellow, I., Bengio, Y., \& Courville, A. (2016).
+        \emph{Deep Learning}. MIT Press. Dasar CNN, RNN, dan pelatihan jaringan.
+  \item Vaswani, A., et al. (2017). \emph{Attention Is All You Need}. NeurIPS. Dasar mekanisme attention
+        (Butir A4).
+  \item Devlin, J., et al. (2019). \emph{BERT: Pre-training of Deep Bidirectional
+        Transformers for Language Understanding}. NAACL. Representasi teks kontekstual (Pertemuan 02).
+  \item Dosovitskiy, A., et al. (2021). \emph{An Image is Worth 16x16 Words:
+        Transformers for Image Recognition at Scale}. ICLR. Representasi gambar
+        berbasis \emph{patch} (Pertemuan 03).
+  \item Materi kuliah Pertemuan 01--07 beserta lembar kerja (\emph{hands-on})
+        terkait. Sumber utama; kisi-kisi ini diturunkan langsung darinya.
+\end{enumerate}
+
+\end{document}
